@@ -3,9 +3,12 @@ package com.riskgame.common;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Toolkit;
+import java.awt.event.WindowEvent;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import com.riskgame.action.CreateAndEditMap;
+import com.riskgame.action.LoadAndEditMap;
 
 public class  Map 
 {
@@ -26,13 +29,24 @@ public class  Map
 			jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			
 			createMapBtn.addActionListener(e -> {
+					jframe.setVisible(false);
 				    CreateAndEditMap createandeditmap = new CreateAndEditMap();
 				try {
 						createandeditmap.newMapCreation();
-					} catch (Exception e1) {
+					} 
+				catch (Exception e1) {
 					e1.printStackTrace();
 				}
-			
+			});
+			loadMapBtn.addActionListener(e -> {
+				jframe.setVisible(false);
+				LoadAndEditMap loadandeditmap = new LoadAndEditMap();
+				try {
+						loadandeditmap.loadMap();
+					} 
+				catch (Exception e1) {
+					e1.printStackTrace();
+				}
 			});
 		}			
-		}
+}
