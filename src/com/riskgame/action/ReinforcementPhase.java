@@ -1,11 +1,11 @@
 package com.riskgame.action;
 
 import com.riskgame.common.Continent;
-import com.riskgame.common.Player;
+import com.riskgame.common.RiskPlayer;
 
 public class ReinforcementPhase {
 
-	public int initailArmiesToBeAssigned(Player player, Continent continent) {
+	public int initailArmiesToBeAssigned(RiskPlayer player, Continent continent) {
 		int countriesPerPlayer = player.getCountries().length();
 		int armiesAssignedPerPlayer = (int)Math.floor(countriesPerPlayer/3);
 		
