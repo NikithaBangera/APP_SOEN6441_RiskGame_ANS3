@@ -6,53 +6,67 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 import com.riskgame.action.CreateAndEditMap;
-import com.riskgame.action.FunctionServiceImpl;
 
 public class RiskMain extends JFrame {
-	JButton button1, button2;
+	JButton createNewMapButton, loadExistingMapButton, exitMapButton;
 	JLabel label1, label2;
 
 	public RiskMain() {
 		setLayout(new GridLayout(4, 4));
-		// JFrame frame = new JFrame();
-		button1 = new JButton("Create a new Map");
-		button1.setPreferredSize(new Dimension(60, 60));
-		add(button1);
+		createNewMapButton = new JButton("Create a new Map");
+		createNewMapButton.setPreferredSize(new Dimension(60, 60));
+		add(createNewMapButton);
 
-		button1.addActionListener(new ActionListener() {
+		createNewMapButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				CreateAndEditMap createMap = new CreateAndEditMap();
 				try {
+					setVisible(false);
 					createMap.newMapCreation();
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
-
 			}
 		});
 
-		button2 = new JButton("Load Existing Map");
-		button2.setPreferredSize(new Dimension(50, 50));
-		add(button2);
+		loadExistingMapButton = new JButton("Load Existing Map");
+		loadExistingMapButton.setPreferredSize(new Dimension(50, 50));
+		add(loadExistingMapButton);
+		
+		loadExistingMapButton.addActionListener(new ActionListener() {
 
-		// frame.add(panel);
-		// frame.setSize(400, 400);
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//Add load map functionality
+			}
+		});
 
+		exitMapButton = new JButton("Exit");
+		exitMapButton.setPreferredSize(new Dimension(50, 50));
+		add(exitMapButton);
+
+		exitMapButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
 	}
 
-	@SuppressWarnings("deprecation")
-	public static void main(String[] args) {
+	public static void setUp() {
 		RiskMain layout = new RiskMain();
 		layout.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		layout.setVisible(true);
 		layout.pack();
-		layout.move(800, 400);
+		layout.setLocation(800, 400);
 		layout.setSize(300, 300);
-		;
 		layout.setTitle("Risk Game");
-		// FunctionServiceImpl fs = new FunctionServiceImpl();
+	}
 
+	public static void main(String[] args) {
+		setUp();
 	}
 }
