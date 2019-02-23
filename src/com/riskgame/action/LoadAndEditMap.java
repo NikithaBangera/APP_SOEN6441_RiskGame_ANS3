@@ -18,8 +18,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+
 public class LoadAndEditMap {
-	public void loadMap() throws Exception{
+	
+	
+
+	public String loadMap() throws Exception{
+
 		System.out.println("\nChoose a map:");
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		String name = br.readLine();
@@ -31,94 +36,178 @@ public class LoadAndEditMap {
 			name = br.readLine();
 			match = pattern.matcher(name.trim());
 		}
-		
 		String workingDir = System.getProperty("user.dir"); //gets the current location of the working directory
 		String fileName =name.trim();
 		String filepath= workingDir+"/maps/"+fileName;
+		String image_name="";
 		try {
 			FileReader file=new FileReader(filepath) ;
 			BufferedReader br_file = new BufferedReader(file);
 			String str;
-			String image_name="";
 			while((str=br_file.readLine()) != null) {
-				Pattern image_pattern = Pattern.compile("Image=");
+				Pattern image_pattern = Pattern.compile("[Image]+ +=+ +[a-z, A-Z]+.[bmp]+");
 				Matcher image_match = image_pattern.matcher(str.trim());
 				if(image_match.matches()) {
-					image_name=str.substring(7);
-					
+					image_name=str.substring(8);
 				}
 				System.out.println(str+"\n");
 			}
-			System.out.println("Do you want to edit the map?(y/n)");
-			BufferedReader editMap = new BufferedReader(new InputStreamReader(System.in));
-			String mapedit=editMap.readLine();
-			String mapedition=mapedit.trim();
-			while (mapedition != null) {
-				if(mapedition.equals("y")) {
-					editMap();
-				}
-				if(mapedition.equals("n")){
-					System.out.println("Start or Exit?(start/exit)");
-					BufferedReader openImage = new BufferedReader(new InputStreamReader(System.in));
-					String start=openImage.readLine().trim();
-					while (start != null) {
-						if(start.contentEquals("start") ) {
-							if(image_name !=null) 
-								loadImage(image_name);
-							else
-								System.out.println("No image found for the map");
-						}
-						else if(start.contentEquals("exit") )
-							System.exit(0);
-						else {
-							System.out.println("Please enter a valid answer(start/exit)");
-							start=openImage.readLine().trim();
-						}
-//						else {
-//							if(start.contentEquals("start") ) {
-//								if(image_name !=null) 
-//									loadImage(image_name);
-//								else
-//									System.out.println("No image found for the map");
-//							}
-//							else if(start.contentEquals("exit") )
-//								System.exit(0);
-//						}
-					}
-				}
-				else {
-					System.out.println("Please enter a valid answer(y/n)");
-					mapedition=editMap.readLine().trim();
-				}
-				
-			
-			}
-			br_file.close() ;
 		}
 		catch(IOException e){
 			System.out.println("File Not Found");
+		}
+		editMap(filepath);
+		String image=mapImage(image_name);
+		return image;
+	}
+
+
+
+	public void editMap(String file)throws Exception{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		System.out.println("Do you want to edit the map?(y/n)");
+		String mapedit=br.readLine();
+		String mapedition=mapedit.trim();
+		while (mapedition != null) {
+			if(mapedition.equals("y")) {
+					edition();
+					editMap(file);
+					mapedition="n";
+			}
+			else if(mapedition.equals("n")) {
+				return;
+			}
+			else {
+				System.out.println("Please enter a valid answer:(y/n)");
+				mapedition=br.readLine().trim();
+			}		
+		}
+	}
+	public String mapImage(String image) throws IOException {
+		System.out.println("Start or Exit?(start/exit)");
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		String start=br.readLine().trim();
+		if(start.equals("start") ) {
+			start=null;
+			if(image !=null) { 
+				return image;
+			}	
+			else
+				System.out.println("No image found for the map");
+		}
+		while (start != null) {
+			if(start.equals("exit") )
+				System.exit(0);
+			else {
+				System.out.println("Please enter a valid answer(start/exit)");
+				start=br.readLine().trim();
+			}
+		}
+		return image;
 			
+	}
+	public void edition() throws IOException {
+		System.out.println("\nChoose the below options to edit the map:");
+		System.out.println("1. edit Map name or Author name:");
+		System.out.println("2. Add a continents:\n3. Delete a continent:");
+		System.out.println("4. Add a country:\n5. Delete a country:");
+		System.out.println("6. Add adjacency:\n7. Delete Adjacency:");
+		System.out.println("8. Save the map and exit:");
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int option =0;
+		try{
+			option = Integer.parseInt(br.readLine());
+		} 
+	    catch (NumberFormatException e) 
+		{ 
+	    	System.out.println("\nPlease enter valid number");
+	    	edition();
+	    	return;
 		}
 		
+		switch(option)
+		{
+		case 1: changeMetadata();
+				break;
+				
+		case 2: System.out.println("Enter the number of Continents:");
+				int numberOfContinents = Integer.parseInt(br.readLine());
+				HashMap<String, Integer> continentDetails = new HashMap<String, Integer>();
+				System.out.println("Enter the continent details in below format:");
+				System.out.println("Continent name = Control Value");
+				for(int i=0; i<numberOfContinents; i++) {
+					String continent = br.readLine();
+					String[] split = continent.split("=");
+					continentDetails.put(split[0], Integer.parseInt(split[1]));
+				}
+				
+				break;
+		
+		case 3:	System.out.println("Enter the continent to be removed from the map:");
+				String deleteContinent = br.readLine();
+				
+			break;
+			
+			
+		case 4: System.out.println("Enter the number of countries:");
+				int numberOfCountries = Integer.parseInt(br.readLine());
+				System.out.println("Enter the details of the countries in the below format:");
+				System.out.println("Country Name, X-axis, Y-axis, Continent Name, Adjacent countries separated by ,");
+				for(int i=0; i<numberOfCountries; i++) {
+					String country = br.readLine();
+				//	String[] countryDetails = ;
+				}
+			break;
+						
+						
+		case 5:	System.out.println("Enter the country to be removed:"); 
+				String deleteCountry = br.readLine();
+			break;
+		case 6: break;
+		case 7: break;
+		case 8: break;
+		case 9:System.exit(0);
+		default: System.out.println("Invalid option. Please choose the correct option.");
+				 edition();
+		
+		}
 	}
-	public void loadImage(String image){
-		JFrame jframe = new JFrame();
-		JLabel background;
-		String workingDir = System.getProperty("user.dir"); //gets the current location of the working directory
-		String filepath= workingDir+"/images/"+image;
-		ImageIcon map=new ImageIcon(filepath);
-		jframe.setLayout(new FlowLayout());
-		Dimension dim=Toolkit.getDefaultToolkit().getScreenSize();
-		jframe.setSize(400, 400);
-		jframe.setLocation(dim.width/2-jframe.getSize().width/2,dim.height/2-jframe.getSize().height/2);
-		background = new JLabel("",map,JLabel.CENTER);
-		background.setBounds(0,0,400,400);
-		jframe.add(background);
-		jframe.setVisible(true);		
-		jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	}
-	public void editMap(){
+	public void changeMetadata() {
 		
 	}
-	
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
