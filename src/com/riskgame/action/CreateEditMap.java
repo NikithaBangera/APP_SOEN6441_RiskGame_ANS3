@@ -11,8 +11,10 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
+import com.riskgame.common.MapTag;
+
 public class CreateEditMap {
-	public static ArrayList<String> mapTagData = new ArrayList<String>();
+	private MapTag mapTag= new MapTag();
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 	// create a new map
@@ -89,23 +91,23 @@ public class CreateEditMap {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println("Enter the image name of the map:");
 		String image = "image=" + br.readLine().trim();
-		mapTagData.add(image);
+		mapTag.getMapTagData().add(image);
 
 		System.out.println("Do you need a wrap?Please mention yes or no:");
 		String wrap = "wrap=" + br.readLine().trim();
-		mapTagData.add(wrap);
+		mapTag.getMapTagData().add(wrap);
 
 		System.out.println("Please mention the type of scroll: vertical or horizonatal:");
 		String scroll = "scroll=" + br.readLine().trim();
-		mapTagData.add(scroll);
+		mapTag.getMapTagData().add(scroll);
 
 		System.out.println("Enter the author name:");
 		String author = "author=" + br.readLine().trim();
-		mapTagData.add(author);
+		mapTag.getMapTagData().add(author);
 
 		System.out.println("Please mention if warn is yes or no:");
 		String warn = "warn=" + br.readLine().trim();
-		mapTagData.add(warn);
+		mapTag.getMapTagData().add(warn);
 
 		System.out.println("Added Map Tag Data!");
 
@@ -127,7 +129,7 @@ public class CreateEditMap {
             
             mapDetails.append("[Map]");
             mapDetails.append(System.lineSeparator());
-            for(String line : mapTagData) {
+            for(String line : mapTag.getMapTagData()) {
                 mapDetails.append(line);
                 mapDetails.append(System.lineSeparator());
             }
