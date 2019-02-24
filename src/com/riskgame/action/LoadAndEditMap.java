@@ -18,6 +18,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import com.riskgame.common.Continent;
+import com.riskgame.common.Territory;
+
 
 public class LoadAndEditMap {
 	
@@ -47,6 +50,39 @@ public class LoadAndEditMap {
 			while((str=br_file.readLine()) != null) {
 				Pattern image_pattern = Pattern.compile("[Image]+ +=+ +[a-z, A-Z]+.[bmp]+");
 				Matcher image_match = image_pattern.matcher(str.trim());
+				Pattern continents_pattern = Pattern.compile("[Continents]+");
+				Matcher continent_match = continents_pattern.matcher(str.trim());
+				Pattern territory_pattern = Pattern.compile("[Territories]");
+				Matcher territory_match = territory_pattern.matcher(str.trim());
+				if(continent_match.matches()) {
+					
+					while(!territory_match.matches()) {
+						str=br_file.readLine();
+						System.out.println(str+"\n");
+						String[] cont = str.split("=");
+						System.out.println(cont[0]);
+						Continent continent=new Continent();
+						continent.setName(cont[0]);
+						//continent.setControl_value(Integer.parseInt(cont[1]));
+						str=br_file.readLine();
+					}
+				}
+				
+				if(territory_match.matches()) {
+					while(str!=null) {
+						str=br_file.readLine();
+						System.out.println(str+"\n");
+						String[] ter = str.split(",");
+						Territory territory=new Territory();
+						territory.setTerritoryName(ter[0]);
+//						if(!territoryverification(str)) {
+//							System.out.println("Error in the territories");
+//							loadMap();
+//							return null;
+//						}
+						
+					}
+				}
 				if(image_match.matches()) {
 					image_name=str.substring(8);
 				}
@@ -109,7 +145,7 @@ public class LoadAndEditMap {
 	public void edition() throws IOException {
 		System.out.println("\nChoose the below options to edit the map:");
 		System.out.println("1. edit Map name or Author name:");
-		System.out.println("2. Add a continents:\n3. Delete a continent:");
+		System.out.println("2. Add continents:\n3. Delete a continent:");
 		System.out.println("4. Add a country:\n5. Delete a country:");
 		System.out.println("6. Add adjacency:\n7. Delete Adjacency:");
 		System.out.println("8. Save the map and exit:");
@@ -162,11 +198,10 @@ public class LoadAndEditMap {
 						
 		case 5:	System.out.println("Enter the country to be removed:"); 
 				String deleteCountry = br.readLine();
-			break;
+				break;
 		case 6: break;
 		case 7: break;
 		case 8: break;
-		case 9:System.exit(0);
 		default: System.out.println("Invalid option. Please choose the correct option.");
 				 edition();
 		
@@ -175,7 +210,10 @@ public class LoadAndEditMap {
 	public void changeMetadata() {
 		
 	}
-
+	public boolean territoryverification(String territory) {
+		return false;
+		
+	}
 }
 
 
