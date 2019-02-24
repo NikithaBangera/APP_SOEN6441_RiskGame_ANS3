@@ -59,7 +59,6 @@ public class CreateEditMap {
 			System.out.println("Country Name, X-axis, Y-axis, Continent Name, Adjacent countries separated by ,");
 			for (int i = 0; i < numberOfCountries; i++) {
 				String country = br.readLine();
-				// String[] countryDetails = ;
 			}
 			break;
 
