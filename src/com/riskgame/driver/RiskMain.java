@@ -5,7 +5,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
-import com.riskgame.action.CreateAndEditMap;
+import com.riskgame.action.CreateEditMap;
 
 public class RiskMain extends JFrame {
 	JButton createNewMapButton, loadExistingMapButton, exitMapButton;
@@ -21,7 +21,7 @@ public class RiskMain extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				CreateAndEditMap createMap = new CreateAndEditMap();
+				CreateEditMap createMap = new CreateEditMap();
 				try {
 					setVisible(false);
 					createMap.newMapCreation();
@@ -34,12 +34,12 @@ public class RiskMain extends JFrame {
 		loadExistingMapButton = new JButton("Load Existing Map");
 		loadExistingMapButton.setPreferredSize(new Dimension(50, 50));
 		add(loadExistingMapButton);
-		
+
 		loadExistingMapButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//Add load map functionality
+				// Add load map functionality
 			}
 		});
 
