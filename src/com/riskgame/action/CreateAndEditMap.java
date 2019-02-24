@@ -1,19 +1,19 @@
 package com.riskgame.action;
 
 import java.io.BufferedReader;
-//import java.io.File;
-//import java.io.FileReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CreateAndEditMap {
 	
+	//private SavingMapIntoFile saveMap;
+	//create a new map
 	SavingMapIntoFile saveMap=new SavingMapIntoFile();
-	
 	public String fileName;
 	public String tag;
-	
 	public void newMapCreation() throws Exception{
 		System.out.println("\nChoose the below options to create a new map:");
 		System.out.println("1. Enter Map name and Author name:");
@@ -50,16 +50,17 @@ public class CreateAndEditMap {
 			break;
 			
 			
-		case 4: tag = "[Countries]";
+		case 4: tag = "[Territories]";
 				System.out.println("Enter the number of countries:");
-				//setCountryDetails();
+				setCountryDetails();
 				break;
 						
 						
 		case 5:	System.out.println("Enter the country to be removed:"); 
 				String deleteCountry = br.readLine();
-			break;
+				break;
 		case 6: break;
+				
 		case 7: break;
 		case 8: break;
 		case 9:System.exit(0);
@@ -90,6 +91,7 @@ public class CreateAndEditMap {
 		System.out.println("Please enter the map name in below format:");
 		System.out.println("mapname.map");
 		String filename =br.readLine();
+		//Pattern pattern_filename = Pattern.compile("[a-z, A-Z, 1-9]+.[map]+");
 		Pattern pattern_filename = Pattern.compile("[a-z, A-Z, 1-9]+.[map]+");
 		Matcher match_filename = pattern_filename.matcher(filename.trim());	
 		while(!match_filename.matches())
@@ -103,6 +105,7 @@ public class CreateAndEditMap {
 		mapTagData[0] = image;
 		mapTagData[1] = author;	
 		mapTagData[2] = fileName;
+		//SavingMapIntoFile saveMap=new SavingMapIntoFile();
 		saveMap.saveMapTag(mapTagData, fileName, tag);
 		newMapCreation();
 	}
@@ -120,6 +123,7 @@ public class CreateAndEditMap {
 			setContinentDetails();
 			return;
 		}
+		//HashMap<String, Integer> continentDetails = new HashMap<String, Integer>();
 		System.out.println("Pleae enter continent details in below format:");
 		System.out.println("Continent name=Control Value");
 		Pattern pattern = Pattern.compile("[a-z, A-Z]+=[0-9]+");
@@ -132,6 +136,12 @@ public class CreateAndEditMap {
 		    if(match.matches()) 
 		    {
 		    	String tempcontinentName = continentName.split("=")[0]; 
+		    	if(alreadyDefined(tempcontinentName))
+		    	{
+		    		System.out.println("Entered Continent already exists.\n Please enter new details");
+		    		System.out.println("Continent name=Control Value");
+		    		continue;
+		    	}
 		    	continentAndControlVal[i] = continentName;
 			    continue;
 			} else {
@@ -144,4 +154,86 @@ public class CreateAndEditMap {
 	    newMapCreation();
 	}
 	
-}	
+	public void setCountryDetails() throws Exception
+	{
+		int numberOfCountries=0;
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		try {
+			numberOfCountries = Integer.parseInt(br.readLine());
+		}
+		catch (NumberFormatException e) 
+		{
+			System.out.println("\nPlease enter valid number");
+			setCountryDetails();
+			return;
+		}
+		System.out.println("Please enter the details of the countries in the below format:");
+		System.out.println("Country Name, X-axis, Y-axis, Continent Name, Adjacent countries separated by ,");
+		Pattern pattern = Pattern.compile("[a-z, A-Z]+,+[0-9]+,+[0-9]+,[a-z, A-Z]+");
+		String[] continentAndCountryDetails = new String[numberOfCountries];
+		
+		for(int i=0; i<numberOfCountries; i++)
+		{
+			String countryName = br.readLine();
+			Matcher match = pattern.matcher(countryName.trim());
+		    
+			if(match.matches()) 
+		    {
+				String[] input = countryName.split(",");
+                if(alreadyDefined(input[3].trim()))
+                {
+                	  	continentAndCountryDetails[i] = countryName;
+                		continue;
+               	}
+                else {
+                	System.out.println("continent " + input[3].trim() + "is not available in current continents list");
+                	System.out.println("Please enter valid continent name");
+                	--i;
+                	continue;
+                }
+		    }else {
+		    	System.out.println(" Invalid pattern");
+		    	System.out.println("Please enter valid pattern\n");
+			--i;
+			continue;}
+		    }
+		
+		saveMap.saveMapTag(continentAndCountryDetails, fileName, tag);
+	    newMapCreation();
+	}
+	
+	public boolean alreadyDefined(String tempcontinentName)
+	{
+		//ArrayList<String> records = new ArrayList<String>();
+		try
+		{
+			String workingDir = System.getProperty("user.dir");
+			File file = new File(workingDir + "\\src\\com\\riskgame\\" + fileName);
+			//System.out.println( file.getAbsolutePath());
+			@SuppressWarnings("resource")
+			BufferedReader reader = new BufferedReader(new FileReader(file));
+			String line;
+			while ((line = reader.readLine()) != null)
+			{
+			  line = line.split("=")[0];
+		      if(line.equals(tempcontinentName)) 
+		    		  {
+		    	  return true;
+		      }
+		      else {
+		      continue;
+		  }
+		 }reader.close();
+		}
+	    catch (Exception e)
+		{
+		    System.err.format("Exception occurred trying to read '%s'.", fileName);
+		    e.printStackTrace();
+		    return false;
+		  }
+		return false;
+		}
+}
+	
+
+
