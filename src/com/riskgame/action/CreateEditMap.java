@@ -137,7 +137,7 @@ public class CreateEditMap {
             bw.close();
         }
         catch(Exception e) {
-            System.out.println("Error while writing");
+            System.out.println("Error while writing to a file");
             return false;
         }
         return true;
