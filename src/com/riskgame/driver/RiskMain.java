@@ -4,7 +4,13 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+
 import javax.swing.*;
+
+import com.risk.services.MapEditor;
+import com.risk.services.MapIO;
+import com.risk.services.MapValidate;
 import com.riskgame.action.CreateAndEditMap;
 
 public class RiskMain extends JFrame {
@@ -39,7 +45,30 @@ public class RiskMain extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				JFileChooser fileChooser;
 				//Add load map functionality
+				 int returnVal = fileChooser.showOpenDialog(this);
+			        if (returnVal == JFileChooser.APPROVE_OPTION) {
+			            File file = fileChooser.getSelectedFile();
+			            try {
+			              // return the file path 
+			            	String filename  = file.getAbsolutePath();
+			            	System.out.println("File location: " + filename);
+			            	ValidateMap validateMap = new ValidateMap();
+			            	while(validateMap.validateMapFile(filename)) {
+			            		mapreader= new Map(mapValidate);
+			            		new MapEditor(mapreader.readFile()).editMapdata();
+			            		
+			            	}
+			            	
+			            } catch (Exception ex) {
+			              System.out.println("problem accessing file"+file.getAbsolutePath());
+			            }
+			        } 
+			        else {
+			            System.out.println("File access cancelled by user.");
+			        }  
+				
 			}
 		});
 

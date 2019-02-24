@@ -1,7 +1,7 @@
 package com.riskgame.action;
 
-import com.riskgame.common.Continent;
-import com.riskgame.common.RiskPlayer;
+import com.riskgame.shared.Continent;
+import com.riskgame.shared.RiskPlayer;
 
 public class ReinforcementPhase {
 

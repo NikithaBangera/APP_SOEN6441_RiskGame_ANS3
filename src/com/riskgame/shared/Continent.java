@@ -1,4 +1,4 @@
-package com.riskgame.common;
+package com.riskgame.shared;
 
 import java.util.HashMap;
 

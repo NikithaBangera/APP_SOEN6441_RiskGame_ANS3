@@ -1,4 +1,4 @@
-package com.riskgame.common;
+package com.riskgame.shared;
 
 public class Territory {
 	String territoryName;

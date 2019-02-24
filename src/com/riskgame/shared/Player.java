@@ -1,6 +1,6 @@
-package com.riskgame.common;
+package com.riskgame.shared;
 
-public class RiskPlayer {
+public class Player {
 
 	public String getCountries() {
 		// TODO Auto-generated method stub
