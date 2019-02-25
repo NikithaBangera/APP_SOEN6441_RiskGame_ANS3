@@ -5,13 +5,18 @@ import java.util.HashMap;
 public class Continent {
 	String continentName;
 	int controlValue;
-	HashMap<String, Integer> continentDetails = new HashMap<String, Integer>();
+	public HashMap<String, Integer> continentDetails = new HashMap<String, Integer>();
+	
+	public Continent(String continentName, int controlValue) {
+		this.continentName = continentName;
+		this.controlValue = controlValue;
+	}
 	
 	public String getContinentName() {
 		return continentName;
 	}
 
-	public void setName(String name) {
+	public void setContinentName(String name) {
 		this.continentName = name;
 	}
 

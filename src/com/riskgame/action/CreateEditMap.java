@@ -6,14 +6,21 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.security.KeyStore.Entry;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.Spliterator;
 import java.util.regex.Pattern;
+
+import com.riskgame.common.Continent;
 
 public class CreateEditMap {
 	public static ArrayList<String> mapTagData = new ArrayList<String>();
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	GameMapGraph gameMap = new GameMapGraph();
 
 	// create a new map
 	public void newMapCreation() throws Exception {
@@ -35,15 +42,22 @@ public class CreateEditMap {
 		case 2:
 			System.out.println("Enter the number of Continents:");
 			int numberOfContinents = Integer.parseInt(br.readLine());
-			HashMap<String, Integer> continentDetails = new HashMap<String, Integer>();
+		//	HashMap<String, Integer> continentDetails = new HashMap<String, Integer>();
 			System.out.println("Enter the continent details in below format:");
-			System.out.println("Continent name = Control Value");
-			for (int i = 0; i < numberOfContinents; i++) {
-				String continent = br.readLine();
-				String[] split = continent.split("=");
-				continentDetails.put(split[0], Integer.parseInt(split[1]));
+			System.out.println("Continent name=Control Value");
+			String[] contSplit;
+			for (int i = 0; i < numberOfContinents; ++i) {
+				String continentInfo = br.readLine();
+				contSplit = continentInfo.split("=");
+			//	continentDetails.put(conSplit[0], Integer.parseInt(contSplit[1]));
+				/*
+				 * if(gameMap.getContinent().containsKey((contSplit)[0])) {
+				 * System.out.println("Continent "+ contSplit[0] + "is already present." ); --i;
+				 * continue; }
+				 */
+			Continent continent = new Continent(contSplit[0],Integer.parseInt(contSplit[1]));
+			gameMap.addContinent(continent);
 			}
-
 			break;
 
 		case 3:
@@ -132,6 +146,16 @@ public class CreateEditMap {
                 mapDetails.append(line);
                 mapDetails.append(System.lineSeparator());
             }
+            
+            mapDetails.append("[Continent]");
+            mapDetails.append(System.lineSeparator());
+            Iterator<Map.Entry<String, Continent>> mapIterator = gameMap.continentData.entrySet().iterator();
+            System.out.println("Hi");
+            while(mapIterator.hasNext()) {
+            	mapDetails.append(mapIterator.next().getValue().getContinentName() + "=" + mapIterator.next().getValue().getControlValue());
+            	mapDetails.append(System.lineSeparator());
+            }
+            
             
             bw.write(mapDetails.toString());
             bw.close();
