@@ -1,7 +1,9 @@
 package com.riskgame.common;
 
 public class Territory {
-	String territoryName;
+	private String territoryName;
+	
+	private int armiesCount = 0;
 
 	public String getTerritoryName() {
 		return territoryName;
@@ -11,7 +13,13 @@ public class Territory {
 		this.territoryName = territoryName;
 	}
 	
+	public int getArmiesCount() {
+		return armiesCount;
+	}
 	
+	public void setArmiesCount(int armiesCount) {
+		this.armiesCount = armiesCount;
+	}
 	
 	
 	

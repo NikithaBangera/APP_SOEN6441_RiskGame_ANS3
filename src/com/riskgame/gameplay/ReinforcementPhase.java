@@ -5,7 +5,7 @@ import com.riskgame.common.RiskPlayer;
 
 public class ReinforcementPhase {
 
-	public int initailArmiesToBeAssigned(RiskPlayer player, Continent continent) {
+	public int armiesToBeAssigned(RiskPlayer player, Continent continent) {
 		int countriesPerPlayer = player.getTerritories().size();
 		int armiesAssignedPerPlayer = (int)Math.floor(countriesPerPlayer/3);
 		

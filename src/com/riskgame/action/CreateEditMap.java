@@ -23,7 +23,7 @@ public class CreateEditMap {
 	GameMapGraph gameMap = new GameMapGraph();
 
 	// create a new map
-	public void newMapCreation() throws Exception {
+	public boolean newMapCreation() throws Exception {
 		System.out.println("\nChoose the below options to create a new map:");
 		System.out.println("1. Enter details of Map Tag:");
 		System.out.println("2. Add the continents:\n3. Delete a continent:");
@@ -97,6 +97,7 @@ public class CreateEditMap {
 			newMapCreation();
 
 		}
+		return true;
 	}
 
 	private void createMapTag() throws Exception {
