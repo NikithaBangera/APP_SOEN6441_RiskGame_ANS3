@@ -47,47 +47,90 @@ public class LoadAndEditMap {
 			FileReader file=new FileReader(filepath) ;
 			BufferedReader br_file = new BufferedReader(file);
 			String str;
-			while((str=br_file.readLine()) != null) {
-				Pattern image_pattern = Pattern.compile("[Image]+ +=+ +[a-z, A-Z]+.[bmp]+");
-				Matcher image_match = image_pattern.matcher(str.trim());
-				Pattern continents_pattern = Pattern.compile("[Continents]+");
-				Matcher continent_match = continents_pattern.matcher(str.trim());
-				Pattern territory_pattern = Pattern.compile("[Territories]");
-				Matcher territory_match = territory_pattern.matcher(str.trim());
-				if(continent_match.matches()) {
-					
-					while(!territory_match.matches()) {
-						str=br_file.readLine();
-						System.out.println(str+"\n");
-						String[] cont = str.split("=");
-						System.out.println(cont[0]);
-						Continent continent=new Continent();
-						continent.setName(cont[0]);
-						//continent.setControl_value(Integer.parseInt(cont[1]));
-						str=br_file.readLine();
+			str=br_file.readLine();
+			Pattern tagData_pattern = Pattern.compile("[Map]+");
+			Matcher tagData_match = tagData_pattern.matcher(str.trim());
+			
+			Pattern image_pattern = Pattern.compile("[Image]+ +=+ +[a-z, A-Z]+.[bmp]+");
+			Matcher image_match = image_pattern.matcher(str.trim());
+			Pattern continents_pattern = Pattern.compile("[Continents]+");
+			Matcher continent_match = continents_pattern.matcher(str.trim());
+			Pattern territory_pattern = Pattern.compile("[Territories]+");
+			Matcher territory_match = territory_pattern.matcher(str.trim());
+			if(tagData_match.matches()) {
+				str=br_file.readLine();
+				while(!continent_match.matches()) {
+					image_match = image_pattern.matcher(str.trim());
+					if(image_match.matches()) {
+						image_name=str.substring(8);
 					}
+					System.out.println(str+"\n");
+					str=br_file.readLine();
+					continent_match = continents_pattern.matcher(str.trim());
 				}
-				
-				if(territory_match.matches()) {
-					while(str!=null) {
-						str=br_file.readLine();
-						System.out.println(str+"\n");
-						String[] ter = str.split(",");
-						Territory territory=new Territory();
-						territory.setTerritoryName(ter[0]);
-//						if(!territoryverification(str)) {
-//							System.out.println("Error in the territories");
-//							loadMap();
-//							return null;
-//						}
-						
-					}
-				}
-				if(image_match.matches()) {
-					image_name=str.substring(8);
-				}
-				System.out.println(str+"\n");
 			}
+			if(continent_match.matches()) {
+				str=br_file.readLine();
+				while(!territory_match.matches()) {
+					String[] cont = str.split("=");
+					Continent continent=new Continent();
+					continent.setName(cont[0]);
+					continent.setControl_value(Integer.parseInt(cont[1]));
+					System.out.println(str+"\n");
+					str=br_file.readLine();
+					territory_match = territory_pattern.matcher(str.trim());
+				}
+			}
+			if(territory_match.matches()) {
+				str=br_file.readLine();
+				while((str=br_file.readLine()) != null) {
+					String[] ter = str.split(",");
+					Territory territory=new Territory();
+					territory.setTerritoryName(ter[0]);
+					System.out.println(str+"\n");
+				}
+			}
+//			while((str=br_file.readLine()) != null) {
+////				Pattern image_pattern = Pattern.compile("[Image]+ +=+ +[a-z, A-Z]+.[bmp]+");
+////				Matcher image_match = image_pattern.matcher(str.trim());
+////				Pattern continents_pattern = Pattern.compile("[Continents]+");
+////				Matcher continent_match = continents_pattern.matcher(str.trim());
+////				Pattern territory_pattern = Pattern.compile("[Territories]");
+//				
+//				if(continent_match.matches()) {
+//					
+//					while(!territory_match.matches()) {
+//						str=br_file.readLine();
+//						System.out.println(str+"\n");
+//						String[] cont = str.split("=");
+//						System.out.println(cont[0]);
+//						Continent continent=new Continent();
+//						continent.setName(cont[0]);
+//						//continent.setControl_value(Integer.parseInt(cont[1]));
+//						str=br_file.readLine();
+//					}
+//				}
+//				
+//				if(territory_match.matches()) {
+//					while(str!=null) {
+//						str=br_file.readLine();
+//						System.out.println(str+"\n");
+//						String[] ter = str.split(",");
+//						Territory territory=new Territory();
+//						territory.setTerritoryName(ter[0]);
+////						if(!territoryverification(str)) {
+////							System.out.println("Error in the territories");
+////							loadMap();
+////							return null;
+////						}
+//						
+//					}
+//				}
+//				if(image_match.matches()) {
+//					image_name=str.substring(8);
+//				}
+//				System.out.println(str+"\n");
+//			}
 		}
 		catch(IOException e){
 			System.out.println("File Not Found");

@@ -1,9 +1,9 @@
+Map
 Image = map.bmp
 Author = Shiva
 Continents
 Northern Africa=4
 UK and Ireland=4
-
 Territories
 Egypt,415,99,Northern Africa,Libya
 Libya,314,94,Northern Africa,Tunisia,Algeria,Egypt
