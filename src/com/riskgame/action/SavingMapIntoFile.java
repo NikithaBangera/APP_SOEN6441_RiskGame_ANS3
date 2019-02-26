@@ -16,7 +16,7 @@ public class SavingMapIntoFile {
 		this.Data = mapTagData;
 		String tags = tag;
 		String workingDir = System.getProperty("user.dir");
-		File file = new File(workingDir + "\\src\\com\\riskgame\\" + fileName);
+		File file = new File(workingDir + "\\src\\com\\riskgame\\maps\\" + fileName);
 		try {
 		
 			if(!file.exists()) 

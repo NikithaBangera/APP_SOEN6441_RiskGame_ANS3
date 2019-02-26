@@ -208,7 +208,7 @@ public class CreateAndEditMap {
 		try
 		{
 			String workingDir = System.getProperty("user.dir");
-			File file = new File(workingDir + "\\src\\com\\riskgame\\" + fileName);
+			File file = new File(workingDir + "\\src\\com\\riskgame\\maps\\" + fileName);
 			//System.out.println( file.getAbsolutePath());
 			@SuppressWarnings("resource")
 			BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -233,7 +233,24 @@ public class CreateAndEditMap {
 		  }
 		return false;
 		}
+	public boolean isCountryInAdjacentCountryList(String[] input)
+	{
+	String country = input[0];
+	
+	for(int i = 4; i<input.length; i++ )
+	{
+		if(country.equals(input[i]))
+			 return true;
+		else 
+			continue;
+	}
+	return false;
+	}
 }
+
+	
+
+
 	
 
 
