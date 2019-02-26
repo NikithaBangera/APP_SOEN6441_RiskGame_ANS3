@@ -36,6 +36,11 @@ public class RiskPlayer {
 		this.myCountries = myCountries;
 	}
 
+	@Override
+	public String toString() {
+		return "RiskPlayer [name=" + name + ", armyCount=" + armyCount + ", myCountries=" + myCountries + "]";
+	}
+
 	
 
 }
