@@ -231,7 +231,22 @@ public class CreateAndEditMap {
 		  }
 		return false;
 		}
+	
+	public boolean isCountryInAdjacentCountryList(String[] input)
+	{
+	String country = input[0];
+	
+	for(int i = 4; i<input.length; i++ )
+	{
+		if(country.equals(input[i]))
+			 return true;
+		else 
+			continue;
+	}
+	return false;
+	}
 }
+
 	
 
 
