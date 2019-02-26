@@ -37,6 +37,7 @@ public class StartUp {
 		e.printStackTrace();
 	}	
 	 System.out.println("Enter the name of the players");
+	 if()
 	 
 	 
 	 

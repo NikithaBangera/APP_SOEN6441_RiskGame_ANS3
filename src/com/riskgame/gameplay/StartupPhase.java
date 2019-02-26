@@ -50,10 +50,29 @@ public class StartupPhase {
 			playersList.put(j, riskPlayer);
 		}
 	 
-	 
-	 
-	 
-	 
+	 }
+
+
+	public void allocationOfCountry() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	public void allocationOfArmyToPlayers() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	public void allocationOfArmyToCountriesInitially() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	public void allocationOfArmyToCountries_Balance() {
+		// TODO Auto-generated method stub
 		
 	}
 }

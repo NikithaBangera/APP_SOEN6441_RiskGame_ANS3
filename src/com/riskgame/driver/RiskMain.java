@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import javax.swing.*;
 
 import com.riskgame.action.CreateAndEditMap;
+import com.riskgame.common.MapTag;
 import com.riskgame.gameplay.StartupPhase;
 
 
@@ -82,7 +83,15 @@ public class RiskMain extends JFrame {
 				String choice = br.readLine();
 				if(choice.equalsIgnoreCase("Yes")) {
 					StartupPhase start = new StartupPhase();
-					start.gamePlay();
+					start.gamePlay(MapTag mapTag);
+					start.allocationOfCountry();
+					start.allocationOfArmyToPlayers();
+					start.allocationOfArmyToCountriesInitially();
+					start.allocationOfArmyToCountries_Balance();
+					
+//					startUpPhase.armyAllocationToPlayers();
+//					startUpPhase.initialArmyAllocationToCountries();
+//					startUpPhase.balanceArmyAllocationToCountries();
 				}
 			} catch (IOException e) {
 				e.printStackTrace();

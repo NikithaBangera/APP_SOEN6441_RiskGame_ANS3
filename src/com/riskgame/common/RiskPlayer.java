@@ -19,6 +19,7 @@ public class RiskPlayer {
 	        this.myCountries = new ArrayList<Country>();
 	        //this.listOfCards = new ArrayList<ICardType>();
 	    }
+	 
 
 	public String getName() {
 		return name;
