@@ -9,8 +9,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import javax.swing.*;
-import com.riskgame.action.CreateEditMap;
+
+import com.riskgame.action.CreateAndEditMap;
 import com.riskgame.gameplay.StartupPhase;
+
 
 public class RiskMain extends JFrame {
 	JButton createNewMapButton, loadExistingMapButton, exitMapButton;
@@ -30,10 +32,10 @@ public class RiskMain extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				CreateEditMap createMap = new CreateEditMap();
+				CreateAndEditMap createandeditmap = new CreateAndEditMap();
 				try {
 					setVisible(false);
-					createMap.newMapCreation();
+					createandeditmap.newMapCreation();
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
