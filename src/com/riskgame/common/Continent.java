@@ -1,15 +1,16 @@
 package com.riskgame.common;
 
-import java.util.HashMap;
+import java.util.TreeSet;
 
 public class Continent {
 	String continentName;
 	int controlValue;
-	public HashMap<String, Integer> continentDetails = new HashMap<String, Integer>();
+	private TreeSet<Territory> territoriesInContinent;
 	
 	public Continent(String continentName, int controlValue) {
 		this.continentName = continentName;
 		this.controlValue = controlValue;
+		territoriesInContinent = new TreeSet<Territory>();
 	}
 	
 	public String getContinentName() {
@@ -28,14 +29,16 @@ public class Continent {
 		this.controlValue = controlValue;
 	}
 
-	public HashMap<String, Integer> getContinents() {
-		return continentDetails;
+	public void addTerritory(Territory territory) {
+		territoriesInContinent.add(territory);
 	}
-
-	public void setContinents(HashMap<String, Integer> continents) {
-		this.continentDetails = continents;
-	}
-
 	
+	public TreeSet<Territory> getTerritoriesInContinent(){
+		return territoriesInContinent;
+	}
+	
+	public void setTerritoriesInContinent(TreeSet<Territory> territoriesInContinent) {
+		this.territoriesInContinent = territoriesInContinent;
+	}
 
 }

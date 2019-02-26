@@ -6,10 +6,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 import com.riskgame.action.CreateEditMap;
+import com.riskgame.action.StartUpPhase;
+import com.riskgame.action.StartGame;
 
 public class RiskMain extends JFrame {
 	JButton createNewMapButton, loadExistingMapButton, exitMapButton;
 	JLabel label1, label2;
+	public static boolean status = false;
 
 	public RiskMain() {
 		setLayout(new GridLayout(4, 4));
@@ -24,7 +27,7 @@ public class RiskMain extends JFrame {
 				CreateEditMap createMap = new CreateEditMap();
 				try {
 					setVisible(false);
-					createMap.newMapCreation();
+					status = createMap.newMapCreation();
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
@@ -54,6 +57,10 @@ public class RiskMain extends JFrame {
 				System.exit(0);
 			}
 		});
+		
+		if(status) {
+			StartGame.playGame();
+		}
 	}
 
 	public static void setUp() {

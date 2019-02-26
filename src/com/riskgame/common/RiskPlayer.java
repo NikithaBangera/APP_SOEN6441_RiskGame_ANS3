@@ -25,6 +25,10 @@ public class RiskPlayer {
 		this.playerName = playerName;
 	}
 	
+	/**
+	 * Method to get the list of countries held by player
+	 * @return
+	 */
 	public ArrayList<Territory> getTerritories() {
 		return territoriesOwned;
 	}
@@ -40,5 +44,24 @@ public class RiskPlayer {
 	public void setArmiesCount(int armiesCount) {
         this.armiesCount = armiesCount;
     }
+	
+	public void addTerritory(Territory territory) {
+		this.territoriesOwned.add(territory);
+	}
 
+	public void armiesAssignedToTerritories(Territory territory, int armiesCount) {
+		if(this.getTerritories().contains(territory)) {
+			if((this.getArmiesCount()) > 0 && this.getArmiesCount() >= armiesCount) {
+				territory.setArmiesCount(territory.getArmiesCount() + armiesCount);
+				this.setArmiesCount(this.getArmiesCount() - armiesCount);
+			}
+			else {
+				System.out.println("Insufficient number of armies.");
+			}
+		}
+		else {
+			System.out.println("This country is not owned by you!");
+		}
+	}
+	
 }

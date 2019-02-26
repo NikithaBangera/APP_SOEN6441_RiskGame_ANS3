@@ -2,8 +2,10 @@ package com.riskgame.common;
 
 public class Territory {
 	private String territoryName;
-	
 	private int armiesCount = 0;
+	private String continentName;
+	
+	
 
 	public String getTerritoryName() {
 		return territoryName;
@@ -21,6 +23,17 @@ public class Territory {
 		this.armiesCount = armiesCount;
 	}
 	
+	/**
+	 * Continent to which the country belongs
+	 * 
+	 */
+	public String getContinentName() {
+		return continentName;
+	}
+	
+	public void setContinentName(String continentName) {
+		this.continentName = continentName;
+	}
 	
 	
 	
