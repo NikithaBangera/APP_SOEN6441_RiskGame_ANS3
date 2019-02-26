@@ -3,7 +3,7 @@ package com.riskgame.common;
 import java.util.ArrayList;
 
 public class Country {
-	
+
 	/** Name of country. */
 	private String name;
 
@@ -15,6 +15,18 @@ public class Country {
 
 	/** X dimension */
 	private String xValue;
+
+	/** Y dimension */
+	private String yValue;
+
+	/** Number of armies */
+	private int noOfArmies;
+
+	/** Adjacent Country holder */
+	private ArrayList<Country> adjacentCountries;
+
+	/** Part of Continent */
+	private Continent partOfContinent;
 
 	public String getName() {
 		return name;
@@ -80,15 +92,12 @@ public class Country {
 		this.partOfContinent = partOfContinent;
 	}
 
-	/** Y dimension */
-	private String yValue;
+	@Override
+	public String toString() {
+		return "Country [name=" + name + ", player=" + player + ", continent=" + continent + ", xValue=" + xValue
+				+ ", yValue=" + yValue + ", noOfArmies=" + noOfArmies + ", adjacentCountries=" + adjacentCountries
+				+ ", partOfContinent=" + partOfContinent + "]";
+	}
 
-	/** Number of armies */
-	private int noOfArmies;
-
-	/** Adjacent Country holder */
-	private ArrayList<Country> adjacentCountries;
-
-	/** Part of Continent */
-	private Continent partOfContinent;
+	
 }
