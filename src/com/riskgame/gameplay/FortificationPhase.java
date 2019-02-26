@@ -70,8 +70,7 @@ public class FortificationPhase {
 
 					moveArmies(mapGraph.getCountrySet().get(fromCountry), mapGraph.getCountrySet().get(toCountry),
 							countOfArmies);
-				}
-				else {
+				} else {
 					System.out.println("Insufficient armies left.");
 				}
 			}

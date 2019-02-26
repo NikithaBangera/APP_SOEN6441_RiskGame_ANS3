@@ -65,6 +65,7 @@ public class RiskMain extends JFrame {
 				System.exit(0);
 			}
 		});
+		startGame();
 	}
 
 	public static void setUp() {
@@ -76,6 +77,12 @@ public class RiskMain extends JFrame {
 		layout.setSize(300, 300);
 		layout.setTitle("Risk Game");
 
+		
+	}
+	
+	private void startGame() {
+		
+		
 		if (isGoodToStartGame) {
 			System.out.println("Do you want to start the game? (Yes or No)");
 			try {
