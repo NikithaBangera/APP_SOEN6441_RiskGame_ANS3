@@ -4,12 +4,21 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 import javax.swing.*;
 import com.riskgame.action.CreateEditMap;
+import com.riskgame.gameplay.StartupPhase;
 
 public class RiskMain extends JFrame {
 	JButton createNewMapButton, loadExistingMapButton, exitMapButton;
 	JLabel label1, label2;
+
+	private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+	public static boolean isGoodToStartGame = false;
 
 	public RiskMain() {
 		setLayout(new GridLayout(4, 4));
@@ -64,6 +73,19 @@ public class RiskMain extends JFrame {
 		layout.setLocation(800, 400);
 		layout.setSize(300, 300);
 		layout.setTitle("Risk Game");
+
+		if (isGoodToStartGame) {
+			System.out.println("Do you want to start the game? (Yes or No)");
+			try {
+				String choice = br.readLine();
+				if(choice.equalsIgnoreCase("Yes")) {
+					StartupPhase start = new StartupPhase();
+					start.gamePlay();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public static void main(String[] args) {
