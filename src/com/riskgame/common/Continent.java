@@ -1,23 +1,18 @@
-package com.riskgame.common;
-
-import java.util.TreeSet;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Continent {
 	String continentName;
 	int controlValue;
-	private TreeSet<Territory> territoriesInContinent;
-	
-	public Continent(String continentName, int controlValue) {
-		this.continentName = continentName;
-		this.controlValue = controlValue;
-		territoriesInContinent = new TreeSet<Territory>();
-	}
+	HashMap<String, Integer> continentDetails = new HashMap<String, Integer>();
+	ArrayList<Country> countriesInContinent = new ArrayList<Country>();
 	
 	public String getContinentName() {
 		return continentName;
 	}
 
-	public void setContinentName(String name) {
+	public void setName(String name) {
 		this.continentName = name;
 	}
 
@@ -29,16 +24,44 @@ public class Continent {
 		this.controlValue = controlValue;
 	}
 
-	public void addTerritory(Territory territory) {
-		territoriesInContinent.add(territory);
+	public HashMap<String, Integer> getContinents() {
+		return continentDetails;
+	}
+
+	public void setContinents(HashMap<String, Integer> continents) {
+		this.continentDetails = continents;
+	}
+
+	public ArrayList<Country> getCountriesListInContinent() {
+		return countriesInContinent;
+	}
+
+	/**
+	 * Method to add a country to the list of countries in the continent
+	 * 
+	 * @param country
+	 *            country to be added
+	 */
+	public void addCountry(Country country) {
+		countriesInContinent.add(country);
+	}
+
+	/**
+	 * Set the list of countries.
+	 * 
+	 * @param listOfCountries
+	 *            list of countries to set
+	 */
+	public void setCountriesListInContinent(ArrayList<Country> countriesInContinent) {
+		this.countriesInContinent = countriesInContinent;
 	}
 	
-	public TreeSet<Territory> getTerritoriesInContinent(){
-		return territoriesInContinent;
+	@Override
+	public String toString() {
+		return "Continent [continentName=" + continentName + ", controlValue=" + controlValue + ", continentDetails="
+				+ continentDetails + "]";
 	}
+
 	
-	public void setTerritoriesInContinent(TreeSet<Territory> territoriesInContinent) {
-		this.territoriesInContinent = territoriesInContinent;
-	}
 
 }

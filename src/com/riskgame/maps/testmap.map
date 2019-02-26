@@ -1,0 +1,20 @@
+[Map]
+Image = testim.bmp
+Author = testau
+testmap.map
+
+
+
+
+
+[Continents]
+asia=9
+africa=5
+
+
+
+
+
+[Territories]
+usa,100,200,asia,mexico,canada
+uk,300,400,africa,libya,ireland
