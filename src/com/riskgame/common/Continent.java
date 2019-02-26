@@ -31,6 +31,12 @@ public class Continent {
 		this.continentDetails = continents;
 	}
 
+	@Override
+	public String toString() {
+		return "Continent [continentName=" + continentName + ", controlValue=" + controlValue + ", continentDetails="
+				+ continentDetails + "]";
+	}
+
 	
 
 }
