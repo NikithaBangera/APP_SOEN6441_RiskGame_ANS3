@@ -57,4 +57,12 @@ public class GameMapGraph {
 	public void setCountOfCountries(int countOfCountries) {
 		this.countOfCountries = countOfCountries;
 	}
+
+	@Override
+	public String toString() {
+		return "GameMapGraph [continents=" + continents + ", adjacentCountries=" + adjacentCountries + ", countrySet="
+				+ countrySet + ", countOfCountries=" + countOfCountries + "]";
+	}
+	
+	
 }
