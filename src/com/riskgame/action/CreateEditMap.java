@@ -4,12 +4,12 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
+//import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
+//import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Scanner;
-import java.util.regex.Pattern;
+//import java.util.Scanner;
+//import java.util.regex.Pattern;
 
 import com.riskgame.common.MapTag;
 
@@ -50,7 +50,7 @@ public class CreateEditMap {
 
 		case 3:
 			System.out.println("Enter the continent to be removed from the map:");
-			String deleteContinent = br.readLine();
+			//String deleteContinent = br.readLine();
 
 			break;
 
@@ -60,13 +60,13 @@ public class CreateEditMap {
 			System.out.println("Enter the details of the countries in the below format:");
 			System.out.println("Country Name, X-axis, Y-axis, Continent Name, Adjacent countries separated by ,");
 			for (int i = 0; i < numberOfCountries; i++) {
-				String country = br.readLine();
+				//String country = br.readLine();
 			}
 			break;
 
 		case 5:
 			System.out.println("Enter the country to be removed:");
-			String deleteCountry = br.readLine();
+			//String deleteCountry = br.readLine();
 			break;
 		case 6:
 			break;

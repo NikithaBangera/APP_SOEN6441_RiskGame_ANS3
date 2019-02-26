@@ -1,22 +1,26 @@
-package com.riskgame.common;
-
+package com.riskgame.gameplay;
 import java.util.HashMap;
+import java.util.Map;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class StartUp {
+import com.risk.model.Player;
+import com.riskgame.common.*;
+
+public class StartupPhase {
 	
 	//private Map playersList = new HashMap();
 	private MapTag mapTag;
 	private int countOfthePlayers=0;
 	public int minimumPlayerCount=2;
 	public int maximumPlayercount=6;
+	int j;
 	
 	
-	public StartUp(MapTag mapTag) {
+	public void gamePlay(MapTag mapTag) {
 	this.mapTag = mapTag;
-	HashMap<Integer, String> playersList = new HashMap<Integer, String>();
+	 HashMap<Integer, String> playersList = new HashMap<Integer, String>();
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
      System.out.println("Enter the number of players below");
 	 try {
@@ -37,6 +41,14 @@ public class StartUp {
 		e.printStackTrace();
 	}	
 	 System.out.println("Enter the name of the players");
+	 for (j = 1; j < this.countOfthePlayers; ++j) {
+			RiskPlayer riskPlayer = new RiskPlayer();
+			String playername = null;
+			while ((playername = br.readLine()) != null) {
+				riskPlayer.setName(playername);
+			}
+			playersList.put(j, riskPlayer);
+		}
 	 
 	 
 	 
@@ -45,3 +57,11 @@ public class StartUp {
 		
 	}
 }
+
+//public class StartupPhase {
+//	public void gamePlay() {
+//		FortificationPhase fortification = new FortificationPhase();
+//		fortification.startGameFortification();
+//	}
+//
+//}
