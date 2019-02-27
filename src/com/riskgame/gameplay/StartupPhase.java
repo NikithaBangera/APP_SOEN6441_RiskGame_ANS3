@@ -102,7 +102,7 @@ public class StartupPhase {
 		    		System.out.println("Enter number of armies you want to assign to " + country.getName());
 		    		try {
 						int number_armies = Integer.parseInt(br.readLine());
-						player.addArmiesToCountry(country, number_armies);
+						player.addingArmies(country, number_armies);
 					} catch (NumberFormatException e) {
 						// TODO Auto-generated catch block
 						System.out.println("Please enter a valid number.");
