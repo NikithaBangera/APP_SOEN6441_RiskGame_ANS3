@@ -6,9 +6,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import com.risk.model.Country;
-import com.risk.model.Player;
-//import com.risk.model.Player;
 import com.riskgame.common.*;
 
 public class StartupPhase {
@@ -86,7 +83,7 @@ public class StartupPhase {
 	
 
 
-	public void allocationOfArmyToCountriesInitially() {
+	public void allocationOfArmyToCountries_Balance(){
 		// TODO Auto-generated method stub
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		Iterator<Entry<Integer, RiskPlayer>> playerListIterator = playersList.entrySet().iterator();
@@ -122,7 +119,7 @@ public class StartupPhase {
 	}
 
 
-	public void allocationOfArmyToCountries_Balance() {
+	public void allocationOfArmyToCountriesInitially() {
 		// TODO Auto-generated method stub
 		
 	}
