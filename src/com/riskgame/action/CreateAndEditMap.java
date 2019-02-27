@@ -12,6 +12,7 @@ public class CreateAndEditMap {
 	//private SavingMapIntoFile saveMap;
 	//create a new map
 	SavingMapIntoFile saveMap=new SavingMapIntoFile();
+	MapTag maptag=new MapTag();
 	public String fileName;
 	public String tag;
 	public void newMapCreation() throws Exception{
@@ -86,27 +87,45 @@ public class CreateAndEditMap {
 		}
 		String image = "Image = " + name.trim();
 		
+		System.out.println("Please specify yes or no for warn");
+		String warnanswer = br.readLine();
+		while(!((warnanswer.equals("yes"))||(warnanswer.equals("Yes")))) 
+		{
+			System.out.println("Please enter yes or no ");
+			warnanswer = br.readLine();
+		}
+		
+		String warn = "warn = " + warnanswer.trim();
+		
+		System.out.println("Please specify horizontal or vertical scroll");
+		String scrollanswer = br.readLine();
+		while(!((scrollanswer.equals("horizontal"))||(scrollanswer.equals("Horizontal"))))
+		{
+			System.out.println("Please enter valid response ");
+			scrollanswer = br.readLine();
+		}
+		String scroll = "scroll = " + scrollanswer.trim();
+		
+		System.out.println("Please specify yes or no for warp");
+		String wrapanswer = br.readLine();
+		while(!((wrapanswer.equals("no"))||(wrapanswer.equals("No"))))
+		{
+			System.out.println("Please enter yes or no ");
+			wrapanswer = br.readLine();
+		}
+		String wrap = "wrap = " + wrapanswer.trim();
+	
 		System.out.println("Please enter the author name:");
 		String author = "Author = " + br.readLine().trim();
-		System.out.println("Please enter the map name in below format:");
-		System.out.println("mapname.map");
-		String filename =br.readLine();
-		//Pattern pattern_filename = Pattern.compile("[a-z, A-Z, 1-9]+.[map]+");
-		Pattern pattern_filename = Pattern.compile("[a-z, A-Z, 1-9]+.[map]+");
-		Matcher match_filename = pattern_filename.matcher(filename.trim());	
-		while(!match_filename.matches())
-		{
-			System.out.println("\n Please enter valid map name ");
-			filename = br.readLine();
-			match_filename = pattern_filename.matcher(filename.trim());
-		}
-		fileName =filename.trim();
-		String[] mapTagData = new String[3];
-		mapTagData[0] = image;
-		mapTagData[1] = author;	
-		mapTagData[2] = fileName;
-		//SavingMapIntoFile saveMap=new SavingMapIntoFile();
-		saveMap.saveMapTag(mapTagData, fileName, tag);
+		
+		ArrayList<String> mapTagData = new ArrayList<String>();
+		mapTagData.add(author);
+		mapTagData.add(warn);
+		mapTagData.add(image);
+		mapTagData.add(wrap);
+		mapTagData.add(scroll)
+		
+		maptag.setMapTagData(mapTagData);		
 		newMapCreation();
 	}
 	
