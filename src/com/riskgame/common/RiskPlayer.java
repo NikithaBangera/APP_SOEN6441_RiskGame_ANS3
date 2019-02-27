@@ -3,6 +3,8 @@ package com.riskgame.common;
 import java.util.ArrayList;
 
 public class RiskPlayer {
+
+
 	/** Name of the Player */
     private String name;
     
@@ -36,11 +38,24 @@ public class RiskPlayer {
 		this.myCountries = myCountries;
 	}
 
+	public void armiesAssignedToCountries(Country country, int armiesCount) {
+		if(this.getMyCountries().contains(country)) {
+			if((this.getArmyCount()) > 0 && this.getArmyCount() >= armiesCount) {
+				country.setNoOfArmies(country.getNoOfArmies() + armiesCount);
+				this.setArmyCount(this.getArmyCount() - armiesCount);
+			}
+			else {
+				System.out.println("Insufficient number of armies.");
+			}
+		}
+		else {
+			System.out.println("This country is not owned by you!");
+		}
+	}
+	
 	@Override
 	public String toString() {
 		return "RiskPlayer [name=" + name + ", armyCount=" + armyCount + ", myCountries=" + myCountries + "]";
 	}
-
-	
 
 }

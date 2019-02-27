@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 
 import javax.swing.*;
 
+
 import com.riskgame.action.CreateAndEditMap;
 import com.riskgame.gameplay.StartupPhase;
 
@@ -17,6 +18,7 @@ import com.riskgame.gameplay.StartupPhase;
 public class RiskMain extends JFrame {
 	JButton createNewMapButton, loadExistingMapButton, exitMapButton;
 	JLabel label1, label2;
+	public static boolean status = false;
 
 	private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -65,7 +67,11 @@ public class RiskMain extends JFrame {
 				System.exit(0);
 			}
 		});
+<<<<<<< HEAD
+	
+=======
 		startGame();
+>>>>>>> bc89f6d0dcd0d0d3754333fa66d5e30ed6691e59
 	}
 
 	public static void setUp() {

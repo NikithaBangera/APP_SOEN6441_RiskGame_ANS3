@@ -1,11 +1,17 @@
 package com.riskgame.action;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.InputStreamReader;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import com.riskgame.common.Continent;
 
 public class CreateAndEditMap {
 	
@@ -63,7 +69,10 @@ public class CreateAndEditMap {
 				
 		case 7: break;
 		case 8: break;
-		case 9:System.exit(0);
+		case 9:	System.out.println("\nPlease enter the file name to save map file.");
+				String fileName = br.readLine();
+				//writeToFile(true, fileName);
+				break;
 		default: System.out.println("Invalid option. Please choose the correct option.");
 				 newMapCreation();
 		
@@ -245,6 +254,7 @@ public class CreateAndEditMap {
 	}
 	return false;
 	}
+	
 }
 
 	
