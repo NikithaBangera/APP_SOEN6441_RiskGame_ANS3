@@ -5,73 +5,61 @@ import java.util.HashMap;
 
 public class Continent {
 
-		String continentName;
-		int controlValue;
-		HashMap<String, Integer> continentDetails = new HashMap<String, Integer>();
-		ArrayList<Country> countriesInContinent = new ArrayList<Country>();
-		
-		public String getContinentName() {
-			return continentName;
-		}
+	String continentName;
+	int controlValue;
+	HashMap<String, Integer> continentDetails = new HashMap<String, Integer>();
+	ArrayList<Country> countriesInContinent = new ArrayList<Country>();
 
-		public void setName(String name) {
-			this.continentName = name;
-		}
+	public String getContinentName() {
+		return continentName;
+	}
 
-		public int getControlValue() {
-			return controlValue;
-		}
+	public void setName(String name) {
+		this.continentName = name;
+	}
 
-		public void setControl_value(int controlValue) {
-			this.controlValue = controlValue;
-		}
+	public int getControlValue() {
+		return controlValue;
+	}
 
-		public HashMap<String, Integer> getContinents() {
-			return continentDetails;
-		}
+	public void setControl_value(int controlValue) {
+		this.controlValue = controlValue;
+	}
 
-<<<<<<< HEAD
-		public void setContinents(HashMap<String, Integer> continents) {
-			this.continentDetails = continents;
-		}
-=======
+	public HashMap<String, Integer> getContinents() {
+		return continentDetails;
+	}
+
+	public void setContinents(HashMap<String, Integer> continents) {
+		this.continentDetails = continents;
+	}
+
+	public ArrayList<Country> getCountriesListInContinent() {
+		return countriesInContinent;
+	}
+
+	/**
+	 * Method to add a country to the list of countries in the continent
+	 * 
+	 * @param country country to be added
+	 */
+	public void addCountry(Country country) {
+		countriesInContinent.add(country);
+	}
+
+	/**
+	 * Set the list of countries.
+	 * 
+	 * @param listOfCountries list of countries to set
+	 */
+	public void setCountriesListInContinent(ArrayList<Country> countriesInContinent) {
+		this.countriesInContinent = countriesInContinent;
+	}
+
 	@Override
 	public String toString() {
 		return "Continent [continentName=" + continentName + ", controlValue=" + controlValue + ", continentDetails="
-				+ continentDetails + "]";
+				+ continentDetails + ", countriesInContinent=" + countriesInContinent + "]";
 	}
-
-	
->>>>>>> bc89f6d0dcd0d0d3754333fa66d5e30ed6691e59
-
-		public ArrayList<Country> getCountriesListInContinent() {
-			return countriesInContinent;
-		}
-
-		/**
-		 * Method to add a country to the list of countries in the continent
-		 * 
-		 * @param country
-		 *            country to be added
-		 */
-		public void addCountry(Country country) {
-			countriesInContinent.add(country);
-		}
-
-		/**
-		 * Set the list of countries.
-		 * 
-		 * @param listOfCountries
-		 *            list of countries to set
-		 */
-		public void setCountriesListInContinent(ArrayList<Country> countriesInContinent) {
-			this.countriesInContinent = countriesInContinent;
-		}
-		
-		@Override
-		public String toString() {
-			return "Continent [continentName=" + continentName + ", controlValue=" + controlValue + ", continentDetails="
-					+ continentDetails + "]";
-		}
 
 }
