@@ -115,6 +115,7 @@ public class LoadAndEditMap {
 						adjac.setAdjacentCountries(help);
 						adjacent.add(adjac);
 					}
+					
 					country.setAdjacentCountries(adjacent);
 					//System.out.println("this is adjacents"+country.getAdjacentCountries() + "\n");
 					System.out.println(str + "\n");

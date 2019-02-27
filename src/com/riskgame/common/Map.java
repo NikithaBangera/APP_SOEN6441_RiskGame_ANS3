@@ -47,14 +47,14 @@ public class  Map
 				}
 			});
 			loadMapBtn.addActionListener(e -> {
-				JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
-
-				int returnValue = jfc.showOpenDialog(null);
-
-				if (returnValue == JFileChooser.APPROVE_OPTION) {
-					File selectedFile = jfc.getSelectedFile();
-					System.out.println(selectedFile.getAbsolutePath());
-				}
+//				JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+//
+//				int returnValue = jfc.showOpenDialog(null);
+//
+//				if (returnValue == JFileChooser.APPROVE_OPTION) {
+//					File selectedFile = jfc.getSelectedFile();
+//					System.out.println(selectedFile.getAbsolutePath());
+//				}
 				jframe.setVisible(false);
 				LoadAndEditMap loadandeditmap = new LoadAndEditMap();
 				try {
@@ -62,7 +62,7 @@ public class  Map
 						if(image !=null) {
 							JLabel background;
 							String workingDir = System.getProperty("user.dir"); 
-							String filepath= workingDir+"/images/"+image;
+							String filepath= workingDir+"/src/com/riskgame/images/"+image;
 							BufferedImage image_br = ImageIO.read(new File(filepath));
 
 							ImageIcon img=new ImageIcon(image_br);
