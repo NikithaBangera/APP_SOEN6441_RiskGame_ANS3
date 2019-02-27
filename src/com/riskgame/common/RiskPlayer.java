@@ -44,4 +44,10 @@ public class RiskPlayer {
 	public void setMyCountries(ArrayList<Country> myCountries) {
 		this.myCountries = myCountries;
 	}
+
+
+	public void addArmiesToCountry(Country country, int number_armies) {
+		// TODO Auto-generated method stub
+		
+	}
 }

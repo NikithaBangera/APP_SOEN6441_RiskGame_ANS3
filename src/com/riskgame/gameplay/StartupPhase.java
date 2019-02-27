@@ -6,6 +6,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import com.risk.model.Country;
+import com.risk.model.Player;
 //import com.risk.model.Player;
 import com.riskgame.common.*;
 
@@ -86,6 +88,36 @@ public class StartupPhase {
 
 	public void allocationOfArmyToCountriesInitially() {
 		// TODO Auto-generated method stub
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		Iterator<Entry<Integer, RiskPlayer>> playerListIterator = playersList.entrySet().iterator();
+		while (playerListIterator.hasNext()) {
+		    HashMap.Entry<Integer, RiskPlayer> playerEntry = playerListIterator.next();
+		    RiskPlayer player = playerEntry.getValue(); 
+		    System.out.println("Player Name: " + player.getName());
+		    for (Country country : player.getMyCountries()) {
+		    	while (player.getArmyCount() > 0) {
+		    		System.out.println("Country Name : " + country.getName());
+		    		System.out.println("Number of Armies assigned : " + country.getNoOfArmies());
+		    		System.out.println("Available Armies: " + player.getArmyCount());
+		    		System.out.println("Enter number of armies you want to assign to " + country.getName());
+		    		try {
+						int number_armies = Integer.parseInt(br.readLine());
+						player.addArmiesToCountry(country, number_armies);
+					} catch (NumberFormatException e) {
+						// TODO Auto-generated catch block
+						System.out.println("Please enter a valid number.");
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						System.out.println("Please enter a valid number.");
+						e.printStackTrace();
+					}
+		    		
+		    	}
+		    }
+		    
+		}
+		
 		
 	}
 

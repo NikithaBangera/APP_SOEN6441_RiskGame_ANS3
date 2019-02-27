@@ -2,6 +2,8 @@ package com.riskgame.common;
 
 import java.util.ArrayList;
 
+import com.risk.model.Country;
+
 public class Country {
 	
 	/** Name of country. */
@@ -12,6 +14,8 @@ public class Country {
 
 	/** Part of continent */
 	private String continent;
+	
+	private ArrayList<Country> myCountries;
 
 	/** X dimension */
 	private String xValue;
@@ -91,4 +95,9 @@ public class Country {
 
 	/** Part of Continent */
 	private Continent partOfContinent;
+
+	
+	public ArrayList<Country> getMyCountries() {
+        return myCountries;
+    }
 }
