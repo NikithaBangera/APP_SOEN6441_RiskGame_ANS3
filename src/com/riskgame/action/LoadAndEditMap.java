@@ -52,7 +52,7 @@ public class LoadAndEditMap {
 			if (tagData_match.matches()) {
 				str = br_file.readLine();
 				str = str.replaceAll("\\[", "").replaceAll("\\]","");
-				while ((!continent_match.matches()) && !(str == null)) {
+				while ((!continent_match.matches()) && (!str.trim().isEmpty())) {
 					image_match = image_pattern.matcher(str.trim());
 					if (image_match.matches()) {
 						image_name = str.substring(8);
@@ -63,7 +63,7 @@ public class LoadAndEditMap {
 					continent_match = continents_pattern.matcher(str.trim());
 				}
 			}
-			while(str==null) {
+			while(str.trim().isEmpty()) {
 				//while(!continent_match.matches()) {
 					str=br_file.readLine();
 					str = str.replaceAll("\\[", "").replaceAll("\\]","");
@@ -74,27 +74,30 @@ public class LoadAndEditMap {
 			if (continent_match.matches()) {
 				str=br_file.readLine();
 				str = str.replaceAll("\\[", "").replaceAll("\\]","");
-				while (!territory_match.matches()) {
+				while (!territory_match.matches()&& (!str.trim().isEmpty())) {
 					
 					String[] cont = str.split("=");
 					if(cont.length==2) {
-					Continent continent = new Continent();
-					continent.setName(cont[0]);
-					//System.out.println(cont.length + "\n");
-					continent.setControl_value(Integer.parseInt(cont[1]));
+						Continent continent = new Continent();
+						continent.setName(cont[0]);
+						//System.out.println(cont.length + "\n");
+						continent.setControl_value(Integer.parseInt(cont[1]));
 					}
-					System.out.println(str + "\n");
-					str=br_file.readLine();
-					str = str.replaceAll("\\[", "").replaceAll("\\]","");
-					territory_match = territory_pattern.matcher(str.trim());
-				
+					else {
+						System.out.println("check the continent and control values");
+						return loadMap();
+					}
+						System.out.println(str + "\n");
+						str=br_file.readLine();
+						str = str.replaceAll("\\[", "").replaceAll("\\]","");
+						territory_match = territory_pattern.matcher(str.trim());
 				}
 			}
-			if(str==null) {
+			if(str.trim().isEmpty()) {
 				while(!territory_match.matches()) {
 					str=br_file.readLine();
 					str = str.replaceAll("\\[", "").replaceAll("\\]","");
-					territory_match = continents_pattern.matcher(str.trim());
+					territory_match = territory_pattern.matcher(str.trim());
 				}
 			}
 			if (territory_match.matches()) {
