@@ -33,6 +33,7 @@ public class  Map
 			Dimension dim=Toolkit.getDefaultToolkit().getScreenSize();
 			jframe.setSize(400, 400);
 			jframe.setLocation(dim.width/2-jframe.getSize().width/2,dim.height/2-jframe.getSize().height/2);
+			System.out.println(dim.width/2-jframe.getSize().width/2);
 			jframe.setVisible(true);		
 			jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			

@@ -100,39 +100,48 @@ public class LoadAndEditMap {
 			if (territory_match.matches()) {
 				while ((str = br_file.readLine()) != null) {
 					String[] ter = str.split(",");
-					Country country = new Country();
-					country.setName(ter[0]);
-					country.setxValue(ter[1]);
-					country.setyValue(ter[2]);
-					country.setContinent(ter[3]);
-					ArrayList<Country> adjacent = new ArrayList();
-					for (int i = 4; i < ter.length; i++) {
-						Country adjac=new Country();
-						adjac.setName(ter[i]);
-						ArrayList<Country> help = new ArrayList();
-						if(adjac.getAdjacentCountries()!=null) {
-							help=adjac.getAdjacentCountries();
-//							help.add(country);
+					if((Integer.parseInt(ter[2]) <400) && (Integer.parseInt(ter[1])<400)) {
+						Country country = new Country();
+						country.setName(ter[0]);
+						country.setxValue(ter[1]);
+						country.setyValue(ter[2]);
+						country.setContinent(ter[3]);
+						ArrayList<Country> adjacent = new ArrayList();
+						for (int i = 4; i < ter.length; i++) {
+							Country adjac=new Country();
+							adjac.setName(ter[i]);
+							ArrayList<Country> help = new ArrayList();
+							if(adjac.getAdjacentCountries()!=null) {
+								help=adjac.getAdjacentCountries();
+//								help.add(country);
+							}
+					
+						
+						
+							help.add(country);
+							adjac.setAdjacentCountries(help);
+							adjacent.add(adjac);
 						}
 					
-						
-						
-						help.add(country);
-						adjac.setAdjacentCountries(help);
-						adjacent.add(adjac);
+						country.setAdjacentCountries(adjacent);
 					}
-					
-					country.setAdjacentCountries(adjacent);
+					else {
+						System.out.println("check the x-values and y-values");
+						return loadMap();
+						
+					}
 					//System.out.println("this is adjacents"+country.getAdjacentCountries() + "\n");
 					System.out.println(str + "\n");
 				}
 			}
+			editMap(filepath);
+			String image = mapImage(image_name);
+			return image;
+			
 		} catch (IOException e) {
 			System.out.println("File Not Found");
+			return loadMap();
 		}
-		editMap(filepath);
-		String image = mapImage(image_name);
-		return image;
 	}
 
 	public void editMap(String file) throws Exception {
