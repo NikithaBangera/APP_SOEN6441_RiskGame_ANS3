@@ -71,7 +71,7 @@ public class CreateAndEditMap {
 		case 8: break;
 		case 9:	System.out.println("\nPlease enter the file name to save map file.");
 				String fileName = br.readLine();
-				writeToFile(true, fileName);
+				//writeToFile(true, fileName);
 				break;
 		default: System.out.println("Invalid option. Please choose the correct option.");
 				 newMapCreation();
@@ -255,46 +255,6 @@ public class CreateAndEditMap {
 	return false;
 	}
 	
-	//working code for writing to a file
-	public boolean writeToFile(boolean fileFlag, String mapFileName) {
-        File fileName;
-        StringBuffer mapDetails = new StringBuffer();
-        System.out.println("hello");
-        if(fileFlag) {
-            System.out.println("hi");
-            fileName = new File(System.getProperty("user.dir")+"/src/maps/"+mapFileName+".map");
-        }
-        else {
-            fileName = new File(System.getProperty("user.dir")+"/src/maps/"+ mapFileName+".map");
-        }
-        try(BufferedWriter bw = new BufferedWriter(new FileWriter(fileName))){
-            
-            mapDetails.append("[Map]");
-            mapDetails.append(System.lineSeparator());
-            for(String line : mapTagData) {
-                mapDetails.append(line);
-                mapDetails.append(System.lineSeparator());
-            }
-            
-            mapDetails.append("[Continent]");
-            mapDetails.append(System.lineSeparator());
-            Iterator<Map.Entry<String, Continent>> mapIterator = gameMap.continentData.entrySet().iterator();
-            System.out.println("Hi");
-            while(mapIterator.hasNext()) {
-            	mapDetails.append(mapIterator.next().getValue().getContinentName() + "=" + mapIterator.next().getValue().getControlValue());
-            	mapDetails.append(System.lineSeparator());
-            }
-            
-            
-            bw.write(mapDetails.toString());
-            bw.close();
-        }
-        catch(Exception e) {
-            System.out.println("Error while writing");
-            return false;
-        }
-        return true;
-    }
 }
 
 	

@@ -52,5 +52,10 @@ public class RiskPlayer {
 			System.out.println("This country is not owned by you!");
 		}
 	}
+	
+	@Override
+	public String toString() {
+		return "RiskPlayer [name=" + name + ", armyCount=" + armyCount + ", myCountries=" + myCountries + "]";
+	}
 
 }

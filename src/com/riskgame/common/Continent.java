@@ -30,9 +30,19 @@ public class Continent {
 			return continentDetails;
 		}
 
+<<<<<<< HEAD
 		public void setContinents(HashMap<String, Integer> continents) {
 			this.continentDetails = continents;
 		}
+=======
+	@Override
+	public String toString() {
+		return "Continent [continentName=" + continentName + ", controlValue=" + controlValue + ", continentDetails="
+				+ continentDetails + "]";
+	}
+
+	
+>>>>>>> bc89f6d0dcd0d0d3754333fa66d5e30ed6691e59
 
 		public ArrayList<Country> getCountriesListInContinent() {
 			return countriesInContinent;
