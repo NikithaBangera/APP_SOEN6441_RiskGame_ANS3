@@ -1,4 +1,4 @@
-Map
+[Map]
 Image = map.bmp
 Author = Shiva
 testing.map
@@ -7,7 +7,7 @@ testing.map
 
 
 
-Continents
+[Continents]
 asia=9
 africa=5
 
@@ -15,6 +15,6 @@ africa=5
 
 
 
-Territories
+[Territories]
 usa,100,200,asia,mexico,canada
 uk,300,400,africa,libya,ireland

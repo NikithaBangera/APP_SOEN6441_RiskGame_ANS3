@@ -33,13 +33,13 @@ public class LoadAndEditMap {
 		String workingDir = System.getProperty("user.dir"); 
 		String fileName = name.trim();
 		String filepath = workingDir + "/src/com/riskgame/maps/" + fileName;
-		System.out.println(filepath);
 		String image_name = "";
 		try {
 			FileReader file = new FileReader(filepath);
 			BufferedReader br_file = new BufferedReader(file);
 			String str;
 			str = br_file.readLine();
+			str = str.replaceAll("\\[", "").replaceAll("\\]","");
 			Pattern tagData_pattern = Pattern.compile("[Map]+");
 			Matcher tagData_match = tagData_pattern.matcher(str.trim());
 
@@ -51,6 +51,7 @@ public class LoadAndEditMap {
 			Matcher territory_match = territory_pattern.matcher(str.trim());
 			if (tagData_match.matches()) {
 				str = br_file.readLine();
+				str = str.replaceAll("\\[", "").replaceAll("\\]","");
 				while ((!continent_match.matches()) && !(str == null)) {
 					image_match = image_pattern.matcher(str.trim());
 					if (image_match.matches()) {
@@ -58,18 +59,21 @@ public class LoadAndEditMap {
 					}
 					System.out.println(str + "\n");
 					str = br_file.readLine();
+					str = str.replaceAll("\\[", "").replaceAll("\\]","");
 					continent_match = continents_pattern.matcher(str.trim());
 				}
 			}
 			while(str==null) {
 				//while(!continent_match.matches()) {
 					str=br_file.readLine();
+					str = str.replaceAll("\\[", "").replaceAll("\\]","");
 					//continent_match = continents_pattern.matcher(str.trim());
 				//}
 			}
 			continent_match = continents_pattern.matcher(str.trim());
 			if (continent_match.matches()) {
 				str=br_file.readLine();
+				str = str.replaceAll("\\[", "").replaceAll("\\]","");
 				while (!territory_match.matches()) {
 					
 					String[] cont = str.split("=");
@@ -81,6 +85,7 @@ public class LoadAndEditMap {
 					}
 					System.out.println(str + "\n");
 					str=br_file.readLine();
+					str = str.replaceAll("\\[", "").replaceAll("\\]","");
 					territory_match = territory_pattern.matcher(str.trim());
 				
 				}
@@ -88,6 +93,7 @@ public class LoadAndEditMap {
 			if(str==null) {
 				while(!territory_match.matches()) {
 					str=br_file.readLine();
+					str = str.replaceAll("\\[", "").replaceAll("\\]","");
 					territory_match = continents_pattern.matcher(str.trim());
 				}
 			}
