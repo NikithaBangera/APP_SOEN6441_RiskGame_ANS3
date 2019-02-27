@@ -139,7 +139,17 @@ public class StartupPhase {
 
 	public void allocationOfArmyToCountriesInitially() {
 		// TODO Auto-generated method stub
-		
+		Country country;
+	int countrySetValue = mapTag.getMapGraph().getCountrySet().values();
+	for(int i=0;i<countrySetValue;i++) {
+		country.setNoOfArmies(1);
+	}
+	Iterator<Entry<Integer, RiskPlayer>> playerListIterator = playersList.entrySet().iterator();
+	while (playerListIterator.hasNext()) {
+	    HashMap.Entry<Integer, RiskPlayer> playerEntry = playerListIterator.next();
+	    RiskPlayer player = playerEntry.getValue();
+	    player.setArmyCount(player.getArmyCount() - player.getMyCountries().size());
+	    }
 	}
 }
 
