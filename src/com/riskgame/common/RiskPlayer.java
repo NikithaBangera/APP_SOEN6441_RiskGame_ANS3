@@ -45,6 +45,9 @@ public class RiskPlayer {
 		this.myCountries = myCountries;
 	}
 
+	public void additionOfCountry(Country country) {
+		this.myCountries.add(country);
+	}
 
 	public void addingArmies(Country country, int number_armies) {
 		// TODO Auto-generated method stub

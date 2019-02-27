@@ -12,4 +12,9 @@ public class MapTag {
 	}
 
 	public ArrayList<String> mapTagData = new ArrayList<String>();
+
+	public Object getMapGraph() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

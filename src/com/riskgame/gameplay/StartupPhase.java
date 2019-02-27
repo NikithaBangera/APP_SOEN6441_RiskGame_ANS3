@@ -1,7 +1,9 @@
 package com.riskgame.gameplay;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -76,7 +78,23 @@ public class StartupPhase {
 
 	public void allocationOfCountry() {
 		// TODO Auto-generated method stub
-		
+		//mapTag object and getMapGraph will come from Sumeetha's module
+		int i, countryIndexAssignment;
+		ArrayList<Country> countrySet = new ArrayList<>(this.mapTag.getMapGraph().getCountrySet().values());
+		if(countrySet.size() > 0) {
+			for(i=1; i<playersList.size();i++) {
+				while(countrySet.size()>1) {
+					countryIndexAssignment = new Random().nextInt(countrySet.size());
+					playersList.get(i).additionOfCountry(countrySet.get(countryIndexAssignment));
+					countrySet.remove(0);
+				}
+				while(countrySet.size()==1) {
+					playersList.get(i).additionOfCountry(countrySet.get(0));
+					countrySet.remove(0);
+				}
+				
+			}
+		}		
 	}
 
 
