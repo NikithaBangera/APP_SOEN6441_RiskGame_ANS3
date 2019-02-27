@@ -8,7 +8,6 @@ import java.util.TreeSet;
 import com.riskgame.common.Continent;
 import com.riskgame.common.Country;
 import com.riskgame.common.RiskPlayer;
-import com.riskgame.common.Territory;
 
 public class ReinforcementPhase {
 	private static ArrayList<Country> countriesList;
@@ -24,7 +23,7 @@ public class ReinforcementPhase {
 			System.out.println("Armies available for Reinforcement: "+ reinforcementArmies);
 			player.setArmyCount(player.getArmyCount() + reinforcementArmies);
 			
-			for(Country country : player.getMyCountries()()) {
+			for(Country country : player.getMyCountries()) {
 				if(player.getArmyCount() > 0) {
 					System.out.println("Number of armies present in country " + country.getName() + "are " + country.getNoOfArmies());
 					System.out.println("Current available armies to be reinforced: " + player.getArmyCount());
