@@ -1,11 +1,12 @@
 package com.riskgame.gameplay;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.Iterator;
+import java.util.Map.Entry;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import com.risk.model.Player;
+//import com.risk.model.Player;
 import com.riskgame.common.*;
 
 public class StartupPhase {
@@ -16,11 +17,32 @@ public class StartupPhase {
 	public int minimumPlayerCount=2;
 	public int maximumPlayercount=6;
 	int j;
+	HashMap<Integer, RiskPlayer> playersList = new HashMap<Integer, RiskPlayer>();
 	
+	public void allocationOfArmyToPlayers() {
+		// TODO Auto-generated method stub
+		Iterator<Entry<Integer, RiskPlayer>> playerListIterator = playersList.entrySet().iterator();
+		while (playerListIterator.hasNext()) {
+		    HashMap.Entry<Integer, RiskPlayer> playerEntry = playerListIterator.next();
+		    RiskPlayer player = playerEntry.getValue();
+		    switch(this.countOfthePlayers) {
+		    case 2: player.setArmyCount(40); 
+		            break;
+		    case 3: player.setArmyCount(35);
+		            break;
+		    case 4: player.setArmyCount(30);
+	                break;
+		    case 5: player.setArmyCount(25);
+            break;
+		    case 6: player.setArmyCount(20);
+            break;
+		  }
+		}
+	}
 	
-	public void gamePlay(MapTag mapTag) {
+	public void gamePlay(MapTag mapTag) throws Exception {
 	this.mapTag = mapTag;
-	 HashMap<Integer, String> playersList = new HashMap<Integer, String>();
+	// HashMap<Integer, String> playersList = new HashMap<Integer, String>();
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
      System.out.println("Enter the number of players below");
 	 try {
@@ -59,10 +81,7 @@ public class StartupPhase {
 	}
 
 
-	public void allocationOfArmyToPlayers() {
-		// TODO Auto-generated method stub
-		
-	}
+	
 
 
 	public void allocationOfArmyToCountriesInitially() {

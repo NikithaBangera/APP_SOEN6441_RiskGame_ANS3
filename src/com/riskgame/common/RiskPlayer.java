@@ -2,8 +2,8 @@ package com.riskgame.common;
 
 import java.util.ArrayList;
 
-import com.risk.model.Country;
-import com.risk.model.ICardType;
+//import com.risk.model.Country;
+//import com.risk.model.ICardType;
 
 public class RiskPlayer {
 	/** Name of the Player */
