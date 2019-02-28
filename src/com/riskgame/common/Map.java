@@ -61,6 +61,7 @@ public class  Map
 						if(image !=null) {
 							JLabel background;
 							String workingDir = System.getProperty("user.dir"); 
+							//file path for mac: /src/com/riskgame/maps/
 							// file path for windows
 							String filepath= workingDir+"\\src\\com\\riskgame\\images\\"+image;
 							BufferedImage image_br = ImageIO.read(new File(filepath));
