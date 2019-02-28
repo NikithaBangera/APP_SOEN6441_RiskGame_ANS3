@@ -64,7 +64,10 @@ public class CreateAndEditMap {
 				String deleteContinent = br.readLine();	
 				break;
 			
-		case 4: break;
+		case 4: tag = "[Territories]";
+				System.out.println("Enter the number of countries:");
+				setCountryDetails();
+				break;
 						
 						
 		case 5:	System.out.println("Enter the country to be removed:"); 
@@ -191,7 +194,57 @@ public class CreateAndEditMap {
 	}
 	 
 	//String[] continentAndCountryDetailsfinal = new String[32];
-	
+	public void setCountryDetails() throws Exception
+	{
+		int numberOfCountries=0;
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		try {
+			numberOfCountries = Integer.parseInt(br.readLine());
+		}
+		catch (NumberFormatException e) 
+		{
+			System.out.println("\nPlease enter valid number");
+			setCountryDetails();
+			return;
+		}
+		System.out.println("Please enter the details of the countries in the below format:");
+		System.out.println("Country Name, X-axis, Y-axis, Continent Name, Adjacent countries separated by ,");
+		Pattern pattern = Pattern.compile("[a-z, A-Z]+,+[0-9]+,+[0-9]+,[a-z, A-Z]+");
+		String[] continentAndCountryDetails = new String[numberOfCountries];
+		
+		
+		for(int i=0; i<numberOfCountries; i++)
+		{
+			HashMap<String, List<String>> adjacentCountries = new HashMap<String, List<String>>();
+			Country country = new Country();
+			List<String> adjacent = new ArrayList<String>();
+		  	
+			String countryName = br.readLine();
+			Matcher match = pattern.matcher(countryName.trim());
+		    
+			if(match.matches()) 
+		    {
+				String[] input = countryName.split(",");
+				if(continent.getContinents().containsKey(input[3].trim()))
+				{
+					continentAndCountryDetails[i] = countryName;
+            		country.setName(input[0].trim());
+					country.setxValue(input[1].trim());
+					country.setyValue(input[2].trim());
+					country.setContinent(input[3].trim());
+					
+            	}
+                
+		    }else {
+		    	System.out.println(" Invalid pattern");
+		    	System.out.println("Please enter valid pattern\n");
+			--i;
+			continue;
+	}   }
+		country.setCountries(countries);
+		System.out.println("Country details added");
+		newMapCreation();
+	}
   				
 	public void saveDataToMap() throws IOException
 	{
