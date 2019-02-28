@@ -31,8 +31,9 @@ public class LoadAndEditMap {
 			match = pattern.matcher(name.trim());
 		}
 		// gets the current location of the working directory
-		String workingDir = System.getProperty("user.dir"); 
+		String workingDir = System.getProperty("user.dir");
 		String fileName = name.trim();
+		//file path for windows
 		String filepath = workingDir + "\\src\\com\\riskgame\\maps\\" + fileName;
 		String image_name = "";
 		try {
@@ -40,7 +41,7 @@ public class LoadAndEditMap {
 			BufferedReader br_file = new BufferedReader(file);
 			String str;
 			str = br_file.readLine();
-			str = str.replaceAll("\\[", "").replaceAll("\\]","");
+			str = str.replaceAll("\\[", "").replaceAll("\\]", "");
 			Pattern tagData_pattern = Pattern.compile("[Map]+");
 			Matcher tagData_match = tagData_pattern.matcher(str.trim());
 
@@ -52,7 +53,7 @@ public class LoadAndEditMap {
 			Matcher territory_match = territory_pattern.matcher(str.trim());
 			if (tagData_match.matches()) {
 				str = br_file.readLine();
-				str = str.replaceAll("\\[", "").replaceAll("\\]","");
+				str = str.replaceAll("\\[", "").replaceAll("\\]", "");
 				while ((!continent_match.matches()) && (!str.trim().isEmpty())) {
 					image_match = image_pattern.matcher(str.trim());
 					if (image_match.matches()) {
@@ -60,51 +61,50 @@ public class LoadAndEditMap {
 					}
 					System.out.println(str + "\n");
 					str = br_file.readLine();
-					str = str.replaceAll("\\[", "").replaceAll("\\]","");
+					str = str.replaceAll("\\[", "").replaceAll("\\]", "");
 					continent_match = continents_pattern.matcher(str.trim());
 				}
 			}
-			while(str.trim().isEmpty()) {
-				//while(!continent_match.matches()) {
-					str=br_file.readLine();
-					str = str.replaceAll("\\[", "").replaceAll("\\]","");
-					//continent_match = continents_pattern.matcher(str.trim());
-				//}
+			while (str.trim().isEmpty()) {
+				// while(!continent_match.matches()) {
+				str = br_file.readLine();
+				str = str.replaceAll("\\[", "").replaceAll("\\]", "");
+				// continent_match = continents_pattern.matcher(str.trim());
+				// }
 			}
 			continent_match = continents_pattern.matcher(str.trim());
 			if (continent_match.matches()) {
-				str=br_file.readLine();
-				str = str.replaceAll("\\[", "").replaceAll("\\]","");
-				while (!territory_match.matches()&& (!str.trim().isEmpty())) {
-					
+				str = br_file.readLine();
+				str = str.replaceAll("\\[", "").replaceAll("\\]", "");
+				while (!territory_match.matches() && (!str.trim().isEmpty())) {
+
 					String[] cont = str.split("=");
-					if(cont.length==2) {
+					if (cont.length == 2) {
 						Continent continent = new Continent();
 						continent.setName(cont[0]);
-						//System.out.println(cont.length + "\n");
+						// System.out.println(cont.length + "\n");
 						continent.setControl_value(Integer.parseInt(cont[1]));
-					}
-					else {
+					} else {
 						System.out.println("check the continent and control values");
 						return loadMap();
 					}
-						System.out.println(str + "\n");
-						str=br_file.readLine();
-						str = str.replaceAll("\\[", "").replaceAll("\\]","");
-						territory_match = territory_pattern.matcher(str.trim());
+					System.out.println(str + "\n");
+					str = br_file.readLine();
+					str = str.replaceAll("\\[", "").replaceAll("\\]", "");
+					territory_match = territory_pattern.matcher(str.trim());
 				}
 			}
-			if(str.trim().isEmpty()) {
-				while(!territory_match.matches()) {
-					str=br_file.readLine();
-					str = str.replaceAll("\\[", "").replaceAll("\\]","");
+			if (str.trim().isEmpty()) {
+				while (!territory_match.matches()) {
+					str = br_file.readLine();
+					str = str.replaceAll("\\[", "").replaceAll("\\]", "");
 					territory_match = territory_pattern.matcher(str.trim());
 				}
 			}
 			if (territory_match.matches()) {
 				while ((str = br_file.readLine()) != null) {
 					String[] ter = str.split(",");
-					if((Integer.parseInt(ter[2]) <400) && (Integer.parseInt(ter[1])<400)) {
+					if ((Integer.parseInt(ter[2]) < 400) && (Integer.parseInt(ter[1]) < 400)) {
 						Country country = new Country();
 						country.setName(ter[0]);
 						country.setxValue(ter[1]);
@@ -112,37 +112,35 @@ public class LoadAndEditMap {
 						country.setContinent(ter[3]);
 						ArrayList<Country> adjacent = new ArrayList();
 						for (int i = 4; i < ter.length; i++) {
-							Country adjac=new Country();
+							Country adjac = new Country();
 							adjac.setName(ter[i]);
 							ArrayList<Country> help = new ArrayList();
-							if(adjac.getAdjacentCountries()!=null) {
-								help=adjac.getAdjacentCountries();
+							if (adjac.getAdjacentCountries() != null) {
+								help = adjac.getAdjacentCountries();
 //								help.add(country);
 							}
-					
-						
-						
+
 							help.add(country);
 							adjac.setAdjacentCountries(help);
-							
+
 							adjacent.add(adjac);
 						}
 						System.out.print(adjacent);
 						country.setAdjacentCountries(adjacent);
-					}
-					else {
+					} else {
 						System.out.println("check the x-values and y-values");
 						return loadMap();
-						
+
 					}
-					//System.out.println("this is adjacents"+country.getAdjacentCountries() + "\n");
+					// System.out.println("this is adjacents"+country.getAdjacentCountries() +
+					// "\n");
 					System.out.println(str + "\n");
 				}
 			}
 			editMap(filepath);
 			String image = mapImage(image_name);
 			return image;
-			
+
 		} catch (IOException e) {
 			System.out.println("File Not Found");
 			return loadMap();
@@ -186,8 +184,8 @@ public class LoadAndEditMap {
 				System.out.println("Please enter a valid answer(start/exit)");
 				start = br.readLine().trim();
 				StartupPhase startup = new StartupPhase();
-				if(start.equalsIgnoreCase("start")) {
-					//startup
+				if (start.equalsIgnoreCase("start")) {
+					// startup
 					startup.gamePlay();
 					startup.allocationOfCountry();
 					startup.allocationOfArmyToPlayers();
