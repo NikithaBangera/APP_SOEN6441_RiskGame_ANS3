@@ -32,7 +32,6 @@ public class  Map
 			jframe.setLayout(new FlowLayout());
 			Dimension dim=Toolkit.getDefaultToolkit().getScreenSize();
 			jframe.setSize(400, 400);
-			System.out.println(dim.width/2-jframe.getSize().width/2);
 			jframe.setVisible(true);		
 			jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			
@@ -62,6 +61,7 @@ public class  Map
 						if(image !=null) {
 							JLabel background;
 							String workingDir = System.getProperty("user.dir"); 
+							// file path for windows
 							String filepath= workingDir+"\\src\\com\\riskgame\\images\\"+image;
 							BufferedImage image_br = ImageIO.read(new File(filepath));
 
