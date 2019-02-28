@@ -45,7 +45,7 @@ public class LoadAndEditMap {
 			str = str.replaceAll("\\[", "").replaceAll("\\]", "");
 			Pattern tagData_pattern = Pattern.compile("[Map]+");
 			Matcher tagData_match = tagData_pattern.matcher(str.trim());
-
+			//format of the currents map loading which is Image = somthing.bmp
 			Pattern image_pattern = Pattern.compile("[Image]+ +=+ +[a-z, A-Z]+.[bmp]+");
 			Matcher image_match = image_pattern.matcher(str.trim());
 			Pattern continents_pattern = Pattern.compile("[Continents]+");
@@ -56,6 +56,7 @@ public class LoadAndEditMap {
 				str = br_file.readLine();
 				str = str.replaceAll("\\[", "").replaceAll("\\]", "");
 				while ((!continent_match.matches()) && (!str.trim().isEmpty())) {
+					//finds the image name
 					image_match = image_pattern.matcher(str.trim());
 					if (image_match.matches()) {
 						image_name = str.substring(8);
@@ -67,23 +68,19 @@ public class LoadAndEditMap {
 				}
 			}
 			while (str.trim().isEmpty()) {
-				// while(!continent_match.matches()) {
 				str = br_file.readLine();
-				str = str.replaceAll("\\[", "").replaceAll("\\]", "");
-				// continent_match = continents_pattern.matcher(str.trim());
-				// }
+				str = str.replaceAll("\\[", "").replaceAll("\\]", "");	
 			}
 			continent_match = continents_pattern.matcher(str.trim());
 			if (continent_match.matches()) {
 				str = br_file.readLine();
 				str = str.replaceAll("\\[", "").replaceAll("\\]", "");
 				while (!territory_match.matches() && (!str.trim().isEmpty())) {
-
 					String[] cont = str.split("=");
+					// checks the format and creates continent object with continent name and control value
 					if (cont.length == 2) {
 						Continent continent = new Continent();
 						continent.setName(cont[0]);
-						// System.out.println(cont.length + "\n");
 						continent.setControl_value(Integer.parseInt(cont[1]));
 					} else {
 						System.out.println("check the continent and control values");
@@ -105,6 +102,7 @@ public class LoadAndEditMap {
 			if (territory_match.matches()) {
 				while ((str = br_file.readLine()) != null) {
 					String[] ter = str.split(",");
+					//checking the x-values and y-values and creates a country object 
 					if ((Integer.parseInt(ter[2]) < 400) && (Integer.parseInt(ter[1]) < 400)) {
 						Country country = new Country();
 						country.setName(ter[0]);
@@ -112,29 +110,26 @@ public class LoadAndEditMap {
 						country.setyValue(ter[2]);
 						country.setContinent(ter[3]);
 						ArrayList<Country> adjacent = new ArrayList();
+						// for putting the adjacent countries
 						for (int i = 4; i < ter.length; i++) {
 							Country adjac = new Country();
 							adjac.setName(ter[i]);
 							ArrayList<Country> help = new ArrayList();
+							//if the country already has some other adjacent countries it will overwrite the adjacent countries of that
 							if (adjac.getAdjacentCountries() != null) {
 								help = adjac.getAdjacentCountries();
-//								help.add(country);
 							}
-
 							help.add(country);
 							adjac.setAdjacentCountries(help);
-
 							adjacent.add(adjac);
 						}
 						System.out.print(adjacent);
 						country.setAdjacentCountries(adjacent);
 					} else {
-						System.out.println("check the x-values and y-values");
+						System.out.println("incorrect values for x-values and y-values");
 						return loadMap();
 
 					}
-					// System.out.println("this is adjacents"+country.getAdjacentCountries() +
-					// "\n");
 					System.out.println(str + "\n");
 				}
 			}
@@ -196,7 +191,6 @@ public class LoadAndEditMap {
 			}
 		}
 		return image;
-
 	}
 
 	public void edition() throws IOException {
@@ -215,7 +209,6 @@ public class LoadAndEditMap {
 			edition();
 			return;
 		}
-
 		switch (option) {
 		case 1:
 			changeMetadata();
@@ -232,13 +225,11 @@ public class LoadAndEditMap {
 				String[] split = continent.split("=");
 				continentDetails.put(split[0], Integer.parseInt(split[1]));
 			}
-
 			break;
 
 		case 3:
 			System.out.println("Enter the continent to be removed from the map:");
 			String deleteContinent = br.readLine();
-
 			break;
 
 		case 4:
@@ -270,11 +261,6 @@ public class LoadAndEditMap {
 	}
 
 	public void changeMetadata() {
-
-	}
-
-	public boolean territoryverification(String territory) {
-		return false;
 
 	}
 }
