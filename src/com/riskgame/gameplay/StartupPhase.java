@@ -1,5 +1,7 @@
 package com.riskgame.gameplay;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import com.riskgame.common.Continent;
@@ -14,20 +16,28 @@ ArrayList<RiskPlayer> playersList;
 	
 	public void gamePlay() {
 		RiskPlayer player = new RiskPlayer();
-		int round  = 1;
 		RoundRobinScheduler roundRobin = new RoundRobinScheduler(getPlayersList());
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
-		while(round <= getPlayersList().size()) {
+		for (int round = 1; round <= getPlayersList().size(); round++) {
 			
 			player = roundRobin.nextTurn();
 			
-		}
 		
-		ReinforcementPhase reinforcement = new ReinforcementPhase();
-		reinforcement.startReinforcement(player);
+		System.out.println("Reinforcement Phase begins for player " + player.getName() + "\n");
+		System.out.println("Do you want to continue with Reinforcement phase? (Yes or No) ");
+		try {
+			if (br.readLine().trim().equalsIgnoreCase("Yes")) {
+				ReinforcementPhase reinforcement = new ReinforcementPhase();
+				reinforcement.startReinforcement(player);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 		
 		FortificationPhase fortification = new FortificationPhase();
 		fortification.startGameFortification();
+		}
 	}
 
 	public ArrayList<RiskPlayer> getPlayersList() {
