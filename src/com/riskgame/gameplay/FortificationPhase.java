@@ -14,7 +14,7 @@ public class FortificationPhase {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		GameMapGraph mapData = new GameMapGraph();
 		int countOfArmies = 0;
-		while (!(player.getMyCountries().size() <= 2)) {
+		while (!(player.getMyCountries().size() < 2)) {
 			boolean doFortification = true;
 			String fromCountry = "";
 			String toCountry = "";
