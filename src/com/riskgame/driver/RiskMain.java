@@ -89,9 +89,6 @@ public class RiskMain extends JFrame {
 					start.allocationOfArmyToCountriesInitially();
 					start.allocationOfArmyToCountries_Balance();
 					
-//					startUpPhase.armyAllocationToPlayers();
-//					startUpPhase.initialArmyAllocationToCountries();
-//					startUpPhase.balanceArmyAllocationToCountries();
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
