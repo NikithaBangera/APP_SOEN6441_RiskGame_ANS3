@@ -3,13 +3,29 @@ package com.riskgame.gameplay;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
 import com.riskgame.common.Country;
 import com.riskgame.common.GameMapGraph;
 import com.riskgame.common.RiskPlayer;
 
+/**
+ * This class is dedicated the fortification phase of the game. It takes checks
+ * the number of countries user has proceeds if it is not less than 2. Takes the
+ * fromCountry and toCountry value which identifies from where the player wishes
+ * to move army and to where. After performing requisite validation moves army
+ * of the player.
+ * 
+ * @author Shresthi Garg
+ *
+ */
 public class FortificationPhase {
-
+	/**
+	 * This method is called from the Startup phase when the user opts to start the
+	 * fortification. It internally calls the moveArmies method once all the
+	 * validation with respect to fortification are performed.
+	 * 
+	 * @param player
+	 * @throws IOException
+	 */
 	public void startGameFortification(RiskPlayer player) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		GameMapGraph mapData = new GameMapGraph();
@@ -62,6 +78,14 @@ public class FortificationPhase {
 		}
 	}
 
+	/**
+	 * This method takes the values for each player from the startFortification
+	 * method and does the manipulation of armies and assign the armies
+	 * 
+	 * @param fromCountry
+	 * @param toCountry
+	 * @param armiesCount
+	 */
 	public void moveArmies(Country fromCountry, Country toCountry, int armiesCount) {
 		if (fromCountry.getAdjacentCountries().contains(toCountry)) {
 			int fromCountryArmy = fromCountry.getNoOfArmies();
