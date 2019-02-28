@@ -8,8 +8,9 @@ import com.riskgame.common.Continent;
 import com.riskgame.common.Country;
 import com.riskgame.common.RiskPlayer;
 /**
- * ReinforcementPhase class contains the methods needed for
- * reinforcing the armies to the players during their turn.
+ * ReinforcementPhase class contains the methods needed for reinforcing the armies
+ * to the players during their turn. If each player meets certain specific conditions 
+ * then they will be assigned some number of armies before the attack phase begins
  * 
  * @author Nikitha
  *
@@ -18,8 +19,9 @@ public class ReinforcementPhase {
 	private static ArrayList<Country> countriesList;
 	
 	/**
-	 * This method prompts the player whether he/she wants to 
-	 * play the reinforcement phase.
+	 * This method prompts the player whether he/she wants to play the reinforcement phase. 
+	 * If the player wants to play reinforcement phase then this method will call the 
+	 * armiesToBeAssigned function to assign armies to the player.
 	 * 
 	 * @param player
 	 * @throws Exception
