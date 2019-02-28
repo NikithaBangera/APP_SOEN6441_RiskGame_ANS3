@@ -34,6 +34,7 @@ public class LoadAndEditMap {
 		String workingDir = System.getProperty("user.dir");
 		String fileName = name.trim();
 		//file path for windows
+		//file path for mac: /src/com/riskgame/maps/
 		String filepath = workingDir + "\\src\\com\\riskgame\\maps\\" + fileName;
 		String image_name = "";
 		try {
