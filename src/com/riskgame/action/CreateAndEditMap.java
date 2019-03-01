@@ -15,8 +15,6 @@ import com.riskgame.common.Continent;
 
 public class CreateAndEditMap {
 	
-	//private SavingMapIntoFile saveMap;
-	//create a new map
 	SavingMapIntoFile saveMap=new SavingMapIntoFile();
 	public String fileName;
 	public String tag;
