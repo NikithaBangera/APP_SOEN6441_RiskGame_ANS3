@@ -17,6 +17,7 @@ import com.riskgame.common.MapTag;
 import com.riskgame.common.RiskPlayer;
 
 public class StartupPhase {
+
 	private int countOfthePlayers = 0;
 	ArrayList<RiskPlayer> playersList = new ArrayList<RiskPlayer>();
 
@@ -32,8 +33,10 @@ public class StartupPhase {
 
 	public void gamePlay(GameMapGraph mapGraph) throws Exception {
 		RiskPlayer player = new RiskPlayer();
-
 		boolean isAllowedToPlay = true;
+
+		// Startup Phase starts here
+
 		System.out.println("Enter the number of players below");
 		this.countOfthePlayers = Integer.parseInt(br.readLine());
 		while (isAllowedToPlay) {
@@ -62,11 +65,16 @@ public class StartupPhase {
 		allocationOfArmyToCountriesInitially(mapGraph);
 		allocationOfArmyToCountries_Balance();
 
+		// Startup Phase starts here
+
 		RoundRobinScheduler roundRobin = new RoundRobinScheduler(getPlayersList());
 
+		// Loop for allowing players to execute actions, turn by turn
 		for (int round = 1; round <= getPlayersList().size(); round++) {
 
 			player = roundRobin.nextTurn();
+
+			// Reinforcement Phase starts here
 
 			System.out.println("Reinforcement Phase begins!\n");
 			System.out.println("Player: " + player.getName() + "\n");
@@ -78,18 +86,44 @@ public class StartupPhase {
 				System.out.println("Exited the Reinforcement Phase!");
 			}
 
+			// Reinforcement Phase starts here
+
+			// Fortification Phase starts here
+
+			System.out.println("Fortification Phase begins!\n");
+			System.out.println("Player: " + player.getName() + "\n");
+			System.out.println("Do you wish to start the Fortification phase? (Yes or No)");
+			if (br.readLine().trim().equalsIgnoreCase("Yes")) {
+				FortificationPhase fortification = new FortificationPhase();
+				fortification.startGameFortification(player);
+			} else {
+				System.out.println("Exited the Fortification phase!");
+			}
+			// Fortification Phase ends here
+
 		}
 
-		System.out.println("Fortification Phase begins!\n");
-		System.out.println("Player: " + player.getName() + "\n");
-		System.out.println("Do you wish to start the Fortification phase? (Yes or No)");
-		if (br.readLine().trim().equalsIgnoreCase("Yes")) {
-			FortificationPhase fortification = new FortificationPhase();
-			fortification.startGameFortification(player);
-		} else {
-			System.out.println("Exited the Fortification phase!");
-		}
+	}
 
+	// Function of StartUp Phase starts here
+
+	public void allocationOfCountry(GameMapGraph mapGraph) {
+		int i, countryIndexAssignment;
+		ArrayList<Country> countrySet = new ArrayList<>(mapGraph.getCountrySet().values());
+		if (countrySet.size() > 0) {
+			for (i = 1; i < playersList.size(); i++) {
+				while (countrySet.size() > 1) {
+					countryIndexAssignment = new Random().nextInt(countrySet.size());
+					playersList.get(i).additionOfCountry(countrySet.get(countryIndexAssignment));
+					countrySet.remove(0);
+				}
+				while (countrySet.size() == 1) {
+					playersList.get(i).additionOfCountry(countrySet.get(0));
+					countrySet.remove(0);
+				}
+
+			}
+		}
 	}
 
 	public void allocationOfArmyToPlayers() {
@@ -114,30 +148,20 @@ public class StartupPhase {
 		});
 	}
 
-	public void allocationOfCountry(GameMapGraph mapGraph) {
-		// mapTag object and getMapGraph will come from Sumeetha's module
-		int i, countryIndexAssignment;
-		ArrayList<Country> countrySet = new ArrayList<>(mapGraph.getCountrySet().values());
-		if (countrySet.size() > 0) {
-			for (i = 1; i < playersList.size(); i++) {
-				while (countrySet.size() > 1) {
-					countryIndexAssignment = new Random().nextInt(countrySet.size());
-					playersList.get(i).additionOfCountry(countrySet.get(countryIndexAssignment));
-					countrySet.remove(0);
-				}
-				while (countrySet.size() == 1) {
-					playersList.get(i).additionOfCountry(countrySet.get(0));
-					countrySet.remove(0);
-				}
-
-			}
+	public void allocationOfArmyToCountriesInitially(GameMapGraph mapGraph) {
+		Country country = new Country();
+		for (int i = 0; i < mapGraph.getCountrySet().size(); i++) {
+			country.setNoOfArmies(1);
 		}
+		playersList.forEach(player -> {
+			player.setArmyCount(player.getArmyCount() - player.getMyCountries().size());
+		});
 	}
 
 	public void allocationOfArmyToCountries_Balance() {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		playersList.forEach(player -> {
-			System.out.println("Player Name: " + player.getName()+"\n");
+			System.out.println("Player Name: " + player.getName() + "\n");
 			for (Country country : player.getMyCountries()) {
 				while (player.getArmyCount() > 0) {
 					System.out.println("Country Name : " + country.getName());
@@ -160,16 +184,6 @@ public class StartupPhase {
 		});
 
 	}
-
-	public void allocationOfArmyToCountriesInitially(GameMapGraph mapGraph) {
-		// TODO Auto-generated method stub
-		Country country = new Country();
-		for (int i = 0; i < mapGraph.getCountrySet().size(); i++) {
-			country.setNoOfArmies(1);
-		}
-		playersList.forEach(player -> {
-			player.setArmyCount(player.getArmyCount() - player.getMyCountries().size());
-		});
-	}
+	// Function of StartUp Phase ends here
 
 }

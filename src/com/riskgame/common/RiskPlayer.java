@@ -2,17 +2,25 @@ package com.riskgame.common;
 
 import java.util.ArrayList;
 
+/**
+ * This class stores the value associated to each player. It stores player's
+ * name of String type, total armyCount of player as Integer type, and the
+ * ArrayList of type Country which the player owns.
+ * 
+ * @author Shresthi Garg
+ * @author Anusha
+ *
+ */
 public class RiskPlayer {
 
-
 	/** Name of the Player */
-    private String name;
-    
-    /**Initial army count of the Player*/
-    private int armyCount=0;
-    
-    /** List of countries held by the Player */
-    private ArrayList<Country> myCountries;
+	private String name;
+
+	/** Initial army count of the Player */
+	private int armyCount = 0;
+
+	/** List of countries held by the Player */
+	private ArrayList<Country> myCountries;
 
 	public String getName() {
 		return name;
@@ -38,43 +46,30 @@ public class RiskPlayer {
 		this.myCountries = myCountries;
 	}
 
+	/**
+	 * This method is used to assign armies to the Countries. It checks the
+	 * available army and assigns the army to the requested country
+	 * 
+	 * @param country
+	 * @param armiesCount
+	 */
 	public void armiesAssignedToCountries(Country country, int armiesCount) {
-		if(this.getMyCountries().contains(country)) {
-			if((this.getArmyCount()) > 0 && this.getArmyCount() >= armiesCount) {
+		if (this.getMyCountries().contains(country)) {
+			if ((this.getArmyCount()) > 0 && this.getArmyCount() >= armiesCount) {
 				country.setNoOfArmies(country.getNoOfArmies() + armiesCount);
 				this.setArmyCount(this.getArmyCount() - armiesCount);
-			}
-			else {
+			} else {
 				System.out.println("Insufficient number of armies.");
 			}
-		}
-		else {
+		} else {
 			System.out.println("This country is not owned by you!");
 		}
 	}
-	
+
 	public void additionOfCountry(Country country) {
 		this.myCountries.add(country);
 	}
 
-//	public void addingArmies(Country country, int number_armies) {
-//		// TODO Auto-generated method stub
-//		if(this.getArmyCount()>0 ) {
-//			while(this.getArmyCount()>=number_armies) {
-//    		if(!this.getMyCountries().contains(country)) {
-//    			System.out.println("This country is not under your territory.");
-//    		}
-//    		else {
-//    			country.setNoOfArmies(country.getNoOfArmies() + number_armies);
-//    			this.setArmyCount(this.getArmyCount() - number_armies);
-//    		}
-//    	}}
-//    	else {
-//    		System.out.println("Sufficient number of armies not available.");
-//    	}
-//		
-//	}
-	
 	@Override
 	public String toString() {
 		return "RiskPlayer [name=" + name + ", armyCount=" + armyCount + ", myCountries=" + myCountries + "]";

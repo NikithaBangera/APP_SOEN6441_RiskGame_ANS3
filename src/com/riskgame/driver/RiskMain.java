@@ -7,21 +7,14 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
 import javax.swing.*;
-
-
 import com.riskgame.action.CreateAndEditMap;
 import com.riskgame.common.GameMapGraph;
-import com.riskgame.common.MapTag;
 import com.riskgame.gameplay.StartupPhase;
-
 
 public class RiskMain extends JFrame {
 	JButton createNewMapButton, loadExistingMapButton, exitMapButton;
 	JLabel label1, label2;
-	public static boolean status = false;
-
 	private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 	public static boolean isGoodToStartGame = false;
@@ -40,6 +33,11 @@ public class RiskMain extends JFrame {
 				try {
 					setVisible(false);
 					createandeditmap.newMapCreation();
+					if (isGoodToStartGame) {
+						startGame();
+					} else {
+						System.out.println("Sorry, The game cannot be started");
+					}
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
@@ -55,6 +53,16 @@ public class RiskMain extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// Add load map functionality
+				if (isGoodToStartGame) {
+					try {
+						startGame();
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				} else {
+					System.out.println("Sorry, The game cannot be started");
+				}
 			}
 		});
 
@@ -69,8 +77,7 @@ public class RiskMain extends JFrame {
 				System.exit(0);
 			}
 		});
-	
-		startGame();
+
 	}
 
 	public static void setUp() throws Exception {
@@ -82,24 +89,19 @@ public class RiskMain extends JFrame {
 		layout.setSize(300, 300);
 		layout.setTitle("Risk Game");
 
-		
 	}
-	
+
 	private void startGame() throws Exception {
-		
-		
-		if (isGoodToStartGame) {
-			System.out.println("Do you want to start the game? (Yes or No)");
-			try {
-				String choice = br.readLine();
-				if(choice.equalsIgnoreCase("Yes")) {
-					StartupPhase start = new StartupPhase();
-					GameMapGraph mapGraph = new GameMapGraph();
-					start.gamePlay(mapGraph);
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
+		System.out.println("Do you want to start the game? (Yes or No)");
+		try {
+			String choice = br.readLine();
+			if (choice.equalsIgnoreCase("Yes")) {
+				StartupPhase start = new StartupPhase();
+				GameMapGraph mapGraph = new GameMapGraph();
+				start.gamePlay(mapGraph);
 			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
