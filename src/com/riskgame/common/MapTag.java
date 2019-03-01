@@ -3,9 +3,6 @@ package com.riskgame.common;
 import java.util.ArrayList;
 
 public class MapTag {
-
-	public ArrayList<String> mapTagData = new ArrayList<String>();
-
 	public ArrayList<String> getMapTagData() {
 		return mapTagData;
 	}
@@ -14,10 +11,10 @@ public class MapTag {
 		this.mapTagData = mapTagData;
 	}
 
-	@Override
-	public String toString() {
-		return "MapTag [mapTagData=" + mapTagData + "]";
+	public ArrayList<String> mapTagData = new ArrayList<String>();
+
+	public Object getMapGraph() {
+		// TODO Auto-generated method stub
+		return null;
 	}
-	
-	
 }

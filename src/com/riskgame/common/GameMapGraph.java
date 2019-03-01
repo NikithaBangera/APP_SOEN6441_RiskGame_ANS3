@@ -62,5 +62,4 @@ public class GameMapGraph {
 		return "GameMapGraph [continents=" + continents + ", adjacentCountries=" + adjacentCountries + ", countrySet="
 				+ countrySet + ", countOfCountries=" + countOfCountries + "]";
 	}
-
 }
