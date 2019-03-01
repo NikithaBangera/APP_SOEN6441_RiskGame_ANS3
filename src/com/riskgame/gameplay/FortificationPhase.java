@@ -87,12 +87,18 @@ public class FortificationPhase {
 	 * @param armiesCount
 	 */
 	public void moveArmies(Country fromCountry, Country toCountry, int armiesCount) {
-		if (fromCountry.getAdjacentCountries().contains(toCountry)) {
-			int fromCountryArmy = fromCountry.getNoOfArmies();
-			int toCountryArmy = toCountry.getNoOfArmies();
-			fromCountry.setNoOfArmies(fromCountryArmy - armiesCount);
-			toCountry.setNoOfArmies(toCountryArmy + armiesCount);
-		} else {
+		boolean adjacentCountries = false;
+		for(Country country : fromCountry.getAdjacentCountries()) {
+			if(country.getName().equalsIgnoreCase(toCountry.getName())) {
+				int fromCountryArmy = fromCountry.getNoOfArmies();
+				int toCountryArmy = toCountry.getNoOfArmies();
+				fromCountry.setNoOfArmies(fromCountryArmy - armiesCount);
+				toCountry.setNoOfArmies(toCountryArmy + armiesCount);
+				adjacentCountries = true;
+				break;
+			}
+		}
+		 if(!adjacentCountries) {
 			System.out.println("Countries are not adjacanet!");
 		}
 	}

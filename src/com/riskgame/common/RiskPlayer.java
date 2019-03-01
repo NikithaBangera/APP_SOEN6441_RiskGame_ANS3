@@ -12,7 +12,7 @@ public class RiskPlayer {
     private int armyCount=0;
     
     /** List of countries held by the Player */
-    private ArrayList<Country> myCountries;
+    private ArrayList<Country> myCountries = new ArrayList<Country>();
 
 	public String getName() {
 		return name;

@@ -24,6 +24,14 @@ public class StartupPhase {
 		return playersList;
 	}
 
+	public int getCountOfthePlayers() {
+		return countOfthePlayers;
+	}
+
+	public void setCountOfthePlayers(int countOfthePlayers) {
+		this.countOfthePlayers = countOfthePlayers;
+	}
+
 	public void setPlayersList(ArrayList<RiskPlayer> playersList) {
 		this.playersList = playersList;
 	}

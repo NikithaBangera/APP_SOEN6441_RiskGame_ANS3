@@ -58,7 +58,7 @@ public class LoadMap {
 						country.setyValue(newCountry[2]);
 						String[] adjacentCountries = newCountry[4].split(",");
 						
-						country.getAdjacentCountries().addAll(Arrays.asList(adjacentCountries));
+				//		country.getAdjacentCountries().addAll(Arrays.asList(adjacentCountries));
 					}
 				}
 			}
