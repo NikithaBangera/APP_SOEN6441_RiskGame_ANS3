@@ -87,6 +87,17 @@ public class CreateAndEditMap {
 		case 9:	System.out.println("\nPlease enter the mapfile name to save the data in below format.");
 	        	System.out.println("mapname.map");
 				saveDataToMap();
+				System.out.println("Do you want to play the game : yes or no");
+				boolean gamevalue = false;
+				String gameanswer =	br.readLine();
+				if(gameanswer.equals("no") || gameanswer.equals("No"))
+				{
+					gamevalue = true;
+					newMapCreation();
+				}
+				else {
+					gamevalue = false;
+				}
 				break;
 		default: System.out.println("Invalid option. Please choose the correct option.");
 				 newMapCreation();
