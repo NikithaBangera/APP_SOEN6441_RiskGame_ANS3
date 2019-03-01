@@ -14,9 +14,11 @@ import javax.swing.JFileChooser;
 
 import com.riskgame.common.Continent;
 import com.riskgame.common.Country;
+import com.riskgame.common.GameMapGraph;
 import com.riskgame.gameplay.StartupPhase;
 
 public class LoadAndEditMap {
+	GameMapGraph mapGraph = new GameMapGraph();
 
 	public String loadMap() throws Exception {
 
@@ -33,8 +35,8 @@ public class LoadAndEditMap {
 		// gets the current location of the working directory
 		String workingDir = System.getProperty("user.dir");
 		String fileName = name.trim();
-		//file path for windows
-		//file path for mac: /src/com/riskgame/maps/
+		// file path for windows
+		// file path for mac: /src/com/riskgame/maps/
 		String filepath = workingDir + "\\src\\com\\riskgame\\maps\\" + fileName;
 		String image_name = "";
 		try {
@@ -45,7 +47,7 @@ public class LoadAndEditMap {
 			str = str.replaceAll("\\[", "").replaceAll("\\]", "");
 			Pattern tagData_pattern = Pattern.compile("[Map]+");
 			Matcher tagData_match = tagData_pattern.matcher(str.trim());
-			//format of the currents map loading which is Image = somthing.bmp
+			// format of the currents map loading which is Image = somthing.bmp
 			Pattern image_pattern = Pattern.compile("[Image]+ +=+ +[a-z, A-Z]+.[bmp]+");
 			Matcher image_match = image_pattern.matcher(str.trim());
 			Pattern continents_pattern = Pattern.compile("[Continents]+");
@@ -56,7 +58,7 @@ public class LoadAndEditMap {
 				str = br_file.readLine();
 				str = str.replaceAll("\\[", "").replaceAll("\\]", "");
 				while ((!continent_match.matches()) && (!str.trim().isEmpty())) {
-					//finds the image name
+					// finds the image name
 					image_match = image_pattern.matcher(str.trim());
 					if (image_match.matches()) {
 						image_name = str.substring(8);
@@ -69,7 +71,7 @@ public class LoadAndEditMap {
 			}
 			while (str.trim().isEmpty()) {
 				str = br_file.readLine();
-				str = str.replaceAll("\\[", "").replaceAll("\\]", "");	
+				str = str.replaceAll("\\[", "").replaceAll("\\]", "");
 			}
 			continent_match = continents_pattern.matcher(str.trim());
 			if (continent_match.matches()) {
@@ -77,7 +79,8 @@ public class LoadAndEditMap {
 				str = str.replaceAll("\\[", "").replaceAll("\\]", "");
 				while (!territory_match.matches() && (!str.trim().isEmpty())) {
 					String[] cont = str.split("=");
-					// checks the format and creates continent object with continent name and control value
+					// checks the format and creates continent object with continent name and
+					// control value
 					if (cont.length == 2) {
 						Continent continent = new Continent();
 						continent.setName(cont[0]);
@@ -102,7 +105,7 @@ public class LoadAndEditMap {
 			if (territory_match.matches()) {
 				while ((str = br_file.readLine()) != null) {
 					String[] ter = str.split(",");
-					//checking the x-values and y-values and creates a country object 
+					// checking the x-values and y-values and creates a country object
 					if ((Integer.parseInt(ter[2]) < 400) && (Integer.parseInt(ter[1]) < 400)) {
 						Country country = new Country();
 						country.setName(ter[0]);
@@ -115,7 +118,8 @@ public class LoadAndEditMap {
 							Country adjac = new Country();
 							adjac.setName(ter[i]);
 							ArrayList<Country> help = new ArrayList();
-							//if the country already has some other adjacent countries it will overwrite the adjacent countries of that
+							// if the country already has some other adjacent countries it will overwrite
+							// the adjacent countries of that
 							if (adjac.getAdjacentCountries() != null) {
 								help = adjac.getAdjacentCountries();
 							}
@@ -181,12 +185,7 @@ public class LoadAndEditMap {
 				start = br.readLine().trim();
 				StartupPhase startup = new StartupPhase();
 				if (start.equalsIgnoreCase("start")) {
-					// startup
-					startup.gamePlay();
-					startup.allocationOfCountry();
-					startup.allocationOfArmyToPlayers();
-					startup.allocationOfArmyToCountriesInitially();
-					startup.allocationOfArmyToCountries_Balance();
+					startup.gamePlay(mapGraph);
 				}
 			}
 		}

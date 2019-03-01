@@ -10,9 +10,8 @@ import com.riskgame.common.RiskPlayer;
 
 public class FortificationPhase {
 
-	public void startGameFortification() {
+	public void startGameFortification(RiskPlayer player) {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		RiskPlayer player = new RiskPlayer();
 		GameMapGraph mapGraph = new GameMapGraph();
 		System.out.println("Fortification Phase starts!\n");
 		System.out.println("Player: " + player.getName() + "\n");
