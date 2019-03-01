@@ -31,6 +31,10 @@ ArrayList<RiskPlayer> playersList;
 				ReinforcementPhase reinforcement = new ReinforcementPhase();
 				reinforcement.startReinforcement(player);
 			}
+			else {
+				System.out.println();
+			}
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
