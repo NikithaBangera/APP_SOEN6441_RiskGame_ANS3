@@ -30,7 +30,7 @@ public class ReinforcementPhase {
 	 */
 	public void startReinforcement(RiskPlayer player) throws Exception {
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-		Continent continent = new Continent();
+		Continent continent = player.getMyCountries().get(0).getPartOfContinent();
 		int reinforcementArmies = armiesToBeAssigned(player, continent);
 		System.out.println("Armies available for Reinforcement: " + reinforcementArmies);
 		player.setArmyCount(player.getArmyCount() + reinforcementArmies);

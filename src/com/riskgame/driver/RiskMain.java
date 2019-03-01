@@ -5,13 +5,15 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 import javax.swing.*;
-
+import javax.swing.filechooser.FileSystemView;
 
 import com.riskgame.action.CreateAndEditMap;
+import com.riskgame.action.LoadMap;
 import com.riskgame.common.GameMapGraph;
 import com.riskgame.common.MapTag;
 import com.riskgame.gameplay.StartupPhase;
@@ -55,6 +57,22 @@ public class RiskMain extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// Add load map functionality
+				JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+				int returnValue = jfc.showOpenDialog(null);
+
+				if (returnValue == JFileChooser.APPROVE_OPTION) {
+					File selectedFile = jfc.getSelectedFile();
+					String fileName = selectedFile.getAbsolutePath(); 
+					System.out.println("File Path: " + fileName);
+					try {
+						LoadMap loadFile = new LoadMap();
+						loadFile.loadMap(fileName);
+							
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
 			}
 		});
 
