@@ -32,7 +32,7 @@ public class CreateAndEditMap {
 	public String tag;
 	public void newMapCreation() throws Exception{
 		System.out.println("\nChoose the below options to create a new map:");
-		System.out.println("1. Enter Map name and Author name:");
+		System.out.println("1. Enter Map Tag details:");
 		System.out.println("2. Add the continents:\n3. Delete a continent:");
 		System.out.println("4. Add the countries:\n5. Delete a country:");
 		System.out.println("6. Add adjacency:\n7. Delete Adjacency:");
@@ -90,7 +90,7 @@ public class CreateAndEditMap {
 				System.out.println("Do you want to play the game : yes or no");
 				boolean gamevalue = false;
 				String gameanswer =	br.readLine();
-				if(gameanswer.equals("no") || gameanswer.equals("No"))
+				if((gameanswer.equals("no")) || (gameanswer.equals("No")))
 				{
 					gamevalue = true;
 					newMapCreation();
@@ -308,6 +308,7 @@ public class CreateAndEditMap {
 			System.out.println("Please enter in valid format : ");
 			setCountryAdjacency();
 		}
+		System.out.println("Adjacency created between mentioned countries");
 		newMapCreation();
 	}
 		
@@ -367,11 +368,6 @@ public class CreateAndEditMap {
 		}
 	}
 	
-	public void deleteadjacency(String name)
-	{
-		gamemapgraph.getContinents().remove(name);
-	}
-
 }
 
 
