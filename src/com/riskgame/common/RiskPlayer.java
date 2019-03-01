@@ -53,6 +53,28 @@ public class RiskPlayer {
 		}
 	}
 	
+	public void additionOfCountry(Country country) {
+		this.myCountries.add(country);
+	}
+
+//	public void addingArmies(Country country, int number_armies) {
+//		// TODO Auto-generated method stub
+//		if(this.getArmyCount()>0 ) {
+//			while(this.getArmyCount()>=number_armies) {
+//    		if(!this.getMyCountries().contains(country)) {
+//    			System.out.println("This country is not under your territory.");
+//    		}
+//    		else {
+//    			country.setNoOfArmies(country.getNoOfArmies() + number_armies);
+//    			this.setArmyCount(this.getArmyCount() - number_armies);
+//    		}
+//    	}}
+//    	else {
+//    		System.out.println("Sufficient number of armies not available.");
+//    	}
+//		
+//	}
+	
 	@Override
 	public String toString() {
 		return "RiskPlayer [name=" + name + ", armyCount=" + armyCount + ", myCountries=" + myCountries + "]";

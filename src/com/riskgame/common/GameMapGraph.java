@@ -3,7 +3,6 @@ package com.riskgame.common;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
 public class GameMapGraph {
 	/** HashMap to store the continent names */
 	private HashMap<String, Continent> continents;
@@ -63,6 +62,5 @@ public class GameMapGraph {
 		return "GameMapGraph [continents=" + continents + ", adjacentCountries=" + adjacentCountries + ", countrySet="
 				+ countrySet + ", countOfCountries=" + countOfCountries + "]";
 	}
-	
-	
+
 }

@@ -12,6 +12,8 @@ import javax.swing.*;
 
 
 import com.riskgame.action.CreateAndEditMap;
+import com.riskgame.common.GameMapGraph;
+import com.riskgame.common.MapTag;
 import com.riskgame.gameplay.StartupPhase;
 
 
@@ -24,7 +26,7 @@ public class RiskMain extends JFrame {
 
 	public static boolean isGoodToStartGame = false;
 
-	public RiskMain() {
+	public RiskMain() throws Exception {
 		setLayout(new GridLayout(4, 4));
 		createNewMapButton = new JButton("Create a new Map");
 		createNewMapButton.setPreferredSize(new Dimension(60, 60));
@@ -71,7 +73,7 @@ public class RiskMain extends JFrame {
 		startGame();
 	}
 
-	public static void setUp() {
+	public static void setUp() throws Exception {
 		RiskMain layout = new RiskMain();
 		layout.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		layout.setVisible(true);
@@ -83,7 +85,7 @@ public class RiskMain extends JFrame {
 		
 	}
 	
-	private void startGame() {
+	private void startGame() throws Exception {
 		
 		
 		if (isGoodToStartGame) {
@@ -92,7 +94,8 @@ public class RiskMain extends JFrame {
 				String choice = br.readLine();
 				if(choice.equalsIgnoreCase("Yes")) {
 					StartupPhase start = new StartupPhase();
-					start.gamePlay();
+					GameMapGraph mapGraph = new GameMapGraph();
+					start.gamePlay(mapGraph);
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -100,7 +103,7 @@ public class RiskMain extends JFrame {
 		}
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		setUp();
 	}
 }
