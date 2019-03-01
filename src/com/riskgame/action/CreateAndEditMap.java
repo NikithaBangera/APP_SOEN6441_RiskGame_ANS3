@@ -73,7 +73,10 @@ public class CreateAndEditMap {
 		case 5:	System.out.println("Enter the country to be removed:"); 
 				String deleteCountry = br.readLine();
 				break;
-		case 6: break;
+		case 6: System.out.println("Please enter the name of two countries to be connected in below format ");
+				System.out.println("Countryname1,Countryname2");
+				setCountryAdjacency();
+				break;
 				
 		case 7: System.out.println("Please Enter the Countryname to delete the adjacency:");
 				String name = br.readLine();
@@ -81,7 +84,10 @@ public class CreateAndEditMap {
 			deleteadjacency(name);
 			break;
 		case 8: break;
-		case 9:	break;
+		case 9:	System.out.println("\nPlease enter the mapfile name to save the data in below format.");
+	        	System.out.println("mapname.map");
+				saveDataToMap();
+				break;
 		default: System.out.println("Invalid option. Please choose the correct option.");
 				 newMapCreation();
 		
@@ -194,6 +200,8 @@ public class CreateAndEditMap {
 	}
 	 
 	//String[] continentAndCountryDetailsfinal = new String[32];
+	
+  	
 	public void setCountryDetails() throws Exception
 	{
 		int numberOfCountries=0;
@@ -232,9 +240,19 @@ public class CreateAndEditMap {
 					country.setxValue(input[1].trim());
 					country.setyValue(input[2].trim());
 					country.setContinent(input[3].trim());
-					
+					for (int j = 4; j < input.length; j++) {
+            	  		adjacent.add(input[j]);
+					}    
+            	  	adjacentCountries.put(input[0].trim(), adjacent);
+            	  	country.setAdjacentCountries(adjacentCountries);
+            	  	countries.add(country);
             	}
-                
+                else {
+                	System.out.println("continent " + input[3].trim() + "is not available in current continents list");
+                	System.out.println("Please enter valid continent name\n");
+                	--i;
+                	continue;
+                }
 		    }else {
 		    	System.out.println(" Invalid pattern");
 		    	System.out.println("Please enter valid pattern\n");
@@ -245,7 +263,43 @@ public class CreateAndEditMap {
 		System.out.println("Country details added");
 		newMapCreation();
 	}
-  				
+	public void setCountryAdjacency() throws Exception
+	{
+		Pattern pattern =  Pattern.compile("[a-z, A-Z]+,+[a-z, A-Z]+");
+		
+		String country1,country2;
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		String countrynames = br.readLine();
+		Matcher match = pattern.matcher(countrynames.trim());
+		
+		if(match.matches()) 
+		{			
+			country1 = countrynames.split(",")[0]; 
+			country2 = countrynames.split(",")[1]; 
+			
+			if(!country1.equals(country2))
+			{
+			
+				for(Country c:country.getCountries())
+				{
+						if(c.getAdjacentCountries().containsKey(country1)) {
+						c.getAdjacentCountries().get(country1).add(country2);}
+						
+					if(c.getAdjacentCountries().containsKey(country2)) {
+						c.getAdjacentCountries().get(country2).add(country1);}
+				}
+			}
+		else {
+				System.out.println("Please enter valid data");
+				setCountryAdjacency();
+		}}
+			else {
+			System.out.println("Please enter in valid format : ");
+			setCountryAdjacency();
+		}
+		newMapCreation();
+	}
+		
 	public void saveDataToMap() throws IOException
 	{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -282,7 +336,12 @@ public class CreateAndEditMap {
 							
 				}
 				outputStream.println("\n\n\n\n\n");
-				
+				outputStream.println("[Territories]");
+				for(Country c:country.getCountries()) {
+					String format = c.getAdjacentCountries().get(c.getName()).toString();
+					String output =c.getName() +","+c.getxValue()+","+c.getyValue()+","+c.getContinent()+","+format.substring(1,format.length()-1);
+					outputStream.println(output);
+				}
 				outputStream.close();
 			}
 		else { 
@@ -297,7 +356,11 @@ public class CreateAndEditMap {
 		}
 	}
 	
-	
+	public void deleteadjacency(String name)
+	{
+		gamemapgraph.getContinents().remove(name);
+	}
+
 }
 
 
