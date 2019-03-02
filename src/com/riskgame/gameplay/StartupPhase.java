@@ -3,18 +3,20 @@ package com.riskgame.gameplay;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map.Entry;
 import java.util.Random;
 import java.io.IOException;
 
-//import javax.swing.text.html.HTMLDocument.Iterator;
-
 import com.riskgame.common.Country;
 import com.riskgame.common.GameMapGraph;
-import com.riskgame.common.MapTag;
 import com.riskgame.common.RiskPlayer;
+
+/**
+ * StartupPhase is for the beginning of the game. Its will take the 
+ * details from the participants, and randomly assign the countries 
+ * to the player, and countries, armies allocation will happen to the players
+ * as per the Conquest game rule.
+ *
+ **/
 
 public class StartupPhase {
 	private int countOfthePlayers = 0;
