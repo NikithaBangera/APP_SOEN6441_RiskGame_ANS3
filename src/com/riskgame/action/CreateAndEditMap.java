@@ -19,18 +19,34 @@ import com.riskgame.common.Country;
 import com.riskgame.common.MapTag;
 import com.riskgame.common.GameMapGraph;
 
+/**
+ * CreateAndEditMap class provides the functionality for creating a 
+ * new map according the risk game rules.
+ * 
+ * @author Sumeetha Kasulabad
+ * 
+ */
+
 public class CreateAndEditMap {
 	
+	/** Variable for MapTag object */
 	MapTag maptag=new MapTag();
+	
+	/** Variable for Continent object */
 	Continent continent =new Continent();
+	
+	/** Variable for GameMapGraph object */
 	GameMapGraph gamemapgraph = new GameMapGraph();
+	
+	/** Variable for Country object */
 	Country country = new Country();
 	
 	ArrayList<Country> countries = new ArrayList<Country>();
+	ArrayList<String> mapTagData = new ArrayList<String>();
 	public HashMap<String, Integer> countriesctrlval = new LinkedHashMap<String, Integer>();
-		
 	public String fileName;
 	public String tag;
+	
 	public void newMapCreation() throws Exception{
 		System.out.println("\nChoose the below options to create a new map:");
 		System.out.println("1. Enter Map Tag Data:");
@@ -107,8 +123,7 @@ public class CreateAndEditMap {
 		
 		}
 	}
-	ArrayList<String> mapTagData = new ArrayList<String>();
-
+	
 	public void createMapTag() throws Exception {
 	
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -166,7 +181,7 @@ public class CreateAndEditMap {
 		System.out.println("\nMaptagdata added");
 		newMapCreation();
 	}
-
+	
 	public void setContinentDetails() throws Exception
 	{	
 		int numberOfContinents = 0;
@@ -210,6 +225,7 @@ public class CreateAndEditMap {
 		System.out.println("\nContinent and Controlvalue details added");
 		newMapCreation();
 	}
+	
 	
   	
 	public void setCountryDetails() throws Exception
@@ -286,11 +302,11 @@ public class CreateAndEditMap {
 		   newMapCreation();
 	   }
 	}
-public void setCountryAdjacency() throws Exception
-{
+   
+	
+	public void setCountryAdjacency() throws Exception
+	{
 	Pattern pattern =  Pattern.compile("[a-z, A-Z]+,+[a-z, A-Z]+");
-	boolean isCountry1Exists = false;
-	boolean isCountry2Exists = false;
 	String country1,country2;
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	String countrynames = br.readLine();
@@ -304,18 +320,7 @@ public void setCountryAdjacency() throws Exception
 			if(!country1.equals(country2))
 			{
 				
-    		   for(Country c:country.getCountries())
-			   {
-    			   if(c.getAdjacCountries().containsKey(country1)) 
-    			   {
-    				   isCountry1Exists = true;
-    			   }
-    			   else if(c.getAdjacCountries().containsKey(country2)) 
-    			   {
-					  isCountry2Exists = true;
-    				}
-    			}
-			   if(isCountry1Exists && isCountry2Exists)
+    		   if(isCountry1Exists && isCountry2Exists)
 			   {
 				 for(Country c:country.getCountries())
 				 {
@@ -345,7 +350,9 @@ public void setCountryAdjacency() throws Exception
 	}
 	newMapCreation();
 }
-			
+	
+
+	
 	public void saveDataToMap() throws IOException
 	{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -454,7 +461,8 @@ public void setCountryAdjacency() throws Exception
 	   }
 	   newMapCreation();
 	}
-
+	
+	
 	public void deleteContinent(String value) throws Exception
 	{
 	   boolean exists = false;
@@ -486,7 +494,8 @@ public void setCountryAdjacency() throws Exception
 	   }
 	   newMapCreation();
 	}
-
+	
+	
 	public void deleteCountry(String value) throws Exception
 	{
 	   boolean countryExists = false;
@@ -530,9 +539,6 @@ public void setCountryAdjacency() throws Exception
 	         }
 	      }
 	   }
-	   if (!countryExists)
-	      System.out.println("The country " + value.toUpperCase() + " does not exist in the map.");
-
 	   newMapCreation();
 	}
 	
