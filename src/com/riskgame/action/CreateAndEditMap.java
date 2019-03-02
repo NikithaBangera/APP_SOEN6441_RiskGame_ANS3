@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,6 +24,7 @@ public class CreateAndEditMap {
 	private String fileName;
 	private ArrayList<Country> listOfCountries;
 	private ArrayList<Continent> listOfContinents;
+	private HashMap<String, Country> setOfCountries;
 	BufferedReader br;
 	boolean returnflag = false;
 
@@ -198,6 +200,7 @@ public class CreateAndEditMap {
 	public void setCountryDetails() throws Exception {
 		listOfContinents = new ArrayList<>();
 		listOfCountries = new ArrayList<>();
+		setOfCountries = new HashMap<String, Country>();
 		int numberOfCountries = 0;
 		int index = 0;
 		boolean countryexist = false;
@@ -226,7 +229,6 @@ public class CreateAndEditMap {
 					Matcher match = pattern.matcher(countryDetails.trim());
 					if (match.matches()) {
 						Country country = new Country();
-
 						String[] input = countryDetails.split(",");
 						if (alreadyDefinedContinent(input[3].trim())) {
 							String details[] = countryDetails.split(",");
@@ -243,7 +245,7 @@ public class CreateAndEditMap {
 							});
 							country.setPartOfContinent(continent);
 							country.setContinent(details[3]);
-
+							
 							ArrayList<String> adjacentCountries = new ArrayList<>();
 							for (Country availableCountry : listOfCountries) {
 								if (availableCountry.getName().equalsIgnoreCase(details[0])) {
@@ -262,6 +264,8 @@ public class CreateAndEditMap {
 							}
 							country.setAdjacentCountries(adjacentCountries);
 							listOfCountries.set(index, country);
+							setOfCountries.put(details[0], country);
+							mapGraph.setCountrySet(setOfCountries);
 
 						} else {
 							System.out.println(
@@ -276,6 +280,7 @@ public class CreateAndEditMap {
 						--i;
 						continue;
 					}
+					
 				}
 				mapGraph.setCountries(listOfCountries);
 				mapGraph.setCountOfCountries(numberOfCountries);
