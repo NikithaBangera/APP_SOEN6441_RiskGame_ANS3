@@ -111,8 +111,8 @@ public class CreateAndEditMap {
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println("Please Enter the image name of the map in below format:");
-		System.out.println("Imagename.bmp");
-		Pattern pattern = Pattern.compile("[a-zA-Z0-9]+[_-]*.[bmp]+");
+		System.out.println("(Imagename.bmp)\n");
+		Pattern pattern = Pattern.compile("[a-zA-Z0-9]+[_-]*.bmp");
 		String name = br.readLine();
 		Matcher match = pattern.matcher(name.trim());
 		while (!match.matches()) {
