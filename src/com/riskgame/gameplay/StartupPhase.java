@@ -19,7 +19,11 @@ import com.riskgame.common.RiskPlayer;
  **/
 
 public class StartupPhase {
+	
+	/* Variable to store the total number of players in game */
 	private int countOfthePlayers = 0;
+	
+	/*List which consists of players name*/
 	ArrayList<RiskPlayer> playersList = new ArrayList<RiskPlayer>();
 
 	public ArrayList<RiskPlayer> getPlayersList() {
