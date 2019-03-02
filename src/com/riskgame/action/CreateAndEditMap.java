@@ -79,6 +79,8 @@ public class CreateAndEditMap {
 				break;
 				
 		case 7: System.out.println("Please enter the name of two countries (in below format) to be disconnected");
+				System.out.println("Countryname1,Countryname2");
+				deleteAdjacency();
 				break;
 				
 		case 8: break;
@@ -379,6 +381,59 @@ public class CreateAndEditMap {
 		}
 	}
 	
+	public void deleteAdjacency() throws Exception
+	{
+	   Pattern pattern = Pattern.compile("[a-z, A-Z]+,+[a-z, A-Z]+");
+
+	   String country1;
+	   String country2;
+	   //String countryListBeforeDelete;
+	   BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	   String countrynames = br.readLine();
+	   Matcher match = pattern.matcher(countrynames.trim());
+	   if (match.matches())
+	   {
+	      boolean isAnAdjacentCountry1 = false;
+	      boolean isAnAdjacentCountry2 = false;
+	      country1 = countrynames.split(",")[0];
+	      country2 = countrynames.split(",")[1];
+	      if (country.getCountries() != null)
+	      {
+	         for (Iterator<Country> iterator = country.getCountries().iterator(); iterator.hasNext(); )
+	         {
+	            Country index = iterator.next();
+	            if (index.getAdjacCountries().containsKey(country1) && index.getAdjacCountries().get(country1).contains(country2))
+	            {
+	               isAnAdjacentCountry1 = true;
+
+	               index.getAdjacCountries().get(country1).remove(country2);
+	            }
+
+	            else if (index.getAdjacCountries().containsKey(country2) && index.getAdjacCountries().get(country2).contains(country1))
+	            {
+	               isAnAdjacentCountry2 = true;
+	               index.getAdjacCountries().get(country2).remove(country1);
+	            }
+	         }
+	         if ((isAnAdjacentCountry1 && isAnAdjacentCountry2))
+	         {
+	            System.out.println("Adjacency deleted between " + country1.toUpperCase() + " and " + country2.toUpperCase() );
+	         }
+	         else
+	            System.out.println("An edge does not exist between " + country1.toUpperCase() + " and " + country2.toUpperCase() + " in the map.");
+	         	
+	      }
+	      else
+	         System.out.println("The countries "+country1.toUpperCase()+" and " + country2.toUpperCase() +" specified do not exist in the map");
+	   }
+	   else
+	   {
+	      System.out.println("Please enter valid data");
+	      deleteAdjacency();
+	   }
+	   newMapCreation();
+	}
+
 	public void deleteContinent(String value) throws Exception
 	{
 	   boolean exists = false;
