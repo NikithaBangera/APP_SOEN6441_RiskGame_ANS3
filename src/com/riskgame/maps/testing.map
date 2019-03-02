@@ -1,6 +1,6 @@
 [Map]
-Image = map.bmp
-Author = Shiva
+Image=map.bmp
+Author=Shiva
 testing.map
 
 
@@ -16,5 +16,5 @@ africa=5
 
 
 [Territories]
-usa,100,200,asia,mexico,canada
-uk,100,300,africa,libya,ireland
+usa,100,200,asia,uk
+uk,100,300,africa,usa
