@@ -3,9 +3,6 @@ package com.riskgame.gameplay;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map.Entry;
 import java.util.Random;
 import java.io.IOException;
 
@@ -13,24 +10,52 @@ import java.io.IOException;
 
 import com.riskgame.common.Country;
 import com.riskgame.common.GameMapGraph;
-import com.riskgame.common.MapTag;
 import com.riskgame.common.RiskPlayer;
 
-public class StartupPhase {
+/**
+ * StartupPhase is for the beginning of the game. Its will take the 
+ * details from the participants, and randomly assign the countries 
+ * to the player, and countries, armies allocation will happen to the players
+ * as per the Conquest game rule.
+ *
+ **/
 
+public class StartupPhase {
+ 
+	/** Variable to store the total number of players in game */
 	private int countOfthePlayers = 0;
+	
+	/**List which consists of players name*/
 	ArrayList<RiskPlayer> playersList = new ArrayList<RiskPlayer>();
 
+	/**
+	 * Method to get the list of the player's name
+	 * 
+	 * @return ArrayList which has Players name.
+	 */
 	public ArrayList<RiskPlayer> getPlayersList() {
 		return playersList;
 	}
 
+	/**
+	 * Method to get the list of the player's name
+	 * 
+	 * @return ArrayList which has Players name.
+	 */
 	public void setPlayersList(ArrayList<RiskPlayer> playersList) {
 		this.playersList = playersList;
 	}
 
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
+	/**
+	 * This method starts the game, obtaining the number of payers , details
+	 * and initializing them
+	 * 
+	 * @param mapGraph
+	 *            Object of mapGraph which consists of map details
+	 */
+	
 	public void gamePlay(GameMapGraph mapGraph) throws Exception {
 		RiskPlayer player = new RiskPlayer();
 //		boolean isAllowedToPlay = true;
@@ -118,7 +143,14 @@ public class StartupPhase {
 	}
 
 	// Function of StartUp Phase starts here
-
+	/**
+	 * Method to assign countries to the players. Random allocation of countries
+	 * to the players will happen in this method
+	 * @param mapGraph
+	 *            Object of mapGraph which consists of map details
+	 */
+	
+	
 	public void allocationOfCountry(GameMapGraph mapGraph) {
 		int i, countryIndexAssignment;
 		ArrayList<Country> countrySet = new ArrayList<>(mapGraph.getCountrySet().values());
@@ -155,6 +187,13 @@ public class StartupPhase {
 //		}
 	}
 
+	/**
+	 * Method to assign the number of armies to the players
+	 * which differs based on the number of players.
+	 * Allocation is done as per the conquest game rule
+	 * 
+	 */
+	
 	public void allocationOfArmyToPlayers() {
 		playersList.forEach(player -> {
 			switch (countOfthePlayers) {
@@ -176,7 +215,14 @@ public class StartupPhase {
 			}
 		});
 	}
-
+   
+	/**
+	 * Method to assign armies to the countries so that each country will get
+	 * at least one country as per the conquest game rule.
+	 * @param mapGraph
+	 *            Object of mapGraph which consists of map details
+	 */
+	
 	public void allocationOfArmyToCountriesInitially(GameMapGraph mapGraph) {
 		// Country country = new Country();
 		// for (int i = 0; i < mapGraph.getCountrySet().size(); i++) {
@@ -192,7 +238,12 @@ public class StartupPhase {
 			player.setArmyCount(player.getArmyCount() - player.getMyCountries().size());
 		});
 	}
-
+	
+	/**
+	 * Method for armies assignment to the countries so that the number
+	 * of armies in the countries will be balanced
+	 * 
+	 */
 	public void allocationOfArmyToCountries_Balance() {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		playersList.forEach(player -> {
