@@ -27,7 +27,7 @@ public class Country {
 	/** Adjacent Country holder */
 	private ArrayList<Country> countries;
 	
-	private HashMap<String, List<String>> adjacentCountries;
+	private HashMap<String, List<String>> adjacCountries;
 
 	/** Part of Continent */
 	private Continent partOfContinent;
@@ -87,12 +87,12 @@ public class Country {
 		this.countries = countries;
 	}
 	
-	public HashMap<String, List<String>> getAdjacentCountries() {
-		return adjacentCountries;
+	public HashMap<String, List<String>> getAdjacCountries() {
+		return adjacCountries;
 	}
 	
-	public void setAdjacentCountries(HashMap<String, List<String>> adjacentCountries) {
-		this.adjacentCountries = adjacentCountries;
+	public void setAdjacCountries(HashMap<String, List<String>> adjacCountries){
+		this.adjacCountries = adjacCountries;
 	}
 	
 	public Continent getPartOfContinent() {
