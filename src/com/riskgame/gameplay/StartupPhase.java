@@ -120,7 +120,7 @@ public class StartupPhase {
 		allocationOfCountry(mapGraph);
 		allocationOfArmyToPlayers();
 		allocationOfArmyToCountriesInitially(mapGraph);
-		allocationOfArmyToCountriesBalancing();
+		allocationOfRemainingArmyToCountries();
 
 		// Startup Phase starts here
 
@@ -264,7 +264,7 @@ public class StartupPhase {
 	 * of armies in the countries will be balanced
 	 * 
 	 */
-	public void allocationOfArmyToCountriesBalancing() {
+	public void allocationOfRemainingArmyToCountries() {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		playersList.forEach(player -> {
 			System.out.println("Player Name: " + player.getName() + "\n");
