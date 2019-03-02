@@ -245,7 +245,7 @@ public class CreateAndEditMap {
 							});
 							country.setPartOfContinent(continent);
 							country.setContinent(details[3]);
-							
+
 							ArrayList<String> adjacentCountries = new ArrayList<>();
 							for (Country availableCountry : listOfCountries) {
 								if (availableCountry.getName().equalsIgnoreCase(details[0])) {
@@ -264,8 +264,6 @@ public class CreateAndEditMap {
 							}
 							country.setAdjacentCountries(adjacentCountries);
 							listOfCountries.set(index, country);
-							setOfCountries.put(details[0], country);
-							mapGraph.setCountrySet(setOfCountries);
 
 						} else {
 							System.out.println(
@@ -280,7 +278,7 @@ public class CreateAndEditMap {
 						--i;
 						continue;
 					}
-					
+
 				}
 				mapGraph.setCountries(listOfCountries);
 				mapGraph.setCountOfCountries(numberOfCountries);
@@ -685,7 +683,10 @@ public class CreateAndEditMap {
 						"Sorry! The entered continent name cannot be blank.Provided contains only whitespace (ie. spaces, tabs or line breaks).\nPlease enter the file name to save map file:\n");
 				fileName = br.readLine();
 			}
-
+			listOfCountries.forEach(country -> {
+				setOfCountries.put(country.getName(), country);
+				mapGraph.setCountrySet(setOfCountries);
+			});
 			mapGraph.setFilename(fileName);
 			ReadAndWriteMap save = new ReadAndWriteMap();
 			save.saveMap(mapGraph);

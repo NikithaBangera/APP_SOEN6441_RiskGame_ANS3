@@ -52,7 +52,7 @@ public class StartupPhase {
 		}
 
 //		int count = 1;
-		
+
 		System.out.println("Enter the name of the players");
 		for (int count = 1; count <= countOfthePlayers; count++) {
 			boolean continue1 = true;
@@ -61,7 +61,7 @@ public class StartupPhase {
 			while (continue1) {
 				if (playername != null) {
 					riskPlayer.setName(playername);
-					continue1 =false;
+					continue1 = false;
 
 				} else {
 					System.out.println("Player name cannot be empty");
@@ -69,8 +69,8 @@ public class StartupPhase {
 			}
 			playersList.add(riskPlayer);
 		}
-		playersList.forEach(P->{
-			System.out.println(P+" *\n");
+		playersList.forEach(P -> {
+			System.out.println(P + " *\n");
 		});
 		allocationOfCountry(mapGraph);
 		allocationOfArmyToPlayers();
@@ -122,20 +122,37 @@ public class StartupPhase {
 	public void allocationOfCountry(GameMapGraph mapGraph) {
 		int i, countryIndexAssignment;
 		ArrayList<Country> countrySet = new ArrayList<>(mapGraph.getCountrySet().values());
-		if (countrySet.size() > 0) {
-			for (i = 1; i < playersList.size(); i++) {
-				while (countrySet.size() > 1) {
+		while (countrySet.size() > 0) {
+			for (i = 0; i < this.playersList.size(); ++i) {
+				if (countrySet.size() > 1) {
 					countryIndexAssignment = new Random().nextInt(countrySet.size());
-					playersList.get(i).additionOfCountry(countrySet.get(countryIndexAssignment));
+					this.playersList.get(i).additionOfCountry(countrySet.get(countryIndexAssignment));
+					countrySet.remove(countryIndexAssignment);
+				} else if (countrySet.size() == 1) {
+					this.playersList.get(i).additionOfCountry(countrySet.get(0));
 					countrySet.remove(0);
+					break;
+				} else {
+					break;
 				}
-				while (countrySet.size() == 1) {
-					playersList.get(i).additionOfCountry(countrySet.get(0));
-					countrySet.remove(0);
-				}
-
 			}
 		}
+//		if (countrySet.size() > 0) {
+//			for (i = 1; i < playersList.size(); i++) {
+//				if (countrySet.size() > 1) {
+//					countryIndexAssignment = new Random().nextInt(countrySet.size());
+//					System.out.println("countryIndexAssignment " + countryIndexAssignment);
+//					playersList.get(i).additionOfCountry(countrySet.get(countryIndexAssignment));
+//					countrySet.remove(countryIndexAssignment);
+//				} else if (countrySet.size() == 1) {
+//					playersList.get(i).additionOfCountry(countrySet.get(0));
+//					countrySet.remove(0);
+//				}
+//
+//			}
+//		} else {
+//			System.out.println("No more countries to assign");
+//		}
 	}
 
 	public void allocationOfArmyToPlayers() {
@@ -161,10 +178,16 @@ public class StartupPhase {
 	}
 
 	public void allocationOfArmyToCountriesInitially(GameMapGraph mapGraph) {
-		Country country = new Country();
-		for (int i = 0; i < mapGraph.getCountrySet().size(); i++) {
+		// Country country = new Country();
+		// for (int i = 0; i < mapGraph.getCountrySet().size(); i++) {
+		// country.setNoOfArmies(1);
+		// }
+
+		mapGraph.getCountrySet().values().forEach(country -> {
+			System.out.println(country.getName() + "   country name");
 			country.setNoOfArmies(1);
-		}
+		});
+
 		playersList.forEach(player -> {
 			player.setArmyCount(player.getArmyCount() - player.getMyCountries().size());
 		});
@@ -174,15 +197,19 @@ public class StartupPhase {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		playersList.forEach(player -> {
 			System.out.println("Player Name: " + player.getName() + "\n");
-			for (Country country : player.getMyCountries()) {
-				while (player.getArmyCount() > 0) {
-					System.out.println("Country Name : " + country.getName());
-					System.out.println("Number of Armies assigned : " + country.getNoOfArmies());
+//			for (Country country : player.getMyCountries()) 
+			player.getMyCountries().forEach(con -> {
+
+//			{
+				System.out.println("\n my countries " + player.getMyCountries());
+				if (player.getArmyCount() > 0) {
+					System.out.println("Country Name : " + con.getName());
+					System.out.println("Number of Armies assigned : " + con.getNoOfArmies());
 					System.out.println("Available Armies: " + player.getArmyCount());
-					System.out.println("Enter number of armies you want to assign to " + country.getName());
+					System.out.println("Enter number of armies you want to assign to " + con.getName());
 					try {
 						int number_armies = Integer.parseInt(br.readLine());
-						player.armiesAssignedToCountries(country, number_armies);
+						player.armiesAssignedToCountries(con, number_armies);
 					} catch (NumberFormatException e) {
 						System.out.println("Please enter a valid number.");
 						e.printStackTrace();
@@ -192,7 +219,8 @@ public class StartupPhase {
 					}
 
 				}
-			}
+//			}
+			});
 		});
 
 	}
