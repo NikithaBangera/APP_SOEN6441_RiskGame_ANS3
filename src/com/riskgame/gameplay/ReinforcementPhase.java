@@ -36,7 +36,7 @@ public class ReinforcementPhase {
 		player.setArmyCount(player.getArmyCount() + reinforcementArmies);
 
 		for (Country country : player.getMyCountries()) {
-			if (player.getArmyCount() > 0) {
+			 if(player.getArmyCount() > 0) {
 				System.out.println(
 						"Number of armies present in country " + country.getName() + "are " + country.getNoOfArmies());
 				System.out.println("Current available armies to be reinforced: " + player.getArmyCount());
@@ -44,7 +44,8 @@ public class ReinforcementPhase {
 				int armiesCount = Integer.parseInt(in.readLine());
 				player.armiesAssignedToCountries(country, armiesCount);
 
-			} else {
+			}
+			else {
 				System.out.println("Sorry you have insufficient armies left! ");
 			}
 		}
@@ -60,7 +61,7 @@ public class ReinforcementPhase {
 	 *         player.
 	 */
 	public static int armiesToBeAssigned(RiskPlayer player, Continent continent) {
-		countriesList = continent.getCountriesInContinent();
+		countriesList = continent.getCountriesListInContinent();
 		int countriesPerPlayer = player.getMyCountries().size();
 		int armiesAssignedPerPlayer;
 
@@ -90,4 +91,5 @@ public class ReinforcementPhase {
 		}
 		return flag;
 	}
+
 }

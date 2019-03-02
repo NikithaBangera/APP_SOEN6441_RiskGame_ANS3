@@ -3,250 +3,749 @@ package com.riskgame.action;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.riskgame.common.Continent;
+import com.riskgame.common.Country;
+import com.riskgame.common.GameMapGraph;
+import com.riskgame.common.MapTag;
+
 public class CreateAndEditMap {
-	
-	//private SavingMapIntoFile saveMap;
-	//create a new map
-	SavingMapIntoFile saveMap=new SavingMapIntoFile();
-	public String fileName;
-	public String tag;
-	public void newMapCreation() throws Exception{
-		System.out.println("\nChoose the below options to create a new map:");
-		System.out.println("1. Enter Map name and Author name:");
-		System.out.println("2. Add the continents:\n3. Delete a continent:");
-		System.out.println("4. Add the countries:\n5. Delete a country:");
-		System.out.println("6. Add adjacency:\n7. Delete Adjacency:");
-		System.out.println("8. Show the map's contents\n9. Save the map and exit:");
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		int option =0;
-		try{
+
+	// private ReadandWriteMap saveMap;
+	// create a new map
+	private GameMapGraph mapGraph = new GameMapGraph();
+	private String fileName;
+	private ArrayList<Country> listOfCountries;
+	private ArrayList<Continent> listOfContinents;
+	private HashMap<String, Country> setOfCountries;
+	BufferedReader br;
+	boolean returnflag = false;
+
+	// private String[] mapTagData = new String[3];
+
+	public GameMapGraph getMapGraph() {
+		return mapGraph;
+	}
+
+	public void setMapGraph(GameMapGraph mapGraph) {
+		this.mapGraph = mapGraph;
+	}
+
+	public boolean newMapCreation() throws Exception {
+		boolean exit = false;
+		while (!exit) {
+			System.out.println("\nChoose the below options to create a new map\n");
+			System.out.println("1. Enter Map name and Author name");
+			System.out.println("2. Add the continents\n3. Delete a continent");
+			System.out.println("4. Add the countries\n5. Delete a country");
+			System.out.println("6. Add adjacency\n7. Delete Adjacency");
+			System.out.println("8. Show the map's contents\n9. Save the map and exit");
+			System.out.println("10. Exit without Saving the map");
+
+			System.out.println("\nPlease enter your choice below:");
+			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+			int option = 0;
+
+			// try {
 			option = Integer.parseInt(br.readLine());
-		} 
-	    catch (NumberFormatException e) 
-		{ 
-	    	System.out.println("\nPlease enter valid number");
-	    	newMapCreation();
-	    	return;
-		}
-		
-		switch(option)
-		{
-		case 1: tag = "[Map]";
+			switch (option) {
+			case 1:
 				createMapTag();
 				break;
-				
-		case 2: tag = "[Continents]";
-				System.out.println("Please enter the number of Continents:");
+			case 2:
 				setContinentDetails();
 				break;
-				
-		case 3:	System.out.println("Enter the continent to be removed from the map:");
-				String deleteContinent = br.readLine();
-				
-			break;
-			
-			
-		case 4: tag = "[Territories]";
-				System.out.println("Enter the number of countries:");
+			case 3:
+				deleteContinent();
+				break;
+			case 4:
 				setCountryDetails();
 				break;
-						
-						
-		case 5:	System.out.println("Enter the country to be removed:"); 
-				String deleteCountry = br.readLine();
+			case 5:
+				deleteCountry();
 				break;
-		case 6: break;
-				
-		case 7: break;
-		case 8: break;
-		case 9:System.exit(0);
-		default: System.out.println("Invalid option. Please choose the correct option.");
-				 newMapCreation();
-		
+			case 6:
+				addAdjacency();
+				break;
+			case 7:
+				removeAdjacency();
+				break;
+			case 8:
+				printMap();
+				break;
+			case 9:
+				Boolean saved = checkandSave();
+				if (saved) {
+					returnflag = true;
+					exit = true;
+				}
+				break;
+			case 10:
+				System.out.println(
+						"\nAll the entries made would be lost and not saved.Do you want to exit without saving?? - Yes/No ");
+				String choice = br.readLine();
+				if (choice.equalsIgnoreCase("yes"))
+					exit = true;
+				break;
+			default:
+				System.out.println("Invalid option. Please choose the correct option.");
+
+			}
 		}
+		return returnflag;
+	}
+
+	public boolean uploadMap(String file) throws Exception {
+
+		return false;
 	}
 
 	public void createMapTag() throws Exception {
-	
+
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println("Please Enter the image name of the map in below format:");
 		System.out.println("Imagename.bmp");
-		Pattern pattern = Pattern.compile("[a-z, A-Z]+.[bmp]+");
+		Pattern pattern = Pattern.compile("[a-zA-Z0-9]+[_-]*.[bmp]+");
 		String name = br.readLine();
-		Matcher match = pattern.matcher(name.trim());	
-		while(!match.matches())
-		{
-			System.out.println("\n Please enter valid image name ");
+		Matcher match = pattern.matcher(name.trim());
+		while (!match.matches()) {
+			System.out.println("\nPlease enter valid image name.");
 			name = br.readLine();
 			match = pattern.matcher(name.trim());
 		}
-		String image = "Image = " + name.trim();
-		
+		String image = name.trim();
+
+		System.out.println("Please specify scroll is horizontal or vertical");
+		String scroll = br.readLine().trim();
+
+		System.out.println("Please specify wrap is yes or no");
+		String wrap = br.readLine().trim();
+
 		System.out.println("Please enter the author name:");
-		String author = "Author = " + br.readLine().trim();
-		System.out.println("Please enter the map name in below format:");
-		System.out.println("mapname.map");
-		String filename =br.readLine();
-		Pattern pattern_filename = Pattern.compile("[a-z, A-Z, 1-9]+.[map]+");
-		Matcher match_filename = pattern_filename.matcher(filename.trim());	
-		while(!match_filename.matches())
-		{
-			System.out.println("\n Please enter valid map name ");
-			filename = br.readLine();
-			match_filename = pattern_filename.matcher(filename.trim());
+		String author = br.readLine().trim();
+		while (author.isEmpty()) {
+			System.out.println(
+					"Sorry! The entered author name cannot be blank.Provided contains only whitespace (ie. spaces, tabs or line breaks) \n");
 		}
-		fileName =filename.trim();
-		String[] mapTagData = new String[3];
-		mapTagData[0] = image;
-		mapTagData[1] = author;	
-		mapTagData[2] = fileName;
-		
-		saveMap.saveMapTag(mapTagData, fileName, tag);
-		newMapCreation();
+
+		System.out.println("Please specify warn is yes or no");
+		String warn = br.readLine().trim();
+
+		MapTag mapTag = new MapTag(author, warn, image, wrap, scroll);
+		mapGraph.setMapTag(mapTag);
+
+		System.out.println("Map tag data Added successfully.");
 	}
-	
-	public void setContinentDetails() throws Exception
-	{	
+
+	public void setContinentDetails() throws Exception {
+		listOfContinents = new ArrayList<>();
 		int numberOfContinents = 0;
+		if (mapGraph.getContinents() != null) {
+			listOfContinents = mapGraph.getContinents();
+		}
+		System.out.println("\nPlease enter the number of Continent:");
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		try {
-			  numberOfContinents = Integer.parseInt(br.readLine());
-		}
-		catch (NumberFormatException e) 
-		{
+			numberOfContinents = Integer.parseInt(br.readLine());
+		} catch (NumberFormatException e) {
 			System.out.println("\nPlease enter valid number");
 			setContinentDetails();
-			return;
+
 		}
-		//HashMap<String, Integer> continentDetails = new HashMap<String, Integer>();
-		System.out.println("Pleae enter continent details in below format:");
-		System.out.println("Continent name=Control Value");
-		Pattern pattern = Pattern.compile("[a-z, A-Z]+=[0-9]+");
-		String[] continentAndControlVal = new String[numberOfContinents];
-		
-		for(int i=0; i<numberOfContinents; i++)
-		{
-			String continentName = br.readLine();
-		    Matcher match = pattern.matcher(continentName.trim());
-		    if(match.matches()) 
-		    {
-		    	String tempcontinentName = continentName.split("=")[0]; 
-		    	if(alreadyDefined(tempcontinentName))
-		    	{
-		    		System.out.println("Entered Continent already exists.\n Please enter new details");
-		    		System.out.println("Continent name=Control Value");
-		    		continue;
-		    	}
-		    	continentAndControlVal[i] = continentName;
-			    continue;
+
+		if (numberOfContinents > 0) {
+			System.out.println("Please enter continent details in below format:");
+			System.out.println("Continent name=Control Value");
+			Pattern pattern = Pattern.compile("[a-zA-Z\\s]+=[0-9]+");
+
+			for (int i = 0; i < numberOfContinents; i++) {
+				String continentName = br.readLine();
+				Matcher match = pattern.matcher(continentName.trim());
+				if (match.matches()) {
+					Continent continent = new Continent();
+					int controlValue = Integer.parseInt(continentName.split("=")[1]);
+					continentName = continentName.split("=")[0];
+					if (alreadyDefinedContinent(continentName)) {
+						System.out.println("Entered Continent already exists.\n Please enter new details");
+						System.out.println("Continent name=Control Value");
+						--i;
+						continue;
+					}
+					continent.setName(continentName);
+					continent.setControlValue(controlValue);
+					listOfContinents.add(continent);
+				} else {
+					System.out.println(" Invalid continent details\n");
+					System.out.println("PLease Enter continent details again");
+					--i;
+					continue;
+				}
+			}
+			mapGraph.setContinents(listOfContinents);
+			mapGraph.setCountOfContinents(numberOfContinents);
+			System.out.println("\nContinent Added Successfully.\n");
+		} else {
+			System.out.println("Number of Continents should be greater than zero\n");
+			setContinentDetails();
+		}
+	}
+
+	public void setCountryDetails() throws Exception {
+		listOfContinents = new ArrayList<>();
+		listOfCountries = new ArrayList<>();
+		setOfCountries = new HashMap<String, Country>();
+		int numberOfCountries = 0;
+		int index = 0;
+		boolean countryexist = false;
+		if (mapGraph.getContinents() != null && !mapGraph.getContinents().isEmpty()) {
+			listOfContinents = mapGraph.getContinents();
+			if (mapGraph.getCountries() != null) {
+				listOfCountries = mapGraph.getCountries();
+			}
+			System.out.println("\nPlease enter the number of Countries:");
+			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+			try {
+				numberOfCountries = Integer.parseInt(br.readLine());
+			} catch (NumberFormatException e) {
+				System.out.println("\nPlease enter valid number");
+				setCountryDetails();
+
+			}
+			if (numberOfCountries > 0) {
+				System.out.println("Please enter the details of the countries in the below format:");
+				System.out.println("Country Name, X-axis, Y-axis, Continent Name, Adjacent countries separated by ,");
+				Pattern pattern = Pattern.compile("[a-zA-Z\\s]+,[0-9]+,[0-9]+(,[a-zA-Z\\s]+)*");
+				String[] continentAndCountryDetails = new String[numberOfCountries];
+
+				for (int i = 0; i < numberOfCountries; i++) {
+					String countryDetails = br.readLine();
+					Matcher match = pattern.matcher(countryDetails.trim());
+					if (match.matches()) {
+						Country country = new Country();
+						String[] input = countryDetails.split(",");
+						if (alreadyDefinedContinent(input[3].trim())) {
+							String details[] = countryDetails.split(",");
+							continentAndCountryDetails[i] = countryDetails;
+							country.setName(details[0]);
+							country.setxValue(details[1]);
+							country.setyValue(details[2]);
+							Continent continent = new Continent();
+							continent.setName(details[3]);
+							listOfContinents.forEach(c -> {
+								if (c.getContinentName().equalsIgnoreCase(details[3])) {
+									continent.setControlValue(c.getControlValue());
+								}
+							});
+							country.setPartOfContinent(continent);
+							country.setContinent(details[3]);
+
+							ArrayList<String> adjacentCountries = new ArrayList<>();
+							for (Country availableCountry : listOfCountries) {
+								if (availableCountry.getName().equalsIgnoreCase(details[0])) {
+									index = listOfCountries.indexOf(availableCountry);
+									listOfCountries.set(index, country);
+									countryexist = true;
+								}
+							}
+							if (!countryexist) {
+								listOfCountries.add(country);
+								index = listOfCountries.indexOf(country);
+							}
+							for (int j = 4; j < details.length; j++) {
+								adjacentCountries.add(details[j]);
+								checkandupdateAdjacentCountries(details[j], country.getName());
+							}
+							country.setAdjacentCountries(adjacentCountries);
+							listOfCountries.set(index, country);
+
+						} else {
+							System.out.println(
+									"\nContinent " + input[3].trim() + "is not available in current continents list");
+							System.out.println("Please enter valid continent name while providing country details\n");
+							--i;
+							continue;
+						}
+					} else {
+						System.out.println("\nInvalid pattern");
+						System.out.println("Please enter details in valid pattern\n");
+						--i;
+						continue;
+					}
+
+				}
+				mapGraph.setCountries(listOfCountries);
+				mapGraph.setCountOfCountries(numberOfCountries);
+				System.out.println("\nCountries Added Successfully.\n");
+
 			} else {
-			System.out.println(" Invalid continent details\n");
-			--i;
-			continue;
-		    }
+				System.out.println("\nNumber of Countries should be greater than zero\n");
+				setCountryDetails();
+			}
+		} else {
+			System.out.println("\nContinents are not defined for map yet. Initalize Continents in Map first");
 		}
-		saveMap.saveMapTag(continentAndControlVal, fileName, tag);
-	    newMapCreation();
 	}
-	
-	public void setCountryDetails() throws Exception
-	{
-		int numberOfCountries=0;
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+	public boolean alreadyDefined(String tempcontinentName) {
 		try {
-			numberOfCountries = Integer.parseInt(br.readLine());
-		}
-		catch (NumberFormatException e) 
-		{
-			System.out.println("\nPlease enter valid number");
-			setCountryDetails();
-			return;
-		}
-		System.out.println("Please enter the details of the countries in the below format:");
-		System.out.println("Country Name, X-axis, Y-axis, Continent Name, Adjacent countries separated by ,");
-		Pattern pattern = Pattern.compile("[a-z, A-Z]+,+[0-9]+,+[0-9]+,[a-z, A-Z]+");
-		String[] continentAndCountryDetails = new String[numberOfCountries];
-		
-		for(int i=0; i<numberOfCountries; i++)
-		{
-			String countryName = br.readLine();
-			Matcher match = pattern.matcher(countryName.trim());
-		    
-			if(match.matches()) 
-		    {
-				String[] input = countryName.split(",");
-                if(alreadyDefined(input[3].trim()))
-                {
-                	  	continentAndCountryDetails[i] = countryName;
-                		continue;
-               	}
-                else {
-                	System.out.println("continent " + input[3].trim() + "is not available in current continents list");
-                	System.out.println("Please enter valid continent name\n");
-                	--i;
-                	continue;
-                }
-		    }else {
-		    	System.out.println(" Invalid pattern");
-		    	System.out.println("Please enter valid pattern\n");
-			--i;
-			continue;}
-		    }
-		
-		saveMap.saveMapTag(continentAndCountryDetails, fileName, tag);
-	    newMapCreation();
-	}
-	
-	public boolean alreadyDefined(String tempcontinentName)
-	{
-		try
-		{
 			String workingDir = System.getProperty("user.dir");
 			File file = new File(workingDir + "\\src\\com\\riskgame\\maps\\" + fileName);
-			
+
 			@SuppressWarnings("resource")
 			BufferedReader reader = new BufferedReader(new FileReader(file));
 			String line;
-			while ((line = reader.readLine()) != null)
-			{
-			  line = line.split("=")[0];
-		      if(line.equals(tempcontinentName)) 
-		    		  {
-		    	  return true;
-		      }
-		      else {
-		      continue;
-		  }
-		 }reader.close();
+			while ((line = reader.readLine()) != null) {
+				line = line.split("=")[0];
+				if (line.equals(tempcontinentName)) {
+					return true;
+				} else {
+					continue;
+				}
+			}
+			reader.close();
+		} catch (Exception e) {
+			System.err.format("Exception occurred trying to read '%s'.", fileName);
+			e.printStackTrace();
+			return false;
 		}
-	    catch (Exception e)
-		{
-		    System.err.format("Exception occurred trying to read '%s'.", fileName);
-		    e.printStackTrace();
-		    return false;
-		  }
 		return false;
+	}
+
+	public boolean alreadyDefinedContinent(String continentName) {
+		boolean flag = false;
+		if (listOfContinents != null) {
+			for (Continent continent : listOfContinents) {
+				if (continent.getContinentName().equalsIgnoreCase(continentName)) {
+					flag = true;
+					break;
+				}
+			}
 		}
-	
-	public boolean isCountryInAdjacentCountryList(String[] input)
-	{
-	String country = input[0];
-	
-	for(int i = 4; i<input.length; i++ )
-	{
-		if(country.equals(input[i]))
-			 return true;
-		else 
-			continue;
+		return flag;
 	}
-	return false;
+
+	public void checkandupdateAdjacentCountries(String forcountry, String adcountry) {
+
+		boolean flag = false;
+		Country countryupdated = null;
+		for (Country country : listOfCountries) {
+			if (country.getName().equalsIgnoreCase(forcountry)) {
+				if (!country.getAdjacentCountries().contains(adcountry)) {
+					country.getAdjacentCountries().add(adcountry);
+					countryupdated = country;
+
+				}
+				flag = true;
+				break;
+			}
+		}
+		if (!flag) {
+			// System.out.println("Country updated Successfully");
+			// listOfCountries.add(index, countryupdated);
+			countryupdated = new Country();
+			ArrayList<String> adjacentCountry = new ArrayList<>();
+			countryupdated.setName(forcountry);
+			adjacentCountry.add(adcountry);
+			countryupdated.setAdjacentCountries(adjacentCountry);
+			listOfCountries.add(countryupdated);
+			// System.out.println(listOfCountries.indexOf(countryupdated));
+		}
+
+		// return false;
 	}
+
+	public boolean isCountryInAdjacentCountryList(String[] input) {
+		String country = input[0];
+
+		for (int i = 4; i < input.length; i++) {
+			if (country.equals(input[i]))
+				return true;
+			else
+				continue;
+		}
+		return false;
+	}
+
+	public void deleteContinent() {
+		boolean removed = false;
+		// listOfContinents = new ArrayList<>();
+		// listOfCountries = new ArrayList<>();
+		listOfContinents = mapGraph.getContinents();
+		listOfCountries = mapGraph.getCountries();
+		ArrayList<String> deletedCountries = new ArrayList<>();
+
+		if (listOfContinents != null && !listOfContinents.isEmpty()) {
+			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+			System.out.println("Enter the continent to be removed from the map:");
+			String deleteContinent = new String();
+			try {
+				deleteContinent = br.readLine().trim();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			while (deleteContinent.isEmpty()) {
+				System.out.println(
+						"Sorry! The entered continent name cannot be blank.Provided contains only whitespace (ie. spaces, tabs or line breaks) \n");
+			}
+			for (Continent continent : listOfContinents) {
+				if (continent.getContinentName().equalsIgnoreCase(deleteContinent)) {
+					listOfContinents.remove(continent);
+					removed = true;
+					break;
+				}
+			}
+			if (listOfCountries != null && !listOfCountries.isEmpty()) {
+				// for (Country country : listofCountries)
+				Iterator<Country> CountryIT = listOfCountries.iterator();
+				while (CountryIT.hasNext()) {
+					Country country = CountryIT.next();
+					if (country.getPartOfContinent() != null
+							&& country.getPartOfContinent().getContinentName().equalsIgnoreCase(deleteContinent)) {
+						deletedCountries.add(country.getName());
+						// listofCountries.remove(country);
+						CountryIT.remove();
+					}
+
+				}
+				mapGraph.setCountries(listOfCountries);
+				for (String name : deletedCountries) {
+					if (!listOfCountries.isEmpty() && listOfCountries != null) {
+						Iterator<Country> CountryIT1 = listOfCountries.iterator();
+						// for (Country country : listofCountries)
+						while (CountryIT1.hasNext()) {
+							Country country = CountryIT1.next();
+							ArrayList<String> adjacentCountries = country.getAdjacentCountries();
+							// for (Country country : listofCountries)
+							Iterator<String> adjacentIT = adjacentCountries.iterator();
+							while (adjacentIT.hasNext()) {
+								if (adjacentIT.next().equalsIgnoreCase(name)) {
+									// adjacentCountries.remove(adjacentCountryName);
+									adjacentIT.remove();
+									// country.setAdjacentCountries(adjacentCountries);
+									break;
+								}
+							}
+
+							// listofCountries.add(country);
+
+						}
+					}
+				}
+				mapGraph.setCountries(listOfCountries);
+				// System.out.println("\n " + deleteContinent + " deleted successfully");
+			}
+			mapGraph.setContinents(listOfContinents);
+			System.out.println("\n " + deleteContinent + " deleted successfully");
+			if (removed == false)
+				System.out.println("Continent " + deleteContinent + " does not exist in the Map");
+
+		} else {
+			System.out.println(
+					"No Continents are defined for map yet. To perform this opertaion map should have atleast one continent defined");
+		}
+	}
+
+	public void deleteCountry() {
+		boolean removed = false;
+		// listOfCountries = new ArrayList<>();
+		listOfCountries = mapGraph.getCountries();
+		if (listOfCountries != null && !listOfCountries.isEmpty()) {
+			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+			String deleteCountry = new String();
+			while (deleteCountry.isEmpty()) {
+				System.out.println("Enter the country to be removed from the map:");
+
+				try {
+					deleteCountry = br.readLine().trim();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if (deleteCountry.isEmpty())
+					System.out.println(
+							"Sorry! The entered continent name cannot be blank.Provided contains only whitespace (ie. spaces, tabs or line breaks) \n");
+
+			}
+			// for (Country country : listofCountries) {
+			Iterator<Country> CountryIT = listOfCountries.iterator();
+			while (CountryIT.hasNext()) {
+				Country country = CountryIT.next();
+				if (country.getName().equalsIgnoreCase(deleteCountry)) {
+					Iterator<Country> CountryIT1 = listOfCountries.iterator();
+					// for (Country country : listofCountries)
+					while (CountryIT1.hasNext()) {
+						Country deletecountry = CountryIT1.next();
+						// for (Country deletecountry : listofCountries) {
+						// int index = listofCountries.indexOf(deletecountry);
+						ArrayList<String> adjacentCountries = deletecountry.getAdjacentCountries();
+						// for (String adjacentCountryName : adjacentCountries) {
+						Iterator<String> adjacentIT = adjacentCountries.iterator();
+						while (adjacentIT.hasNext()) {
+							if (adjacentIT.next().equalsIgnoreCase(deleteCountry)) {
+								adjacentIT.remove();
+							}
+						}
+
+						// deletecountry.setAdjacentCountries(adjacentCountries);
+						// listofCountries.add(deletecountry);
+						// listofCountries.add(index, country);
+					}
+					CountryIT.remove();
+					mapGraph.setCountries(listOfCountries);
+					System.out.println("\n " + deleteCountry + " deleted successfully");
+					removed = true;
+					break;
+				}
+
+			}
+			if (removed == false)
+				System.out.println("Country " + deleteCountry + " does not exist in the Map");
+			/*
+			 * else { if(!listofCountries.isEmpty()) { for (Country country:
+			 * listofCountries) { int index=listofCountries.indexOf(country);
+			 * ArrayList<String> adjacentCountries = country.getAdjacentCountries();
+			 * for(String adjacentCountryName :adjacentCountries) {
+			 * if(adjacentCountryName.equalsIgnoreCase(deleteCountry)) {
+			 * adjacentCountries.remove(adjacentCountryName); } }
+			 * 
+			 * country.setAdjacentCountries(adjacentCountries);
+			 * listofCountries.add(country); //listofCountries.add(index, country);
+			 * 
+			 * } mapGraph.setCountries(listofCountries);
+			 * 
+			 * } }
+			 */
+		} else {
+			System.out.println(
+					"No Countries are defined for map yet. To perform this opertaion map should have atleast one country defined");
+		}
+	}
+
+	public void addAdjacency() throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		ArrayList<Country> countrylist = mapGraph.getCountries();
+		System.out.println("Enter provide name of two countries to be connected");
+		System.out.println("Country 1:");
+		String country1 = br.readLine().trim();
+		System.out.println("Country 2:");
+		String country2 = br.readLine().trim();
+		boolean flag1 = false, flag2 = false;
+		ArrayList<Country> checklist = new ArrayList<Country>();
+
+		if (countrylist != null) {
+			for (Country country : countrylist) {
+				if (country.getName().equalsIgnoreCase(country1)) {
+					flag1 = true;
+					checklist.add(country);
+				}
+				if (country.getName().equalsIgnoreCase(country2)) {
+					flag2 = true;
+					checklist.add(country);
+				}
+			}
+
+			if (flag1 && flag2) {
+				ArrayList<String> adjacent1 = checklist.get(0).getAdjacentCountries();
+				ArrayList<String> adjacent2 = checklist.get(1).getAdjacentCountries();
+				if (adjacent1.contains(checklist.get(1).getName()) && adjacent2.contains(checklist.get(0).getName())) {
+					System.out.println("Both the Countries provided are already adjacent countries");
+				} else {
+					if (!adjacent1.contains(checklist.get(1).getName())) {
+						adjacent1.add(checklist.get(1).getName());
+						checklist.get(0).setAdjacentCountries(adjacent1);
+						// countrylist.add(checklist.get(0));
+
+					}
+					if (!adjacent2.contains(checklist.get(0).getName())) {
+						adjacent2.add(checklist.get(0).getName());
+						checklist.get(1).setAdjacentCountries(adjacent2);
+						// countrylist.add(checklist.get(1));
+					}
+					System.out.println("Countries are linked and are now adjacent countries");
+				}
+			}
+			if (flag1 == false)
+				System.out.println("Invalid !! Country provided " + country1 + " is not avalable in Map");
+			if (flag2 == false)
+				System.out.println("Invalid !! Country provided " + country2 + " is not avalable in Map");
+		}
+	}
+
+	public void removeAdjacency() throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		ArrayList<Country> countrylist = mapGraph.getCountries();
+		System.out.println("Enter provide name of two countries to be connected");
+		System.out.println("Country 1:");
+		String country1 = br.readLine().trim();
+		System.out.println("Country 2:");
+		String country2 = br.readLine().trim();
+		boolean flag1 = false, flag2 = false;
+		ArrayList<Country> checklist = new ArrayList<Country>();
+
+		if (countrylist != null) {
+			for (Country country : countrylist) {
+				if (country.getName().equalsIgnoreCase(country1)) {
+					flag1 = true;
+					checklist.add(country);
+				}
+				if (country.getName().equalsIgnoreCase(country2)) {
+					flag2 = true;
+					checklist.add(country);
+				}
+			}
+
+			if (flag1 && flag2) {
+				ArrayList<String> adjacent1 = checklist.get(0).getAdjacentCountries();
+				ArrayList<String> adjacent2 = checklist.get(1).getAdjacentCountries();
+				if (adjacent1.contains(checklist.get(1).getName()) && adjacent2.contains(checklist.get(0).getName())) {
+					if (!adjacent1.contains(checklist.get(1).getName())) {
+						adjacent1.remove(checklist.get(1).getName());
+						checklist.get(0).setAdjacentCountries(adjacent1);
+//						countrylist.add(checklist.get(0));
+
+					}
+					if (!adjacent2.contains(checklist.get(0).getName())) {
+						adjacent2.remove(checklist.get(0).getName());
+						checklist.get(1).setAdjacentCountries(adjacent2);
+//						countrylist.add(checklist.get(1));
+					}
+					System.out.println("\nRemoved. Countries are no more linked or adjacent countries");
+
+				} else {
+					System.out.println("The Countries provided are already not adjacent to each other");
+				}
+			}
+			if (flag1 == false)
+				System.out.println("Invalid !! Country provided " + country1 + " is not avalable in Map");
+			if (flag2 == false)
+				System.out.println("Invalid !! Country provided " + country2 + " is not avalable in Map");
+
+		}
+	}
+
+	public boolean checkandSave() throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		listOfCountries = new ArrayList<Country>();
+		listOfCountries = mapGraph.getCountries();
+		String error = new String();
+		String aderror = new String();
+		ArrayList<String> adjacentCountries = new ArrayList<>();
+		// HashMap<String, ArrayList<String>> visited = new HashMap<String,
+		// ArrayList<String>>();
+
+		boolean flag = false;
+		boolean flag2 = true;
+		if (listOfCountries != null && !listOfCountries.isEmpty()) {
+			for (Country country : listOfCountries) {
+				if (country.getxValue() == null && country.getyValue() == null
+						&& country.getPartOfContinent() == null) {
+					flag2 = false;
+					error = error.concat("!! For " + country.getName()
+							+ " X and Y offset Values and Continent is not defined.Country was created while adjacent country was being defined for another country.\n");
+				}
+				adjacentCountries = country.getAdjacentCountries();
+				if (!adjacentCountries.isEmpty()) {
+					for (String name : adjacentCountries) {
+						for (Country country2 : listOfCountries) {
+							if (country2.getName().equals(name)) {
+								if (country2.getAdjacentCountries().contains(country.getName())) {
+									flag = true;
+									break;
+								} else
+									flag = false;
+							}
+						}
+						if (flag == false) {
+							aderror = error.concat("!! " + country.getName() + " and " + name
+									+ " are not defined properly as adjacent countries on " + name + " end.\n");
+						}
+					}
+				}
+
+			}
+
+		}
+
+		if (flag == true && flag2 == true) {
+			System.out.println("\nPlease enter the file name to save map file:");
+			String fileName = br.readLine();
+
+			while (fileName.isEmpty()) {
+				System.out.println(
+						"Sorry! The entered continent name cannot be blank.Provided contains only whitespace (ie. spaces, tabs or line breaks).\nPlease enter the file name to save map file:\n");
+				fileName = br.readLine();
+			}
+			listOfCountries.forEach(country -> {
+				setOfCountries.put(country.getName(), country);
+				mapGraph.setCountrySet(setOfCountries);
+			});
+			mapGraph.setFilename(fileName);
+			ReadAndWriteMap save = new ReadAndWriteMap();
+			save.saveMap(mapGraph);
+			System.out.println("Map saved into " + fileName + ".map file");
+			return true;
+
+		}
+
+		else {
+			System.out.println(
+					"Below are the error present in Map.Entry Please resolve all the below issues before saving the Map.\n");
+			error = error.concat(aderror);
+			System.out.println(error);
+			return false;
+		}
+
+	}
+
+	public void printMap() {
+		System.out.println(
+				"\n##-------------------------------------------------------------------------------------------------------##\n");
+		System.out.println("Map Meta Data:");
+		if (mapGraph.getMapTag() == null)
+			System.out.println("No MetaDta Declared for Map Yet");
+		else
+			System.out.println(mapGraph.getMapTag());
+		System.out.println("\nContinents:");
+		if (mapGraph.getContinents() != null && !mapGraph.getContinents().isEmpty()) {
+			System.out.println("Number of Continents: " + mapGraph.getContinents().size());
+			System.out.println("\nContinent Details:");
+			for (int i = 0; i < mapGraph.getContinents().size(); i++) {
+				Continent continent = mapGraph.getContinents().get(i);
+				System.out.println((i + 1) + ". " + continent.getContinentName() + " , " + continent.getControlValue());
+			}
+		} else {
+			System.out.println("No Continent Defined for Map\n");
+		}
+		System.out.println("\nContinents:");
+		if (mapGraph.getCountries() != null && !mapGraph.getCountries().isEmpty()) {
+			System.out.println("\nNumber of Countries: " + mapGraph.getCountries().size());
+			System.out.println("\nCountry Details:");
+			for (int i = 0; i < mapGraph.getCountries().size(); i++) {
+				Country country = mapGraph.getCountries().get(i);
+
+				String print = (i + 1) + ". " + country.getName() + "," + country.getxValue() + ","
+						+ country.getyValue() + ",";
+				if (country.getPartOfContinent() != null) {
+					print = print.concat(
+							country.getPartOfContinent().getContinentName() + "," + country.getAdjacentCountries());
+				} else
+					print = print.concat("<Not Defined>," + country.getAdjacentCountries());
+
+				System.out.println(print);
+			}
+		} else {
+			System.out.println("No Country Defined for Map\n");
+		}
+		System.out.println(
+				"\n##-------------------------------------------------------------------------------------------------------##");
+	}
+
 }
-
-	
-
-
