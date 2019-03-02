@@ -8,7 +8,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.filechooser.FileSystemView;
+
 import com.riskgame.action.CreateAndEditMap;
+import com.riskgame.action.ReadAndWriteMap;
 import com.riskgame.common.GameMapGraph;
 import com.riskgame.gameplay.StartupPhase;
 
@@ -18,6 +22,8 @@ public class RiskMain extends JFrame {
 	private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 	public static boolean isGoodToStartGame = false;
+	public static CreateAndEditMap createandeditmap = new CreateAndEditMap();
+	public static ReadAndWriteMap loadMap = new ReadAndWriteMap();
 
 	public RiskMain() throws Exception {
 		setLayout(new GridLayout(4, 4));
@@ -29,14 +35,12 @@ public class RiskMain extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				CreateAndEditMap createandeditmap = new CreateAndEditMap();
+
 				try {
 					setVisible(false);
-					createandeditmap.newMapCreation();
+					isGoodToStartGame = createandeditmap.newMapCreation();
 					if (isGoodToStartGame) {
 						startGame();
-					} else {
-						System.out.println("Sorry, The game cannot be started");
 					}
 				} catch (Exception e1) {
 					e1.printStackTrace();
@@ -52,16 +56,32 @@ public class RiskMain extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// Add load map functionality
-				if (isGoodToStartGame) {
+				// load map functionality
+				JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+				jfc.setDialogTitle("Select a map file");
+				jfc.setAcceptAllFileFilterUsed(false);
+				FileNameExtensionFilter filter = new FileNameExtensionFilter(".map or .MAP", "map", "MAP");
+				jfc.addChoosableFileFilter(filter);
+
+				int returnValue = jfc.showOpenDialog(null);
+				if (returnValue == JFileChooser.APPROVE_OPTION) {
+					System.out.println(jfc.getSelectedFile().getPath());
+					String fileName = jfc.getSelectedFile().getPath();
+					setVisible(false);
 					try {
-						startGame();
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+						loadMap.uploadMap(fileName);
+					} catch (IOException e2) {
+						e2.printStackTrace();
 					}
-				} else {
-					System.out.println("Sorry, The game cannot be started");
+					System.out.println("load" + isGoodToStartGame);
+					if (isGoodToStartGame) {
+						try {
+							startGame();
+						} catch (Exception e1) {
+							e1.printStackTrace();
+						}
+					}
+
 				}
 			}
 		});
@@ -94,10 +114,12 @@ public class RiskMain extends JFrame {
 	private void startGame() throws Exception {
 		System.out.println("Do you want to start the game? (Yes or No)");
 		try {
+			GameMapGraph mapGraph = new GameMapGraph();
+			mapGraph = createandeditmap.getMapGraph();
 			String choice = br.readLine();
 			if (choice.equalsIgnoreCase("Yes")) {
 				StartupPhase start = new StartupPhase();
-				GameMapGraph mapGraph = new GameMapGraph();
+
 				start.gamePlay(mapGraph);
 			}
 		} catch (IOException e) {
