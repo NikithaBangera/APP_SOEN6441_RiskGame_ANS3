@@ -69,6 +69,8 @@ public class CreateAndEditMap {
 				break;
 						
 		case 5:	System.out.println("Enter the country to be removed:");
+				String country = br.readLine();
+				deleteCountry(country);
 				break;
 		
 		case 6: System.out.println("Please enter the name of two countries to be connected in below format ");
@@ -376,8 +378,7 @@ public class CreateAndEditMap {
 			e.printStackTrace();
 		}
 	}
-
-
+	
 	public void deleteContinent(String value) throws Exception
 	{
 	   boolean exists = false;
@@ -410,7 +411,54 @@ public class CreateAndEditMap {
 	   newMapCreation();
 	}
 
-	
+	public void deleteCountry(String value) throws Exception
+	{
+	   boolean countryExists = false;
+	   boolean edgeExists = false;
+	   if (country.getCountries() != null)
+	   {
+	      for (Iterator<Country> iterator = country.getCountries().iterator(); iterator.hasNext(); )
+	      {
+	         Country index = iterator.next();
+	         for (int i = 0; i < index.getAdjacCountries().size(); i++)
+	         {
+	            if (index.getAdjacCountries().get(index.getName()).contains(value))
+	            {
+	               edgeExists = true;
+	               break;
+	            }
+	         }
+	      }
+	   }
+
+	   if (edgeExists)
+	   {
+	      System.out.println("Cannot delete country " + value.toUpperCase() + " since it is connected to an edge in the map");
+	      countryExists = true;
+	   }
+
+	   else
+	   {
+	      if (country.getCountries() != null)
+	      {
+	         for (Iterator<Country> iterator = country.getCountries().iterator(); iterator.hasNext(); )
+	         {
+	            Country index = iterator.next();
+	            if (index.getName().equals(value))
+	            {
+	               countryExists = true;
+	               iterator.remove();
+	               System.out.println("The country " + value.toUpperCase() + " is deleted from Map.");
+	               break;
+	            }
+	         }
+	      }
+	   }
+	   if (!countryExists)
+	      System.out.println("The country " + value.toUpperCase() + " does not exist in the map.");
+
+	   newMapCreation();
+	}
 }
 
 

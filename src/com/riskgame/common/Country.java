@@ -25,12 +25,16 @@ public class Country {
 	private int noOfArmies;
 
 	/** Adjacent Country holder */
-	private ArrayList<Country> countries;
-	
-	private HashMap<String, List<String>> adjacCountries;
+	private ArrayList<Country> adjacentCountries;
 
 	/** Part of Continent */
 	private Continent partOfContinent;
+	
+	/** Adjacent Country holder */
+	private ArrayList<Country> countries;
+	
+	/** Country with AdjacentCountrylist */
+	private HashMap<String, List<String>> adjacCountries;
 
 	public String getName() {
 		return name;
@@ -80,6 +84,22 @@ public class Country {
 		this.noOfArmies = noOfArmies;
 	}
 
+	public ArrayList<Country> getAdjacentCountries() {
+		return adjacentCountries;
+	}
+
+	public void setAdjacentCountries(ArrayList<Country> adjacentCountries) {
+		this.adjacentCountries = adjacentCountries;
+	}
+
+	public Continent getPartOfContinent() {
+		return partOfContinent;
+	}
+
+	public void setPartOfContinent(Continent partOfContinent) {
+		this.partOfContinent = partOfContinent;
+	}
+	
 	public ArrayList<Country> getCountries() {
 		return countries;
 	}
@@ -91,17 +111,10 @@ public class Country {
 		return adjacCountries;
 	}
 	
-	public void setAdjacCountries(HashMap<String, List<String>> adjacCountries){
+	public void setAdjacCountries(HashMap<String, List<String>> adjacCountries) {
 		this.adjacCountries = adjacCountries;
 	}
 	
-	public Continent getPartOfContinent() {
-		return partOfContinent;
-	}
-
-	public void setPartOfContinent(Continent partOfContinent) {
-		this.partOfContinent = partOfContinent;
-	}
 
 	@Override
 	public String toString() {
