@@ -41,6 +41,7 @@ public class CreateAndEditMap {
 	public boolean newMapCreation() throws Exception {
 		boolean exit = false;
 		while (!exit) {
+			System.out.println("\nWelcome to Risk Game!");
 			System.out.println("\nChoose the below options to create a new map\n");
 			System.out.println("1. Enter Map name and Author name");
 			System.out.println("2. Add the continents\n3. Delete a continent");
@@ -108,15 +109,16 @@ public class CreateAndEditMap {
 	}
 
 	public void createMapTag() throws Exception {
-
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
 		System.out.println("Please Enter the image name of the map in below format:");
 		System.out.println("(Imagename.bmp)\n");
 		Pattern pattern = Pattern.compile("[a-zA-Z0-9]+[_-]*.bmp");
 		String name = br.readLine();
 		Matcher match = pattern.matcher(name.trim());
 		while (!match.matches()) {
-			System.out.println("\nPlease enter valid image name.");
+			System.err.println("\nPlease enter valid image name.");
+			System.out.flush();
 			name = br.readLine();
 			match = pattern.matcher(name.trim());
 		}
@@ -124,19 +126,37 @@ public class CreateAndEditMap {
 
 		System.out.println("Please specify scroll is horizontal or vertical");
 		String scroll = br.readLine().trim();
+		while (!((scroll.equalsIgnoreCase("horizontal")) || (scroll.equalsIgnoreCase("vertical")) || scroll == null)) {
+			System.err.println("Invalid/Blank value entered, please enter horizontal or vertical");
+			System.out.flush();
+			scroll = br.readLine().trim();
+		}
 
-		System.out.println("Please specify wrap is yes or no");
+		System.out.println("Please specify wrap is Yes or No");
 		String wrap = br.readLine().trim();
+		while (!((wrap.equalsIgnoreCase("Yes")) || (wrap.equalsIgnoreCase("No")) || wrap == null)) {
+			System.err.println("Invalid/Blank value entered, please enter Yes or No");
+			System.out.flush();
+			wrap = br.readLine().trim();
+		}
 
 		System.out.println("Please enter the author name:");
 		String author = br.readLine().trim();
 		while (author.isEmpty()) {
-			System.out.println(
-					"Sorry! The entered author name cannot be blank.Provided contains only whitespace (ie. spaces, tabs or line breaks) \n");
+
+			System.err.println("Sorry! The entered author name cannot be blank. Please enter again \n");
+			System.out.flush();
+			author = br.readLine().trim();
+
 		}
 
-		System.out.println("Please specify warn is yes or no");
+		System.out.println("Please specify warn is Yes or No");
 		String warn = br.readLine().trim();
+		while (!((warn.equalsIgnoreCase("Yes")) || (warn.equalsIgnoreCase("No")) || warn == null)) {
+			System.err.println("Invalid/Blank value entered, please enter Yes or No");
+			System.out.flush();
+			warn = br.readLine().trim();
+		}
 
 		MapTag mapTag = new MapTag(author, warn, image, wrap, scroll);
 		mapGraph.setMapTag(mapTag);
