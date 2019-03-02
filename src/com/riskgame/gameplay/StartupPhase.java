@@ -107,7 +107,7 @@ public class StartupPhase {
 			System.out.println("Do you wish to start the Fortification phase? (Yes or No)");
 			if (br.readLine().trim().equalsIgnoreCase("Yes")) {
 				FortificationPhase fortification = new FortificationPhase();
-				fortification.startGameFortification(player);
+				fortification.startGameFortification(player, mapGraph);
 			} else {
 				System.out.println("Exited the Fortification phase!");
 			}
@@ -201,7 +201,8 @@ public class StartupPhase {
 			player.getMyCountries().forEach(con -> {
 
 //			{
-				System.out.println("\n my countries " + player.getMyCountries());
+				System.out.println(player.getName()+ "\n my countries " + player.getMyCountries());
+				System.out.println(player.getName()+ "player  \n"+ con);
 				if (player.getArmyCount() > 0) {
 					System.out.println("Country Name : " + con.getName());
 					System.out.println("Number of Armies assigned : " + con.getNoOfArmies());
