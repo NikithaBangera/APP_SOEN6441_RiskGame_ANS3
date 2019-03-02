@@ -20,21 +20,35 @@ import com.riskgame.common.RiskPlayer;
 
 public class StartupPhase {
 	
-	/* Variable to store the total number of players in game */
+	/** Variable to store the total number of players in game */
 	private int countOfthePlayers = 0;
 	
-	/*List which consists of players name*/
+	/**List which consists of players name*/
 	ArrayList<RiskPlayer> playersList = new ArrayList<RiskPlayer>();
 
+	/**
+	 * Method to get the list of the player's name
+	 * 
+	 * @return ArrayList which has Players name.
+	 */
 	public ArrayList<RiskPlayer> getPlayersList() {
 		return playersList;
 	}
-
+    
+	/**
+	 * Method for setting the Player's list.
+	 * 
+	 * @param playersList
+	 *            It is the player's list needs to be set.
+	 */
+	
 	public void setPlayersList(ArrayList<RiskPlayer> playersList) {
 		this.playersList = playersList;
 	}
 
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	
+	
 
 	public void gamePlay(GameMapGraph mapGraph) throws Exception {
 		RiskPlayer player = new RiskPlayer();
