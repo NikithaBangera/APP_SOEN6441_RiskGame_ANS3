@@ -106,9 +106,71 @@ public class CreateAndEditMap {
 		return returnflag;
 	}
 
-	public boolean uploadMap(String file) throws Exception {
+	public boolean uploadMap(GameMapGraph uploadedmapGraph) throws Exception {
+		mapGraph = uploadedmapGraph;
+		System.out.println("\nUploaded Map Details\n");
+		printMap();
+		boolean exit = false;
+		while (!exit) {
+			System.out.println("\nChoose the below options to edit the uploaded map\n");
+			System.out.println("1. Enter Map name and Author name");
+			System.out.println("2. Add the continents\n3. Delete a continent");
+			System.out.println("4. Add the countries\n5. Delete a country");
+			System.out.println("6. Add adjacency\n7. Delete Adjacency");
+			System.out.println("8. Show the map's contents\n9. Save the map and exit");
+			System.out.println("10. Exit without Saving the map");
 
-		return false;
+			System.out.println("\nPlease enter your choice below:");
+			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+			int option = 0;
+
+			// try {
+			option = Integer.parseInt(br.readLine());
+			switch (option) {
+			case 1:
+				createMapTag();
+				break;
+			case 2:
+				setContinentDetails();
+				break;
+			case 3:
+				deleteContinent();
+				break;
+			case 4:
+				setCountryDetails();
+				break;
+			case 5:
+				deleteCountry();
+				break;
+			case 6:
+				addAdjacency();
+				break;
+			case 7:
+				removeAdjacency();
+				break;
+			case 8:
+				printMap();
+				break;
+			case 9:
+				Boolean saved = checkandSave();
+				if (saved) {
+					returnflag = true;
+					exit = true;
+				}
+				break;
+			case 10:
+				System.out.println(
+						"\nAll the entries made would be lost and not saved.Do you want to exit without saving?? - Yes/No ");
+				String choice = br.readLine();
+				if (choice.equalsIgnoreCase("yes"))
+					exit = true;
+				break;
+			default:
+				System.out.println("Invalid option. Please choose the correct option.");
+
+			}
+		}
+		return returnflag;
 	}
 
 	public void createMapTag() throws Exception {
@@ -223,7 +285,6 @@ public class CreateAndEditMap {
 	public void setCountryDetails() throws Exception {
 		listOfContinents = new ArrayList<>();
 		listOfCountries = new ArrayList<>();
-		setOfCountries = new HashMap<String, Country>();
 		int numberOfCountries = 0;
 		int index = 0;
 		boolean countryexist = false;
@@ -658,14 +719,17 @@ public class CreateAndEditMap {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		listOfCountries = new ArrayList<Country>();
 		listOfCountries = mapGraph.getCountries();
+		listOfContinents = mapGraph.getContinents();
+		ArrayList<String> availableContinents = new ArrayList<>();
 		String error = new String();
-		String aderror = new String();
+		String aderror = new String(), conterror = new String(), adjacencyError = new String();
 		ArrayList<String> adjacentCountries = new ArrayList<>();
+		setOfCountries = new HashMap<>();
 		// HashMap<String, ArrayList<String>> visited = new HashMap<String,
 		// ArrayList<String>>();
 
-		boolean flag = false;
-		boolean flag2 = true;
+		boolean flag = false, flag2 = true, flag3 = true, flag5 = true, flag6 = false;
+
 		if (listOfCountries != null && !listOfCountries.isEmpty()) {
 			for (Country country : listOfCountries) {
 				if (country.getxValue() == null && country.getyValue() == null
@@ -676,36 +740,98 @@ public class CreateAndEditMap {
 				}
 				adjacentCountries = country.getAdjacentCountries();
 				if (!adjacentCountries.isEmpty()) {
+					// System.out.println(country);
 					for (String name : adjacentCountries) {
 						for (Country country2 : listOfCountries) {
 							if (country2.getName().equals(name)) {
 								if (country2.getAdjacentCountries().contains(country.getName())) {
 									flag = true;
 									break;
-								} else
+								} else {
 									flag = false;
-							}
+								}
+							} else
+								flag = false;
+//							if (country2.getPartOfContinent().getContinentName()
+//									.equalsIgnoreCase((country.getPartOfContinent().getContinentName()))) {
+//								flag6 = true;
+//								break;
+//							}
 						}
+//						if (flag6)
+//							break;
 						if (flag == false) {
-							aderror = error.concat("!! " + country.getName() + " and " + name
+							aderror = aderror.concat("!! " + country.getName() + " and " + name
 									+ " are not defined properly as adjacent countries on " + name + " end.\n");
 						}
 					}
+//					if (flag6)
+//						break;
+//					else {
+//						adjacencyError = "!! Countries of the two defined continents are not adjacent. This is not a connected graph.\n";
+//					}
+				} else {
+					// System.out.println("false"+country);
+					flag5 = false;
+					aderror = error.concat("!! " + country.getName()
+							+ " does not have any Adjacents Countries. Should have atleast one adjacent country to play the game \n");
 				}
 
 			}
 
 		}
+		if (listOfContinents.size() < 2) {
+			flag3 = false;
+			conterror = "!! Minimum number of continents should be two to play the game. PLease add one more country and respective countries.\n";
+		}
 
-		if (flag == true && flag2 == true) {
-			System.out.println("\nPlease enter the file name to save map file:");
-			String fileName = br.readLine();
-
-			while (fileName.isEmpty()) {
-				System.out.println(
-						"Sorry! The entered continent name cannot be blank.Provided contains only whitespace (ie. spaces, tabs or line breaks).\nPlease enter the file name to save map file:\n");
-				fileName = br.readLine();
+		listOfCountries.forEach(country -> {
+			if (!availableContinents.contains(country.getName())) {
+				availableContinents.add(country.getPartOfContinent().getContinentName());
 			}
+		});
+
+		for (Continent continent : listOfContinents) {
+			boolean flag4 = true;
+			for (String continentname : availableContinents) {
+				if (continent.getContinentName().equalsIgnoreCase(continentname)) {
+					flag4 = false;
+				}
+			}
+			if (flag4 == true) {
+				flag = false;
+				conterror = conterror.concat("!! " + continent.getContinentName()
+						+ " does not have any defined Country. Should have atleast one country.\n");
+			}
+		}
+
+		if (flag == true && flag2 == true && flag3 == true && flag5 == true) {
+			if (Thread.currentThread().getStackTrace()[2].getMethodName().equalsIgnoreCase("uploadMap")) {
+				System.out.println("\nDo you want to rename the file ? Yes or No ");
+				String option = br.readLine();
+				if (option.equalsIgnoreCase("yes")) {
+					System.out.println("\nPlease enter the new file name to save map file:");
+					fileName = br.readLine();
+
+					while (fileName.isEmpty()) {
+						System.out.println(
+								"Sorry! The entered file name cannot be blank.Provided contains only whitespace (ie. spaces, tabs or line breaks).\nPlease enter the file name to save map file:\n");
+						fileName = br.readLine();
+					}
+				} else {
+					fileName = mapGraph.getFilename();
+				}
+			} else {
+				System.out.println("\nPlease enter the file name to save map file:");
+				fileName = br.readLine();
+
+				while (fileName.isEmpty()) {
+					System.out.println(
+							"Sorry! The entered file name cannot be blank.Provided contains only whitespace (ie. spaces, tabs or line breaks).\nPlease enter the file name to save map file:\n");
+					fileName = br.readLine();
+				}
+			}
+
 			listOfCountries.forEach(country -> {
 				setOfCountries.put(country.getName(), country);
 				mapGraph.setCountrySet(setOfCountries);
@@ -719,10 +845,11 @@ public class CreateAndEditMap {
 		}
 
 		else {
-			System.out.println(
+			System.err.println(
 					"Below are the error present in Map.Entry Please resolve all the below issues before saving the Map.\n");
-			error = error.concat(aderror);
-			System.out.println(error);
+			error = conterror.concat(error).concat(aderror);
+			System.err.println(error);
+			System.out.flush();
 			return false;
 		}
 
