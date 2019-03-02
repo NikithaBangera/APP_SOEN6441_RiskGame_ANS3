@@ -47,14 +47,14 @@ public class LoadAndEditMap {
 			String str;
 			str = br_file.readLine();
 			str = str.replaceAll("\\[", "").replaceAll("\\]", "");
-			Pattern tagData_pattern = Pattern.compile("[map]+");
+			Pattern tagData_pattern = Pattern.compile("[Map]+");
 			Matcher tagData_match = tagData_pattern.matcher(str.trim());
 			// format of the currents map loading which is Image = somthing.bmp
-			Pattern image_pattern = Pattern.compile("[image]+=+[a-z, A-Z]+.[bmp]+");
+			Pattern image_pattern = Pattern.compile("[Image]+=+[a-z, A-Z]+.[bmp]+");
 			Matcher image_match = image_pattern.matcher(str.trim());
-			Pattern continents_pattern = Pattern.compile("[continents]+");
+			Pattern continents_pattern = Pattern.compile("[Continents]+");
 			Matcher continent_match = continents_pattern.matcher(str.trim());
-			Pattern territory_pattern = Pattern.compile("[territories]+");
+			Pattern territory_pattern = Pattern.compile("[Territories]+");
 			Matcher territory_match = territory_pattern.matcher(str.trim());
 			if (tagData_match.matches()) {
 				str = br_file.readLine();
@@ -121,13 +121,13 @@ public class LoadAndEditMap {
 					// checking the x-values and y-values and creates a country object
 					if ((Integer.parseInt(ter[2]) < 400) && (Integer.parseInt(ter[1]) < 400)) {
 						Country country = new Country();
-						visited.put(country, 0);
 						if (mapGraph.getCountrySet().get(ter[0]) != null) {
 							country=mapGraph.getCountrySet().get(ter[0]);
 						}
 						else {
 							country.setName(ter[0]);
 						}
+						visited.put(country, 0);
 						country.setxValue(ter[1]);
 						country.setyValue(ter[2]);
 						country.setContinent(ter[3]);
@@ -138,7 +138,6 @@ public class LoadAndEditMap {
 						// for putting the adjacent countries
 						for (int i = 4; i < ter.length; i++) {
 							Country adjac = new Country();
-							visited.put(adjac, 0);
 							ArrayList<Country> help = new ArrayList<Country>();
 							if(mapGraph.getCountrySet().get(ter[i]) != null) {
 								adjac=mapGraph.getCountrySet().get(ter[i]);
@@ -148,6 +147,7 @@ public class LoadAndEditMap {
 								adjac.setName(ter[i]);
 							}
 							
+							visited.put(adjac, 0);
 							// if the country already has some other adjacent countries it will overwrite
 							// the adjacent countries of that
 //							if (adjac.getAdjacentCountries() != null) {
@@ -172,19 +172,20 @@ public class LoadAndEditMap {
 //							}
 							adjacent.add(adjac);
 							
-							
-							if(!help.isEmpty()) {
-								boolean find=false;
-								for(int z=0; z<help.size();z++) {
-									if (country==help.get(z)) {
-										find=true;
+							if(help !=null) {
+								if(!help.isEmpty()) {
+									boolean find=false;
+									for(int z=0; z<help.size();z++) {
+										if (country.getName()==help.get(z).getName()) {
+											find=true;
+										}
 									}
-								}
-								if(find==false) {
-									System.out.println("Invalid Map");
-									mapGraph = new GameMapGraph();
-									visited=new HashMap<Country,Integer>();
-									return loadMap();
+									if(find==false) {
+										System.out.println("Invalid Map");
+										mapGraph = new GameMapGraph();
+										visited=new HashMap<Country,Integer>();
+										return loadMap();
+									}
 								}
 							}
 //							if(help==null) {
@@ -381,6 +382,8 @@ public class LoadAndEditMap {
 	}
 	
 	public void DFS(HashMap<Country, ArrayList<Country>> adjacentCountries, Country country) {
+		
+		//System.out.println(country.getAdjacentCountries());
 		visited.put(country, 1);
 		ArrayList<Country> adjacent= new ArrayList<Country>();
 		adjacent=adjacentCountries.get(country);
