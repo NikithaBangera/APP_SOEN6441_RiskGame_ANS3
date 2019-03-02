@@ -14,6 +14,7 @@ import javax.swing.filechooser.FileSystemView;
 import com.riskgame.action.CreateAndEditMap;
 import com.riskgame.action.ReadAndWriteMap;
 import com.riskgame.common.GameMapGraph;
+import com.riskgame.common.MapTag;
 import com.riskgame.gameplay.StartupPhase;
 
 public class RiskMain extends JFrame {
@@ -116,15 +117,28 @@ public class RiskMain extends JFrame {
 		try {
 			GameMapGraph mapGraph = new GameMapGraph();
 			mapGraph = createandeditmap.getMapGraph();
+//			mockData(mapGraph);
+			
 			String choice = br.readLine();
 			if (choice.equalsIgnoreCase("Yes")) {
 				StartupPhase start = new StartupPhase();
-
+				System.out.println(mapGraph);
 				start.gamePlay(mapGraph);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void mockData(GameMapGraph mapGraph) {
+		MapTag mapTag = new MapTag();
+		mapTag.setAuthorName("shresthi");
+		mapTag.setWarn("yes");
+		mapTag.setImageName("world.bmp");
+		mapTag.setWrap("yes");
+		mapTag.setScroll("horizontal");
+		mapGraph.setMapTag(mapTag);
+		
 	}
 
 	public static void main(String[] args) throws Exception {

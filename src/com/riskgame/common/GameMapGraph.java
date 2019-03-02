@@ -149,9 +149,13 @@ private MapTag mapTag;
 
 	@Override
 	public String toString() {
-		return "GameMapGraph \n"
-				+ "Map Metadata :\n" + mapTag + "\nNumber Of Continents: " + countOfContinents + "\nDetails of Continents:\n"
-				+ continents + "\nNumber Of Countries:" + countOfCountries + "\nDetails of Countries:" + countries + "]";
+		return "GameMapGraph [mapTag=" + mapTag + ", countOfContinents=" + countOfContinents + ", continents="
+				+ continents + ", countOfCountries=" + countOfCountries + ", countries=" + countries + ", filename="
+				+ filename + ", countrySet=" + countrySet + "]";
 	}
+
+
+
+	
 
 }

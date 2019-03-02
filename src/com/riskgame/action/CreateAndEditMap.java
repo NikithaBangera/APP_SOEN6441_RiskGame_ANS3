@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,6 +24,7 @@ public class CreateAndEditMap {
 	private String fileName;
 	private ArrayList<Country> listOfCountries;
 	private ArrayList<Continent> listOfContinents;
+	private HashMap<String, Country> setOfCountries;
 	BufferedReader br;
 	boolean returnflag = false;
 
@@ -187,6 +189,7 @@ public class CreateAndEditMap {
 				}
 			}
 			mapGraph.setContinents(listOfContinents);
+			mapGraph.setCountOfContinents(numberOfContinents);
 			System.out.println("\nContinent Added Successfully.\n");
 		} else {
 			System.out.println("Number of Continents should be greater than zero\n");
@@ -197,6 +200,7 @@ public class CreateAndEditMap {
 	public void setCountryDetails() throws Exception {
 		listOfContinents = new ArrayList<>();
 		listOfCountries = new ArrayList<>();
+		setOfCountries = new HashMap<String, Country>();
 		int numberOfCountries = 0;
 		int index = 0;
 		boolean countryexist = false;
@@ -225,7 +229,6 @@ public class CreateAndEditMap {
 					Matcher match = pattern.matcher(countryDetails.trim());
 					if (match.matches()) {
 						Country country = new Country();
-
 						String[] input = countryDetails.split(",");
 						if (alreadyDefinedContinent(input[3].trim())) {
 							String details[] = countryDetails.split(",");
@@ -235,9 +238,15 @@ public class CreateAndEditMap {
 							country.setyValue(details[2]);
 							Continent continent = new Continent();
 							continent.setName(details[3]);
+							listOfContinents.forEach(c -> {
+								if (c.getContinentName().equalsIgnoreCase(details[3])) {
+									continent.setControlValue(c.getControlValue());
+								}
+							});
 							country.setPartOfContinent(continent);
+							country.setContinent(details[3]);
+
 							ArrayList<String> adjacentCountries = new ArrayList<>();
-							// country.setAdjacentCountries(adjacentCountries);
 							for (Country availableCountry : listOfCountries) {
 								if (availableCountry.getName().equalsIgnoreCase(details[0])) {
 									index = listOfCountries.indexOf(availableCountry);
@@ -269,8 +278,10 @@ public class CreateAndEditMap {
 						--i;
 						continue;
 					}
+
 				}
 				mapGraph.setCountries(listOfCountries);
+				mapGraph.setCountOfCountries(numberOfCountries);
 				System.out.println("\nCountries Added Successfully.\n");
 
 			} else {
@@ -672,7 +683,10 @@ public class CreateAndEditMap {
 						"Sorry! The entered continent name cannot be blank.Provided contains only whitespace (ie. spaces, tabs or line breaks).\nPlease enter the file name to save map file:\n");
 				fileName = br.readLine();
 			}
-
+			listOfCountries.forEach(country -> {
+				setOfCountries.put(country.getName(), country);
+				mapGraph.setCountrySet(setOfCountries);
+			});
 			mapGraph.setFilename(fileName);
 			ReadAndWriteMap save = new ReadAndWriteMap();
 			save.saveMap(mapGraph);
