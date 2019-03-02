@@ -83,7 +83,9 @@ public class CreateAndEditMap {
 				deleteAdjacency();
 				break;
 				
-		case 8: break;
+		case 8: printMapDetails();
+				newMapCreation();
+				break;
 		
 		case 9:	System.out.println("\nPlease enter the mapfile name to save the data in below format.");
 	        	System.out.println("mapname.map");
@@ -513,6 +515,43 @@ public class CreateAndEditMap {
 	      System.out.println("The country " + value.toUpperCase() + " does not exist in the map.");
 
 	   newMapCreation();
+	}
+	public void printMapDetails() 
+	{
+	 if(maptag.getMapTagData().size() > 0)
+	 {
+		System.out.println("Entered map tag data :");
+		System.out.println("----------------------");
+		for (String maptag : maptag.getMapTagData())
+		{
+			System.out.println(maptag);
+		}
+	 }
+	 if(continent.getContinents().size() > 0)
+	 {
+		System.out.println("\n");
+		System.out.println("Entered continent and control value details :");
+		System.out.println("---------------------------------------------");
+		for(Map.Entry<String, Integer> entry: countriesctrlval.entrySet())
+		{
+			System.out.println("Continent name :  " + entry.getKey() + " , Control value : " + entry.getValue());
+		}
+	 }
+	 if(country.getCountries() != null)
+	 {
+		System.out.println("\n");
+	   	System.out.println("Entered countries and their adjacent countries : ");
+	   	System.out.println("--------------------------------------------------");
+		for(Country c:country.getCountries())
+		{
+			String format = c.getAdjacCountries().get(c.getName()).toString();
+			System.out.println("Country name : " + c.getName() + " ,  Adjacent counties : " +format.substring(1,format.length()-1));
+		}
+	 }
+	 if((maptag.getMapTagData().size() < 0) && (continent.getContinents().size() < 0) && (country.getCountries()==null))
+	 {
+		 System.out.println("please enter data in map to view");
+	 }
 	}
 }
 
