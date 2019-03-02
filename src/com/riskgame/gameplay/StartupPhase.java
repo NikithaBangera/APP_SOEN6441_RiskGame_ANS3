@@ -48,7 +48,13 @@ public class StartupPhase {
 
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	
-	
+	/**
+	 * This method starts the game, obtaining the number of payers , details
+	 * and initializing them
+	 * 
+	 * @param mapGraph
+	 *            Object of mapGraph which consists of map details
+	 */
 
 	public void gamePlay(GameMapGraph mapGraph) throws Exception {
 		RiskPlayer player = new RiskPlayer();
@@ -111,6 +117,13 @@ public class StartupPhase {
 		}
 
 	}
+	
+	/**
+	 * Method to assign the number of armies to the players
+	 * which differs based on the number of players.
+	 * Allocation is done as per the conquest game rule
+	 * 
+	 */
 
 	public void allocationOfArmyToPlayers() {
 		playersList.forEach(player -> {
@@ -133,7 +146,11 @@ public class StartupPhase {
 			}
 		});
 	}
-
+     
+	/**
+	 * Method to assign countries to the players. Random allocation of countries
+	 * to the players will happen in this method
+	 */
 	public void allocationOfCountry(GameMapGraph mapGraph) {
 		// mapTag object and getMapGraph will come from Sumeetha's module
 		int i, countryIndexAssignment;
