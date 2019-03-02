@@ -8,7 +8,7 @@ import com.riskgame.common.GameMapGraph;
 import com.riskgame.common.RiskPlayer;
 
 /**
- * This class is dedicated the fortification phase of the game. It takes checks
+ * This class is dedicated for the fortification phase of the game. It takes checks
  * the number of countries user has proceeds if it is not less than 2. Takes the
  * fromCountry and toCountry value which identifies from where the player wishes
  * to move army and to where. After performing requisite validation moves army
@@ -30,7 +30,7 @@ public class FortificationPhase {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		GameMapGraph mapData = new GameMapGraph();
 		int countOfArmies = 0;
-		while (!(player.getMyCountries().size() < 2)) {
+		if (player.getMyCountries().size() > 3) {
 			boolean doFortification = true;
 			String fromCountry = "";
 			String toCountry = "";
@@ -75,6 +75,8 @@ public class FortificationPhase {
 			}
 
 			moveArmies(mapData.getCountrySet().get(fromCountry), mapData.getCountrySet().get(toCountry), countOfArmies);
+		} else {
+			System.out.println("Sorry, Fortification is not possible if the country owned is less than 2");
 		}
 	}
 

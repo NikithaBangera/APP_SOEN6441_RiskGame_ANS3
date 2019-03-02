@@ -16,28 +16,57 @@ import java.util.HashMap;
  * @author Nikitha
  */
 public class GameMapGraph {
-	/** HashMap to store the continent names */
-	private HashMap<String, Continent> continents;
+private MapTag mapTag;
+    
+    
+    /** Count of the number of countries */
+	private int countOfContinents = 0;
+	
+    /** ArrayList of Continent objects to store the continent details */
+    private ArrayList<Continent> continents;
+	
+    /** HashMap to store the continent names */
+	//private HashMap<String, Continent> continents;
+    
+    /** Count of the number of countries */
+	private int countOfCountries = 0;
+    
+    /** ArrayList of Country objects to store the country details */
+	private ArrayList<Country> countries;
 
-	/** HashMap to store the list of adjacent countries */
-	private HashMap<Country, ArrayList<String>> adjacentCountries;
+	private String filename;
 
 	/** HashMap for set of countries */
 	private HashMap<String, Country> countrySet;
 
-	/** Count of the number of countries */
-	private int countOfCountries = 0;
+	public GameMapGraph() {
+		super();
+	}
+	
+	
+
+	public GameMapGraph(MapTag mapTag, int countOfContinents, ArrayList<Continent> continents, int countOfCountries,
+			ArrayList<Country> countries) {
+		super();
+		this.mapTag = mapTag;
+		this.countOfContinents = countOfContinents;
+		this.continents = continents;
+		this.countOfCountries = countOfCountries;
+		this.countries = countries;
+	}
+
+
 
 	/**
 	 * MapGraph constructor
 	 */
-	public GameMapGraph() {
+	/*public GameMapGraph() {
 		this.continents = new HashMap<>();
 		this.adjacentCountries = new HashMap<>();
 		this.countrySet = new HashMap<>();
-	}
+	}*/
 
-	public HashMap<String, Continent> getContinents() {
+	/*public HashMap<String, Continent> getContinents() {
 		return continents;
 	}
 
@@ -45,13 +74,13 @@ public class GameMapGraph {
 		this.continents = continents;
 	}
 
-	public HashMap<Country, ArrayList<String>> getAdjacentCountries() {
+	public HashMap<Country, ArrayList<Country>> getAdjacentCountries() {
 		return adjacentCountries;
 	}
 
-	public void setAdjacentCountries(HashMap<Country, ArrayList<String>> adjacentCountries) {
+	public void setAdjacentCountries(HashMap<Country, ArrayList<Country>> adjacentCountries) {
 		this.adjacentCountries = adjacentCountries;
-	}
+	}*/
 
 	public HashMap<String, Country> getCountrySet() {
 		return countrySet;
@@ -59,6 +88,33 @@ public class GameMapGraph {
 
 	public void setCountrySet(HashMap<String, Country> countrySet) {
 		this.countrySet = countrySet;
+	}
+
+	
+	public MapTag getMapTag() {
+		return mapTag;
+	}
+
+	
+
+	public void setMapTag(MapTag mapTag) {
+		this.mapTag = mapTag;
+	}
+
+	public int getCountOfContinents() {
+		return countOfContinents;
+	}
+
+	public void setCountOfContinents(int countOfContinents) {
+		this.countOfContinents = countOfContinents;
+	}
+
+	public ArrayList<Continent> getContinents() {
+		return continents;
+	}
+
+	public void setContinents(ArrayList<Continent> continents) {
+		this.continents = continents;
 	}
 
 	public int getCountOfCountries() {
@@ -69,10 +125,33 @@ public class GameMapGraph {
 		this.countOfCountries = countOfCountries;
 	}
 
+	public ArrayList<Country> getCountries() {
+		return countries;
+	}
+
+	public void setCountries(ArrayList<Country> countries) {
+		this.countries = countries;
+	}
+
+	
+
+	public String getFilename() {
+		return filename;
+	}
+
+
+
+	public void setFilename(String filename) {
+		this.filename = filename;
+	}
+
+
+
 	@Override
 	public String toString() {
-		return "GameMapGraph [continents=" + continents + ", adjacentCountries=" + adjacentCountries + ", countrySet="
-				+ countrySet + ", countOfCountries=" + countOfCountries + "]";
+		return "GameMapGraph \n"
+				+ "Map Metadata :\n" + mapTag + "\nNumber Of Continents: " + countOfContinents + "\nDetails of Continents:\n"
+				+ continents + "\nNumber Of Countries:" + countOfCountries + "\nDetails of Countries:" + countries + "]";
 	}
 
 }
