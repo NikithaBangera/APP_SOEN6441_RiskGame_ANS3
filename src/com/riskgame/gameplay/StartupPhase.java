@@ -33,33 +33,45 @@ public class StartupPhase {
 
 	public void gamePlay(GameMapGraph mapGraph) throws Exception {
 		RiskPlayer player = new RiskPlayer();
-		boolean isAllowedToPlay = true;
+//		boolean isAllowedToPlay = true;
 
 		// Startup Phase starts here
-
+		System.out.println("****************");
+		System.out.println("****************");
+		System.out.println(mapGraph);
+		System.out.println("****************");
+		System.out.println("****************");
 		System.out.println("Enter the number of players below");
-		this.countOfthePlayers = Integer.parseInt(br.readLine());
-		while (isAllowedToPlay) {
-			if (this.countOfthePlayers > 1 && this.countOfthePlayers < 7) {
-				System.out.println("Great! Let's Play.");
-				isAllowedToPlay = false;
-			} else {
-				System.out.println("Sorry! The numbers of players can be between 2 and 6.");
-			}
-
+		countOfthePlayers = Integer.parseInt(br.readLine());
+		System.out.println("countOfthePlayers " + countOfthePlayers);
+		if (countOfthePlayers > 1 && countOfthePlayers < 7) {
+			System.out.println("Great! Let's Play.");
+//			isAllowedToPlay = false;
+		} else {
+			System.out.println("Sorry! The numbers of players can be between 2 and 6.");
 		}
-		int count = 1;
+
+//		int count = 1;
+		
 		System.out.println("Enter the name of the players");
-		while (count <= this.countOfthePlayers) {
+		for (int count = 1; count <= countOfthePlayers; count++) {
+			boolean continue1 = true;
 			RiskPlayer riskPlayer = new RiskPlayer();
 			String playername = br.readLine();
-			while (playername != null) {
-				riskPlayer.setName(playername);
+			while (continue1) {
+				if (playername != null) {
+					riskPlayer.setName(playername);
+					continue1 =false;
+
+				} else {
+					System.out.println("Player name cannot be empty");
+				}
 			}
 			playersList.add(riskPlayer);
-			count++;
 		}
-
+		playersList.forEach(P->{
+			System.out.println(P+" *\n");
+		});
 		allocationOfCountry(mapGraph);
 		allocationOfArmyToPlayers();
 		allocationOfArmyToCountriesInitially(mapGraph);
@@ -128,7 +140,7 @@ public class StartupPhase {
 
 	public void allocationOfArmyToPlayers() {
 		playersList.forEach(player -> {
-			switch (this.countOfthePlayers) {
+			switch (countOfthePlayers) {
 			case 2:
 				player.setArmyCount(40);
 				break;

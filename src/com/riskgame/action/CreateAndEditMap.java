@@ -187,6 +187,7 @@ public class CreateAndEditMap {
 				}
 			}
 			mapGraph.setContinents(listOfContinents);
+			mapGraph.setCountOfContinents(numberOfContinents);
 			System.out.println("\nContinent Added Successfully.\n");
 		} else {
 			System.out.println("Number of Continents should be greater than zero\n");
@@ -235,9 +236,15 @@ public class CreateAndEditMap {
 							country.setyValue(details[2]);
 							Continent continent = new Continent();
 							continent.setName(details[3]);
+							listOfContinents.forEach(c -> {
+								if (c.getContinentName().equalsIgnoreCase(details[3])) {
+									continent.setControlValue(c.getControlValue());
+								}
+							});
 							country.setPartOfContinent(continent);
+							country.setContinent(details[3]);
+
 							ArrayList<String> adjacentCountries = new ArrayList<>();
-							// country.setAdjacentCountries(adjacentCountries);
 							for (Country availableCountry : listOfCountries) {
 								if (availableCountry.getName().equalsIgnoreCase(details[0])) {
 									index = listOfCountries.indexOf(availableCountry);
@@ -271,6 +278,7 @@ public class CreateAndEditMap {
 					}
 				}
 				mapGraph.setCountries(listOfCountries);
+				mapGraph.setCountOfCountries(numberOfCountries);
 				System.out.println("\nCountries Added Successfully.\n");
 
 			} else {
