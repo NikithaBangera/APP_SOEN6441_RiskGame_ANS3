@@ -171,6 +171,11 @@ public class StartupPhase {
 		}
 	}
 
+	/**
+	 * Method for armies assignment to the countries so that the number
+	 * of armies in the countries will be balanced
+	 * 
+	 */
 	public void allocationOfArmyToCountries_Balance() {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		playersList.forEach(player -> {
@@ -197,7 +202,12 @@ public class StartupPhase {
 		});
 
 	}
-
+	
+	/**
+	 * Method to assign armies to the countries so that each country will get
+	 * at least one country as per the conquest game rule.
+	 * 
+	 */
 	public void allocationOfArmyToCountriesInitially(GameMapGraph mapGraph) {
 		// TODO Auto-generated method stub
 		Country country = new Country();
