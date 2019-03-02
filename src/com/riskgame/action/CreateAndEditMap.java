@@ -40,7 +40,9 @@ public class CreateAndEditMap {
 
 	public boolean newMapCreation() throws Exception {
 		boolean exit = false;
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		while (!exit) {
+			System.out.println("\nWelcome to Risk Game!");
 			System.out.println("\nChoose the below options to create a new map\n");
 			System.out.println("1. Enter Map name and Author name");
 			System.out.println("2. Add the continents\n3. Delete a continent");
@@ -50,12 +52,14 @@ public class CreateAndEditMap {
 			System.out.println("10. Exit without Saving the map");
 
 			System.out.println("\nPlease enter your choice below:");
-			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-			int option = 0;
+			String option = br.readLine().trim();
+			while (option.isEmpty()) {
+				System.err.println("\nChoice cannot be blank. Please enter your choice below:");
+				System.out.flush();
+				option = br.readLine().trim();
+			}
 
-			// try {
-			option = Integer.parseInt(br.readLine());
-			switch (option) {
+			switch (Integer.parseInt(option)) {
 			case 1:
 				createMapTag();
 				break;
@@ -108,15 +112,16 @@ public class CreateAndEditMap {
 	}
 
 	public void createMapTag() throws Exception {
-
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
 		System.out.println("Please Enter the image name of the map in below format:");
-		System.out.println("Imagename.bmp");
-		Pattern pattern = Pattern.compile("[a-zA-Z0-9]+[_-]*.[bmp]+");
+		System.out.println("(Imagename.bmp)\n");
+		Pattern pattern = Pattern.compile("[a-zA-Z0-9]+[_-]*.bmp");
 		String name = br.readLine();
 		Matcher match = pattern.matcher(name.trim());
 		while (!match.matches()) {
-			System.out.println("\nPlease enter valid image name.");
+			System.err.println("\nPlease enter valid image name.");
+			System.out.flush();
 			name = br.readLine();
 			match = pattern.matcher(name.trim());
 		}
@@ -124,19 +129,37 @@ public class CreateAndEditMap {
 
 		System.out.println("Please specify scroll is horizontal or vertical");
 		String scroll = br.readLine().trim();
+		while (!((scroll.equalsIgnoreCase("horizontal")) || (scroll.equalsIgnoreCase("vertical")) || scroll == null)) {
+			System.err.println("Invalid/Blank value entered, please enter horizontal or vertical");
+			System.out.flush();
+			scroll = br.readLine().trim();
+		}
 
-		System.out.println("Please specify wrap is yes or no");
+		System.out.println("Please specify wrap is Yes or No");
 		String wrap = br.readLine().trim();
+		while (!((wrap.equalsIgnoreCase("Yes")) || (wrap.equalsIgnoreCase("No")) || wrap == null)) {
+			System.err.println("Invalid/Blank value entered, please enter Yes or No");
+			System.out.flush();
+			wrap = br.readLine().trim();
+		}
 
 		System.out.println("Please enter the author name:");
 		String author = br.readLine().trim();
 		while (author.isEmpty()) {
-			System.out.println(
-					"Sorry! The entered author name cannot be blank.Provided contains only whitespace (ie. spaces, tabs or line breaks) \n");
+
+			System.err.println("Sorry! The entered author name cannot be blank. Please enter again \n");
+			System.out.flush();
+			author = br.readLine().trim();
+
 		}
 
-		System.out.println("Please specify warn is yes or no");
+		System.out.println("Please specify warn is Yes or No");
 		String warn = br.readLine().trim();
+		while (!((warn.equalsIgnoreCase("Yes")) || (warn.equalsIgnoreCase("No")) || warn == null)) {
+			System.err.println("Invalid/Blank value entered, please enter Yes or No");
+			System.out.flush();
+			warn = br.readLine().trim();
+		}
 
 		MapTag mapTag = new MapTag(author, warn, image, wrap, scroll);
 		mapGraph.setMapTag(mapTag);
@@ -606,13 +629,13 @@ public class CreateAndEditMap {
 				ArrayList<String> adjacent1 = checklist.get(0).getAdjacentCountries();
 				ArrayList<String> adjacent2 = checklist.get(1).getAdjacentCountries();
 				if (adjacent1.contains(checklist.get(1).getName()) && adjacent2.contains(checklist.get(0).getName())) {
-					if (!adjacent1.contains(checklist.get(1).getName())) {
+					if (adjacent1.contains(checklist.get(1).getName())) {
 						adjacent1.remove(checklist.get(1).getName());
 						checklist.get(0).setAdjacentCountries(adjacent1);
 //						countrylist.add(checklist.get(0));
 
 					}
-					if (!adjacent2.contains(checklist.get(0).getName())) {
+					if (adjacent2.contains(checklist.get(0).getName())) {
 						adjacent2.remove(checklist.get(0).getName());
 						checklist.get(1).setAdjacentCountries(adjacent2);
 //						countrylist.add(checklist.get(1));
