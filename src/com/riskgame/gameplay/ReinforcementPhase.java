@@ -72,7 +72,7 @@ public class ReinforcementPhase {
 		}
 
 		if (isPlayerOwnsContinent(player))
-			armiesAssignedPerPlayer = continent.getControlValue();
+			armiesAssignedPerPlayer += continent.getControlValue();
 
 		return armiesAssignedPerPlayer;
 	}

@@ -10,28 +10,29 @@ import com.riskgame.common.Country;
 import com.riskgame.gameplay.FortificationPhase;
 
 public class FortificationPhaseTest {
-	Country toCountry, fromCountry, country, toCountry1;
+	Country country, toCountry, fromCountry, toCountry1;
+	//String country;
 	FortificationPhase fortificationPhase;
 	
 	public FortificationPhaseTest() {
 		fortificationPhase = new FortificationPhase();
-		ArrayList<Country> adjacentCountries = new ArrayList<Country>();
+		ArrayList<String> adjacentCountries = new ArrayList<String>();
 		
 		country = new Country();
 		country.setName("India");
-		adjacentCountries.add(country);
+		adjacentCountries.add("India");
 		
 		country = new Country();
 		country.setName("Nepal");
-		adjacentCountries.add(country);
+		adjacentCountries.add("Nepal");
 		
 		country = new Country();
 		country.setName("Sri Lanka");
-		adjacentCountries.add(country);
+		adjacentCountries.add("Sri Lanka");
 		
 		country = new Country();
 		country.setName("China");
-		adjacentCountries.add(country);
+		adjacentCountries.add("China");
 		
 		fromCountry = new Country();
 		fromCountry.setName("Bangladesh");

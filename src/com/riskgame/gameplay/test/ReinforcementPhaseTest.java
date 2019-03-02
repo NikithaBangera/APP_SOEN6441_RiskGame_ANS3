@@ -39,12 +39,12 @@ public class ReinforcementPhaseTest {
 		
 		
 		continent.setName("Northern Africa");
-		continent.setControl_value(4);
+		continent.setControlValue(4);
 	}
 	
 	@Test
 	public void isControlValueAssignedToPlayer() {
-		assertEquals(continent.getControlValue(), ReinforcementPhase.armiesToBeAssigned(player, continent));
+		assertEquals(7, ReinforcementPhase.armiesToBeAssigned(player, continent));
 	}
 	
 	@Test
