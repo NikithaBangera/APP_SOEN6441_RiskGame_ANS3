@@ -47,6 +47,15 @@ public class CreateAndEditMap {
 	public String fileName;
 	public String tag;
 	
+	/**
+	 * Method for creating a new map taking MapTag data, Continents and Countries
+	 * as inputs from user. It provides options to add and delete continents,
+	 * countries and adjacencies between countries.
+	 * Also provides option to view current data and save and exit.
+	 * 
+	 */
+	//@return true if the map is successfully created; otherwise false
+	
 	public void newMapCreation() throws Exception{
 		System.out.println("\nChoose the below options to create a new map:");
 		System.out.println("1. Enter Map Tag Data:");
@@ -124,6 +133,10 @@ public class CreateAndEditMap {
 		}
 	}
 	
+	/**
+	 * Method for adding Map tag data.
+	 * 
+	 */
 	public void createMapTag() throws Exception {
 	
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -182,6 +195,10 @@ public class CreateAndEditMap {
 		newMapCreation();
 	}
 	
+	/**
+	 * Method for adding Continents and their Control values.
+	 * 
+	 */
 	public void setContinentDetails() throws Exception
 	{	
 		int numberOfContinents = 0;
@@ -226,7 +243,10 @@ public class CreateAndEditMap {
 		newMapCreation();
 	}
 	
-	
+	/**
+	 * Method for adding Countries to a continent and adding their adjacent countries.
+	 * 
+	 */
   	
 	public void setCountryDetails() throws Exception
 	{
@@ -303,10 +323,15 @@ public class CreateAndEditMap {
 	   }
 	}
    
-	
+	/**
+	 * Method for creating an adjacency between two Countries.
+	 * 
+	 */
 	public void setCountryAdjacency() throws Exception
 	{
 	Pattern pattern =  Pattern.compile("[a-z, A-Z]+,+[a-z, A-Z]+");
+	boolean isCountry1Exists = false;
+	boolean isCountry2Exists = false;
 	String country1,country2;
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	String countrynames = br.readLine();
@@ -320,7 +345,18 @@ public class CreateAndEditMap {
 			if(!country1.equals(country2))
 			{
 				
-    		   if(isCountry1Exists && isCountry2Exists)
+    		   for(Country c:country.getCountries())
+			   {
+    			   if(c.getAdjacCountries().containsKey(country1)) 
+    			   {
+    				   isCountry1Exists = true;
+    			   }
+    			   else if(c.getAdjacCountries().containsKey(country2)) 
+    			   {
+					  isCountry2Exists = true;
+    				}
+    			}
+			   if(isCountry1Exists && isCountry2Exists)
 			   {
 				 for(Country c:country.getCountries())
 				 {
@@ -351,7 +387,11 @@ public class CreateAndEditMap {
 	newMapCreation();
 }
 	
-
+	/**
+	 * Method for saving map tag data, continents, countries and their 
+	 * adjacent countries in map file.
+	 * 
+	 */
 	
 	public void saveDataToMap() throws IOException
 	{
@@ -409,6 +449,11 @@ public class CreateAndEditMap {
 		}
 	}
 	
+	/**
+	 * Method for deleting an adjacency between two countries.
+	 * 
+	 */
+	
 	public void deleteAdjacency() throws Exception
 	{
 	   Pattern pattern = Pattern.compile("[a-z, A-Z]+,+[a-z, A-Z]+");
@@ -462,6 +507,10 @@ public class CreateAndEditMap {
 	   newMapCreation();
 	}
 	
+	/**
+	 * Method for deleting a Continent.
+	 * 
+	 */
 	
 	public void deleteContinent(String value) throws Exception
 	{
@@ -495,6 +544,10 @@ public class CreateAndEditMap {
 	   newMapCreation();
 	}
 	
+	/**
+	 * Method for deleting a Country.
+	 * 
+	 */
 	
 	public void deleteCountry(String value) throws Exception
 	{
@@ -539,8 +592,15 @@ public class CreateAndEditMap {
 	         }
 	      }
 	   }
+	   if (!countryExists)
+	      System.out.println("The country " + value.toUpperCase() + " does not exist in the map.");
+
 	   newMapCreation();
 	}
+	
+	/**
+	 * Method for printing current map details.
+	 */
 	
 	public void printMapDetails() 
 	{
