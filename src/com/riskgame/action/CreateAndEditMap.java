@@ -37,7 +37,7 @@ public class CreateAndEditMap {
 		System.out.println("2. Add the continents:\n3. Delete a continent:");
 		System.out.println("4. Add the countries:\n5. Delete a country:");
 		System.out.println("6. Add adjacency:\n7. Delete Adjacency:");
-		System.out.println("8. Show the map's contents\n9. Save the map and exit:");
+		System.out.println("8. Show map contents\n9. Save the map and exit:");
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int option =0;
 		try{
@@ -214,7 +214,9 @@ public class CreateAndEditMap {
   	
 	public void setCountryDetails() throws Exception
 	{
-		int numberOfCountries=0;
+	   if(!(continent.getContinents().isEmpty()))
+			   {	
+	    int numberOfCountries=0;
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		try {
 			numberOfCountries = Integer.parseInt(br.readLine());
@@ -278,55 +280,72 @@ public class CreateAndEditMap {
 		country.setCountries(countries);
 		System.out.println("\nCountry details added");
 		newMapCreation();
+			   }
+	   else {
+		   System.out.println("Please enter continent to add countries");
+		   newMapCreation();
+	   }
 	}
-	public void setCountryAdjacency() throws Exception
-	{
-		Pattern pattern =  Pattern.compile("[a-z, A-Z]+,+[a-z, A-Z]+");
-		boolean isCountry1Exists = false;
-		boolean isCountry2Exists = false;
-		String country1,country2;
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		String countrynames = br.readLine();
-		Matcher match = pattern.matcher(countrynames.trim());
-		if (country.getCountries() != null)
-		{
-		if(match.matches()) 
-		{			
-			country1 = countrynames.split(",")[0]; 
-			country2 = countrynames.split(",")[1]; 
-			
+public void setCountryAdjacency() throws Exception
+{
+	Pattern pattern =  Pattern.compile("[a-z, A-Z]+,+[a-z, A-Z]+");
+	boolean isCountry1Exists = false;
+	boolean isCountry2Exists = false;
+	String country1,country2;
+	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	String countrynames = br.readLine();
+	Matcher match = pattern.matcher(countrynames.trim());
+	if(match.matches()) 
+	{			
+		country1 = countrynames.split(",")[0]; 
+		country2 = countrynames.split(",")[1]; 
+		if(country.getCountries()!=null)
+        {		
 			if(!country1.equals(country2))
 			{
-			
-				for(Country c:country.getCountries())
-				{
-						if(c.getAdjacCountries().containsKey(country1)) {
-							isCountry1Exists = true;
-						c.getAdjacCountries().get(country1).add(country2);}
-						
-					if(c.getAdjacCountries().containsKey(country2)) {
-						isCountry2Exists=true;
-						c.getAdjacCountries().get(country2).add(country1);}
-				}
-				if((isCountry1Exists && isCountry2Exists))
-				{
-					System.out.println("Adjacency created between " +country1.toUpperCase() + " and " +country2.toUpperCase());
-				}
+				
+    		   for(Country c:country.getCountries())
+			   {
+    			   if(c.getAdjacCountries().containsKey(country1)) 
+    			   {
+    				   isCountry1Exists = true;
+    			   }
+    			   else if(c.getAdjacCountries().containsKey(country2)) 
+    			   {
+					  isCountry2Exists = true;
+    				}
+    			}
+			   if(isCountry1Exists && isCountry2Exists)
+			   {
+				 for(Country c:country.getCountries())
+				 {
+					 if(c.getAdjacCountries().containsKey(country1)) 
+					 { c.getAdjacCountries().get(country1).add(country2);}
+					 else if(c.getAdjacCountries().containsKey(country2)) 
+	    			   {c.getAdjacCountries().get(country2).add(country1);}
+    			  }
+				 System.out.println("Adjacency created between " +country1.toUpperCase() + " and " +country2.toUpperCase());
+    		   }
+			   else
+			   { System.out.println("Entered countries not exists in the map ");}
 			}
-			else {
-				System.out.println("Please enter valid data");
-				setCountryAdjacency();}
+			else
+			{
+	   			System.out.println("Please enter valid data");
+				setCountryAdjacency();
+			}
+    	}else {
+    		System.out.println("Please add countries to create adjacency ");
+    	}
 	}
-		else {
-			System.out.println("Please enter in valid format : ");
-			setCountryAdjacency();}
-		}
-		else {
-			System.out.println("Please add counties in the map to create an adjacency");
-		}
-		newMapCreation();
+	else 
+	{
+	    System.out.println("Please enter in valid format : ");
+	    setCountryAdjacency();
 	}
-		
+	newMapCreation();
+}
+			
 	public void saveDataToMap() throws IOException
 	{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -516,6 +535,7 @@ public class CreateAndEditMap {
 
 	   newMapCreation();
 	}
+	
 	public void printMapDetails() 
 	{
 	 if(maptag.getMapTagData().size() > 0)
