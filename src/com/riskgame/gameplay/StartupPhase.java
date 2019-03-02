@@ -25,6 +25,24 @@ public class StartupPhase {
 	/** Variable to store the total number of players in game */
 	private int countOfthePlayers = 0;
 	
+	/**
+	 * Method to get the count of the players
+	 * 
+	 * @return Integer count of the players.
+	 */
+	public int getCountOfthePlayers() {
+        return countOfthePlayers;
+    }
+    
+	/**
+	 * Method setting the count of the players
+	 * 
+	 * @return Integer which has Player's count.
+	 */
+    public void setCountOfthePlayers(int countOfthePlayers) {
+        this.countOfthePlayers = countOfthePlayers;
+    }
+	
 	/**List which consists of players name*/
 	ArrayList<RiskPlayer> playersList = new ArrayList<RiskPlayer>();
 
@@ -37,10 +55,12 @@ public class StartupPhase {
 		return playersList;
 	}
 
-	/**
-	 * Method to get the list of the player's name
+    
+    /**
+	 * Method for setting the Player's list.
 	 * 
-	 * @return ArrayList which has Players name.
+	 * @param playersList
+	 *            It is the player's list needs to be set.
 	 */
 	public void setPlayersList(ArrayList<RiskPlayer> playersList) {
 		this.playersList = playersList;
@@ -277,5 +297,6 @@ public class StartupPhase {
 
 	}
 	// Function of StartUp Phase ends here
+
 
 }
