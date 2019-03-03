@@ -37,7 +37,15 @@ public class CreateAndEditMap {
 	public void setMapGraph(GameMapGraph mapGraph) {
 		this.mapGraph = mapGraph;
 	}
+	
+	public ArrayList<Continent> getListOfContinents() {
+		return listOfContinents;
+	}
 
+	public void setListOfContinents(ArrayList<Continent> listOfContinents) {
+		this.listOfContinents = listOfContinents;
+	}
+	
 	public boolean newMapCreation() throws Exception {
 		boolean exit = false;
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -747,7 +755,7 @@ public class CreateAndEditMap {
 		} else {
 			System.out.println("No Continent Defined for Map\n");
 		}
-		System.out.println("\nContinents:");
+		System.out.println("\nCountries:");
 		if (mapGraph.getCountries() != null && !mapGraph.getCountries().isEmpty()) {
 			System.out.println("\nNumber of Countries: " + mapGraph.getCountries().size());
 			System.out.println("\nCountry Details:");

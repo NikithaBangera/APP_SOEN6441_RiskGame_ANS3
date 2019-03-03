@@ -119,7 +119,12 @@ public class RiskMain extends JFrame {
 			mapGraph = createandeditmap.getMapGraph();
 //			mockData(mapGraph);
 			
-			String choice = br.readLine();
+			String choice = br.readLine().trim();
+			while (choice.isEmpty()) {
+				System.err.println("\nChoice cannot be blank. Please enter the correct choice below:");
+				System.out.flush();
+				choice = br.readLine().trim();
+			}
 			if (choice.equalsIgnoreCase("Yes")) {
 				StartupPhase start = new StartupPhase();
 				System.out.println(mapGraph);

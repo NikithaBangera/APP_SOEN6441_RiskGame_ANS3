@@ -50,7 +50,14 @@ public class StartupPhase {
 		System.out.println("****************");
 		System.out.println("****************");
 		System.out.println("Enter the number of players below");
-		countOfthePlayers = Integer.parseInt(br.readLine());
+		String playerCount = br.readLine().trim();
+		while (playerCount.isEmpty()) {
+			System.err.println("\nPlayer name cannot be blank. Please enter the correct player name below:");
+			System.out.flush();
+			playerCount = br.readLine().trim();
+		}
+		countOfthePlayers = Integer.parseInt(playerCount);
+
 		System.out.println("countOfthePlayers " + countOfthePlayers);
 		if (countOfthePlayers > 1 && countOfthePlayers < 7) {
 			System.out.println("Great! Let's Play.");
@@ -65,7 +72,13 @@ public class StartupPhase {
 		for (int count = 1; count <= countOfthePlayers; count++) {
 			boolean continue1 = true;
 			RiskPlayer riskPlayer = new RiskPlayer();
-			String playername = br.readLine();
+			String playername = br.readLine().trim();
+			while (playername.isEmpty()) {
+				System.err.println("\nPlayer name cannot be blank. Please enter the correct player name below:");
+				System.out.flush();
+				playername = br.readLine().trim();
+			}
+			
 			while (continue1) {
 				if (playername != null) {
 					riskPlayer.setName(playername);
@@ -83,7 +96,7 @@ public class StartupPhase {
 		allocationOfCountry(mapGraph);
 		allocationOfArmyToPlayers();
 		allocationOfArmyToCountriesInitially(mapGraph);
-		allocationOfArmyToCountries_Balance();
+		allocationOfRemainingArmyToCountries();
 
 		// Startup Phase starts here
 
@@ -99,21 +112,34 @@ public class StartupPhase {
 			System.out.println("Reinforcement Phase begins!\n");
 			System.out.println("Player: " + player.getName() + "\n");
 			System.out.println("Do you want to continue with Reinforcement phase? (Yes or No) ");
-			if (br.readLine().trim().equalsIgnoreCase("Yes")) {
+			String choice = br.readLine().trim();
+			while (choice.isEmpty()) {
+				System.err.println("\nChoice cannot be blank. Please enter the correct choice below:");
+				System.out.flush();
+				choice = br.readLine().trim();
+			}
+			
+			if (choice.equalsIgnoreCase("Yes")) {
 				ReinforcementPhase reinforcement = new ReinforcementPhase();
 				reinforcement.startReinforcement(player);
 			} else {
 				System.out.println("Exited the Reinforcement Phase!");
 			}
 
-			// Reinforcement Phase starts here
+			// Reinforcement Phase ends here
 
 			// Fortification Phase starts here
 
 			System.out.println("Fortification Phase begins!\n");
 			System.out.println("Player: " + player.getName() + "\n");
 			System.out.println("Do you wish to start the Fortification phase? (Yes or No)");
-			if (br.readLine().trim().equalsIgnoreCase("Yes")) {
+			String choice1 = br.readLine().trim();
+			while (choice1.isEmpty()) {
+				System.err.println("\nChoice cannot be blank. Please enter the correct choice below:");
+				System.out.flush();
+				choice1 = br.readLine().trim();
+			}
+			if (choice1.equalsIgnoreCase("Yes")) {
 				FortificationPhase fortification = new FortificationPhase();
 				fortification.startGameFortification(player, mapGraph);
 			} else {
@@ -201,7 +227,7 @@ public class StartupPhase {
 		});
 	}
 
-	public void allocationOfArmyToCountries_Balance() {
+	public void allocationOfRemainingArmyToCountries() {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		playersList.forEach(player -> {
 			System.out.println("Player Name: " + player.getName() + "\n");
@@ -217,8 +243,14 @@ public class StartupPhase {
 					System.out.println("Available Armies: " + player.getArmyCount());
 					System.out.println("Enter number of armies you want to assign to " + con.getName());
 					try {
-						int number_armies = Integer.parseInt(br.readLine());
-						player.armiesAssignedToCountries(con, number_armies);
+						String numArmies = br.readLine().trim();
+						while (numArmies.isEmpty()) {
+							System.err.println("\nNumber of armies cannot be blank. Please enter the correct number below:");
+							System.out.flush();
+							numArmies = br.readLine().trim();
+						}
+						int numberOFarmies = Integer.parseInt(numArmies);
+						player.armiesAssignedToCountries(con, numberOFarmies);
 					} catch (NumberFormatException e) {
 						System.out.println("Please enter a valid number.");
 						e.printStackTrace();

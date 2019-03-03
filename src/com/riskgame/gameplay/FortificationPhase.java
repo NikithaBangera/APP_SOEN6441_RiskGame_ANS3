@@ -42,9 +42,19 @@ public class FortificationPhase {
 				}
 				System.out.println("Enter the name of country from which you want to move some armies :");
 				fromCountry = br.readLine().trim();
+				while (fromCountry.isEmpty()) {
+					System.err.println("\nFrom Country cannot be blank. Please enter the correct country name below:");
+					System.out.flush();
+					fromCountry = br.readLine().trim();
+				}
 				System.out.println(
 						"Enter the name of country to which you want to move some armies, from country " + fromCountry);
 				toCountry = br.readLine().trim();
+				while (toCountry.isEmpty()) {
+					System.err.println("\nTo Country cannot be blank. Please enter the correct country name below:");
+					System.out.flush();
+					toCountry = br.readLine().trim();
+				}
 
 				System.out.println("\nfrom country " + fromCountry);
 				System.out.println("\ntoCountry " + toCountry);
@@ -66,7 +76,13 @@ public class FortificationPhase {
 				}
 				System.out.println("Enter the number of armies to move from " + fromCountry + " to " + toCountry);
 				try {
-					countOfArmies = Integer.parseInt(br.readLine());
+					String countOfArmy = br.readLine().trim();
+					while (countOfArmy.isEmpty()) {
+						System.err.println("\nArmy count cannot be blank. Please enter the correct number below:");
+						System.out.flush();
+						countOfArmy = br.readLine().trim();
+					}
+					countOfArmies = Integer.parseInt(countOfArmy);
 					if (countOfArmies > mapData.getCountrySet().get(fromCountry).getNoOfArmies()) {
 						System.out.println(
 								"Insufficient armies available, fortification is not possible with asked number of armies.");
