@@ -60,12 +60,20 @@ public class CreateAndEditMap {
 			System.out.println("10. Exit without Saving the map");
 
 			System.out.println("\nPlease enter your choice below:");
+			Pattern pattern = Pattern.compile("[0-9]+");
 			String option = br.readLine().trim();
-			while (option.isEmpty()) {
-				System.err.println("\nChoice cannot be blank. Please enter your choice below:");
+			Matcher match = pattern.matcher(option.trim());
+			while (!(match.matches())) {
+				System.err.println("Please enter a valid option(number) from the game menu!");
 				System.out.flush();
 				option = br.readLine().trim();
+				match = pattern.matcher(option.trim());
 			}
+//			while (option.isEmpty()) {
+//				System.err.println("\nChoice cannot be blank. Please enter your choice below:");
+//				System.out.flush();
+//				option = br.readLine().trim();
+//			}
 
 			switch (Integer.parseInt(option)) {
 			case 1:
@@ -130,17 +138,23 @@ public class CreateAndEditMap {
 
 			System.out.println("\nPlease enter your choice below:");
 			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-			int option = 0;
-
-			// try {
-			String option1 = br.readLine().trim();
-			while (option1.isEmpty()) {
-				System.err.println("\nChoice cannot be blank. Please enter your choice below:");
+			Pattern pattern = Pattern.compile("[0-9]+");
+			String option = br.readLine().trim();
+			Matcher match = pattern.matcher(option.trim());
+			while (!(match.matches())) {
+				System.err.println("Please enter a valid option(number) from the game menu!");
 				System.out.flush();
-				option1 = br.readLine().trim();
+				option = br.readLine().trim();
+				match = pattern.matcher(option.trim());
 			}
-			option = Integer.parseInt(option1);
-			switch (option) {
+//			while (option.isEmpty()) {
+//				System.err.println("\nChoice cannot be blank. Please enter your choice below:");
+//				System.out.flush();
+//				option = br.readLine().trim();
+//			}
+
+
+			switch (Integer.parseInt(option)) {
 			case 1:
 				createMapTag();
 				break;
@@ -245,28 +259,32 @@ public class CreateAndEditMap {
 
 	public void setContinentDetails() throws Exception {
 		listOfContinents = new ArrayList<>();
-		int numberOfContinents = 0;
+		String num;
 		if (mapGraph.getContinents() != null) {
 			listOfContinents = mapGraph.getContinents();
 		}
 		System.out.println("\nPlease enter the number of Continent:");
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		try {
-			numberOfContinents = Integer.parseInt(br.readLine());
-		} catch (NumberFormatException e) {
-			System.out.println("\nPlease enter valid number");
-			setContinentDetails();
-
+		num = br.readLine();
+		Pattern pattern = Pattern.compile("[0-9]+");
+		Matcher match = pattern.matcher(num);
+		while (!(match.matches())) {
+			System.err.println("Please enter valid number of continents!");
+			System.out.flush();
+			num = br.readLine().trim();
+			match = pattern.matcher(num.trim());
 		}
+
+		int numberOfContinents = Integer.parseInt(num);
 
 		if (numberOfContinents > 0) {
 			System.out.println("Please enter continent details in below format:");
 			System.out.println("Continent name=Control Value");
-			Pattern pattern = Pattern.compile("[a-zA-Z\\s]+=[0-9]+");
+			pattern = Pattern.compile("[a-zA-Z\\s]+=[0-9]+");
 
 			for (int i = 0; i < numberOfContinents; i++) {
 				String continentName = br.readLine();
-				Matcher match = pattern.matcher(continentName.trim());
+				match = pattern.matcher(continentName.trim());
 				if (match.matches()) {
 					Continent continent = new Continent();
 					int controlValue = Integer.parseInt(continentName.split("=")[1]);
@@ -302,19 +320,22 @@ public class CreateAndEditMap {
 		int numberOfCountries = 0;
 		int index = 0;
 		boolean countryexist = false;
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		if (mapGraph.getContinents() != null && !mapGraph.getContinents().isEmpty()) {
 			listOfContinents = mapGraph.getContinents();
 			if (mapGraph.getCountries() != null) {
 				listOfCountries = mapGraph.getCountries();
 			}
-			System.out.println("\nPlease enter the number of Countries:");
-			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-			try {
-				numberOfCountries = Integer.parseInt(br.readLine());
-			} catch (NumberFormatException e) {
-				System.out.println("\nPlease enter valid number");
-				setCountryDetails();
-
+			boolean proceed = true;
+			while (proceed) {
+				System.out.println("\nPlease enter the number of Countries:");
+				try {
+					numberOfCountries = Integer.parseInt(br.readLine());
+					proceed = false;
+				} catch (NumberFormatException e) {
+					System.out.println("\nPlease enter valid number");
+					br = new BufferedReader(new InputStreamReader(System.in));
+				}
 			}
 			if (numberOfCountries > 0) {
 				System.out.println("Please enter the details of the countries in the below format:");
@@ -801,7 +822,8 @@ public class CreateAndEditMap {
 
 		listOfCountries.forEach(country -> {
 			if (!availableContinents.contains(country.getName())) {
-				availableContinents.add(country.getPartOfContinent().getContinentName());
+				if (country.getPartOfContinent() != null)
+					availableContinents.add(country.getPartOfContinent().getContinentName());
 			}
 		});
 
@@ -850,6 +872,7 @@ public class CreateAndEditMap {
 				setOfCountries.put(country.getName(), country);
 				mapGraph.setCountrySet(setOfCountries);
 			});
+
 			mapGraph.setFilename(fileName);
 			ReadAndWriteMap save = new ReadAndWriteMap();
 			save.saveMap(mapGraph);

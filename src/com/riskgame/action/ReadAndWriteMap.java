@@ -270,8 +270,7 @@ public class ReadAndWriteMap {
 		for (int i = 1; i < countryData.length; i++) {
 			String data = countryData[i].trim();
 			// System.out.println("data: "+data);
-			//Pattern pattern = Pattern.compile("[a-zA-Z\\s]+,[0-9]+,[0-9]+,[a-zA-Z\\s]+(,[a-zA-Z\\s]+)*");
-			Pattern pattern = Pattern.compile("[^;,]+,[0-9]+,[0-9]+,[^;,]+,[^;,]+(,[^;,]+)*");
+			Pattern pattern = Pattern.compile("[a-zA-Z\\s]+,[0-9]+,[0-9]+,[a-zA-Z\\s]+(,[a-zA-Z\\s]+)*");
 			if (!data.trim().isEmpty()) {
 				Matcher match = pattern.matcher(data.trim());
 				if (!match.matches()) {

@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import com.riskgame.action.CreateAndEditMap;
 import com.riskgame.common.Continent;
 
-class CreateAndEditMapTest {
+public class CreateAndEditMapTest {
 	CreateAndEditMap createAndEditMap; 
 	Continent continent1, continent2, continent3;
 	ArrayList<Continent> listofContinents = new ArrayList<Continent>();

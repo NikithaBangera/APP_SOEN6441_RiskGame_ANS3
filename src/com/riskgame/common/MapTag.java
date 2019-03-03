@@ -63,8 +63,8 @@ public class MapTag {
 
 	@Override
 	public String toString() {
-		return "[Map]\n AuthorName = " + authorName + "\n Warn = " + warn + "\n ImageName=" + imageName + "\n Wrap="
-				+ wrap + "\n Scroll=" + scroll + "\n";
+		return "[Map]\nAuthor Name = " + authorName + "\nWarn = " + warn + "\nImage Name = " + imageName + "\nWrap = "
+				+ wrap + "\nScroll = " + scroll + "\n";
 	}
 
 }
