@@ -37,6 +37,15 @@ public class CreateAndEditMap {
 	public void setMapGraph(GameMapGraph mapGraph) {
 		this.mapGraph = mapGraph;
 	}
+	
+
+	public ArrayList<Continent> getListOfContinents() {
+		return listOfContinents;
+	}
+
+	public void setListOfContinents(ArrayList<Continent> listOfContinents) {
+		this.listOfContinents = listOfContinents;
+	}
 
 	public boolean newMapCreation() throws Exception {
 		boolean exit = false;
