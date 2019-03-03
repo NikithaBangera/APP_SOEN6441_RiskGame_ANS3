@@ -294,6 +294,7 @@ public class LoadAndEditMap {
 				mapedition = br.readLine().trim();
 			}
 		}
+		loadMap();
 	}
 
 	public String mapImage(String image) throws Exception {
@@ -349,19 +350,11 @@ public class LoadAndEditMap {
 
 		case 3:
 			deleteContinentDetails(file);
-//			System.out.println("Enter the continent to be removed from the map:");
-//			String deleteContinent = br.readLine();
+
 			break;
 
 		case 4:
-			System.out.println("Enter the number of countries:");
-			int numberOfCountries = Integer.parseInt(br.readLine());
-			System.out.println("Enter the details of the countries in the below format:");
-			System.out.println("Country Name, X-axis, Y-axis, Continent Name, Adjacent countries separated by ,");
-			for (int i = 0; i < numberOfCountries; i++) {
-				String country = br.readLine();
-				// String[] countryDetails = ;
-			}
+			addingCountry(file);
 			break;
 
 		case 5:
@@ -687,6 +680,111 @@ public class LoadAndEditMap {
 					
 			   }
 		}
+	}
+	public void addingCountry(String file) throws IOException {
+		System.out.println("Please enter the details of the countries in the below format:");
+		System.out.println("Country Name, X-axis, Y-axis, Continent Name, Adjacent countries separated by ,");
+		Pattern pattern = Pattern.compile("[a-z, A-Z]+,+[0-9]+,+[0-9]+,[a-z, A-Z]+");
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		String countryName = br.readLine();
+		String[] countryDetails =countryName.split(",") ;
+		Country country=new Country();
+		Continent continent=new Continent();
+		if(mapGraph.getCountrySet().get(countryDetails[0]) != null) {
+			country=mapGraph.getCountrySet().get(countryDetails[0]);
+		}
+		else {
+			country.setName(countryDetails[0]);
+		}
+		country.setxValue(countryDetails[1]);
+		country.setyValue(countryDetails[2]);
+		country.setContinent(countryDetails[3]);
+		if(mapGraph.getContinents().get(countryDetails[3])!=null) {
+			continent=mapGraph.getContinents().get(countryDetails[3]);
+		}
+		else {
+			continent.setName(countryDetails[3]);
+		}
+		continent.getCountriesInContinent().add(country);
+		
+		for(int i=4; i<countryDetails.length;i++) {
+			country.getAdjacentCountries().add(mapGraph.getCountrySet().get(countryDetails[i]));
+			mapGraph.getCountrySet().get(countryDetails[i]).getAdjacentCountries().add(country);
+			mapGraph.getAdjacentCountries().put(mapGraph.getCountrySet().get(countryDetails), mapGraph.getCountrySet().get(countryDetails).getAdjacentCountries());
+		}
+		mapGraph.getAdjacentCountries().put(country,country.getAdjacentCountries());
+		mapGraph.getCountrySet().put(country.getName(), country);
+		mapGraph.setCountOfCountries(mapGraph.getCountrySet().size());
+		for(Country visit:visited.keySet())
+			visited.put(visit, 0);
+		DFS(mapGraph.getAdjacentCountries(),country);
+		
+		String workingDir = System.getProperty("user.dir");
+		String fileName = file.trim();
+    	String filepath = workingDir + "/src/com/riskgame/maps/" + file;
+		File inputFile = new File(filepath);
+		File tempFile = new File(workingDir + "/src/com/riskgame/maps/myTempFile.map");
+		PrintWriter outputStream = new PrintWriter(tempFile);
+		FileReader filereader = new FileReader(filepath);
+		BufferedReader br_file = new BufferedReader(filereader);
+		String currentLine= br_file.readLine();
+		//String[] str=continentName.split("=");
+		Pattern tagData_pattern = Pattern.compile("[Map]+");
+		currentLine = currentLine.replaceAll("\\[", "").replaceAll("\\]", "");
+		Matcher tagData_match = tagData_pattern.matcher(currentLine.trim());
+		if(tagData_match.matches()) {
+			while(!currentLine.trim().isEmpty()) {
+				outputStream.println(currentLine);
+				currentLine = br_file.readLine();
+			}
+		}
+		while (currentLine.trim().isEmpty()) {
+			outputStream.println();
+			currentLine = br_file.readLine();
+		}
+		Pattern territory_pattern = Pattern.compile("[Territory]+");
+		currentLine = currentLine.replaceAll("\\[", "").replaceAll("\\]", "");
+		Matcher territory_match = territory_pattern.matcher(currentLine.trim());
+		
+		while(!territory_match.matches()) {
+			System.out.println(currentLine);
+			currentLine=br_file.readLine();
+			currentLine = currentLine.replaceAll("\\[", "").replaceAll("\\]", "");
+			territory_match = territory_pattern.matcher(currentLine.trim());	
+		}
+		
+		outputStream.println("[Territory]");
+		currentLine=br_file.readLine();
+		for(String s:mapGraph.getCountrySet().keySet()) {
+			String adjacentCountries="";
+			for(int i=0; i<mapGraph.getCountrySet().get(s).getAdjacentCountries().size();i++) {
+				adjacentCountries+=(mapGraph.getCountrySet().get(s).getAdjacentCountries().get(i).getName());
+			}
+			outputStream.println(mapGraph.getCountrySet().get(s).getName()+','+mapGraph.getCountrySet().get(s).getxValue()+','+mapGraph.getCountrySet().get(s).getyValue()+','+adjacentCountries);
+		}
+//		Pattern delete_pattern = Pattern.compile(continentName);
+//		Matcher delete_match = continents_pattern.matcher(currentLine.trim());
+//		String[] cont=currentLine.trim().split("=");
+//		while(!cont[0].equals(continentName.trim())&&(currentLine !=null)) {
+//			outputStream.println(currentLine);
+//			currentLine=br_file.readLine();
+//			cont=currentLine.trim().split("=");
+//			
+//		}
+//		if(cont[0].equals(continentName.trim())) {
+//			currentLine=br_file.readLine();
+//		}
+//		while(currentLine != null) {
+//			//String trimmedLine = currentLine.trim();
+//			outputStream.println(currentLine);
+//			currentLine = br_file.readLine();
+//			//writer.write(currentLine );
+//		}
+		outputStream.flush();
+		outputStream.close();
+		tempFile.renameTo(inputFile);
+		
+		
 	}
 	public void DFS(HashMap<Country, ArrayList<Country>> adjacentCountries, Country country) {
 		
