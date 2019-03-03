@@ -1,14 +1,14 @@
-package com.riskgame.testsuite;
+package com.riskgame.test;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import com.riskgame.gameplay.test.FortificationPhaseTest;
-import com.riskgame.gameplay.test.ReinforcementPhaseTest;
-import com.riskgame.gameplay.test.StartupPhaseTest;
-import com.riskgame.action.test.CreateAndEditMapTest;
-import com.riskgame.action.test.ReadAndWriteMapTest;
+import com.riskgame.test.FortificationPhaseTest;
+import com.riskgame.test.ReinforcementPhaseTest;
+import com.riskgame.test.StartupPhaseTest;
+import com.riskgame.test.CreateAndEditMapTest;
+import com.riskgame.test.ReadAndWriteMapTest;
 
 @RunWith(Suite.class)
 @SuiteClasses({CreateAndEditMapTest.class,ReadAndWriteMapTest.class,StartupPhaseTest.class,

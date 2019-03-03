@@ -1,4 +1,4 @@
-package com.riskgame.service.test;
+package com.riskgame.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
