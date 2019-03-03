@@ -12,7 +12,7 @@ import com.riskgame.common.RiskPlayer;
 import com.riskgame.gameplay.StartupPhase;
 
 public class StartupPhaseTest {
-    RiskPlayer player1;
+    RiskPlayer player1, player2;
     StartupPhase startUpPhase;
     Country country; 
     GameMapGraph mapGraph = new GameMapGraph();
@@ -32,6 +32,12 @@ public class StartupPhaseTest {
         countrySet.put(country.getName(), country);
         mapGraph.setCountrySet(countrySet);
         
+//        player2.setName("Ram");
+//        country.setName("India");
+//        country.setNoOfArmies(10);
+//        player2.setArmyCount(15);
+        
+        
     }
     
     @Test
@@ -44,5 +50,9 @@ public class StartupPhaseTest {
     public void testallocationOfArmyToCountriesInitially() {
     	startUpPhase.allocationOfArmyToCountriesInitially(mapGraph);
     	assertEquals(1, country.getNoOfArmies() );
+    }
+    
+    public void testallocationOfRemainingArmyToCountries() {
+    	
     }
 }
