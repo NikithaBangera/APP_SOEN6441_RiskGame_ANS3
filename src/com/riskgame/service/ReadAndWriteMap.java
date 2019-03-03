@@ -1,4 +1,4 @@
-package com.riskgame.action;
+package com.riskgame.service;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -17,10 +17,10 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.riskgame.common.Continent;
-import com.riskgame.common.Country;
-import com.riskgame.common.GameMapGraph;
-import com.riskgame.common.MapTag;
+import com.riskgame.model.Continent;
+import com.riskgame.model.Country;
+import com.riskgame.model.GameMapGraph;
+import com.riskgame.model.MapTag;
 
 public class ReadAndWriteMap {
 
@@ -52,7 +52,7 @@ public class ReadAndWriteMap {
 	public void saveMap(GameMapGraph mapgraph) throws IOException {
 
 		String workingDir = System.getProperty("user.dir");
-		File file = new File(workingDir + "\\src\\com\\riskgame\\maps\\" + mapgraph.getFilename() + ".map");
+		File file = new File(workingDir + "/src/com/riskgame/maps/" + mapgraph.getFilename() + ".map");
 		try {
 
 			if (!file.exists()) { // @SuppressWarnings("resource")

@@ -1,4 +1,4 @@
-package com.riskgame.common;
+package com.riskgame.model;
 
 public class MapTag {
 
