@@ -35,11 +35,11 @@ public class StartupPhase {
 //		boolean isAllowedToPlay = true;
 
 		// Startup Phase starts here
-		System.out.println("****************");
-		System.out.println("****************");
-		System.out.println(mapGraph);
-		System.out.println("****************");
-		System.out.println("****************");
+//		System.out.println("****************");
+//		System.out.println("****************");
+//		System.out.println(mapGraph);
+//		System.out.println("****************");
+//		System.out.println("****************");
 		System.out.println("Enter the number of players below");
 		countOfthePlayers = Integer.parseInt(br.readLine());
 		System.out.println("countOfthePlayers " + countOfthePlayers);
