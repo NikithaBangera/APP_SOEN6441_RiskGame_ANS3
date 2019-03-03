@@ -1,11 +1,12 @@
-package com.riskgame.gameplay;
+package com.riskgame.service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import com.riskgame.common.Country;
-import com.riskgame.common.GameMapGraph;
-import com.riskgame.common.RiskPlayer;
+
+import com.riskgame.model.Country;
+import com.riskgame.model.GameMapGraph;
+import com.riskgame.model.RiskPlayer;
 
 /**
  * This class is dedicated for the fortification phase of the game. It takes

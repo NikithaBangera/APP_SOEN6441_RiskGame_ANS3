@@ -1,11 +1,11 @@
-package com.riskgame.action.test;
+package com.riskgame.service.test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
-import com.riskgame.action.CreateAndEditMap;
-import com.riskgame.common.Continent;
+import com.riskgame.service.CreateAndEditMap;
+import com.riskgame.model.Continent;
 
 public class CreateAndEditMapTest {
     CreateAndEditMap createAndEditMap;

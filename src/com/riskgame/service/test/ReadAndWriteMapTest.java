@@ -1,4 +1,4 @@
-package com.riskgame.action.test;
+package com.riskgame.service.test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -6,7 +6,7 @@ import java.io.IOException;
 
 import org.junit.jupiter.api.Test;
 
-import com.riskgame.action.ReadAndWriteMap;
+import com.riskgame.service.ReadAndWriteMap;
 
  
 public class ReadAndWriteMapTest {

@@ -1,16 +1,19 @@
-package com.riskgame.gameplay;
+package com.riskgame.service;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
+
+import com.riskgame.model.Country;
+import com.riskgame.model.GameMapGraph;
+import com.riskgame.model.MapTag;
+import com.riskgame.model.RiskPlayer;
+
 import java.util.Random;
 import java.io.IOException;
-
-//import javax.swing.text.html.HTMLDocument.Iterator;
-
-import com.riskgame.common.Country;
-import com.riskgame.common.GameMapGraph;
-import com.riskgame.common.RiskPlayer;
 
 /**
  * StartupPhase is for the beginning of the game. Its will take the 
@@ -21,27 +24,9 @@ import com.riskgame.common.RiskPlayer;
  **/
 
 public class StartupPhase {
- 
+    
 	/** Variable to store the total number of players in game */
 	private int countOfthePlayers = 0;
-	
-	/**
-	 * Method to get the count of the players
-	 * 
-	 * @return Integer count of the players.
-	 */
-	public int getCountOfthePlayers() {
-        return countOfthePlayers;
-    }
-    
-	/**
-	 * Method setting the count of the players
-	 * 
-	 * @return Integer which has Player's count.
-	 */
-    public void setCountOfthePlayers(int countOfthePlayers) {
-        this.countOfthePlayers = countOfthePlayers;
-    }
 	
 	/**List which consists of players name*/
 	ArrayList<RiskPlayer> playersList = new ArrayList<RiskPlayer>();
@@ -55,8 +40,7 @@ public class StartupPhase {
 		return playersList;
 	}
 
-    
-    /**
+	/**
 	 * Method for setting the Player's list.
 	 * 
 	 * @param playersList
@@ -65,6 +49,15 @@ public class StartupPhase {
 	public void setPlayersList(ArrayList<RiskPlayer> playersList) {
 		this.playersList = playersList;
 	}
+	
+	/**
+	 * Method setting the count of the players
+	 * 
+	 * @return Integer which has Player's count.
+	 */
+    public void setCountOfthePlayers(int countOfthePlayers) {
+        this.countOfthePlayers = countOfthePlayers;
+    }
 
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -75,17 +68,16 @@ public class StartupPhase {
 	 * @param mapGraph
 	 *            Object of mapGraph which consists of map details
 	 */
-	
 	public void gamePlay(GameMapGraph mapGraph) throws Exception {
 		RiskPlayer player = new RiskPlayer();
 //		boolean isAllowedToPlay = true;
 
 		// Startup Phase starts here
-		System.out.println("****************");
-		System.out.println("****************");
-		System.out.println(mapGraph);
-		System.out.println("****************");
-		System.out.println("****************");
+//		System.out.println("****************");
+//		System.out.println("****************");
+//		System.out.println(mapGraph);
+//		System.out.println("****************");
+//		System.out.println("****************");
 		System.out.println("Enter the number of players below");
 		countOfthePlayers = Integer.parseInt(br.readLine());
 		System.out.println("countOfthePlayers " + countOfthePlayers);
@@ -169,8 +161,6 @@ public class StartupPhase {
 	 * @param mapGraph
 	 *            Object of mapGraph which consists of map details
 	 */
-	
-	
 	public void allocationOfCountry(GameMapGraph mapGraph) {
 		int i, countryIndexAssignment;
 		ArrayList<Country> countrySet = new ArrayList<>(mapGraph.getCountrySet().values());
@@ -206,14 +196,13 @@ public class StartupPhase {
 //			System.out.println("No more countries to assign");
 //		}
 	}
-
+    
 	/**
 	 * Method to assign the number of armies to the players
 	 * which differs based on the number of players.
 	 * Allocation is done as per the conquest game rule
 	 * 
 	 */
-	
 	public void allocationOfArmyToPlayers() {
 		playersList.forEach(player -> {
 			switch (countOfthePlayers) {
@@ -235,14 +224,13 @@ public class StartupPhase {
 			}
 		});
 	}
-   
+
 	/**
 	 * Method to assign armies to the countries so that each country will get
 	 * at least one country as per the conquest game rule.
 	 * @param mapGraph
 	 *            Object of mapGraph which consists of map details
 	 */
-	
 	public void allocationOfArmyToCountriesInitially(GameMapGraph mapGraph) {
 		// Country country = new Country();
 		// for (int i = 0; i < mapGraph.getCountrySet().size(); i++) {
@@ -258,7 +246,7 @@ public class StartupPhase {
 			player.setArmyCount(player.getArmyCount() - player.getMyCountries().size());
 		});
 	}
-	
+
 	/**
 	 * Method for armies assignment to the countries so that the number
 	 * of armies in the countries will be balanced
@@ -297,6 +285,5 @@ public class StartupPhase {
 
 	}
 	// Function of StartUp Phase ends here
-
 
 }

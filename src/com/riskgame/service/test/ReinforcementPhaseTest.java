@@ -1,14 +1,14 @@
-package com.riskgame.gameplay.test;
+package com.riskgame.service.test;
 
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import com.riskgame.common.Continent;
-import com.riskgame.common.Country;
-import com.riskgame.common.RiskPlayer;
-import com.riskgame.gameplay.ReinforcementPhase;
+import com.riskgame.model.Continent;
+import com.riskgame.model.Country;
+import com.riskgame.model.RiskPlayer;
+import com.riskgame.service.ReinforcementPhase;
 
 public class ReinforcementPhaseTest {
     RiskPlayer player, player1;
