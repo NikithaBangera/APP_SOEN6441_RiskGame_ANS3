@@ -12,11 +12,11 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 
-import com.riskgame.action.CreateAndEditMap;
-import com.riskgame.action.ReadAndWriteMap;
-import com.riskgame.common.GameMapGraph;
-import com.riskgame.common.MapTag;
-import com.riskgame.gameplay.StartupPhase;
+import com.riskgame.model.GameMapGraph;
+import com.riskgame.model.MapTag;
+import com.riskgame.service.CreateAndEditMap;
+import com.riskgame.service.ReadAndWriteMap;
+import com.riskgame.service.StartupPhase;
 
 public class RiskMain extends JFrame {
 	JButton createNewMapButton, loadExistingMapButton, exitMapButton;
@@ -58,7 +58,7 @@ public class RiskMain extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//Load map functionality
+				// Load map functionality
 				JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
 				jfc.setDialogTitle("Select an image");
 				jfc.setAcceptAllFileFilterUsed(false);
@@ -87,16 +87,10 @@ public class RiskMain extends JFrame {
 							System.out.println(ReadAndWriteMap.getError());
 						}
 					} catch (IOException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					} catch (Exception e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-
-//					if (isGoodToStartGame) {
-//						startGame();
-//					}
 
 				}
 			}
@@ -132,8 +126,6 @@ public class RiskMain extends JFrame {
 		try {
 			GameMapGraph createMapGraph = new GameMapGraph();
 			createMapGraph = createandeditmap.getMapGraph();
-//			mockData(mapGraph);
-
 			String choice = br.readLine();
 			if (choice.equalsIgnoreCase("Yes")) {
 				StartupPhase start = new StartupPhase();
@@ -143,17 +135,6 @@ public class RiskMain extends JFrame {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-
-	private void mockData(GameMapGraph mapGraph) {
-		MapTag mapTag = new MapTag();
-		mapTag.setAuthorName("shresthi");
-		mapTag.setWarn("yes");
-		mapTag.setImageName("world.bmp");
-		mapTag.setWrap("yes");
-		mapTag.setScroll("horizontal");
-		mapGraph.setMapTag(mapTag);
-
 	}
 
 	public static void main(String[] args) throws Exception {
