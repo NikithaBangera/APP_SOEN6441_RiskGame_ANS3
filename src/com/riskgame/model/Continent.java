@@ -1,4 +1,4 @@
-package com.riskgame.common;
+package com.riskgame.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,7 +21,7 @@ public class Continent {
 		return controlValue;
 	}
 
-	public void setControl_value(int controlValue) {
+	public void setControlValue(int controlValue) {
 		this.controlValue = controlValue;
 	}
 
@@ -43,8 +43,8 @@ public class Continent {
 
 	@Override
 	public String toString() {
-		return "Continent [continentName=" + continentName + ", controlValue=" + controlValue + ", continentDetails="
-				+ continentDetails + ", countriesInContinent=" + countriesInContinent + "]";
+		return "Continents: \n[continentName=" + continentName + ", controlValue=" + controlValue + ", continentDetails="
+				+ continentDetails + ", countriesInContinent=" + countriesInContinent + "]/n";
 	}
 
 }

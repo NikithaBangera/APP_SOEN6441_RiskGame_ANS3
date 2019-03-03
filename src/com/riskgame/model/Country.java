@@ -1,4 +1,4 @@
-package com.riskgame.common;
+package com.riskgame.model;
 
 import java.util.ArrayList;
 
@@ -7,11 +7,8 @@ public class Country {
 	/** Name of country. */
 	private String name;
 
-	/** Country holder */
-	private String player;
-
 	/** Part of continent */
-	private String continent;
+	private Continent partOfContinent;
 
 	/** X dimension */
 	private String xValue;
@@ -19,14 +16,17 @@ public class Country {
 	/** Y dimension */
 	private String yValue;
 
+	/** Adjacent Country holder */
+	private ArrayList<String> adjacentCountries;
+
 	/** Number of armies */
 	private int noOfArmies;
 
-	/** Adjacent Country holder */
-	private ArrayList<Country> adjacentCountries;
-
 	/** Part of Continent */
-	private Continent partOfContinent;
+	private String continent;
+
+	/** Country holder */
+	private String player;
 
 	public String getName() {
 		return name;
@@ -76,11 +76,11 @@ public class Country {
 		this.noOfArmies = noOfArmies;
 	}
 
-	public ArrayList<Country> getAdjacentCountries() {
+	public ArrayList<String> getAdjacentCountries() {
 		return adjacentCountries;
 	}
 
-	public void setAdjacentCountries(ArrayList<Country> adjacentCountries) {
+	public void setAdjacentCountries(ArrayList<String> adjacentCountries) {
 		this.adjacentCountries = adjacentCountries;
 	}
 
@@ -94,10 +94,9 @@ public class Country {
 
 	@Override
 	public String toString() {
-		return "Country [name=" + name + ", player=" + player + ", continent=" + continent + ", xValue=" + xValue
-				+ ", yValue=" + yValue + ", noOfArmies=" + noOfArmies + ", adjacentCountries=" + adjacentCountries
-				+ ", partOfContinent=" + partOfContinent + "]";
+		return "Country [name=" + name + ", partOfContinent=" + partOfContinent + ", xValue=" + xValue + ", yValue="
+				+ yValue + ", adjacentCountries=" + adjacentCountries + ", noOfArmies=" + noOfArmies + ", continent="
+				+ continent + ", player=" + player + "]";
 	}
 
-	
 }
