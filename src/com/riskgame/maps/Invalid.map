@@ -1,15 +1,15 @@
 [Map]
-Author=hi
-Image Name=i.bmp
+Author=Nikitha
+Image Name=World.bmp
 Warn=yes
 Scroll=vertical
 Wrap=yes
 
 [Continent]
 Northern Africa=4
-UK and Ireland=4
+UK and Ireland=2
 
-[Country]
+
 Egypt,415,99,Northern Africa,Libya
 Morocco,127,46,Northern Africa,Algeria
 Tunisia,252,33,Northern Africa,Algeria,Libya

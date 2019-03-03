@@ -8,7 +8,7 @@ import com.riskgame.common.Continent;
 
 class CreateAndEditMapTest {
 	CreateAndEditMap createAndEditMap; 
-	Continent continent1, continent2, continent3, continent4;
+	Continent continent1, continent2, continent3;
 	ArrayList<Continent> listofContinents = new ArrayList<Continent>();
 	
 	public CreateAndEditMapTest() {
@@ -27,9 +27,6 @@ class CreateAndEditMapTest {
 		listofContinents.add(continent3);
 		
 		createAndEditMap.setListOfContinents(listofContinents);
-		
-		continent4 = new Continent();
-		continent4.setName("Europe");
 		
 	}
 	

@@ -23,7 +23,7 @@ public class RiskMain extends JFrame {
 	JButton createNewMapButton, loadExistingMapButton, exitMapButton;
 	JLabel label1, label2;
 	private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
+	boolean uploadSuccessful = false;
 	public static boolean isGoodToStartGame = false;
 	public static CreateAndEditMap createandeditmap = new CreateAndEditMap();
 	public static ReadAndWriteMap loadMap = new ReadAndWriteMap();
@@ -59,30 +59,47 @@ public class RiskMain extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// load map functionality
+				//Load map functionality
 				JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
-				jfc.setDialogTitle("Select a map file");
+				jfc.setDialogTitle("Select an image");
 				jfc.setAcceptAllFileFilterUsed(false);
 				FileNameExtensionFilter filter = new FileNameExtensionFilter(".map or .MAP", "map", "MAP");
 				jfc.addChoosableFileFilter(filter);
 
 				int returnValue = jfc.showOpenDialog(null);
 				if (returnValue == JFileChooser.APPROVE_OPTION) {
-					System.out.println(jfc.getSelectedFile().getPath());
+
 					String fileName = jfc.getSelectedFile().getPath();
 					setVisible(false);
-					/*
-					 * try { // loadMap.uploadMap(fileName); } catch (IOException e2) {
-					 * e2.printStackTrace(); }
-					 */
-					System.out.println("load" + isGoodToStartGame);
-					if (isGoodToStartGame) {
-						try {
-							startGame();
-						} catch (Exception e1) {
-							e1.printStackTrace();
+
+					GameMapGraph loadMapGraph = new GameMapGraph();
+					try {
+						uploadSuccessful = loadMap.uploadMap(fileName);
+
+						if (uploadSuccessful) {
+							loadMapGraph = loadMap.getMapGraph();
+							File f = new File(fileName);
+							fileName = f.getName();
+							fileName = fileName.substring(0, fileName.lastIndexOf("."));
+							loadMapGraph.setFilename(fileName);
+							isGoodToStartGame = createandeditmap.uploadMap(loadMapGraph);
+							if (isGoodToStartGame)
+								startGame();
+						} else {
+							System.out.println(ReadAndWriteMap.getError());
 						}
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
 					}
+
+
+//					if (isGoodToStartGame) {
+//						startGame();
+//					}
 				}
 			}
 		});
@@ -101,7 +118,7 @@ public class RiskMain extends JFrame {
 
 	}
 
-	public static void setUp() throws Exception {
+	public static void setUp() throws Exception{
 		RiskMain layout = new RiskMain();
 		layout.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		layout.setVisible(true);
@@ -115,21 +132,25 @@ public class RiskMain extends JFrame {
 	private void startGame() throws Exception {
 		System.out.println("Do you want to start the game? (Yes or No)");
 		try {
-			GameMapGraph mapGraph = new GameMapGraph();
-			mapGraph = createandeditmap.getMapGraph();
+			GameMapGraph createMapGraph = new GameMapGraph();
+			createMapGraph = createandeditmap.getMapGraph();
 //			mockData(mapGraph);
-			
 			String choice = br.readLine().trim();
 			while (choice.isEmpty()) {
 				System.err.println("\nChoice cannot be blank. Please enter the correct choice below:");
 				System.out.flush();
 				choice = br.readLine().trim();
 			}
+
 			if (choice.equalsIgnoreCase("Yes")) {
 				StartupPhase start = new StartupPhase();
-				System.out.println(mapGraph);
-				start.gamePlay(mapGraph);
+				System.out.println(createMapGraph);
+				start.gamePlay(createMapGraph);
 			}
+			else {
+				System.out.println("Exited from start game");
+			}
+				
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -143,7 +164,7 @@ public class RiskMain extends JFrame {
 		mapTag.setWrap("yes");
 		mapTag.setScroll("horizontal");
 		mapGraph.setMapTag(mapTag);
-		
+
 	}
 
 	public static void main(String[] args) throws Exception {

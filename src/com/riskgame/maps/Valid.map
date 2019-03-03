@@ -1,13 +1,13 @@
 [Map]
-Author=niki
-Image Name=nik.bmp
+Author=Nikitha
+Image Name=World.bmp
 Warn=yes
 Scroll=vertical
-Wrap=no
+Wrap=yes
 
 [Continent]
 Northern Africa=4
-UK and Ireland=4
+UK and Ireland=2
 
 [Country]
 Egypt,415,99,Northern Africa,Libya
