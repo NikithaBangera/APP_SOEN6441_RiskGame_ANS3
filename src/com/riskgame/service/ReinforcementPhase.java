@@ -1,12 +1,12 @@
-package com.riskgame.gameplay;
+package com.riskgame.service;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import com.riskgame.common.Continent;
-import com.riskgame.common.Country;
-import com.riskgame.common.RiskPlayer;
+import com.riskgame.model.Continent;
+import com.riskgame.model.Country;
+import com.riskgame.model.RiskPlayer;
 
 /**
  * ReinforcementPhase class contains the methods needed for reinforcing the

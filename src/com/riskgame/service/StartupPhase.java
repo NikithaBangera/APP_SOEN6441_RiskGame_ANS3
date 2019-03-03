@@ -1,4 +1,4 @@
-package com.riskgame.gameplay;
+package com.riskgame.service;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -6,15 +6,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
+
+import com.riskgame.model.Country;
+import com.riskgame.model.GameMapGraph;
+import com.riskgame.model.MapTag;
+import com.riskgame.model.RiskPlayer;
+
 import java.util.Random;
 import java.io.IOException;
-
-//import javax.swing.text.html.HTMLDocument.Iterator;
-
-import com.riskgame.common.Country;
-import com.riskgame.common.GameMapGraph;
-import com.riskgame.common.MapTag;
-import com.riskgame.common.RiskPlayer;
 
 public class StartupPhase {
 
@@ -44,11 +43,11 @@ public class StartupPhase {
 //		boolean isAllowedToPlay = true;
 
 		// Startup Phase starts here
-		System.out.println("****************");
-		System.out.println("****************");
-		System.out.println(mapGraph);
-		System.out.println("****************");
-		System.out.println("****************");
+//		System.out.println("****************");
+//		System.out.println("****************");
+//		System.out.println(mapGraph);
+//		System.out.println("****************");
+//		System.out.println("****************");
 		System.out.println("Enter the number of players below");
 		String playerCount = br.readLine().trim();
 		while (playerCount.isEmpty()) {

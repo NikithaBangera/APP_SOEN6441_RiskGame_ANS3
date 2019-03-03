@@ -1,4 +1,4 @@
-package com.riskgame.gameplay.test;
+package com.riskgame.test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -6,10 +6,10 @@ import java.util.HashMap;
 
 import org.junit.jupiter.api.Test;
 
-import com.riskgame.common.Country;
-import com.riskgame.common.GameMapGraph;
-import com.riskgame.common.RiskPlayer;
-import com.riskgame.gameplay.StartupPhase;
+import com.riskgame.model.Country;
+import com.riskgame.model.GameMapGraph;
+import com.riskgame.model.RiskPlayer;
+import com.riskgame.service.StartupPhase;
 
 public class StartupPhaseTest {
    RiskPlayer player1;

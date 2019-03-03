@@ -1,9 +1,9 @@
-package com.riskgame.gameplay;
+package com.riskgame.service;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import com.riskgame.common.RiskPlayer;
+import com.riskgame.model.RiskPlayer;
 
 public class RoundRobinScheduler {
 	

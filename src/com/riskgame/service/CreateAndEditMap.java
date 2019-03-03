@@ -1,4 +1,4 @@
-package com.riskgame.action;
+package com.riskgame.service;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,10 +11,10 @@ import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.riskgame.common.Continent;
-import com.riskgame.common.Country;
-import com.riskgame.common.GameMapGraph;
-import com.riskgame.common.MapTag;
+import com.riskgame.model.Continent;
+import com.riskgame.model.Country;
+import com.riskgame.model.GameMapGraph;
+import com.riskgame.model.MapTag;
 
 public class CreateAndEditMap {
 
@@ -69,11 +69,6 @@ public class CreateAndEditMap {
 				option = br.readLine().trim();
 				match = pattern.matcher(option.trim());
 			}
-//			while (option.isEmpty()) {
-//				System.err.println("\nChoice cannot be blank. Please enter your choice below:");
-//				System.out.flush();
-//				option = br.readLine().trim();
-//			}
 
 			switch (Integer.parseInt(option)) {
 			case 1:
@@ -147,11 +142,6 @@ public class CreateAndEditMap {
 				option = br.readLine().trim();
 				match = pattern.matcher(option.trim());
 			}
-//			while (option.isEmpty()) {
-//				System.err.println("\nChoice cannot be blank. Please enter your choice below:");
-//				System.out.flush();
-//				option = br.readLine().trim();
-//			}
 
 
 			switch (Integer.parseInt(option)) {
@@ -574,7 +564,6 @@ public class CreateAndEditMap {
 
 	public void deleteCountry() {
 		boolean removed = false;
-		// listOfCountries = new ArrayList<>();
 		listOfCountries = mapGraph.getCountries();
 		if (listOfCountries != null && !listOfCountries.isEmpty()) {
 			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -585,7 +574,6 @@ public class CreateAndEditMap {
 				try {
 					deleteCountry = br.readLine().trim();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				if (deleteCountry.isEmpty())
@@ -627,21 +615,6 @@ public class CreateAndEditMap {
 			}
 			if (removed == false)
 				System.out.println("Country " + deleteCountry + " does not exist in the Map");
-			/*
-			 * else { if(!listofCountries.isEmpty()) { for (Country country:
-			 * listofCountries) { int index=listofCountries.indexOf(country);
-			 * ArrayList<String> adjacentCountries = country.getAdjacentCountries();
-			 * for(String adjacentCountryName :adjacentCountries) {
-			 * if(adjacentCountryName.equalsIgnoreCase(deleteCountry)) {
-			 * adjacentCountries.remove(adjacentCountryName); } }
-			 * 
-			 * country.setAdjacentCountries(adjacentCountries);
-			 * listofCountries.add(country); //listofCountries.add(index, country);
-			 * 
-			 * } mapGraph.setCountries(listofCountries);
-			 * 
-			 * } }
-			 */
 		} else {
 			System.out.println(
 					"No Countries are defined for map yet. To perform this opertaion map should have atleast one country defined");
@@ -680,13 +653,11 @@ public class CreateAndEditMap {
 					if (!adjacent1.contains(checklist.get(1).getName())) {
 						adjacent1.add(checklist.get(1).getName());
 						checklist.get(0).setAdjacentCountries(adjacent1);
-						// countrylist.add(checklist.get(0));
 
 					}
 					if (!adjacent2.contains(checklist.get(0).getName())) {
 						adjacent2.add(checklist.get(0).getName());
 						checklist.get(1).setAdjacentCountries(adjacent2);
-						// countrylist.add(checklist.get(1));
 					}
 					System.out.println("Countries are linked and are now adjacent countries");
 				}
@@ -728,13 +699,11 @@ public class CreateAndEditMap {
 					if (adjacent1.contains(checklist.get(1).getName())) {
 						adjacent1.remove(checklist.get(1).getName());
 						checklist.get(0).setAdjacentCountries(adjacent1);
-//						countrylist.add(checklist.get(0));
 
 					}
 					if (adjacent2.contains(checklist.get(0).getName())) {
 						adjacent2.remove(checklist.get(0).getName());
 						checklist.get(1).setAdjacentCountries(adjacent2);
-//						countrylist.add(checklist.get(1));
 					}
 					System.out.println("\nRemoved. Countries are no more linked or adjacent countries");
 
@@ -760,8 +729,6 @@ public class CreateAndEditMap {
 		String aderror = new String(), conterror = new String(), adjacencyError = new String();
 		ArrayList<String> adjacentCountries = new ArrayList<>();
 		setOfCountries = new HashMap<>();
-		// HashMap<String, ArrayList<String>> visited = new HashMap<String,
-		// ArrayList<String>>();
 
 		boolean flag = false, flag2 = true, flag3 = true, flag5 = true, flag6 = false;
 

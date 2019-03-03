@@ -1,4 +1,4 @@
-package com.riskgame.gameplay.test;
+package com.riskgame.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -6,8 +6,8 @@ import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 
-import com.riskgame.common.Country;
-import com.riskgame.gameplay.FortificationPhase;
+import com.riskgame.model.Country;
+import com.riskgame.service.FortificationPhase;
 
 public class FortificationPhaseTest {
 	Country country, toCountry, fromCountry, toCountry1;

@@ -1,13 +1,13 @@
 [Map]
-Author
-Image Name=World.bmp
+Author=hi
+Image Name=ko.bmp
 Warn=yes
-Scroll=vertical
+Scroll=horizontal
 Wrap=yes
 
 [Continent]
-Northern Africa=4
-UK and Ireland=2
+Northern Africa=2
+UK and Ireland=4
 
 [Country]
 Egypt,415,99,Northern Africa,Libya
