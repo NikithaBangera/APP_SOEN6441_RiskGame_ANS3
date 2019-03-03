@@ -131,6 +131,9 @@ public class RiskMain extends JFrame {
 				StartupPhase start = new StartupPhase();
 				System.out.println(createMapGraph);
 				start.gamePlay(createMapGraph);
+			}else {
+				System.out.println("\nThank you!");
+				System.exit(0);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

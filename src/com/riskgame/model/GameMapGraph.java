@@ -55,33 +55,6 @@ private MapTag mapTag;
 		this.countries = countries;
 	}
 
-
-
-	/**
-	 * MapGraph constructor
-	 */
-	/*public GameMapGraph() {
-		this.continents = new HashMap<>();
-		this.adjacentCountries = new HashMap<>();
-		this.countrySet = new HashMap<>();
-	}*/
-
-	/*public HashMap<String, Continent> getContinents() {
-		return continents;
-	}
-
-	public void setContinents(HashMap<String, Continent> continents) {
-		this.continents = continents;
-	}
-
-	public HashMap<Country, ArrayList<Country>> getAdjacentCountries() {
-		return adjacentCountries;
-	}
-
-	public void setAdjacentCountries(HashMap<Country, ArrayList<Country>> adjacentCountries) {
-		this.adjacentCountries = adjacentCountries;
-	}*/
-
 	public HashMap<String, Country> getCountrySet() {
 		return countrySet;
 	}
