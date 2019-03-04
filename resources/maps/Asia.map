@@ -1,12 +1,12 @@
 [Map]
-Author=hi
-Image Name=ko.bmp
-Warn=yes
+Author=Anusha
+Image Name=Anusha.bmp
+Warn=Yes
 Scroll=horizontal
-Wrap=yes
+Wrap=Yes
 
 [Continent]
-Northern Africa=2
+Northern Africa=4
 UK and Ireland=4
 
 [Country]

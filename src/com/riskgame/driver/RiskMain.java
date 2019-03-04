@@ -129,9 +129,9 @@ public class RiskMain extends JFrame {
 			String choice = br.readLine();
 			if (choice.equalsIgnoreCase("Yes")) {
 				StartupPhase start = new StartupPhase();
-				System.out.println(createMapGraph);
+//				System.out.println(createMapGraph);
 				start.gamePlay(createMapGraph);
-			}else {
+			} else {
 				System.out.println("\nThank you!");
 				System.exit(0);
 			}
