@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import javax.swing.*;
+
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 
@@ -70,6 +71,7 @@ public class RiskMain extends JFrame {
 
 					String fileName = jfc.getSelectedFile().getPath();
 					setVisible(false);
+
 					GameMapGraph loadMapGraph = new GameMapGraph();
 					try {
 						uploadSuccessful = loadMap.uploadMap(fileName);
@@ -91,7 +93,6 @@ public class RiskMain extends JFrame {
 					} catch (Exception e1) {
 						e1.printStackTrace();
 					}
-
 				}
 			}
 		});
@@ -110,7 +111,7 @@ public class RiskMain extends JFrame {
 
 	}
 
-	public static void setUp() throws Exception {
+	public static void setUp() throws Exception{
 		RiskMain layout = new RiskMain();
 		layout.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		layout.setVisible(true);
@@ -126,7 +127,14 @@ public class RiskMain extends JFrame {
 		try {
 			GameMapGraph createMapGraph = new GameMapGraph();
 			createMapGraph = createandeditmap.getMapGraph();
-			String choice = br.readLine();
+//			mockData(mapGraph);
+			String choice = br.readLine().trim();
+			while (choice.isEmpty()) {
+				System.err.println("\nChoice cannot be blank. Please enter the correct choice below:");
+				System.out.flush();
+				choice = br.readLine().trim();
+			}
+
 			if (choice.equalsIgnoreCase("Yes")) {
 				StartupPhase start = new StartupPhase();
 //				System.out.println(createMapGraph);
@@ -135,6 +143,7 @@ public class RiskMain extends JFrame {
 				System.out.println("\nThank you!");
 				System.exit(0);
 			}
+				
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
