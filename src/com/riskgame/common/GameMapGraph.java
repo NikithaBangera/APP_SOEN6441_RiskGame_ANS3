@@ -7,7 +7,10 @@ import java.util.HashMap;
  * This class stores the value associated to each map. It stores the content
  * required for building the map. It has variable continents which is a HashMap
  * containing continent name as the key of String type and the value is an
- * object of Continent containing information related to the continent. 
+ * object of Continent containing information related to the continent. It has
+ * variable adjacent countries which is a HashMap containing country object as
+ * the key and the value is an ArrayList of type String containing names of the
+ * adjacent countries.
  * 
  * @author Shresthi Garg
  * @author Nikitha
@@ -42,6 +45,14 @@ public class GameMapGraph {
 		super();
 	}
 	
+	/** GameMapGraph Constructor
+	 *   
+	 * @param mapTag
+	 * @param countOfContinents
+	 * @param continents
+	 * @param countOfCountries
+	 * @param countries
+	 */
 	public GameMapGraph(MapTag mapTag, int countOfContinents, ArrayList<Continent> continents, int countOfCountries,
 			ArrayList<Country> countries) {
 		super();
@@ -52,6 +63,11 @@ public class GameMapGraph {
 		this.countries = countries;
 	}
 
+	/**
+	 * Gets Country with all the details associated with the Country 
+	 *
+	 * @return Country details
+	 */
 	public HashMap<String, Country> getCountrySet() {
 		return countrySet;
 	}
@@ -65,6 +81,11 @@ public class GameMapGraph {
 		this.countrySet = countrySet;
 	}
 
+	/**
+	 * Gets all the MapTag details  
+	 *
+	 * @return MapTag data
+	 */
 	public MapTag getMapTag() {
 		return mapTag;
 	}
@@ -97,10 +118,20 @@ public class GameMapGraph {
 		this.countOfContinents = countOfContinents;
 	}
 
+	/**
+	 * Gets list of all the Continents 
+	 *
+	 * @return Continents list
+	 */
 	public ArrayList<Continent> getContinents() {
 		return continents;
 	}
 
+	/**
+	 * Sets the list of all the Continents
+	 *
+	 * @param Continents list
+	 */
 	public void setContinents(ArrayList<Continent> continents) {
 		this.continents = continents;
 	}
@@ -114,6 +145,11 @@ public class GameMapGraph {
 		return countOfCountries;
 	}
 
+	/**
+	 * Sets the total name of Countries 
+	 *
+	 * @param Countries count
+	 */
 	public void setCountOfCountries(int countOfCountries) {
 		this.countOfCountries = countOfCountries;
 	}
@@ -136,10 +172,20 @@ public class GameMapGraph {
 		this.countries = countries;
 	}
 
+	/**
+	 * Gets name of the File 
+	 *
+	 * @return File name
+	 */
 	public String getFilename() {
 		return filename;
 	}
 
+	/**
+	 * Sets the name of the File  
+	 *
+	 * @param File name
+	 */
 	public void setFilename(String filename) {
 		this.filename = filename;
 	}
