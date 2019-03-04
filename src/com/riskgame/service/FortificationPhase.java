@@ -66,8 +66,8 @@ public class FortificationPhase {
 					match = namePattern2.matcher(toCountry);
 				}
 
-				System.out.println("\nfrom country " + fromCountry);
-				System.out.println("\ntoCountry " + toCountry);
+//				System.out.println("\nfrom country " + fromCountry);
+//				System.out.println("\ntoCountry " + toCountry);
 
 				if (!mapData.getCountrySet().containsKey(fromCountry)
 						|| !mapData.getCountrySet().containsKey(toCountry)) {
@@ -84,6 +84,8 @@ public class FortificationPhase {
 							"Entered countries doesn't exist in player's owned country list, please enter country names again");
 					doFortification = false;
 				}
+				
+				if(doFortification) {
 				System.out.println("Enter the number of armies to move from " + fromCountry + " to " + toCountry);
 				try {
 					String countOfArmy = br.readLine().trim();
@@ -104,6 +106,7 @@ public class FortificationPhase {
 
 				} catch (NumberFormatException e) {
 					System.out.println("Invalid number of armies.");
+				}
 				}
 				if (doFortification)
 					moveArmies(givingCountry, receivingCountry, countOfArmies);

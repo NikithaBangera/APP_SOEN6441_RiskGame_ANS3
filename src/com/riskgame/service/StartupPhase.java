@@ -140,7 +140,7 @@ public class StartupPhase {
 
 			// Fortification Phase starts here
 
-			System.out.println("Fortification Phase begins!\n");
+			System.out.println("\nFortification Phase begins!\n");
 			System.out.println("Player: " + player.getName() + "\n");
 			System.out.println("Do you wish to start the Fortification phase? (Yes or No)");
 			String choice1 = br.readLine().trim();
@@ -223,7 +223,7 @@ public class StartupPhase {
 	public void allocationOfRemainingArmyToCountries() {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		playersList.forEach(player -> {
-			System.out.println("Player Name: " + player.getName() + "\n");
+			System.out.println("\nPlayer Name: " + player.getName() + "\n");
 //			for (Country country : player.getMyCountries()) 
 			player.getMyCountries().forEach(con -> {
 
