@@ -699,25 +699,19 @@ public class CreateAndEditMap {
 
 	public boolean checkandSave() throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
+		
 		listOfCountries = mapGraph.getCountries();
 		listOfContinents = mapGraph.getContinents();
 		ArrayList<String> availableContinents = new ArrayList<>();
-		String error = new String(""), nullerror = new String();
-		String aderror = new String(), conterror = new String(), adjacencyError = new String(),
-				mapTagError = new String();
+		String error = new String(""), nullerror = new String("");
+		String aderror = new String(""), conterror = new String(""), adjacencyError = new String("");
 		ArrayList<String> adjacentCountries = new ArrayList<>();
 		setOfCountries = new HashMap<>();
 
-		boolean flag = false, flag2 = true, flag3 = true, flag5 = true, flag6 = false, flag7 = true;
-
-		if (mapGraph.getMapTag() == null) {
-			flag6 = false;
-			mapTagError = "!! No map tag data defined for the map.\n";
-		}
-
+		boolean flag = false, flag2 = true, flag3 = true, flag5 = true, flag6 = false, flag7=true;
+		
 		if (listOfCountries != null && !listOfCountries.isEmpty()) {
-
+			
 			for (Country country : listOfCountries) {
 				if (country.getxValue() == null && country.getyValue() == null
 						&& country.getPartOfContinent() == null) {
@@ -745,11 +739,11 @@ public class CreateAndEditMap {
 							// break;
 							// }
 						}
-
+						
 						// if (flag6)
 						// break;
-						if (!flag) {
-							flag7 = false;
+						if(!flag) {
+							flag7=false;
 							aderror = aderror.concat("!! " + country.getName() + " and " + name
 									+ " are not defined properly as adjacent countries on " + name + " end.\n");
 						}
@@ -783,7 +777,7 @@ public class CreateAndEditMap {
 			});
 		}
 		if (listOfContinents != null) {
-
+			
 			for (Continent continent : listOfContinents) {
 				boolean flag4 = true;
 				for (String continentname : availableContinents) {
@@ -797,17 +791,17 @@ public class CreateAndEditMap {
 							+ " does not have any defined Country. Should have atleast one country.\n");
 				}
 			}
-			if (listOfContinents.size() < 2) {
-				flag3 = false;
+			if(listOfContinents.size() < 2)
+			{	flag3 = false;
 				conterror = "!! Minimum number of continents should be two to play the game. PLease add one more country and respective countries.\n";
 			}
-		} else {
+		} 
+		else {
 			flag = false;
-			nullerror = nullerror.concat(
-					"!! Not a single continent is defined in the map.Please define minimum of two continents. \n");
+			nullerror = nullerror.concat("Not a Single continent is defined in the map.Please define minimum of two continents. \n");
 		}
 
-		if (flag && flag2 && flag3 && flag5 && flag7 && flag6) {
+		if (flag  && flag2  && flag3  && flag5 &&flag7) {
 			String oldFileName = new String();
 			if (Thread.currentThread().getStackTrace()[2].getMethodName().equalsIgnoreCase("uploadMap")) {
 				System.out.println("\nDo you want to rename the file ? Yes or No ");
@@ -852,7 +846,7 @@ public class CreateAndEditMap {
 		else {
 			System.err.println(
 					"Below are the error present in Map.Entry Please resolve all the below issues before saving the Map.\n");
-			error = mapTagError.concat(nullerror).concat(conterror).concat(error).concat(aderror);
+			error = nullerror.concat(conterror).concat(error).concat(aderror);
 			System.err.println(error);
 			System.out.flush();
 			return false;
