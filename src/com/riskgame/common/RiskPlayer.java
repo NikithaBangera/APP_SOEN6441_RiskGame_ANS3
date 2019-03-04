@@ -22,6 +22,11 @@ public class RiskPlayer {
 	/** List of countries held by the Player */
 	private ArrayList<Country> myCountries= new ArrayList<Country>();
 
+	/**
+	 * Gets the player name 
+	 *
+	 * @return name
+	 */
 	public String getName() {
 		return name;
 	}
@@ -35,6 +40,11 @@ public class RiskPlayer {
 		this.name = name;
 	}
 
+	/**
+	 * Gets Army count for the player 
+	 *
+	 * @return Army count
+	 */
 	public int getArmyCount() {
 		return armyCount;
 	}
@@ -48,6 +58,11 @@ public class RiskPlayer {
 		this.armyCount = armyCount;
 	}
 
+	/**
+	 * Gets the list of countries for the player 
+	 *
+	 * @return countries list
+	 */
 	public ArrayList<Country> getMyCountries() {
 		return myCountries;
 	}
