@@ -11,38 +11,73 @@ import com.riskgame.model.RiskPlayer;
 import java.util.Random;
 import java.io.IOException;
 
+/**
+ * StartupPhase class is for the beginning of the game play. Its contains 
+ * methods which will take the details from the players, and randomly assign 
+ * the countries to the them. 
+ * 
+ * Armies allocation will happen to the players
+ * as per the Conquest game rule.
+ *
+ *@author Anusha
+ *
+ */
 public class StartupPhase {
 
+	/** Variable to store the total number of players in game. */
 	private int countOfthePlayers = 0;
+	
+	/**List which consists of players name.*/
 	ArrayList<RiskPlayer> playersList = new ArrayList<RiskPlayer>();
 
+	/**
+	 * Method to get the list of the player's name
+	 * 
+	 * @return ArrayList which has Players name.
+	 */
 	public ArrayList<RiskPlayer> getPlayersList() {
 		return playersList;
 	}
 
+	/**
+	 * Method to get the count of the players
+	 * 
+	 * @return Integer count of the players.
+	 */
 	public int getCountOfthePlayers() {
 		return countOfthePlayers;
 	}
 
+	/**
+	 * Method setting the count of the players
+	 * 
+	 * @return Integer which has Player's count.
+	 */
 	public void setCountOfthePlayers(int countOfthePlayers) {
 		this.countOfthePlayers = countOfthePlayers;
 	}
 
+	/**
+	 * Method for setting the Player's list
+	 * 
+	 * @param playersList
+	 *            It is the player's list needs to be set.
+	 */
 	public void setPlayersList(ArrayList<RiskPlayer> playersList) {
 		this.playersList = playersList;
 	}
 
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
+	/**
+	 * This method starts the game, obtaining the number of payers , details
+	 * and initializing them.
+	 * 
+	 * @param mapGraph
+	 *            Object of mapGraph which consists of map details
+	 */
 	public void gamePlay(GameMapGraph mapGraph) throws Exception {
 		RiskPlayer player = new RiskPlayer();
-
-		// Startup Phase starts here
-//		System.out.println("****************");
-//		System.out.println("****************");
-//		System.out.println(mapGraph);
-//		System.out.println("****************");
-//		System.out.println("****************");
 		System.out.println("Enter the number of players below");
 		String playerCount = br.readLine().trim();
 		while (playerCount.isEmpty()) {
@@ -52,10 +87,10 @@ public class StartupPhase {
 		}
 		countOfthePlayers = Integer.parseInt(playerCount);
 
-//		System.out.println("countOfthePlayers " + countOfthePlayers);
 		if (countOfthePlayers > 1 && countOfthePlayers < 7) {
 			System.out.println("Great! Let's Play.");
-		} else {
+		} 
+		else {
 			System.out.println("Sorry! The numbers of players can be between 2 and 6.");
 		}
 
@@ -81,25 +116,15 @@ public class StartupPhase {
 			}
 			playersList.add(riskPlayer);
 		}
-		// playersList.forEach(P -> {
-		// System.out.println(P + " *\n");
-		// });
 		allocationOfCountry(mapGraph);
 		allocationOfArmyToPlayers();
 		allocationOfArmyToCountriesInitially(mapGraph);
 		allocationOfRemainingArmyToCountries();
 
-		// Startup Phase starts here
-
 		RoundRobinScheduler roundRobin = new RoundRobinScheduler(getPlayersList());
 
-		// Loop for allowing players to execute actions, turn by turn
 		for (int round = 1; round <= getPlayersList().size(); round++) {
-
 			player = roundRobin.nextTurn();
-
-			// Reinforcement Phase starts here
-
 			System.out.println("Reinforcement Phase begins!\n");
 			System.out.println("Player: " + player.getName() + "\n");
 			System.out.println("Do you want to continue with Reinforcement phase? (Yes or No) ");
@@ -116,11 +141,6 @@ public class StartupPhase {
 			} else {
 				System.out.println("Exited the Reinforcement Phase!");
 			}
-
-			// Reinforcement Phase ends here
-
-			// Fortification Phase starts here
-
 			System.out.println("Fortification Phase begins!\n");
 			System.out.println("Player: " + player.getName() + "\n");
 			System.out.println("Do you wish to start the Fortification phase? (Yes or No)");
@@ -136,14 +156,15 @@ public class StartupPhase {
 			} else {
 				System.out.println("Exited the Fortification phase!");
 			}
-			// Fortification Phase ends here
-
 		}
-
 	}
 
-	// Function of StartUp Phase starts here
-
+	/**
+	 * Method to assign countries to the players. Random allocation of countries
+	 * to the players will happen in this method.
+	 * @param mapGraph
+	 *            Object of mapGraph which consists of map details
+	 */
 	public void allocationOfCountry(GameMapGraph mapGraph) {
 		int i, countryIndexAssignment;
 		ArrayList<Country> countrySet = new ArrayList<>(mapGraph.getCountrySet().values());
@@ -165,6 +186,12 @@ public class StartupPhase {
 
 	}
 
+	/**
+	 * Method to assign the number of armies to the players which differs 
+	 * based on the players count. Army allocation is done as per the 
+	 * conquest game rule.
+	 * 
+	 */
 	public void allocationOfArmyToPlayers() {
 		playersList.forEach(player -> {
 			switch (countOfthePlayers) {
@@ -187,14 +214,14 @@ public class StartupPhase {
 		});
 	}
 
+	/**
+	 * Method to assign armies to the countries so that each country will get
+	 * at least one army as per the conquest game rule.
+	 * @param mapGraph
+	 *            Object of mapGraph which consists of map details
+	 */
 	public void allocationOfArmyToCountriesInitially(GameMapGraph mapGraph) {
-		// Country country = new Country();
-		// for (int i = 0; i < mapGraph.getCountrySet().size(); i++) {
-		// country.setNoOfArmies(1);
-		// }
-
 		mapGraph.getCountrySet().values().forEach(country -> {
-//			System.out.println(country.getName() + "   country name");
 			country.setNoOfArmies(1);
 		});
 
@@ -203,18 +230,16 @@ public class StartupPhase {
 		});
 	}
 
+	/**
+	 * Method for armies assignment to the countries so that the number
+	 * of armies in the countries will be balanced
+	 * 
+	 */
 	public void allocationOfRemainingArmyToCountries() {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		playersList.forEach(player -> {
 			System.out.println("Player Name: " + player.getName() + "\n");
-//			for (Country country : player.getMyCountries()) 
 			player.getMyCountries().forEach(con -> {
-
-//			{
-				// System.out.println(player.getName()+ "\n my countries " +
-				// player.getMyCountries());
-				// System.out.println(player.getName()+ "player \n"+ con);
-
 				if (player.getArmyCount() > 0) {
 					System.out.println("Country Name : " + con.getName());
 					System.out.println("Number of Armies assigned : " + con.getNoOfArmies());
@@ -239,11 +264,8 @@ public class StartupPhase {
 					}
 
 				}
-//			}
 			});
 		});
 
 	}
-	// Function of StartUp Phase ends here
-
 }
