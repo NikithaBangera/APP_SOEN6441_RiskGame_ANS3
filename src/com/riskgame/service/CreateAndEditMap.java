@@ -405,7 +405,7 @@ public class CreateAndEditMap {
 	public boolean alreadyDefined(String tempcontinentName) {
 		try {
 			String workingDir = System.getProperty("user.dir");
-			File file = new File(workingDir + "\\resources\\maps\\" + fileName);
+			File file = new File(workingDir + "/resources/maps/" + fileName);
 
 			@SuppressWarnings("resource")
 			BufferedReader reader = new BufferedReader(new FileReader(file));

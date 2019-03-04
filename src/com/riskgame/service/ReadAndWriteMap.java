@@ -53,8 +53,8 @@ public class ReadAndWriteMap {
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		String workingDir = System.getProperty("user.dir");
-		File file = new File(workingDir + "\\resources\\maps\\" + mapgraph.getFilename() + ".map");
-		File oldFile = new File(workingDir + "\\resources\\maps\\" + oldFileName + ".map");
+		File file = new File(workingDir + "/resources/maps/" + mapgraph.getFilename() + ".map");
+		File oldFile = new File(workingDir + "/resources/maps/" + oldFileName + ".map");
 		PrintWriter outputStream;
 		String newFileName;
 		//Upload
@@ -72,7 +72,7 @@ public class ReadAndWriteMap {
 								"Sorry! File name cannot be blank.Provided contains only whitespace (ie. spaces, tabs or line breaks).\nPlease enter valid file name to save map file:\n");
 						newFileName = br.readLine();
 					}
-					file = new File(workingDir + "\\resources\\maps\\" + newFileName + ".map");
+					file = new File(workingDir + "/resources/maps/" + newFileName + ".map");
 				}
 				
 				oldFile.renameTo(file);

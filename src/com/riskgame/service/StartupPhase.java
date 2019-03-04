@@ -3,13 +3,9 @@ package com.riskgame.service;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map.Entry;
 
 import com.riskgame.model.Country;
 import com.riskgame.model.GameMapGraph;
-import com.riskgame.model.MapTag;
 import com.riskgame.model.RiskPlayer;
 
 import java.util.Random;
