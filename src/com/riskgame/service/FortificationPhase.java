@@ -57,8 +57,8 @@ public class FortificationPhase {
 					toCountry = br.readLine().trim();
 				}
 
-				System.out.println("\nfrom country " + fromCountry);
-				System.out.println("\ntoCountry " + toCountry);
+//				System.out.println("\nfrom country " + fromCountry);
+//				System.out.println("\ntoCountry " + toCountry);
 
 				if (!mapData.getCountrySet().containsKey(fromCountry)
 						|| !mapData.getCountrySet().containsKey(toCountry)) {

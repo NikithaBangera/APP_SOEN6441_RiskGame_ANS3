@@ -52,7 +52,7 @@ public class StartupPhase {
 		}
 		countOfthePlayers = Integer.parseInt(playerCount);
 
-		System.out.println("countOfthePlayers " + countOfthePlayers);
+//		System.out.println("countOfthePlayers " + countOfthePlayers);
 		if (countOfthePlayers > 1 && countOfthePlayers < 7) {
 			System.out.println("Great! Let's Play.");
 		} else {
@@ -194,7 +194,7 @@ public class StartupPhase {
 		// }
 
 		mapGraph.getCountrySet().values().forEach(country -> {
-			System.out.println(country.getName() + "   country name");
+//			System.out.println(country.getName() + "   country name");
 			country.setNoOfArmies(1);
 		});
 

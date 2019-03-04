@@ -67,7 +67,7 @@ public class RiskPlayer {
 	}
 
 	public void additionOfCountry(Country country) {
-		System.out.println(country+"country");
+//		System.out.println(country+"country");
 		this.myCountries.add(country);
 	}
 
