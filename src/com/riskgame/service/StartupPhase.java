@@ -22,7 +22,6 @@ import java.io.IOException;
  * as per the Conquest game rule.
  *
  **/
-
 public class StartupPhase {
     
 	/** Variable to store the total number of players in game */
