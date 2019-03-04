@@ -37,7 +37,15 @@ public class CreateAndEditMap {
 	public void setMapGraph(GameMapGraph mapGraph) {
 		this.mapGraph = mapGraph;
 	}
+	
+	public ArrayList<Continent> getListOfContinents() {
+		return listOfContinents;
+	}
 
+	public void setListOfContinents(ArrayList<Continent> listOfContinents) {
+		this.listOfContinents = listOfContinents;
+	}
+	
 	public boolean newMapCreation() throws Exception {
 		boolean exit = false;
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -134,6 +142,7 @@ public class CreateAndEditMap {
 				option = br.readLine().trim();
 				match = pattern.matcher(option.trim());
 			}
+
 
 			switch (Integer.parseInt(option)) {
 			case 1:
@@ -396,7 +405,7 @@ public class CreateAndEditMap {
 	public boolean alreadyDefined(String tempcontinentName) {
 		try {
 			String workingDir = System.getProperty("user.dir");
-			File file = new File(workingDir + "\\src\\com\\riskgame\\maps\\" + fileName);
+			File file = new File(workingDir + "/resources/maps/" + fileName);
 
 			@SuppressWarnings("resource")
 			BufferedReader reader = new BufferedReader(new FileReader(file));

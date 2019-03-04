@@ -69,7 +69,7 @@ public class ReadAndWriteMap {
 	
 					while (newFileName.isEmpty()) {
 						System.out.println(
-								"Sorry! fFle name cannot be blank.Provided contains only whitespace (ie. spaces, tabs or line breaks).\nPlease enter valid file name to save map file:\n");
+								"Sorry! File name cannot be blank.Provided contains only whitespace (ie. spaces, tabs or line breaks).\nPlease enter valid file name to save map file:\n");
 						newFileName = br.readLine();
 					}
 					file = new File(workingDir + "/resources/maps/" + newFileName + ".map");
@@ -226,6 +226,7 @@ public class ReadAndWriteMap {
 		boolean duplicatedata = true, formatdata = true;
 		String formaterror = "";
 		String Duplicateerror = "";
+		error = new String();
 		String[] metaData = tagData.split("\\n");
 		if (metaData.length != 1) {
 			for (int i = 1; i < metaData.length; i++) {
@@ -290,6 +291,7 @@ public class ReadAndWriteMap {
 
 		HashMap<String, String> visited = new HashMap<String, String>();
 		boolean duplicatedata = true, formatdata = true, adjacentdata = true, continentdata = true;
+		error = new String();
 		ArrayList<String> adjacentcountries;
 		String formaterror = "", Duplicateerror = "", continenterror = "", adjacencyerror = "";
 		String[] countryData = tagData.split("\\n");
@@ -385,6 +387,7 @@ public class ReadAndWriteMap {
 		boolean checkdata = true, duplicatedata = true, formatdata = true;
 		String formaterror = "", validateerror = "", Duplicateerror = "";
 		mapTag = new MapTag();
+		error = new String();
 		HashMap<String, String> visited = new HashMap<String, String>();
 		String[] metaData = tagData.split("\\n");
 		for (int i = 1; i < metaData.length; i++) {

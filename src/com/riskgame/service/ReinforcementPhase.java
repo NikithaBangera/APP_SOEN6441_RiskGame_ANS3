@@ -30,7 +30,7 @@ public class ReinforcementPhase {
 	 */
 	public void startReinforcement(RiskPlayer player) throws Exception {
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-		Continent continent = new Continent();
+		Continent continent = player.getMyCountries().get(0).getPartOfContinent();
 		int reinforcementArmies = armiesToBeAssigned(player, continent);
 		System.out.println("Armies available for Reinforcement: " + reinforcementArmies);
 		player.setArmyCount(player.getArmyCount() + reinforcementArmies);
@@ -38,15 +38,23 @@ public class ReinforcementPhase {
 		for (Country country : player.getMyCountries()) {
 			if (player.getArmyCount() > 0) {
 				System.out.println(
-						"Number of armies present in country " + country.getName() + "are " + country.getNoOfArmies());
+						"Number of armies present in country " + country.getName() + " are " + country.getNoOfArmies());
 				System.out.println("Current available armies to be reinforced: " + player.getArmyCount());
 				System.out.println("Enter the number of armies to be deployed to country " + country.getName());
-				int armiesCount = Integer.parseInt(in.readLine());
+				String armyCount = in.readLine().trim();
+				while (armyCount.isEmpty()) {
+					System.err.println("\nArmy count cannot be blank. Please enter the correct count below:");
+					System.out.flush();
+					armyCount = in.readLine().trim();
+				}
+				int armiesCount = Integer.parseInt(armyCount);
 				player.armiesAssignedToCountries(country, armiesCount);
 
-			} else {
-				System.out.println("Sorry you have insufficient armies left! ");
 			}
+			else {
+				System.out.println("Sorry you have insufficient armies left! \n");
+				break;
+			} 
 		}
 	}
 
