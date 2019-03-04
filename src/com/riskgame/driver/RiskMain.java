@@ -18,7 +18,15 @@ import com.riskgame.service.CreateAndEditMap;
 import com.riskgame.service.ReadAndWriteMap;
 import com.riskgame.service.StartupPhase;
 
-
+/**
+ * This class launches the game and provides the main window to the user.
+ * It provides options to Create new map, load and edit existing map and 
+ * can exit without performing any operations.
+ * 
+ * @author 
+ * @author 
+ * 
+ */
 public class RiskMain extends JFrame {
 	
 	JButton createNewMapButton, loadExistingMapButton, exitMapButton;
@@ -29,7 +37,15 @@ public class RiskMain extends JFrame {
 	public static CreateAndEditMap createandeditmap = new CreateAndEditMap();
 	public static ReadAndWriteMap loadMap = new ReadAndWriteMap();
 
-	
+	/**
+     * RiskMain is the start method of the game and it provides 3 options to the user.
+     * It directs to Create new map on selection of Create option and loads existing map and 
+     * provides option to edit existing map on selection of Load and edit option.Also exits
+     * the user from the game on selection of Exit.
+     * 
+     * @throws Exception
+     * 
+     */
 	public RiskMain() throws Exception {
 		setLayout(new GridLayout(4, 4));
 		createNewMapButton = new JButton("Create a new Map");
@@ -112,7 +128,11 @@ public class RiskMain extends JFrame {
 		});
 }
 
-	
+	/**
+     * This method sets the main frame for the user
+     *
+     * @throws Exception
+     */
 	public static void setUp() throws Exception {
 		RiskMain layout = new RiskMain();
 		layout.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -124,7 +144,11 @@ public class RiskMain extends JFrame {
 
 	}
 
-	 
+	 /**
+     * This method provides option for the user to start the game 
+     *
+     * @throws Exception
+     */
 	private void startGame() throws Exception {
 		System.out.println("Do you want to start the game? (Yes or No)");
 		try {
@@ -133,6 +157,7 @@ public class RiskMain extends JFrame {
 			String choice = br.readLine();
 			if (choice.equalsIgnoreCase("Yes")) {
 				StartupPhase start = new StartupPhase();
+//				System.out.println(createMapGraph);
 				start.gamePlay(createMapGraph);
 			} else {
 				System.out.println("\nThank you!");
@@ -143,7 +168,12 @@ public class RiskMain extends JFrame {
 		}
 	}
 	
-	
+	 /**
+     * This is the main method which initiates the first frame to the user
+     * to start the game with the options provided in the frame. 
+     *
+     * @throws Exception
+     */
 	public static void main(String[] args) throws Exception {
 		setUp();
 	}
