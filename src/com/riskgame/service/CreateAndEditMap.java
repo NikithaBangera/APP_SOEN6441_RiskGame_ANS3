@@ -405,7 +405,7 @@ public class CreateAndEditMap {
 	public boolean alreadyDefined(String tempcontinentName) {
 		try {
 			String workingDir = System.getProperty("user.dir");
-			File file = new File(workingDir + "\\src\\com\\riskgame\\maps\\" + fileName);
+			File file = new File(workingDir + "\\resources\\maps\\" + fileName);
 
 			@SuppressWarnings("resource")
 			BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -467,7 +467,6 @@ public class CreateAndEditMap {
 			// System.out.println(listOfCountries.indexOf(countryupdated));
 		}
 
-		// return false;
 	}
 
 	public boolean isCountryInAdjacentCountryList(String[] input) {
@@ -484,8 +483,6 @@ public class CreateAndEditMap {
 
 	public void deleteContinent() {
 		boolean removed = false;
-		// listOfContinents = new ArrayList<>();
-		// listOfCountries = new ArrayList<>();
 		listOfContinents = mapGraph.getContinents();
 		listOfCountries = mapGraph.getCountries();
 		ArrayList<String> deletedCountries = new ArrayList<>();
@@ -512,14 +509,13 @@ public class CreateAndEditMap {
 				}
 			}
 			if (listOfCountries != null && !listOfCountries.isEmpty()) {
-				// for (Country country : listofCountries)
 				Iterator<Country> CountryIT = listOfCountries.iterator();
 				while (CountryIT.hasNext()) {
 					Country country = CountryIT.next();
 					if (country.getPartOfContinent() != null
 							&& country.getPartOfContinent().getContinentName().equalsIgnoreCase(deleteContinent)) {
 						deletedCountries.add(country.getName());
-						// listofCountries.remove(country);
+
 						CountryIT.remove();
 					}
 
@@ -528,28 +524,20 @@ public class CreateAndEditMap {
 				for (String name : deletedCountries) {
 					if (!listOfCountries.isEmpty() && listOfCountries != null) {
 						Iterator<Country> CountryIT1 = listOfCountries.iterator();
-						// for (Country country : listofCountries)
 						while (CountryIT1.hasNext()) {
 							Country country = CountryIT1.next();
 							ArrayList<String> adjacentCountries = country.getAdjacentCountries();
-							// for (Country country : listofCountries)
 							Iterator<String> adjacentIT = adjacentCountries.iterator();
 							while (adjacentIT.hasNext()) {
 								if (adjacentIT.next().equalsIgnoreCase(name)) {
-									// adjacentCountries.remove(adjacentCountryName);
 									adjacentIT.remove();
-									// country.setAdjacentCountries(adjacentCountries);
 									break;
 								}
 							}
-
-							// listofCountries.add(country);
-
 						}
 					}
 				}
 				mapGraph.setCountries(listOfCountries);
-				// System.out.println("\n " + deleteContinent + " deleted successfully");
 			}
 			mapGraph.setContinents(listOfContinents);
 			System.out.println("\n " + deleteContinent + " deleted successfully");
@@ -581,29 +569,24 @@ public class CreateAndEditMap {
 							"Sorry! The entered continent name cannot be blank.Provided contains only whitespace (ie. spaces, tabs or line breaks) \n");
 
 			}
-			// for (Country country : listofCountries) {
+
 			Iterator<Country> CountryIT = listOfCountries.iterator();
+
 			while (CountryIT.hasNext()) {
 				Country country = CountryIT.next();
 				if (country.getName().equalsIgnoreCase(deleteCountry)) {
 					Iterator<Country> CountryIT1 = listOfCountries.iterator();
-					// for (Country country : listofCountries)
+
 					while (CountryIT1.hasNext()) {
 						Country deletecountry = CountryIT1.next();
-						// for (Country deletecountry : listofCountries) {
-						// int index = listofCountries.indexOf(deletecountry);
 						ArrayList<String> adjacentCountries = deletecountry.getAdjacentCountries();
-						// for (String adjacentCountryName : adjacentCountries) {
 						Iterator<String> adjacentIT = adjacentCountries.iterator();
+
 						while (adjacentIT.hasNext()) {
 							if (adjacentIT.next().equalsIgnoreCase(deleteCountry)) {
 								adjacentIT.remove();
 							}
 						}
-
-						// deletecountry.setAdjacentCountries(adjacentCountries);
-						// listofCountries.add(deletecountry);
-						// listofCountries.add(index, country);
 					}
 					CountryIT.remove();
 					mapGraph.setCountries(listOfCountries);
@@ -721,18 +704,25 @@ public class CreateAndEditMap {
 
 	public boolean checkandSave() throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		listOfCountries = new ArrayList<Country>();
+
 		listOfCountries = mapGraph.getCountries();
 		listOfContinents = mapGraph.getContinents();
 		ArrayList<String> availableContinents = new ArrayList<>();
-		String error = new String();
-		String aderror = new String(), conterror = new String(), adjacencyError = new String();
+		String error = new String(""), nullerror = new String();
+		String aderror = new String(), conterror = new String(), adjacencyError = new String(),
+				mapTagError = new String();
 		ArrayList<String> adjacentCountries = new ArrayList<>();
 		setOfCountries = new HashMap<>();
 
-		boolean flag = false, flag2 = true, flag3 = true, flag5 = true, flag6 = false;
+		boolean flag = false, flag2 = true, flag3 = true, flag5 = true, flag6 = false, flag7 = true;
+
+		if (mapGraph.getMapTag() == null) {
+			flag6 = false;
+			mapTagError = "!! No map tag data defined for the map.\n";
+		}
 
 		if (listOfCountries != null && !listOfCountries.isEmpty()) {
+
 			for (Country country : listOfCountries) {
 				if (country.getxValue() == null && country.getyValue() == null
 						&& country.getPartOfContinent() == null) {
@@ -754,24 +744,27 @@ public class CreateAndEditMap {
 								}
 							} else
 								flag = false;
-//							if (country2.getPartOfContinent().getContinentName()
-//									.equalsIgnoreCase((country.getPartOfContinent().getContinentName()))) {
-//								flag6 = true;
-//								break;
-//							}
+							// if (country2.getPartOfContinent().getContinentName()
+							// .equalsIgnoreCase((country.getPartOfContinent().getContinentName()))) {
+							// flag6 = true;
+							// break;
+							// }
 						}
-//						if (flag6)
-//							break;
-						if (flag == false) {
+
+						// if (flag6)
+						// break;
+						if (!flag) {
+							flag7 = false;
 							aderror = aderror.concat("!! " + country.getName() + " and " + name
 									+ " are not defined properly as adjacent countries on " + name + " end.\n");
 						}
 					}
-//					if (flag6)
-//						break;
-//					else {
-//						adjacencyError = "!! Countries of the two defined continents are not adjacent. This is not a connected graph.\n";
-//					}
+					// if (flag6)
+					// break;
+					// else {
+					// adjacencyError = "!! Countries of the two defined continents are not
+					// adjacent. This is not a connected graph.\n";
+					// }
 				} else {
 					// System.out.println("false"+country);
 					flag5 = false;
@@ -781,34 +774,46 @@ public class CreateAndEditMap {
 
 			}
 
-		}
-		if (listOfContinents.size() < 2) {
-			flag3 = false;
-			conterror = "!! Minimum number of continents should be two to play the game. PLease add one more country and respective countries.\n";
+		} else {
+			nullerror = "!! Not a single Country is defined in the map.Please define atleast one country for each continents.\n";
+			flag = false;
 		}
 
-		listOfCountries.forEach(country -> {
-			if (!availableContinents.contains(country.getName())) {
-				if (country.getPartOfContinent() != null)
-					availableContinents.add(country.getPartOfContinent().getContinentName());
-			}
-		});
+		if (listOfCountries != null && !listOfCountries.isEmpty()) {
+			listOfCountries.forEach(country -> {
+				if (!availableContinents.contains(country.getName())) {
+					if (country.getPartOfContinent() != null)
+						availableContinents.add(country.getPartOfContinent().getContinentName());
+				}
+			});
+		}
+		if (listOfContinents != null) {
 
-		for (Continent continent : listOfContinents) {
-			boolean flag4 = true;
-			for (String continentname : availableContinents) {
-				if (continent.getContinentName().equalsIgnoreCase(continentname)) {
-					flag4 = false;
+			for (Continent continent : listOfContinents) {
+				boolean flag4 = true;
+				for (String continentname : availableContinents) {
+					if (continent.getContinentName().equalsIgnoreCase(continentname)) {
+						flag4 = false;
+					}
+				}
+				if (flag4 == true) {
+					flag = false;
+					conterror = conterror.concat("!! " + continent.getContinentName()
+							+ " does not have any defined Country. Should have atleast one country.\n");
 				}
 			}
-			if (flag4 == true) {
-				flag = false;
-				conterror = conterror.concat("!! " + continent.getContinentName()
-						+ " does not have any defined Country. Should have atleast one country.\n");
+			if (listOfContinents.size() < 2) {
+				flag3 = false;
+				conterror = "!! Minimum number of continents should be two to play the game. PLease add one more country and respective countries.\n";
 			}
+		} else {
+			flag = false;
+			nullerror = nullerror.concat(
+					"!! Not a single continent is defined in the map.Please define minimum of two continents. \n");
 		}
 
-		if (flag == true && flag2 == true && flag3 == true && flag5 == true) {
+		if (flag && flag2 && flag3 && flag5 && flag7 && flag6) {
+			String oldFileName = new String();
 			if (Thread.currentThread().getStackTrace()[2].getMethodName().equalsIgnoreCase("uploadMap")) {
 				System.out.println("\nDo you want to rename the file ? Yes or No ");
 				String option = br.readLine();
@@ -821,8 +826,10 @@ public class CreateAndEditMap {
 								"Sorry! The entered file name cannot be blank.Provided contains only whitespace (ie. spaces, tabs or line breaks).\nPlease enter the file name to save map file:\n");
 						fileName = br.readLine();
 					}
+					oldFileName = mapGraph.getFilename();
 				} else {
 					fileName = mapGraph.getFilename();
+					oldFileName = mapGraph.getFilename();
 				}
 			} else {
 				System.out.println("\nPlease enter the file name to save map file:");
@@ -842,8 +849,7 @@ public class CreateAndEditMap {
 
 			mapGraph.setFilename(fileName);
 			ReadAndWriteMap save = new ReadAndWriteMap();
-			save.saveMap(mapGraph);
-			System.out.println("Map saved into " + fileName + ".map file");
+			save.saveMap(mapGraph, oldFileName);
 			return true;
 
 		}
@@ -851,7 +857,7 @@ public class CreateAndEditMap {
 		else {
 			System.err.println(
 					"Below are the error present in Map.Entry Please resolve all the below issues before saving the Map.\n");
-			error = conterror.concat(error).concat(aderror);
+			error = mapTagError.concat(nullerror).concat(conterror).concat(error).concat(aderror);
 			System.err.println(error);
 			System.out.flush();
 			return false;

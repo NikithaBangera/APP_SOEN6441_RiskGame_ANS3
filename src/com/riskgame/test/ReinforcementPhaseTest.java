@@ -24,18 +24,18 @@ public class ReinforcementPhaseTest {
 		country.setName("Egypt");
 		player.getMyCountries().add(country);
 		player1.getMyCountries().add(country);
-		continent.getCountriesListInContinent().add(country);
+		continent.getCountriesInContinent().add(country);
 		
 		country = new Country();
 		country.setName("Libya");
 		player.getMyCountries().add(country);
 		player1.getMyCountries().add(country);
-		continent.getCountriesListInContinent().add(country);
+		continent.getCountriesInContinent().add(country);
 		
 		country = new Country();
 		country.setName("Morocco");
 		player.getMyCountries().add(country);
-		continent.getCountriesListInContinent().add(country);
+		continent.getCountriesInContinent().add(country);
 		
 		
 		continent.setName("Northern Africa");

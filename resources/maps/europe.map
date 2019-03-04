@@ -1,0 +1,21 @@
+[Map]
+Author=Sean
+Image Name=world.bmp
+Warn=yes
+Scroll=horizontal
+Wrap=yes
+
+[Continent]
+Western Africa=7
+Northern Africa=4
+
+[Country]
+Morocco,127,46,Northern Africa,Western Sahara,Algeria
+Western Sahara,62,103,Western Africa,Morocco,Algeria,Mauritania
+Algeria,193,85,Northern Africa,Morocco,Western Sahara,Mauritania,Libya,Tunisia,Mali
+Mauritania,84,147,Western Africa,Western Sahara,Algeria,Senegal,Mali
+Libya,314,94,Northern Africa,Tunisia,Algeria,Egypt
+Tunisia,252,33,Northern Africa,Algeria,Libya
+Mali,144,178,Western Africa,Senegal,Algeria,Mauritania
+Senegal,36,203,Western Africa,Mauritania,Mali
+Egypt,415,99,Northern Africa,Libya

@@ -12,7 +12,6 @@ import java.util.ArrayList;
  *
  */
 public class RiskPlayer {
-
 	/** Name of the Player */
 	private String name;
 
@@ -20,6 +19,7 @@ public class RiskPlayer {
 	private int armyCount = 0;
 
 	/** List of countries held by the Player */
+
 	private ArrayList<Country> myCountries= new ArrayList<Country>();
 
 	public String getName() {
@@ -74,6 +74,6 @@ public class RiskPlayer {
 	@Override
 	public String toString() {
 		return "RiskPlayer [name=" + name + ", armyCount=" + armyCount + ", myCountries=" + myCountries + "]";
-	}
 
+	}
 }

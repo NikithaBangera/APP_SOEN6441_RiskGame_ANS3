@@ -49,52 +49,78 @@ public class ReadAndWriteMap {
 		ReadAndWriteMap.error = error;
 	}
 
-	public void saveMap(GameMapGraph mapgraph) throws IOException {
-
+	public void saveMap(GameMapGraph mapgraph, String oldFileName) throws IOException {
+		
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		String workingDir = System.getProperty("user.dir");
-		File file = new File(workingDir + "/src/com/riskgame/maps/" + mapgraph.getFilename() + ".map");
-		try {
-
-			if (!file.exists()) { // @SuppressWarnings("resource")
-				PrintWriter outputStream = new PrintWriter(file);
-
-				// Writing Map Meta data file
-				MapTag maptag = mapgraph.getMapTag();
-				outputStream.println("[Map]");
-				outputStream.println("Author=" + maptag.getAuthorName());
-				outputStream.println("Image Name=" + maptag.getImageName());
-				outputStream.println("Warn=" + maptag.getWarn());
-				outputStream.println("Scroll=" + maptag.getScroll());
-				outputStream.println("Wrap=" + maptag.getWrap());
-
-				// Writing Continents into file
-				outputStream.println("\n[Continent]");
-				for (Continent continent : mapgraph.getContinents()) {
-					outputStream.println(continent.getContinentName() + "=" + continent.getControlValue());
-				}
-
-				outputStream.println("\n[Country]");
-				for (Country country : mapgraph.getCountries()) {
-					String detail = country.getName() + Delimiter + country.getxValue() + Delimiter
-							+ country.getyValue() + Delimiter + country.getPartOfContinent().getContinentName();
-					for (String adcountry : country.getAdjacentCountries()) {
-						detail = detail.concat(Delimiter + adcountry);
+		File file = new File(workingDir + "\\resources\\maps\\" + mapgraph.getFilename() + ".map");
+		File oldFile = new File(workingDir + "\\resources\\maps\\" + oldFileName + ".map");
+		PrintWriter outputStream;
+		String newFileName;
+		//Upload
+		if(!oldFileName.isEmpty())
+		{
+			if(!oldFileName.equalsIgnoreCase(mapgraph.getFilename()))
+			{
+				while(file.exists())
+				{
+					System.out.println("\nFile with same name already exist. Please provide another file name to save map file:");
+					newFileName = br.readLine();
+	
+					while (newFileName.isEmpty()) {
+						System.out.println(
+								"Sorry! File name cannot be blank.Provided contains only whitespace (ie. spaces, tabs or line breaks).\nPlease enter valid file name to save map file:\n");
+						newFileName = br.readLine();
 					}
-					outputStream.println(detail);
+					file = new File(workingDir + "\\resources\\maps\\" + newFileName + ".map");
 				}
-				// PrintWriter outputStream = new PrintWriter(new FileWriter(file,true));
-				outputStream.close();
+				
+				oldFile.renameTo(file);
+				outputStream = new PrintWriter(file);
 			}
-			/*
-			 * else { FileWriter fr = new FileWriter(file, true); BufferedWriter br = new
-			 * BufferedWriter(fr); br.write("\n\n\n\n\n" + tags); br.newLine(); for (int
-			 * i=0; i<l;i++) { br.write(Data[i]); br.newLine(); } br.close(); fr.close(); }
-			 */
+			else
+			{
+				oldFile.renameTo(file);
+				outputStream = new PrintWriter(file);
+			}		
+		}
+		//Create
+		else
+		{
+			outputStream = new PrintWriter(file);
 		}
 
-		catch (FileNotFoundException e) {
-			e.printStackTrace();
+		
+		// Writing Map Meta data file
+		MapTag maptag = mapgraph.getMapTag();
+		outputStream.println("[Map]");
+		outputStream.println("Author=" + maptag.getAuthorName());
+		outputStream.println("Image Name=" + maptag.getImageName());
+		outputStream.println("Warn=" + maptag.getWarn());
+		outputStream.println("Scroll=" + maptag.getScroll());
+		outputStream.println("Wrap=" + maptag.getWrap());
+
+		// Writing Continents into file
+		outputStream.println("\n[Continent]");
+		for (Continent continent : mapgraph.getContinents()) {
+			outputStream.println(continent.getContinentName() + "=" + continent.getControlValue());
 		}
+
+		// Writing Countries into file
+		outputStream.println("\n[Country]");
+		for (Country country : mapgraph.getCountries()) {
+			String detail = country.getName() + Delimiter + country.getxValue() + Delimiter + country.getyValue()
+					+ Delimiter + country.getPartOfContinent().getContinentName();
+			for (String adcountry : country.getAdjacentCountries()) {
+				detail = detail.concat(Delimiter + adcountry);
+			}
+			outputStream.println(detail);
+		}
+
+		
+		outputStream.close();
+		System.out.println("Map saved into " + file.getName() + " file");
+
 	}
 
 	// Uploading a Map file to system
@@ -200,6 +226,7 @@ public class ReadAndWriteMap {
 		boolean duplicatedata = true, formatdata = true;
 		String formaterror = "";
 		String Duplicateerror = "";
+		error = new String();
 		String[] metaData = tagData.split("\\n");
 		if (metaData.length != 1) {
 			for (int i = 1; i < metaData.length; i++) {
@@ -264,6 +291,7 @@ public class ReadAndWriteMap {
 
 		HashMap<String, String> visited = new HashMap<String, String>();
 		boolean duplicatedata = true, formatdata = true, adjacentdata = true, continentdata = true;
+		error = new String();
 		ArrayList<String> adjacentcountries;
 		String formaterror = "", Duplicateerror = "", continenterror = "", adjacencyerror = "";
 		String[] countryData = tagData.split("\\n");
@@ -359,6 +387,7 @@ public class ReadAndWriteMap {
 		boolean checkdata = true, duplicatedata = true, formatdata = true;
 		String formaterror = "", validateerror = "", Duplicateerror = "";
 		mapTag = new MapTag();
+		error = new String();
 		HashMap<String, String> visited = new HashMap<String, String>();
 		String[] metaData = tagData.split("\\n");
 		for (int i = 1; i < metaData.length; i++) {
@@ -468,24 +497,25 @@ public class ReadAndWriteMap {
 									flag = false;
 							} else
 								flag = false;
-//							if (country2.getPartOfContinent().getContinentName()
-//									.equalsIgnoreCase((country.getPartOfContinent().getContinentName()))) {
-//								flag6 = true;
-//								break;
-//							}
+							// if (country2.getPartOfContinent().getContinentName()
+							// .equalsIgnoreCase((country.getPartOfContinent().getContinentName()))) {
+							// flag6 = true;
+							// break;
+							// }
 						}
-//						if (flag6)
-//							break;
+						// if (flag6)
+						// break;
 						if (flag == false) {
 							aderror = aderror.concat("!! " + country.getName() + " and " + name
 									+ " are not defined properly as adjacent countries on " + name + " end.\n");
 						}
 					}
-//					if (flag6)
-//						break;
-//					else {
-//						adjacencyEr = "!! Countries of the two defined continents are not adjacent. This is not a connected graph.\n";
-//					}
+					// if (flag6)
+					// break;
+					// else {
+					// adjacencyEr = "!! Countries of the two defined continents are not adjacent.
+					// This is not a connected graph.\n";
+					// }
 				} else {
 					flag5 = false;
 					aderror = aderror.concat("!! " + country.getName()

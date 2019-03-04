@@ -8,6 +8,11 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({CreateAndEditMapTest.class,ReadAndWriteMapTest.class,StartupPhaseTest.class,
     FortificationPhaseTest.class,ReinforcementPhaseTest.class})
 
+/**
+ * A TestSuite class for testing all the test cases
+ * @author 
+ *
+ */
 public class JUnitTestSuite {
 
 }
