@@ -6,7 +6,7 @@ Scroll=horizontal
 Wrap=yes
 
 [Continent]
-Western Africa
+Western Africa=7
 Northern Africa=4
 
 [Country]

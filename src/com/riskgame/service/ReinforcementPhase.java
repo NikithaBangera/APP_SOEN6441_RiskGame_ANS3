@@ -3,6 +3,8 @@ package com.riskgame.service;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.riskgame.model.Continent;
 import com.riskgame.model.Country;
@@ -42,10 +44,13 @@ public class ReinforcementPhase {
 				System.out.println("Current available armies to be reinforced: " + player.getArmyCount());
 				System.out.println("Enter the number of armies to be deployed to country " + country.getName());
 				String armyCount = in.readLine().trim();
-				while (armyCount.isEmpty()) {
-					System.err.println("\nArmy count cannot be blank. Please enter the correct count below:");
+				Pattern numberPattern = Pattern.compile("[0-9+]");
+				Matcher match = numberPattern.matcher(armyCount);
+				while (!match.matches() || armyCount.isEmpty()) {
+					System.err.println("\nPlease enter the correct army count below:");
 					System.out.flush();
 					armyCount = in.readLine().trim();
+					match = numberPattern.matcher(armyCount);
 				}
 				int armiesCount = Integer.parseInt(armyCount);
 				player.armiesAssignedToCountries(country, armiesCount);

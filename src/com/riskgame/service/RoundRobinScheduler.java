@@ -12,13 +12,13 @@ public class RoundRobinScheduler {
 	
 	public RoundRobinScheduler(ArrayList<RiskPlayer> playersList) {
 		this.playersList = playersList;
-		this.iterator = playersList.iterator();
+		iterator = playersList.iterator();
 	}
 	
 	public RiskPlayer nextTurn() {
-		if(!this.iterator.hasNext()) {
-			this.iterator = this.playersList.iterator();
+		if(!iterator.hasNext()) {
+			iterator = playersList.iterator();
 		}
-		return this.iterator.next();
+		return iterator.next();
 	}
 }

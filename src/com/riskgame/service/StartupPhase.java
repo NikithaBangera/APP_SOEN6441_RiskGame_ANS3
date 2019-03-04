@@ -13,6 +13,8 @@ import com.riskgame.model.MapTag;
 import com.riskgame.model.RiskPlayer;
 
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.io.IOException;
 
 public class StartupPhase {
@@ -50,14 +52,17 @@ public class StartupPhase {
 //		System.out.println("****************");
 		System.out.println("Enter the number of players below");
 		String playerCount = br.readLine().trim();
-		while (playerCount.isEmpty()) {
-			System.err.println("\nPlayer name cannot be blank. Please enter the correct player name below:");
+		Pattern numberPattern = Pattern.compile("[0-9]+");
+		Matcher match = numberPattern.matcher(playerCount);
+		while(!match.matches() || playerCount.isEmpty()) {
+			System.err.println("\nPlease enter the correct player count below:");
 			System.out.flush();
 			playerCount = br.readLine().trim();
+			match = numberPattern.matcher(playerCount);
 		}
 		countOfthePlayers = Integer.parseInt(playerCount);
 
-		System.out.println("countOfthePlayers " + countOfthePlayers);
+//		System.out.println("countOfthePlayers " + countOfthePlayers);
 		if (countOfthePlayers > 1 && countOfthePlayers < 7) {
 			System.out.println("Great! Let's Play.");
 //			isAllowedToPlay = false;
@@ -72,10 +77,13 @@ public class StartupPhase {
 			boolean continue1 = true;
 			RiskPlayer riskPlayer = new RiskPlayer();
 			String playername = br.readLine().trim();
-			while (playername.isEmpty()) {
-				System.err.println("\nPlayer name cannot be blank. Please enter the correct player name below:");
+			Pattern namePattern = Pattern.compile("[a-zA-z]+");
+			match = namePattern.matcher(playername);
+			while (!match.matches() || playername.isEmpty()) {
+				System.err.println("\nPlease enter the correct player name below:");
 				System.out.flush();
 				playername = br.readLine().trim();
+				match = namePattern.matcher(playername);
 			}
 			
 			while (continue1) {
@@ -112,10 +120,13 @@ public class StartupPhase {
 			System.out.println("Player: " + player.getName() + "\n");
 			System.out.println("Do you want to continue with Reinforcement phase? (Yes or No) ");
 			String choice = br.readLine().trim();
-			while (choice.isEmpty()) {
-				System.err.println("\nChoice cannot be blank. Please enter the correct choice below:");
+			Pattern pattern1 = Pattern.compile("[a-zA-Z]+");
+			match = pattern1.matcher(choice); 
+			while (!match.matches() || choice.isEmpty()) {
+				System.err.println("\nPlease enter the correct choice below:");
 				System.out.flush();
 				choice = br.readLine().trim();
+				match = pattern1.matcher(choice);
 			}
 			
 			if (choice.equalsIgnoreCase("Yes")) {
@@ -133,10 +144,13 @@ public class StartupPhase {
 			System.out.println("Player: " + player.getName() + "\n");
 			System.out.println("Do you wish to start the Fortification phase? (Yes or No)");
 			String choice1 = br.readLine().trim();
-			while (choice1.isEmpty()) {
-				System.err.println("\nChoice cannot be blank. Please enter the correct choice below:");
+			Pattern pattern2 = Pattern.compile("[a-zA-Z]+");
+			match = pattern2.matcher(choice1);
+			while (!match.matches() || choice1.isEmpty()) {
+				System.err.println("\nPlease enter the correct choice below:");
 				System.out.flush();
 				choice1 = br.readLine().trim();
+				match = pattern2.matcher(choice1);
 			}
 			if (choice1.equalsIgnoreCase("Yes")) {
 				FortificationPhase fortification = new FortificationPhase();
@@ -170,22 +184,6 @@ public class StartupPhase {
 				}
 			}
 		}
-//		if (countrySet.size() > 0) {
-//			for (i = 1; i < playersList.size(); i++) {
-//				if (countrySet.size() > 1) {
-//					countryIndexAssignment = new Random().nextInt(countrySet.size());
-//					System.out.println("countryIndexAssignment " + countryIndexAssignment);
-//					playersList.get(i).additionOfCountry(countrySet.get(countryIndexAssignment));
-//					countrySet.remove(countryIndexAssignment);
-//				} else if (countrySet.size() == 1) {
-//					playersList.get(i).additionOfCountry(countrySet.get(0));
-//					countrySet.remove(0);
-//				}
-//
-//			}
-//		} else {
-//			System.out.println("No more countries to assign");
-//		}
 	}
 
 	public void allocationOfArmyToPlayers() {
@@ -211,13 +209,9 @@ public class StartupPhase {
 	}
 
 	public void allocationOfArmyToCountriesInitially(GameMapGraph mapGraph) {
-		// Country country = new Country();
-		// for (int i = 0; i < mapGraph.getCountrySet().size(); i++) {
-		// country.setNoOfArmies(1);
-		// }
 
 		mapGraph.getCountrySet().values().forEach(country -> {
-			System.out.println(country.getName() + "   country name");
+		//	System.out.println(country.getName() + "   country name");
 			country.setNoOfArmies(1);
 		});
 
@@ -243,10 +237,13 @@ public class StartupPhase {
 					System.out.println("Enter number of armies you want to assign to " + con.getName());
 					try {
 						String numArmies = br.readLine().trim();
-						while (numArmies.isEmpty()) {
-							System.err.println("\nNumber of armies cannot be blank. Please enter the correct number below:");
+						Pattern numberPattern = Pattern.compile("[0-9]+");
+						Matcher match = numberPattern.matcher(numArmies);
+						while (!match.matches() || numArmies.isEmpty()) {
+							System.err.println("\nPlease enter the correct number of armies below:");
 							System.out.flush();
 							numArmies = br.readLine().trim();
+							match = numberPattern.matcher(numArmies);
 						}
 						int numberOFarmies = Integer.parseInt(numArmies);
 						player.armiesAssignedToCountries(con, numberOFarmies);

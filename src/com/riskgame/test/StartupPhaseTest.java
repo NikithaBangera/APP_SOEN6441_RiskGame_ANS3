@@ -11,15 +11,36 @@ import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.RiskPlayer;
 import com.riskgame.service.StartupPhase;
 
+/**
+ * Test Class for StartUpPhase class
+ * 
+ * @author Nikitha
+ * @author Sumeetha
+ *
+ */
 public class StartupPhaseTest {
-   RiskPlayer player1;
-   StartupPhase startUpPhase;
-   Country country;
-   GameMapGraph mapGraph = new GameMapGraph();
-   HashMap<String, Country> countrySet = new HashMap<String, Country>();
+	/** Object for RiskPlayer Class */
+	RiskPlayer player1;
+	
+	/** Object for StartUp Class */
+	StartupPhase startUpPhase;
+	
+	/** Object for Country Class */
+	Country country;
+	
+	/** Object for GameMapGraph class */
+	GameMapGraph mapGraph;
+	
+	/** HasMap to store the information of countries */
+	HashMap<String, Country> countrySet; 
 
-
+	/**
+	 * StartupPhaseTest Constructor for initial setup 
+	 */
    public StartupPhaseTest() {
+	   countrySet = new HashMap<String, Country>();
+	   mapGraph = new GameMapGraph();
+	   
        startUpPhase = new StartupPhase();
        startUpPhase.setCountOfthePlayers(2);
 
@@ -33,12 +54,20 @@ public class StartupPhaseTest {
 
    }
 
+   /**
+    * Test method to validate the allocation of armies to each player
+    * as per the number of players.
+    */
    @Test
    public void testAllocationArmy() {
        startUpPhase.allocationOfArmyToPlayers();
        assertEquals(40, player1.getArmyCount());
    }
 
+   /**
+    * Test case to validate the initial allocation of armies to each country
+    * owned by players. 
+    */
    @Test
    public void testallocationOfArmyToCountriesInitially() {
        startUpPhase.allocationOfArmyToCountriesInitially(mapGraph);

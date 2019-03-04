@@ -3,6 +3,8 @@ package com.riskgame.service;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.riskgame.model.Country;
 import com.riskgame.model.GameMapGraph;
@@ -19,6 +21,7 @@ import com.riskgame.model.RiskPlayer;
  *
  */
 public class FortificationPhase {
+	
 	/**
 	 * This method is called from the Startup phase when the user opts to start the
 	 * fortification. It internally calls the moveArmies method once all the
@@ -43,18 +46,24 @@ public class FortificationPhase {
 				}
 				System.out.println("Enter the name of country from which you want to move some armies :");
 				fromCountry = br.readLine().trim();
-				while (fromCountry.isEmpty()) {
-					System.err.println("\nFrom Country cannot be blank. Please enter the correct country name below:");
+				Pattern namePattern1 = Pattern.compile("[a-zA-Z]+");
+				Matcher match = namePattern1.matcher(fromCountry);
+				while (!match.matches()) {
+					System.err.println("\nPlease enter the correct country name below:");
 					System.out.flush();
 					fromCountry = br.readLine().trim();
+					match = namePattern1.matcher(fromCountry);
 				}
 				System.out.println(
 						"Enter the name of country to which you want to move some armies, from country " + fromCountry);
 				toCountry = br.readLine().trim();
-				while (toCountry.isEmpty()) {
-					System.err.println("\nTo Country cannot be blank. Please enter the correct country name below:");
+				Pattern namePattern2 = Pattern.compile("[a-zA-Z]+");
+				match = namePattern2.matcher(toCountry);
+				while (!match.matches() || toCountry.isEmpty()) {
+					System.err.println("\nPlease enter the correct country name below:");
 					System.out.flush();
 					toCountry = br.readLine().trim();
+					match = namePattern2.matcher(toCountry);
 				}
 
 				System.out.println("\nfrom country " + fromCountry);
@@ -78,10 +87,13 @@ public class FortificationPhase {
 				System.out.println("Enter the number of armies to move from " + fromCountry + " to " + toCountry);
 				try {
 					String countOfArmy = br.readLine().trim();
-					while (countOfArmy.isEmpty()) {
-						System.err.println("\nArmy count cannot be blank. Please enter the correct number below:");
+					Pattern numberPattern3 = Pattern.compile("[0-9]+");
+					match = numberPattern3.matcher(countOfArmy);
+					while (!match.matches() || countOfArmy.isEmpty()) {
+						System.err.println("\nPlease enter the correct army count below:");
 						System.out.flush();
 						countOfArmy = br.readLine().trim();
+						match = numberPattern3.matcher(countOfArmy);
 					}
 					countOfArmies = Integer.parseInt(countOfArmy);
 					if (countOfArmies > mapData.getCountrySet().get(fromCountry).getNoOfArmies()) {
@@ -98,6 +110,14 @@ public class FortificationPhase {
 
 				System.out.println("Do you wish to continue with fortification? (Yes or No)");
 				String choice = br.readLine().trim();
+				Pattern pattern = Pattern.compile("[a-zA-Z]+");
+				match = pattern.matcher(choice);
+				while (!match.matches() || choice.isEmpty()) {
+					System.err.println("\nPlease enter the correct choice below:");
+					System.out.flush();
+					choice = br.readLine().trim();
+					match = pattern.matcher(choice);
+				}
 				if (choice.equalsIgnoreCase("No")) {
 					doFortification = false;
 				} else {
