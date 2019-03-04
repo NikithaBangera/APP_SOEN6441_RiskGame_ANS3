@@ -30,7 +30,16 @@ public class MapTag {
 		super();
 	}
 
-	
+	/**
+	 * MapTag class constructor
+	 * 
+	 * @param Author name
+	 * @param Warn
+	 * @param Image name
+	 * @param Wrap
+	 * @param Scroll
+	 *            
+	 */
 	public MapTag(String authorName, String warn, String imageName, String wrap, String scroll) {
 		super();
 		this.authorName = authorName;
@@ -94,12 +103,20 @@ public class MapTag {
 		this.imageName = imageName;
 	}
 
-	
+	/**
+	 * Gets Wrap option for the map 
+	 *
+	 * @return Wrap option as string
+	 */
 	public String getWrap() {
 		return wrap;
 	}
 
-	
+	/**
+	 * Sets Wrap option for the map 
+	 *
+	 * @param Wrap option
+	 */
 	public void setWrap(String wrap) {
 		this.wrap = wrap;
 	}
@@ -113,7 +130,11 @@ public class MapTag {
 		return scroll;
 	}
 
-	
+	/**
+	 * Sets Scroll option for the map 
+	 *
+	 * @param Scroll option
+	 */
 	public void setScroll(String scroll) {
 		this.scroll = scroll;
 	}
