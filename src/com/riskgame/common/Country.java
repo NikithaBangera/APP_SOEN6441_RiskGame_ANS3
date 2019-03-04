@@ -1,49 +1,42 @@
-package com.riskgame.common;
+package com.riskgame.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 public class Country {
 
-	/** Name of country. */
+	
 	private String name;
+		
+	private Continent partOfContinent;
 
-	/** Country holder */
-	private String player;
 
-	/** Part of continent */
-	private String continent;
-
-	/** X dimension */
 	private String xValue;
 
-	/** Y dimension */
+	
 	private String yValue;
 
-	/** Number of armies */
+	
+	private ArrayList<String> adjacentCountries;
+
+	
 	private int noOfArmies;
 
-	/** Adjacent Country holder */
-	private ArrayList<Country> adjacentCountries;
-
-	/** Part of Continent */
-	private Continent partOfContinent;
 	
-	/** Adjacent Country holder */
-	private ArrayList<Country> countries;
-	
-	/** Country with AdjacentCountrylist */
-	private HashMap<String, List<String>> adjacCountries;
+	private String continent;
 
+	
+	private String player;
+
+	
 	public String getName() {
 		return name;
 	}
 
+	
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	
 	public String getPlayer() {
 		return player;
 	}
@@ -52,76 +45,71 @@ public class Country {
 		this.player = player;
 	}
 
+	
 	public String getContinent() {
 		return continent;
 	}
-
+	
+	
 	public void setContinent(String continent) {
 		this.continent = continent;
 	}
 
+	
 	public String getxValue() {
 		return xValue;
 	}
 
+	
 	public void setxValue(String xValue) {
 		this.xValue = xValue;
 	}
 
+	
 	public String getyValue() {
 		return yValue;
 	}
 
+	
 	public void setyValue(String yValue) {
 		this.yValue = yValue;
 	}
 
+	
 	public int getNoOfArmies() {
 		return noOfArmies;
 	}
 
+	
 	public void setNoOfArmies(int noOfArmies) {
 		this.noOfArmies = noOfArmies;
 	}
 
-	public ArrayList<Country> getAdjacentCountries() {
+	
+	public ArrayList<String> getAdjacentCountries() {
 		return adjacentCountries;
 	}
 
-	public void setAdjacentCountries(ArrayList<Country> adjacentCountries) {
+	
+	public void setAdjacentCountries(ArrayList<String> adjacentCountries) {
 		this.adjacentCountries = adjacentCountries;
 	}
 
+	
 	public Continent getPartOfContinent() {
 		return partOfContinent;
 	}
 
+	
 	public void setPartOfContinent(Continent partOfContinent) {
 		this.partOfContinent = partOfContinent;
 	}
-	
-	public ArrayList<Country> getCountries() {
-		return countries;
-	}
-	public void setCountries(ArrayList<Country> countries) {
-		this.countries = countries;
-	}
-	
-	public HashMap<String, List<String>> getAdjacCountries() {
-		return adjacCountries;
-	}
-	
-	public void setAdjacCountries(HashMap<String, List<String>> adjacCountries) {
-		this.adjacCountries = adjacCountries;
-	}
-	
 
 	@Override
 	public String toString() {
-		return "Country [name=" + name + ", player=" + player + ", continent=" + continent + ", xValue=" + xValue
-				+ ", yValue=" + yValue + ", noOfArmies=" + noOfArmies + ", adjacentCountries=" + adjacentCountries
-				+ ", partOfContinent=" + partOfContinent + "]";
+		return "Country [name=" + name + ", partOfContinent=" + partOfContinent + ", xValue=" + xValue + ", yValue="
+				+ yValue + ", adjacentCountries=" + adjacentCountries + ", noOfArmies=" + noOfArmies + ", continent="
+				+ continent + ", player=" + player + "]";
 	}
 
-	
 }
