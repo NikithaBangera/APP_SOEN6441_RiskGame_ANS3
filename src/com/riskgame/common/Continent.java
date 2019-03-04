@@ -3,7 +3,15 @@ package com.riskgame.model;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
+/**
+ * This class stores all the values associated to each Continent. It stores Continent 
+ * name,Control value, a hashmap with Continent name and associated control value and
+ * an array list with list of countries in a Continent.
+ * 
+ * @author 
+ * @author 
+ *
+ */
 public class Continent {
 	
 	/** Variable to store Continent name */
@@ -18,7 +26,11 @@ public class Continent {
 	/** ArrayList to store list of Countries name associated with a Continent*/
 	ArrayList<Country> countriesInContinent = new ArrayList<Country>();
 
-	
+	/**
+	 * Gets name of the Continent 
+	 *
+	 * @return Continent name
+	 */
 	public String getContinentName() {
 		return continentName;
 	}
@@ -41,21 +53,38 @@ public class Continent {
 		return controlValue;
 	}
 
+	/**
+	 * Sets the Control value as integer 
+	 *
+	 * @param Control value
+	 */
 	public void setControlValue(int controlValue) {
 		this.controlValue = controlValue;
 	}
 
-	
+	/**
+	 * Gets Continent and associated Control value 
+	 *
+	 * @return Continent and its Control value
+	 */
 	public HashMap<String, Integer> getContinents() {
 		return continentDetails;
 	}
 
-	
+	/**
+	 * Sets the name of the Continent with its Control value
+	 *
+	 * @param Continent with its Control value
+	 */
 	public void setContinents(HashMap<String, Integer> continents) {
 		this.continentDetails = continents;
 	}
 
-	
+	/**
+	 * Gets the list of countries in a Continent 
+	 *
+	 * @return country names
+	 */
 	public ArrayList<Country> getCountriesInContinent() {
 		return countriesInContinent;
 	}
