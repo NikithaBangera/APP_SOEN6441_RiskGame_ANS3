@@ -195,7 +195,8 @@ public class ReadAndWriteMap {
 	public boolean validatecontinents(String tagData) {
 
 		listOfContinent = new ArrayList<Continent>();
-
+		error = new String();
+		
 		HashMap<String, String> visitedcontinent = new HashMap<String, String>();
 		boolean duplicatedata = true, formatdata = true;
 		String formaterror = "";
@@ -261,6 +262,7 @@ public class ReadAndWriteMap {
 	public boolean validatecountries(String tagData) {
 
 		listOfCountries = new ArrayList<Country>();
+		error = new String();
 
 		HashMap<String, String> visited = new HashMap<String, String>();
 		boolean duplicatedata = true, formatdata = true, adjacentdata = true, continentdata = true;
@@ -359,6 +361,7 @@ public class ReadAndWriteMap {
 		boolean checkdata = true, duplicatedata = true, formatdata = true;
 		String formaterror = "", validateerror = "", Duplicateerror = "";
 		mapTag = new MapTag();
+		error = new String();
 		HashMap<String, String> visited = new HashMap<String, String>();
 		String[] metaData = tagData.split("\\n");
 		for (int i = 1; i < metaData.length; i++) {
@@ -446,10 +449,11 @@ public class ReadAndWriteMap {
 	}
 
 	public boolean checkcountryadjancy() throws IOException {
-
+          
 		String aderror = new String(), conterror = new String(), adjacencyEr = new String();
 		ArrayList<String> adjacentCountries = new ArrayList<>();
 		ArrayList<String> availableContinent = new ArrayList<>();
+		error = new String();
 
 		boolean flag = false, flag2 = true, flag3 = true, flag5 = true, flag6 = false;
 
