@@ -30,8 +30,8 @@ public class ReadAndWriteMapTest {
     
     public ReadAndWriteMapTest() {
         readAndWriteMap = new ReadAndWriteMap();
-        validMap = "resources\\maps\\Asia.map";
-        invalidMap = "resources\\maps\\InvalidMap.map";
+        validMap = "resources/maps/africa.map";
+        invalidMap = "resources/maps/Asia.map";
         validCountryData = "[Country] Libya,314,94,Northern Africa,Tunisia,Algeria,Egypt";
         invalidCountryData = "[Country]\n,133,266,Northern Ireland,Ireland";
         validContinentData = "[Continent]\nSouth America=2";
