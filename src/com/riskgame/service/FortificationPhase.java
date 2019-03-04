@@ -121,9 +121,9 @@ public class FortificationPhase {
 	 */
 	public void moveArmies(Country fromCountry, Country toCountry, int armiesCount) {
 
-		System.out.println("from country " + fromCountry);
-		System.out.println("from country adjacent countries " + fromCountry.getAdjacentCountries());
-		System.out.println("to country " + toCountry);
+	//	System.out.println("from country " + fromCountry);
+	//	System.out.println("from country adjacent countries " + fromCountry.getAdjacentCountries());
+	//	System.out.println("to country " + toCountry);
 		boolean adjacentCountries = false;
 		for (String country : fromCountry.getAdjacentCountries()) {
 			if (country.equalsIgnoreCase(toCountry.getName())) {

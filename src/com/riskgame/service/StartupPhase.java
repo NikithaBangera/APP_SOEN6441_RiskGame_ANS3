@@ -89,9 +89,9 @@ public class StartupPhase {
 			}
 			playersList.add(riskPlayer);
 		}
-		playersList.forEach(P -> {
-			System.out.println(P + " *\n");
-		});
+		//playersList.forEach(P -> {
+		//	System.out.println(P + " *\n");
+		//});
 		allocationOfCountry(mapGraph);
 		allocationOfArmyToPlayers();
 		allocationOfArmyToCountriesInitially(mapGraph);
@@ -234,8 +234,8 @@ public class StartupPhase {
 			player.getMyCountries().forEach(con -> {
 
 //			{
-				System.out.println(player.getName()+ "\n my countries " + player.getMyCountries());
-				System.out.println(player.getName()+ "player  \n"+ con);
+		//		System.out.println(player.getName()+ "\n my countries " + player.getMyCountries());
+		//		System.out.println(player.getName()+ "player  \n"+ con);
 				if (player.getArmyCount() > 0) {
 					System.out.println("Country Name : " + con.getName());
 					System.out.println("Number of Armies assigned : " + con.getNoOfArmies());
