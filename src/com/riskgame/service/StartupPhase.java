@@ -32,7 +32,6 @@ public class StartupPhase {
 
 	public void gamePlay(GameMapGraph mapGraph) throws Exception {
 		RiskPlayer player = new RiskPlayer();
-//		boolean isAllowedToPlay = true;
 
 		// Startup Phase starts here
 //		System.out.println("****************");
@@ -45,12 +44,9 @@ public class StartupPhase {
 		System.out.println("countOfthePlayers " + countOfthePlayers);
 		if (countOfthePlayers > 1 && countOfthePlayers < 7) {
 			System.out.println("Great! Let's Play.");
-//			isAllowedToPlay = false;
 		} else {
 			System.out.println("Sorry! The numbers of players can be between 2 and 6.");
 		}
-
-//		int count = 1;
 
 		System.out.println("Enter the name of the players");
 		for (int count = 1; count <= countOfthePlayers; count++) {
@@ -136,22 +132,7 @@ public class StartupPhase {
 				}
 			}
 		}
-//		if (countrySet.size() > 0) {
-//			for (i = 1; i < playersList.size(); i++) {
-//				if (countrySet.size() > 1) {
-//					countryIndexAssignment = new Random().nextInt(countrySet.size());
-//					System.out.println("countryIndexAssignment " + countryIndexAssignment);
-//					playersList.get(i).additionOfCountry(countrySet.get(countryIndexAssignment));
-//					countrySet.remove(countryIndexAssignment);
-//				} else if (countrySet.size() == 1) {
-//					playersList.get(i).additionOfCountry(countrySet.get(0));
-//					countrySet.remove(0);
-//				}
-//
-//			}
-//		} else {
-//			System.out.println("No more countries to assign");
-//		}
+
 	}
 
 	public void allocationOfArmyToPlayers() {
@@ -200,8 +181,8 @@ public class StartupPhase {
 			player.getMyCountries().forEach(con -> {
 
 //			{
-				System.out.println(player.getName()+ "\n my countries " + player.getMyCountries());
-				System.out.println(player.getName()+ "player  \n"+ con);
+				System.out.println(player.getName() + "\n my countries " + player.getMyCountries());
+				System.out.println(player.getName() + "player  \n" + con);
 				if (player.getArmyCount() > 0) {
 					System.out.println("Country Name : " + con.getName());
 					System.out.println("Number of Armies assigned : " + con.getNoOfArmies());
