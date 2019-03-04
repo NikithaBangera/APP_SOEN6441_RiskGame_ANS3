@@ -699,16 +699,16 @@ public class CreateAndEditMap {
 		listOfCountries = mapGraph.getCountries();
 		listOfContinents = mapGraph.getContinents();
 		ArrayList<String> availableContinents = new ArrayList<>();
-		String error = new String(""), nullerror = new String();
-		String aderror = new String(), conterror = new String(), adjacencyError = new String(),
-				mapTagError = new String();
+		String error = new String(""), nullerror = new String("");
+		String aderror = new String(""), conterror = new String(""), adjacencyError = new String(""),
+				mapTagError = new String("");
 		ArrayList<String> adjacentCountries = new ArrayList<>();
 		setOfCountries = new HashMap<>();
 
-		boolean flag = false, flag2 = true, flag3 = true, flag5 = true, flag6 = false, flag7 = true;
+		boolean flag = false, flag2 = true, flag3 = true, flag5 = true, mapTagFlag = true, flag7 = true;
 
 		if (mapGraph.getMapTag() == null) {
-			flag6 = false;
+			mapTagFlag = false;
 			mapTagError = "!! No map tag data defined for the map.\n";
 		}
 
@@ -799,11 +799,11 @@ public class CreateAndEditMap {
 			}
 		} else {
 			flag = false;
-			nullerror = nullerror.concat(
-					"!! Not a single continent is defined in the map.Please define minimum of two continents. \n");
+			nullerror = nullerror
+					.concat("Not a Single continent is defined in the map.Please define minimum of two continents. \n");
 		}
 
-		if (flag && flag2 && flag3 && flag5 && flag7 && flag6) {
+		if (flag && flag2 && flag3 && flag5 && flag7 && mapTagFlag) {
 			String oldFileName = new String();
 			if (Thread.currentThread().getStackTrace()[2].getMethodName().equalsIgnoreCase("uploadMap")) {
 				System.out.println("\nDo you want to rename the file ? Yes or No ");
