@@ -24,9 +24,6 @@ private MapTag mapTag;
 	
     /** ArrayList of Continent objects to store the continent details */
     private ArrayList<Continent> continents;
-	
-    /** HashMap to store the continent names */
-	//private HashMap<String, Continent> continents;
     
     /** Count of the number of countries */
 	private int countOfCountries = 0;
@@ -43,8 +40,15 @@ private MapTag mapTag;
 		super();
 	}
 	
-	
-
+	/**
+	 * GameMapGraph Constructor
+	 * 
+	 * @param Maptag 
+	 * @param Count of continents 
+	 * @param list of continents
+	 * @param count of countries 
+	 * @param list of countries
+	 */
 	public GameMapGraph(MapTag mapTag, int countOfContinents, ArrayList<Continent> continents, int countOfCountries,
 			ArrayList<Country> countries) {
 		super();
@@ -55,65 +59,135 @@ private MapTag mapTag;
 		this.countries = countries;
 	}
 
+	/**
+	 * Get the Country details.
+	 * 
+	 * @return Country details
+	 */
 	public HashMap<String, Country> getCountrySet() {
 		return countrySet;
 	}
 
+	/**
+	 * Set the Country details.
+	 * 
+	 * @param countrySet
+	 *            To set the Country details
+	 */
 	public void setCountrySet(HashMap<String, Country> countrySet) {
 		this.countrySet = countrySet;
 	}
 
-	
+	/**
+	 * Get the Maptag details.
+	 * 
+	 * @return Maptag details
+	 */
 	public MapTag getMapTag() {
 		return mapTag;
 	}
 
-	
-
+	/**
+	 * Set the Maptag details.
+	 * 
+	 * @param mapTag
+	 *            To set the Maptag details
+	 */
 	public void setMapTag(MapTag mapTag) {
 		this.mapTag = mapTag;
 	}
 
+	/**
+	 * Get the count of continents.
+	 * 
+	 * @return total number of continents.
+	 */
 	public int getCountOfContinents() {
 		return countOfContinents;
 	}
 
+	/**
+	 * Set the total number of continents
+	 * 
+	 * @param countOfContinents
+	 *            To set the count of continents.
+	 */
 	public void setCountOfContinents(int countOfContinents) {
 		this.countOfContinents = countOfContinents;
 	}
 
+	/**
+	 * Get the list of continents.
+	 * 
+	 * @return list of continents.
+	 */
 	public ArrayList<Continent> getContinents() {
 		return continents;
 	}
 
+	/**
+	 * Set the list of continents
+	 * 
+	 * @param continents
+	 *            To set the list of continents.
+	 */
 	public void setContinents(ArrayList<Continent> continents) {
 		this.continents = continents;
 	}
 
+	/**
+	 * Get the count of Countries.
+	 * 
+	 * @return total number of Countries.
+	 */
 	public int getCountOfCountries() {
 		return countOfCountries;
 	}
 
+	/**
+	 * Set the total number of Countries
+	 * 
+	 * @param countOfCountries
+	 *            To set the count of Countries.
+	 */
 	public void setCountOfCountries(int countOfCountries) {
 		this.countOfCountries = countOfCountries;
 	}
 
+	/**
+	 * Get the list of Countries.
+	 * 
+	 * @return list of Countries.
+	 */
 	public ArrayList<Country> getCountries() {
 		return countries;
 	}
 
+	/**
+	 * Set the list of Countries
+	 * 
+	 * @param countries
+	 *            To set the list of Countries.
+	 */
 	public void setCountries(ArrayList<Country> countries) {
 		this.countries = countries;
 	}
 
-	
-
+	/**
+	 * Get the name of the file.
+	 * 
+	 * @return File name.
+	 */
 	public String getFilename() {
 		return filename;
 	}
 
-
-
+	/**
+	 * Set the name of the file
+	 * 
+	 * @param filename
+	 *            To set the file name.
+	 */
 	public void setFilename(String filename) {
 		this.filename = filename;
 	}
