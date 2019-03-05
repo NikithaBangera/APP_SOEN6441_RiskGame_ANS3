@@ -2,8 +2,6 @@ package com.riskgame.service;
 
 import java.io.BufferedReader;
 import java.io.File;
-
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -34,13 +32,11 @@ import com.riskgame.model.MapTag;
 public class ReadAndWriteMap {
 
 	static String Delimiter = ",";
-	GameMapGraph mapGraph;
-	static String error, adjancencyerror;
-	MapTag mapTag;
-	ArrayList<Continent> listOfContinent;
-	ArrayList<Country> listOfCountries;
-
-	private HashMap<String, Country> setOfCountries;
+	private GameMapGraph mapGraph;
+	private static String error, adjancencyerror;
+	private MapTag mapTag;
+	private ArrayList<Continent> listOfContinent;
+	private ArrayList<Country> listOfCountries;
 
 	public GameMapGraph getMapGraph() {
 		return mapGraph;
@@ -146,25 +142,20 @@ public class ReadAndWriteMap {
 	 */
 	public boolean uploadMap(String fileName) throws IOException {
 
-		// InputStream inputstream = new FileInputStream("c:\\data\\input-text.txt");
 		BufferedReader read = new BufferedReader(new FileReader(fileName));
 		String inputText = new String(Files.readAllBytes(Paths.get(fileName)), StandardCharsets.UTF_8);
-		String invalidtagerror = "";
+		String invalidtagerror = new String();
 		error = new String();
 		if (!inputText.trim().isEmpty()) {
 			mapGraph = new GameMapGraph();
 			Pattern p = Pattern.compile("\\n\\n");
-
 			String[] result = p.split(inputText);
-			// System.out.println("here"+result[0]);
 			ArrayList<String> visitedtag = new ArrayList<String>();
 			boolean invalidtag = true, duplicatedata = true, validatemetadata = true, validatecontinentdata = true,
 					validatecountrydata = true;
 
 			for (String tagdetails : result) {
-				// System.out.println(tagdetails);
 				String tag = tagdetails.split("\\n")[0].trim();
-				// System.out.println("tagdetail-"+tag.trim());
 				if (tag.equalsIgnoreCase("[Map]") || tag.equalsIgnoreCase("[Continent]")
 						|| tag.equalsIgnoreCase("[Country]")) {
 					if (tag.equalsIgnoreCase("[Map]")) {
@@ -190,6 +181,7 @@ public class ReadAndWriteMap {
 							error = error.concat("!! Duplicate Entry for [Continent] Tag Found.\n");
 							validatecontinentdata = false;
 						}
+
 					} else if (tag.equalsIgnoreCase("[Country]")) {
 						if (!visitedtag.contains(tag)) {
 							if (validatecountries(tagdetails)) {
@@ -223,7 +215,7 @@ public class ReadAndWriteMap {
 			} else {
 
 				error = invalidtagerror.concat(error);
-				error = "** Uploaded Map have below provided error. Please resolve below errors and try uploading again.\n\n"
+				error = "** Uploaded Map have below provided error. Please resolve below errors and try uploading again.\n"
 						+ error;
 				read.close();
 				return false;
@@ -246,23 +238,19 @@ public class ReadAndWriteMap {
 	public boolean validatecontinents(String tagData) {
 
 		listOfContinent = new ArrayList<Continent>();
-
 		HashMap<String, String> visitedcontinent = new HashMap<String, String>();
 		boolean duplicatedata = true, formatdata = true;
-		String formaterror = "";
-		String Duplicateerror = "";
-		error = new String();
-		String[] metaData = tagData.split("\\n");
+		String formaterror = new String();
+		String Duplicateerror = new String();
+		String[] metaData = tagData.split("\n");
 		if (metaData.length != 1) {
 			for (int i = 1; i < metaData.length; i++) {
-				String data = metaData[i].trim();
+				String data = metaData[i].trim().toUpperCase();
 				Pattern pattern = Pattern.compile("[a-zA-Z\\s]+=[0-9]+");
 				if (!data.trim().isEmpty()) {
 					Continent continent = new Continent();
-					// System.out.println(i+". "+data);
 					Matcher match = pattern.matcher(data.trim());
 					if (!match.matches()) {
-						// System.out.println("asdfghjkk");
 						formaterror = formaterror.concat("!! Invalid Continent Details. " + data.trim()
 								+ " is not defined in required format. Format required is: Field<Name>=Value<Control Value in digits >.\n");
 						formatdata = false;
@@ -270,36 +258,23 @@ public class ReadAndWriteMap {
 						if (visitedcontinent.containsKey(data.split("=")[0])) {
 							Duplicateerror = Duplicateerror.concat(
 									"!! " + data.split("=")[0] + " is already defined. Duplicate Entry Found as "
-											+ visitedcontinent.get(data.split("=")[0]) + " and " + data);
+											+ visitedcontinent.get(data.split("=")[0]) + " and " + data + ".\n");
 							duplicatedata = false;
 						} else {
 							String field = data.split("=")[0];
 							int value = Integer.parseInt(data.split("=")[1]);
 							continent.setName(field);
 							continent.setControlValue(value);
-
-							// System.out.println("continents: "+continent);
 							listOfContinent.add(continent);
-							// System.out.println("list: "+listOfContinent);
 							visitedcontinent.put(field, data);
 						}
 					}
 				}
 			}
-
-			if (duplicatedata == true && formatdata == true) {
-				/* if(listOfContinent.size()>=2) */
+			if (duplicatedata && formatdata) {
 				return true;
-				/*
-				 * else { error =
-				 * "!! Minimum Continent Defined should be two or more to play the game.Please define one more country and its respective country.\n"
-				 * ; return false; }
-				 */
-
 			} else {
-				// System.out.println(formaterror);
 				error = error.concat(formaterror).concat(Duplicateerror);
-				// System.out.println(error);
 				return false;
 			}
 		} else {
@@ -318,16 +293,14 @@ public class ReadAndWriteMap {
 	public boolean validatecountries(String tagData) {
 
 		listOfCountries = new ArrayList<Country>();
-
 		HashMap<String, String> visited = new HashMap<String, String>();
 		boolean duplicatedata = true, formatdata = true, adjacentdata = true, continentdata = true;
-		error = new String();
 		ArrayList<String> adjacentcountries;
-		String formaterror = "", Duplicateerror = "", continenterror = "", adjacencyerror = "";
+		String formaterror = new String(), Duplicateerror = new String(), continenterror = new String(),
+				adjacencyerror = new String();
 		String[] countryData = tagData.split("\\n");
 		for (int i = 1; i < countryData.length; i++) {
-			String data = countryData[i].trim();
-			// System.out.println("data: "+data);
+			String data = countryData[i].trim().toUpperCase();
 			Pattern pattern = Pattern.compile("[a-zA-Z\\s]+,[0-9]+,[0-9]+,[a-zA-Z\\s]+(,[a-zA-Z\\s]+)*");
 			if (!data.trim().isEmpty()) {
 				Matcher match = pattern.matcher(data.trim());
@@ -353,7 +326,7 @@ public class ReadAndWriteMap {
 						String yOffset = countrydetail[2];
 
 						boolean continentAvailable = false;
-						if (!listOfContinent.isEmpty()) {
+						if (listOfContinent != null && !listOfContinent.isEmpty()) {
 							Continent newcontinent;
 
 							for (Continent continent : listOfContinent) {
@@ -393,8 +366,6 @@ public class ReadAndWriteMap {
 						country.setxValue(xOffset);
 						country.setyValue(yOffset);
 						country.setAdjacentCountries(adjacentcountries);
-
-						// System.out.println("\n"+i+". "+country);
 						listOfCountries.add(country);
 						visited.put(name, data);
 					}
@@ -427,7 +398,7 @@ public class ReadAndWriteMap {
 		HashMap<String, String> visited = new HashMap<String, String>();
 		String[] metaData = tagData.split("\\n");
 		for (int i = 1; i < metaData.length; i++) {
-			String data = metaData[i].trim();
+			String data = metaData[i].trim().toUpperCase();
 			Pattern pattern = Pattern.compile("[a-zA-Z\\s]+=[a-zA-Z\\s\\.]+");
 			if (!data.trim().isEmpty()) {
 				Matcher match = pattern.matcher(data.trim());
@@ -439,7 +410,7 @@ public class ReadAndWriteMap {
 					if (visited.containsKey(data.split("=")[0])) {
 						Duplicateerror = Duplicateerror
 								.concat("!! " + data.split("=")[0] + " is already defined. Duplicate Entry Found as "
-										+ visited.get(data.split("=")[0]) + " and " + data);
+										+ visited.get(data.split("=")[0]) + " and " + data + ".\n");
 						duplicatedata = false;
 					} else {
 						String field = data.split("=")[0];
@@ -450,17 +421,17 @@ public class ReadAndWriteMap {
 								mapTag.setAuthorName(data.split("=")[1]);
 								visited.put(field, data);
 							} else {
-								validateerror = validateerror.concat("!! Author Name is not Defined properly");
+								validateerror = validateerror.concat("!! Author Name is not Defined properly\n");
 								checkdata = false;
 							}
 						} else if (field.equalsIgnoreCase("Image Name")) {
-							Pattern check = Pattern.compile("[a-zA-Z0-9]+[_-]*.(bmp)");
+							Pattern check = Pattern.compile("[a-zA-Z0-9]+[_-]*.BMP");
 							if (check.matcher(value).matches()) {
 								mapTag.setImageName(data.split("=")[1]);
 								visited.put(field, data);
 							} else {
-								validateerror = validateerror
-										.concat("!! Image Name is not Defined properly in proper format");
+								validateerror = validateerror.concat(
+										"!! Image Name is not Defined properly in proper format. required format- 'imagename.bmp'\n");
 								checkdata = false;
 							}
 
@@ -470,8 +441,8 @@ public class ReadAndWriteMap {
 								mapTag.setWarn(value);
 								visited.put(field, data);
 							} else {
-								validateerror = validateerror
-										.concat("!! Warn is not Defined properly, Values should be either Yes or No");
+								validateerror = validateerror.concat(
+										"!! Warn is not Defined properly, Values should be either Yes or No.\n");
 								checkdata = false;
 							}
 
@@ -480,8 +451,8 @@ public class ReadAndWriteMap {
 								mapTag.setWrap(value);
 								visited.put(field, data);
 							} else {
-								validateerror = validateerror
-										.concat("!! Wrap is not Defined properly, Values should be either Yes or No");
+								validateerror = validateerror.concat(
+										"!! Wrap is not Defined properly, Values should be either Yes or No.\n");
 								checkdata = false;
 							}
 
@@ -491,11 +462,11 @@ public class ReadAndWriteMap {
 								visited.put(field, data);
 							} else {
 								validateerror = validateerror.concat(
-										"!! Scroll is not Defined properly, Values should be either Horizontal or Vertical");
+										"!! Scroll is not Defined properly, Values should be either Horizontal or Vertical.\n");
 								checkdata = false;
 							}
 						} else {
-							validateerror = validateerror.concat("!! " + data + " is not a Valid Metadata.");
+							validateerror = validateerror.concat("!! " + data + " is not a Valid Metadata.\n");
 							checkdata = false;
 						}
 					}
@@ -520,11 +491,12 @@ public class ReadAndWriteMap {
 	 */
 	public boolean checkcountryadjancy() throws IOException {
 
-		String aderror = new String(), conterror = new String(), adjacencyEr = new String();
+		String aderror = new String(), conterror = new String(), connectedError = new String();
 		ArrayList<String> adjacentCountries = new ArrayList<>();
 		ArrayList<String> availableContinent = new ArrayList<>();
+		ArrayList<String> connectivity = new ArrayList<>();
 
-		boolean flag = false, flag2 = true, flag3 = true, flag5 = true, flag6 = false;
+		boolean flag = false, continentFlag = true, adjacencyFlag = true, connectedFlag = true;
 
 		if (listOfCountries != null && !listOfCountries.isEmpty()) {
 			for (Country country : listOfCountries) {
@@ -536,48 +508,49 @@ public class ReadAndWriteMap {
 							if (country2.getName().equals(name)) {
 								if (country2.getAdjacentCountries().contains(country.getName())) {
 									flag = true;
+
+									// To check for Connectivity of the Graph adding the connected continents in the
+									// list
+
+									if (country.getPartOfContinent() != null && country2.getPartOfContinent() != null) {
+										if (!country2.getPartOfContinent().getContinentName()
+												.equals(country.getPartOfContinent().getContinentName())) {
+											connectivity.add(country2.getPartOfContinent().getContinentName());
+											connectivity.add(country.getPartOfContinent().getContinentName());
+										}
+									}
+
 									break;
+
 								} else
 									flag = false;
 							} else
 								flag = false;
-							// if (country2.getPartOfContinent().getContinentName()
-							// .equalsIgnoreCase((country.getPartOfContinent().getContinentName()))) {
-							// flag6 = true;
-							// break;
-							// }
 						}
-						// if (flag6)
-						// break;
-						if (flag == false) {
+						if (!flag) {
+							adjacencyFlag = false;
 							aderror = aderror.concat("!! " + country.getName() + " and " + name
 									+ " are not defined properly as adjacent countries on " + name + " end.\n");
 						}
 					}
-					// if (flag6)
-					// break;
-					// else {
-					// adjacencyEr = "!! Countries of the two defined continents are not adjacent.
-					// This is not a connected graph.\n";
-					// }
 				} else {
-					flag5 = false;
+					adjacencyFlag = false;
 					aderror = aderror.concat("!! " + country.getName()
 							+ " does not have any Adjacents Countries. Should have atleast one adjacent country to play the game \n");
 				}
-
 			}
-
 		}
 		if (listOfContinent.size() < 2) {
-			flag3 = false;
+			continentFlag = false;
 			conterror = "!! Minimum number of continents should be two to play the games. PLease add one more continent and respective countries.\n";
 		}
-		listOfCountries.forEach(country -> {
-			if (!availableContinent.contains(country.getName())) {
-				availableContinent.add(country.getPartOfContinent().getContinentName());
-			}
-		});
+		if (listOfCountries != null && !listOfCountries.isEmpty()) {
+			listOfCountries.forEach(country -> {
+				if (!availableContinent.contains(country.getName())) {
+					availableContinent.add(country.getPartOfContinent().getContinentName());
+				}
+			});
+		}
 
 		for (Continent continent : listOfContinent) {
 			boolean flag4 = true;
@@ -586,14 +559,26 @@ public class ReadAndWriteMap {
 					flag4 = false;
 				}
 			}
-			if (flag4 == true) {
-				flag = false;
+			if (flag4) {
+				continentFlag = false;
 				conterror = conterror.concat("!! " + continent.getContinentName()
 						+ " does not have any defined Country. Should have atleast one country.\n");
 			}
+			flag4 = true;
+			for (String connectedContinent : connectivity) {
+				if (connectedContinent.equalsIgnoreCase(continent.getContinentName())) {
+					flag4 = false;
+				}
+			}
+			if (flag4) {
+				connectedFlag = false;
+				connectedError = connectedError.concat("  # Countries from " + continent.getContinentName()
+						+ " are not connected to any of the countries of the other " + (listOfContinent.size() - 1)
+						+ " available continents.\n");
+			}
 		}
 
-		if (flag == true && flag2 == true && flag3 == true && flag5 == true) {
+		if (flag && continentFlag && adjacencyFlag && connectedFlag) {
 			return true;
 
 		}
@@ -601,6 +586,10 @@ public class ReadAndWriteMap {
 		else {
 
 			adjancencyerror = "\n".concat(conterror).concat(aderror);
+			if (!connectedFlag) {
+				connectedError = "\n!! Map Graph is not Connected - \n".concat(connectedError);
+				adjancencyerror = adjancencyerror.concat(connectedError);
+			}
 			return false;
 		}
 
