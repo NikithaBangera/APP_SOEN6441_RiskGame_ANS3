@@ -6,7 +6,8 @@ import java.util.HashMap;
 /**
  * Continent class which gives information with respect to the Continents.
  * 
- * @author
+ * @author Shiva
+ * @author Nikitha
  */
 public class Continent {
 	
@@ -16,7 +17,7 @@ public class Continent {
 	/** Control Value of continent. */
 	int controlValue;
 	
-    /**HashMap for continent details*/	
+	 /**HashMap for continent details*/
 	HashMap<String, Integer> continentDetails = new HashMap<String, Integer>();
 	
 	/** List of countries in the continent*/

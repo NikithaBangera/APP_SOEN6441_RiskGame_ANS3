@@ -6,28 +6,33 @@ import java.io.IOException;
 import org.junit.jupiter.api.Test;
 import com.riskgame.service.ReadAndWriteMap;
 
+/**
+ * Test Class for ReadAndWriteMap Class
+ * @author Anusha
+ * @author Nikitha
+ * @author Shresthi
+ *
+ */
 public class ReadAndWriteMapTest {
-	
-	
+
+	/** Object for ReadAndWriteMap Class */
 	ReadAndWriteMap readAndWriteMap;
 	
-	private String validMap;
+	/** String to hold the valid and invalid map files */
+	private String validMap, invalidMap;
 	
-	private String invalidMap;
+	/** String to hold the valid and invalid country data */
+	private String validCountryData, invalidCountryData;
 	
-	private String validCountryData;
+	/** String to hold the valid and invalid continent data */
+	private String validContinentData, invalidContinentData;
 	
-	private String invalidCountryData;
+	/** String to hold the valid and invalid meta data */
+	private String validMetaData, invalidMetaData;
 	
-	private String validContinentData;
-	
-	private String invalidContinentData;
-	
-	private String validMetaData;
-	
-	private String invalidMetaData;
-	
-	
+	/**
+	 * ReadAndWriteMapTest Constructor for initial setup 
+	 */
 	public ReadAndWriteMapTest() {
 		
 		readAndWriteMap = new ReadAndWriteMap();
@@ -41,47 +46,68 @@ public class ReadAndWriteMapTest {
 		invalidMetaData = "[Map]\nAuthor";
 	}
 	
+	/**
+	 * Test method for testing whether the  map file is valid.
+	 * @throws IOException
+	 */
 	@Test
 	public void isValidMap() throws IOException {
 		assertTrue(readAndWriteMap.uploadMap(validMap));
 	}
 	
+	/**
+	 * Test method for testing whether the map file is invalid.
+	 * @throws IOException
+	 */
 	@Test 
 	public void isInvalid() throws IOException {
 	  assertFalse(readAndWriteMap.uploadMap(invalidMap)); 
 	}
-	 
+	
+	/**
+	 * Test method for validating the valid country data.
+	 */
 	@Test 
 	public void isValidCountryData() {
 	  assertTrue(readAndWriteMap.validatecountries(validCountryData)); 
 	}
-	  
+	
+	/**
+	 * Test method for validating the invalid country data.
+	 */
+	@Test public void isInvalidCountryData() {
+		  assertFalse(readAndWriteMap.validatecountries(invalidCountryData)); 
+	}
+	
+	/**
+	 * Test method for validating the valid continent data.
+	 */
 	@Test 
 	public void isValidContinentData() {
 	  assertTrue(readAndWriteMap.validatecontinents(validContinentData)); 
 	}
-	  
+	
+	/**
+	 * Test method for validating the invalid continent data.
+	 */
+	@Test 
+	public void isInvalidContinentData() {
+	  assertFalse(readAndWriteMap.validatecontinents(invalidContinentData)); 
+	 }
+	
+	/**
+	 * Test method for validating the valid meta data.
+	 */
 	@Test 
 	public void isValidMetaData() {
 	  assertTrue(readAndWriteMap.validatemetadata(validMetaData)); 
 	}
 	  
+	/** 
+	 * Test method for validating the invalid meta data.
+	 */
 	@Test 
 	public void isInvalidMetaData() {
 	  assertFalse(readAndWriteMap.validatemetadata(invalidMetaData)); 
 	}
-	  
-	@Test 
-	public void isInvalidContinentData() {
-	  assertFalse(readAndWriteMap.validatecontinents(invalidContinentData)); 
-	 }
-	  
-	@Test public void isInvalidCountryData() {
-	  assertFalse(readAndWriteMap.validatecountries(invalidCountryData)); 
-	}
-	 
-	 
-	 
-	 
-	
 }

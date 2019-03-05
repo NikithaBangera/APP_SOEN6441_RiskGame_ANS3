@@ -24,7 +24,7 @@ private MapTag mapTag;
 	
     /** ArrayList of Continent objects to store the continent details */
     private ArrayList<Continent> continents;
-    
+	
     /** Count of the number of countries */
 	private int countOfCountries = 0;
     
@@ -36,6 +36,9 @@ private MapTag mapTag;
 	/** HashMap for set of countries */
 	private HashMap<String, Country> countrySet;
 
+	/** 
+	 * GameMapGraph Constructor
+	 */
 	public GameMapGraph() {
 		super();
 	}
@@ -192,17 +195,10 @@ private MapTag mapTag;
 		this.filename = filename;
 	}
 
-
-
 	@Override
 	public String toString() {
 		return "GameMapGraph [mapTag=" + mapTag + ", countOfContinents=" + countOfContinents + ", continents="
 				+ continents + ", countOfCountries=" + countOfCountries + ", countries=" + countries + ", filename="
 				+ filename + ", countrySet=" + countrySet + "]";
 	}
-
-
-
-	
-
 }

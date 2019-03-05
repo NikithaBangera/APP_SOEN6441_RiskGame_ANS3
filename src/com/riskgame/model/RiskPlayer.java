@@ -12,7 +12,6 @@ import java.util.ArrayList;
  *
  */
 public class RiskPlayer {
-	
 	/** Name of the Player */
 	private String name;
 
@@ -92,10 +91,10 @@ public class RiskPlayer {
 				country.setNoOfArmies(country.getNoOfArmies() + armiesCount);
 				this.setArmyCount(this.getArmyCount() - armiesCount);
 			} else {
-				System.out.println("Insufficient number of armies.");
+				System.out.println("Insufficient number of armies.\n");
 			}
 		} else {
-			System.out.println("This country is not owned by you!");
+			System.out.println("This country is not owned by you!\n");
 		}
 	}
 
@@ -105,6 +104,7 @@ public class RiskPlayer {
 	 * @param country
 	 */
 	public void additionOfCountry(Country country) {
+
 		this.myCountries.add(country);
 	}
 

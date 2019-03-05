@@ -6,13 +6,31 @@ import org.junit.jupiter.api.Test;
 import com.riskgame.service.CreateAndEditMap;
 import com.riskgame.model.Continent;
 
+/**
+ * Test class for CreateAndEditMap class
+ * 
+ * @author Shresthi
+ * @author Shiva
+ *
+ */
 public class CreateAndEditMapTest {
-	CreateAndEditMap createAndEditMap; 
-	Continent continent1, continent2, continent3;
-	ArrayList<Continent> listofContinents = new ArrayList<Continent>();
 	
+	/** Object for CreateAndEditMap Class */
+	private CreateAndEditMap createAndEditMap; 
+	
+	/** Objects for Continent class */
+	private Continent continent1, continent2, continent3;
+	
+	/** ArrayList to store the list of continents */
+	private ArrayList<Continent> listofContinents;
+	
+	/**
+	 * CreateAndEditMapTest Constructor for initial setup 
+	 */
 	public CreateAndEditMapTest() {
+		
 		createAndEditMap = new CreateAndEditMap();
+		listofContinents = new ArrayList<Continent>();
 		
 		continent1 = new Continent();
 		continent1.setName("Asia");
@@ -27,14 +45,20 @@ public class CreateAndEditMapTest {
 		listofContinents.add(continent3);
 		
 		createAndEditMap.setListOfContinents(listofContinents);
-		
 	}
 	
+	/**
+	 * Test method for checking whether the continent is already defined
+	 *  in the continent list
+	 */
 	@Test
 	public void isContinentInContinentList() {
 		assertTrue(createAndEditMap.alreadyDefinedContinent("North America"));
 	}
 
+	/**
+	 * Test method for checking if the continent is not already defined in the list
+	 */
 	@Test
 	public void isContinentNotInContinentList() {
 		assertFalse(createAndEditMap.alreadyDefinedContinent("Europe"));

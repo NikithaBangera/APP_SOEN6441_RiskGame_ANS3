@@ -10,7 +10,8 @@ import org.junit.runners.Suite.SuiteClasses;
 
 /**
  * A TestSuite class for testing all the test cases
- * @author 
+ * 
+ * @author Anusha
  *
  */
 public class JUnitTestSuite {

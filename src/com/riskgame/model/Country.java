@@ -5,7 +5,8 @@ import java.util.ArrayList;
 /**
  * Country class which gives information with respect to the Countries.
  * 
- * @author
+ * @author Shresthi
+ * @author Sumeetha
  */
 public class Country {
 
@@ -21,7 +22,7 @@ public class Country {
 	/** Y dimension */
 	private String yValue;
 
-	/** List to hold Adjacent Country */
+	/** Adjacent Country holder */
 	private ArrayList<String> adjacentCountries;
 
 	/** Number of armies */
@@ -165,7 +166,7 @@ public class Country {
 	public void setAdjacentCountries(ArrayList<String> adjacentCountries) {
 		this.adjacentCountries = adjacentCountries;
 	}
-
+	
 	/**
 	 * Get the continent name to which country belongs to.
 	 * 

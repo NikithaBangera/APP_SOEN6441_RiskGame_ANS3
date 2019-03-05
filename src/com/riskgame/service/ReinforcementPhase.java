@@ -3,9 +3,12 @@ package com.riskgame.service;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.riskgame.model.Continent;
 import com.riskgame.model.Country;
+import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.RiskPlayer;
 
 /**
@@ -15,10 +18,12 @@ import com.riskgame.model.RiskPlayer;
  * the attack phase begins
  * 
  * @author Nikitha
+ * @author Shresthi Garg
  *
  */
 public class ReinforcementPhase {
-	private static ArrayList<Country> countriesList;
+	
+	public static ArrayList<Country> countriesList = new ArrayList<Country>();
 
 	/**
 	 * This method prompts the player whether he/she wants to play the reinforcement
@@ -28,9 +33,14 @@ public class ReinforcementPhase {
 	 * @param player
 	 * @throws Exception
 	 */
-	public void startReinforcement(RiskPlayer player) throws Exception {
+	public void startReinforcement(RiskPlayer player, GameMapGraph mapGraph) throws Exception {
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 		Continent continent = player.getMyCountries().get(0).getPartOfContinent();
+		for(Country country : mapGraph.getCountries()) {
+			if(country.getPartOfContinent().getContinentName().equalsIgnoreCase(continent.getContinentName())) {
+				countriesList.add(country);
+			}
+		}
 		int reinforcementArmies = armiesToBeAssigned(player, continent);
 		System.out.println("Armies available for Reinforcement: " + reinforcementArmies);
 		player.setArmyCount(player.getArmyCount() + reinforcementArmies);
@@ -42,10 +52,13 @@ public class ReinforcementPhase {
 				System.out.println("Current available armies to be reinforced: " + player.getArmyCount());
 				System.out.println("Enter the number of armies to be deployed to country " + country.getName());
 				String armyCount = in.readLine().trim();
-				while (armyCount.isEmpty()) {
-					System.err.println("\nArmy count cannot be blank. Please enter the correct count below:");
+				Pattern numberPattern = Pattern.compile("[0-9+]");
+				Matcher match = numberPattern.matcher(armyCount);
+				while (!match.matches() || armyCount.isEmpty()) {
+					System.err.println("\nPlease enter the correct army count below:");
 					System.out.flush();
 					armyCount = in.readLine().trim();
+					match = numberPattern.matcher(armyCount);
 				}
 				int armiesCount = Integer.parseInt(armyCount);
 				player.armiesAssignedToCountries(country, armiesCount);
@@ -68,7 +81,6 @@ public class ReinforcementPhase {
 	 *         player.
 	 */
 	public static int armiesToBeAssigned(RiskPlayer player, Continent continent) {
-		countriesList = continent.getCountriesInContinent();
 		int countriesPerPlayer = player.getMyCountries().size();
 		int armiesAssignedPerPlayer;
 
@@ -78,8 +90,8 @@ public class ReinforcementPhase {
 			armiesAssignedPerPlayer = (int) Math.floor(countriesPerPlayer / 3);
 		}
 
-		if (isPlayerOwnsContinent(player))
-			armiesAssignedPerPlayer += continent.getControlValue();
+		if (isPlayerOwnsContinent(player, countriesList))
+			armiesAssignedPerPlayer = continent.getControlValue();
 
 		return armiesAssignedPerPlayer;
 	}
@@ -90,7 +102,7 @@ public class ReinforcementPhase {
 	 * @param player
 	 * @return true if player owns the continent else return false.
 	 */
-	private static boolean isPlayerOwnsContinent(RiskPlayer player) {
+	private static boolean isPlayerOwnsContinent(RiskPlayer player, ArrayList<Country> countriesList) {
 		boolean flag = true;
 		for (Country country : countriesList) {
 			if (!player.getMyCountries().contains(country))
