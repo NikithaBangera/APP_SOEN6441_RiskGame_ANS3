@@ -20,6 +20,7 @@ import com.riskgame.model.RiskPlayer;
  * validation moves army of the player.
  * 
  * @author Shresthi Garg
+ * @author Nikitha
  *
  */
 public class FortificationPhase {
@@ -47,26 +48,26 @@ public class FortificationPhase {
 				for (Country country : player.getMyCountries()) {
 					System.out.println("* " + country.getName() + ":" + country.getNoOfArmies() + "\n");
 				}
-				System.out.println("Enter the name of country (Case-sensitive) from which you want to move some armies :");
-				fromCountry = br.readLine().trim();
+				System.out.println("Enter the name of country from which you want to move some armies :");
+				fromCountry = br.readLine().trim().toUpperCase();
 				Pattern namePattern1 = Pattern.compile("[a-zA-Z]+");
 				Matcher match = namePattern1.matcher(fromCountry);
 				while (!match.matches() || fromCountry.isEmpty()) {
 					System.err.println("\nPlease enter the correct country name below:");
 					System.out.flush();
-					fromCountry = br.readLine().trim();
+					fromCountry = br.readLine().trim().toUpperCase();
 					match = namePattern1.matcher(fromCountry);
 				}
 				
 				System.out.println(
-						"Enter the name of country (Case-sensitive) to which you want to move some armies, from country " + fromCountry);
-				toCountry = br.readLine().trim();
+						"Enter the name of country to which you want to move some armies, from country " + fromCountry);
+				toCountry = br.readLine().trim().toUpperCase();
 				Pattern namePattern2 = Pattern.compile("[a-zA-Z]+");
 				match = namePattern2.matcher(toCountry);
 				while (!match.matches() || toCountry.isEmpty()) {
 					System.err.println("\nPlease enter the correct country name below:");
 					System.out.flush();
-					toCountry = br.readLine().trim();
+					toCountry = br.readLine().trim().toUpperCase();
 					match = namePattern2.matcher(toCountry);
 				}
 

@@ -4,8 +4,8 @@ package com.riskgame.model;
  * This class stores all the Map tag data.It stores Author name, Image name,
  * Scroll, Warn and Wrap options for the Map.
  * 
- * @author 
- * @author 
+ * @author Sumeetha
+ * @author Shiva
  *
  */
 public class MapTag {

@@ -6,7 +6,8 @@ import java.util.HashMap;
 /**
  * Continent class which gives information with respect to the Continents.
  * 
- * @author
+ * @author Shiva
+ * @author Nikitha
  */
 public class Continent {
 	

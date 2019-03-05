@@ -18,6 +18,7 @@ import com.riskgame.model.RiskPlayer;
  * the attack phase begins
  * 
  * @author Nikitha
+ * @author Shresthi Garg
  *
  */
 public class ReinforcementPhase {
