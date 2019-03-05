@@ -19,29 +19,61 @@ public class RiskPlayer {
 	private int armyCount = 0;
 
 	/** List of countries held by the Player */
-
 	private ArrayList<Country> myCountries= new ArrayList<Country>();
 
+	/**
+	 * Get the Player name.
+	 * 
+	 * @return Name of the player
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * Set the Player name.
+	 * 
+	 * @param name
+	 *            To set the name of the Player
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * Get the army count of the player.
+	 * 
+	 * @return Army count
+	 */
 	public int getArmyCount() {
 		return armyCount;
 	}
 
+	/**
+	 * Set the army count of the player.
+	 * 
+	 * @param armyCount
+	 *            To set the army count of the player
+	 */
 	public void setArmyCount(int armyCount) {
 		this.armyCount = armyCount;
 	}
 
+	/**
+	 * Get the list of the countries assigned to player.
+	 * 
+	 * @return Countries list.
+	 */
 	public ArrayList<Country> getMyCountries() {
 		return myCountries;
 	}
 
+	/**
+	 * Set the list of the countries to player.
+	 * 
+	 * @param myCountries
+	 *            To set the list of the countries to player.
+	 */
 	public void setMyCountries(ArrayList<Country> myCountries) {
 		this.myCountries = myCountries;
 	}
@@ -66,8 +98,13 @@ public class RiskPlayer {
 		}
 	}
 
+	/**
+	 * This method is used to add the country to the player's countries list.
+	 * 
+	 * @param country
+	 */
 	public void additionOfCountry(Country country) {
-//		System.out.println(country+"country");
+
 		this.myCountries.add(country);
 	}
 

@@ -1,12 +1,12 @@
 [Map]
-Author=
-Image Name=world.bmp
+Author=Rob
+Image Name=Hello.bmp
 Warn=yes
 Scroll=horizontal
 Wrap=yes
 
-
-Western Africa=7
+[Continent]
+Western Africa
 Northern Africa=4
 
 [Country]

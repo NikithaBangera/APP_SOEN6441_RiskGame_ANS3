@@ -1,22 +1,36 @@
 package com.riskgame.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.util.ArrayList;
-
 import org.junit.jupiter.api.Test;
-
 import com.riskgame.model.Country;
 import com.riskgame.service.FortificationPhase;
 
+/**
+ * Test class for FortificationPhase Class
+ * 
+ * @author Anusha
+ * @author Sumeetha
+ *
+ */
 public class FortificationPhaseTest {
-	Country country, toCountry, fromCountry, toCountry1;
-	//String country;
-	FortificationPhase fortificationPhase;
 	
+	/** Objects for Country Class */
+	private Country country, toCountry, fromCountry, toCountry1;
+	
+	/** Object for Fortification Class */
+	private FortificationPhase fortificationPhase;
+	
+	/** ArrayList for storing adjacent countries list for the countries */
+	private ArrayList<String> adjacentCountries;
+	
+	/**
+	 * FortificationPhaseTest Constructor for initial setup 
+	 */
 	public FortificationPhaseTest() {
+		
 		fortificationPhase = new FortificationPhase();
-		ArrayList<String> adjacentCountries = new ArrayList<String>();
+		adjacentCountries = new ArrayList<String>();
 		
 		country = new Country();
 		country.setName("India");
@@ -49,6 +63,10 @@ public class FortificationPhaseTest {
 		
 	}
 	
+	/**
+	 * Test method to validate the number of armies present in the fromCountry and the toCountry
+	 * after the player moves the armies between the adjacent fromCountry and toCountry.
+	 */
 	@Test
 	public void isFortificationComplete() {
 		fortificationPhase.moveArmies(fromCountry, toCountry, 2);
@@ -56,6 +74,10 @@ public class FortificationPhaseTest {
 		assertEquals(6, toCountry.getNoOfArmies());
 	}
 	
+	/**
+	 * Test method to validate the number of armies present in the fromCountry and the toCountry
+	 * after the player moves the armies between fromCountry and toCountry which are not adjacent.
+	 */
 	@Test 
 	public void isFortificationNotComplete() {
 		fortificationPhase.moveArmies(fromCountry, toCountry1, 2);

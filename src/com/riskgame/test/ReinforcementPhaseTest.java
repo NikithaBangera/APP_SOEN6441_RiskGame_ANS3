@@ -10,43 +10,68 @@ import com.riskgame.model.Country;
 import com.riskgame.model.RiskPlayer;
 import com.riskgame.service.ReinforcementPhase;
 
+/**
+ * Test Class for ReinforcementPhase Class
+ * 
+ * @author Nikitha
+ * @author Shiva
+ *
+ */
 public class ReinforcementPhaseTest {
+	
+	/** Objects for RiskPlayer Class */
 	RiskPlayer player, player1;
-	Country country;
+	
+	/** Objects for Country Class */
+	Country country1, country2, country3;
+	
+	/** Object for Continent Class */
 	Continent continent;
 	
+	/**
+	 * ReinforcementPhaseTest Constructor for initial setup 
+	 */
 	public ReinforcementPhaseTest() {
 		
 		continent = new Continent();
 		player = new RiskPlayer();
 		player1 = new RiskPlayer();
-		country = new Country();
-		country.setName("Egypt");
-		player.getMyCountries().add(country);
-		player1.getMyCountries().add(country);
-		continent.getCountriesInContinent().add(country);
 		
-		country = new Country();
-		country.setName("Libya");
-		player.getMyCountries().add(country);
-		player1.getMyCountries().add(country);
-		continent.getCountriesInContinent().add(country);
+		country1 = new Country();
+		country1.setName("Egypt");
+		player.getMyCountries().add(country1);
+		player1.getMyCountries().add(country1);
+		continent.getCountriesInContinent().add(country1);
 		
-		country = new Country();
-		country.setName("Morocco");
-		player.getMyCountries().add(country);
-		continent.getCountriesInContinent().add(country);
+		country2 = new Country();
+		country2.setName("Libya");
+		player.getMyCountries().add(country2);
+		player1.getMyCountries().add(country2);
+		continent.getCountriesInContinent().add(country2);
+		
+		country3 = new Country();
+		country3.setName("Morocco");
+		player.getMyCountries().add(country3);
+		continent.getCountriesInContinent().add(country3);
 		
 		
 		continent.setName("Northern Africa");
 		continent.setControlValue(4);
 	}
 	
+	/**
+	 * Test method for checking whether the control value gets added to the player's armies
+	 * if the player owns the entire continent.
+	 */
 	@Test
 	public void isControlValueAssignedToPlayer() {
-		assertEquals(7, ReinforcementPhase.armiesToBeAssigned(player, continent));
+		assertEquals(continent.getControlValue(), ReinforcementPhase.armiesToBeAssigned(player, continent));
 	}
 	
+	/**
+	 * Test method for checking the army count added to the player's armies
+	 * if the player does not the entire continent.
+	 */
 	@Test
 	public void isControlValueNotAssignedToPlayer() {
 		assertNotEquals(continent.getControlValue(), ReinforcementPhase.armiesToBeAssigned(player1, continent));
