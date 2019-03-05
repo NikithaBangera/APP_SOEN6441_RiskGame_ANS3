@@ -80,7 +80,6 @@ public class ReinforcementPhase {
 	 *         player.
 	 */
 	public static int armiesToBeAssigned(RiskPlayer player, Continent continent) {
-		//countriesList = continent.getCountriesInContinent();
 		int countriesPerPlayer = player.getMyCountries().size();
 		int armiesAssignedPerPlayer;
 

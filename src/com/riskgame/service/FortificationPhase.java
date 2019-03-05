@@ -23,6 +23,7 @@ import com.riskgame.model.RiskPlayer;
  *
  */
 public class FortificationPhase {
+	public boolean doFortification = false;
 	
 	/**
 	 * This method is called from the Startup phase when the user opts to start the
@@ -36,41 +37,37 @@ public class FortificationPhase {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int countOfArmies = 0;
 		if (player.getMyCountries().size() >= 2) {
-			boolean doFortification = true;
+			doFortification = true;
 			String fromCountry = "";
 			String toCountry = "";
 
 			while (doFortification) {
 				doFortification = true;
-				System.out.println("Player has the following list of countries with armies: \n");
+				System.out.println("\nPlayer has the following list of countries with armies: \n");
 				for (Country country : player.getMyCountries()) {
 					System.out.println("* " + country.getName() + ":" + country.getNoOfArmies() + "\n");
 				}
 				System.out.println("Enter the name of country (Case-sensitive) from which you want to move some armies :");
 				fromCountry = br.readLine().trim();
-				char firstCharacter = fromCountry.charAt(0);
 				Pattern namePattern1 = Pattern.compile("[a-zA-Z]+");
 				Matcher match = namePattern1.matcher(fromCountry);
-				while (!match.matches() || fromCountry.isEmpty() || Character.isLowerCase(firstCharacter)) {
+				while (!match.matches() || fromCountry.isEmpty()) {
 					System.err.println("\nPlease enter the correct country name below:");
 					System.out.flush();
 					fromCountry = br.readLine().trim();
 					match = namePattern1.matcher(fromCountry);
-					firstCharacter = fromCountry.charAt(0);
-					
 				}
+				
 				System.out.println(
 						"Enter the name of country (Case-sensitive) to which you want to move some armies, from country " + fromCountry);
 				toCountry = br.readLine().trim();
-				firstCharacter = toCountry.charAt(0);
 				Pattern namePattern2 = Pattern.compile("[a-zA-Z]+");
 				match = namePattern2.matcher(toCountry);
-				while (!match.matches() || toCountry.isEmpty() || Character.isLowerCase(firstCharacter)) {
+				while (!match.matches() || toCountry.isEmpty()) {
 					System.err.println("\nPlease enter the correct country name below:");
 					System.out.flush();
 					toCountry = br.readLine().trim();
 					match = namePattern2.matcher(toCountry);
-					firstCharacter = toCountry.charAt(0);
 				}
 
 				if (!mapData.getCountrySet().containsKey(fromCountry)
@@ -113,23 +110,8 @@ public class FortificationPhase {
 						System.out.println("Invalid number of armies.");
 					}
 				}
-				if (doFortification)
+				if (doFortification) {
 					moveArmies(givingCountry, receivingCountry, countOfArmies);
-
-				System.out.println("\nDo you wish to continue with fortification? (Yes or No)");
-				String choice = br.readLine().trim();
-				Pattern pattern = Pattern.compile("[a-zA-Z]+");
-				match = pattern.matcher(choice);
-				while (!match.matches() || choice.isEmpty()) {
-					System.err.println("\nPlease enter the correct choice below:");
-					System.out.flush();
-					choice = br.readLine().trim();
-					match = pattern.matcher(choice);
-				}
-				if (choice.equalsIgnoreCase("No")) {
-					doFortification = false;
-				} else {
-					doFortification = true;
 				}
 
 			}
@@ -157,12 +139,15 @@ public class FortificationPhase {
 				fromCountry.setNoOfArmies(fromCountryArmy - armiesCount);
 				toCountry.setNoOfArmies(toCountryArmy + armiesCount);
 				adjacentCountries = true;
+				doFortification = false;
+				System.out.println("\nFortification phase ends!");
 				break;
 			}
 		}
 
 		if (!adjacentCountries) {
 			System.out.println("Countries are not adjacanet!");
+			doFortification = true;
 		}
 	}
 
