@@ -77,3 +77,4 @@ public class ReinforcementPhaseTest {
 		assertNotEquals(continent.getControlValue(), ReinforcementPhase.armiesToBeAssigned(player1, continent));
 	}
 }
+
