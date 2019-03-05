@@ -22,6 +22,15 @@ import com.riskgame.model.Country;
 import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.MapTag;
 
+/**
+ * This class aims to load and existing map in the game and performs various
+ * validation to check if its a valid map.Post loading user can also edit a map.
+ * The values are saved in the form of an object and then passed to the called
+ * function to perform user asked operation.
+ * 
+ * @author Shresthi Garg
+ *
+ */
 public class ReadAndWriteMap {
 
 	static String Delimiter = ",";
@@ -49,24 +58,32 @@ public class ReadAndWriteMap {
 		ReadAndWriteMap.error = error;
 	}
 
+	/**
+	 * This method aims to save the map which was edited post loading into the game.
+	 * It also checks if the user wishes to rename the file and performs various
+	 * validation with respect to it.
+	 * 
+	 * @param mapgraph    - GameMapGraph object containing the details of the loaded
+	 *                    map.
+	 * @param oldFileName - The file name of the loaded map.
+	 * @throws IOException
+	 */
 	public void saveMap(GameMapGraph mapgraph, String oldFileName) throws IOException {
-		
+
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		String workingDir = System.getProperty("user.dir");
 		File file = new File(workingDir + "/resources/maps/" + mapgraph.getFilename() + ".map");
 		File oldFile = new File(workingDir + "/resources/maps/" + oldFileName + ".map");
 		PrintWriter outputStream;
 		String newFileName;
-		//Upload
-		if(!oldFileName.isEmpty())
-		{
-			if(!oldFileName.equalsIgnoreCase(mapgraph.getFilename()))
-			{
-				while(file.exists())
-				{
-					System.out.println("\nFile with same name already exist. Please provide another file name to save map file:");
+		// Upload
+		if (!oldFileName.isEmpty()) {
+			if (!oldFileName.equalsIgnoreCase(mapgraph.getFilename())) {
+				while (file.exists()) {
+					System.out.println(
+							"\nFile with same name already exist. Please provide another file name to save map file:");
 					newFileName = br.readLine();
-	
+
 					while (newFileName.isEmpty()) {
 						System.out.println(
 								"Sorry! File name cannot be blank.Provided contains only whitespace (ie. spaces, tabs or line breaks).\nPlease enter valid file name to save map file:\n");
@@ -74,23 +91,19 @@ public class ReadAndWriteMap {
 					}
 					file = new File(workingDir + "/resources/maps/" + newFileName + ".map");
 				}
-				
+
+				oldFile.renameTo(file);
+				outputStream = new PrintWriter(file);
+			} else {
 				oldFile.renameTo(file);
 				outputStream = new PrintWriter(file);
 			}
-			else
-			{
-				oldFile.renameTo(file);
-				outputStream = new PrintWriter(file);
-			}		
 		}
-		//Create
-		else
-		{
+		// Create
+		else {
 			outputStream = new PrintWriter(file);
 		}
 
-		
 		// Writing Map Meta data file
 		MapTag maptag = mapgraph.getMapTag();
 		outputStream.println("[Map]");
@@ -117,13 +130,20 @@ public class ReadAndWriteMap {
 			outputStream.println(detail);
 		}
 
-		
 		outputStream.close();
 		System.out.println("Map saved into " + file.getName() + " file");
 
 	}
 
-	// Uploading a Map file to system
+	/**
+	 * This method is called when the user wishes to play game by uploading a map.
+	 * It performs validation and then stores the details of the valid file in the
+	 * form of GameMapGraph object.
+	 * 
+	 * @param fileName - The file which was uploaded.
+	 * @return flag - To determine if the returned content is valid.
+	 * @throws IOException
+	 */
 	public boolean uploadMap(String fileName) throws IOException {
 
 		// InputStream inputstream = new FileInputStream("c:\\data\\input-text.txt");
@@ -216,8 +236,13 @@ public class ReadAndWriteMap {
 
 	}
 
-	// Validate List Continent available in File be in correct format and Valid
-
+	/**
+	 * This method aims validate list of continents available in the uploaded file
+	 * and checks if they are in correct format.
+	 * 
+	 * @param tagData Value of the continent tag
+	 * @return flag of type boolean determines if the entered continents are valid
+	 */
 	public boolean validatecontinents(String tagData) {
 
 		listOfContinent = new ArrayList<Continent>();
@@ -283,8 +308,13 @@ public class ReadAndWriteMap {
 		}
 	}
 
-	// Validate List Country available in Map File be in correct format and Valid
-
+	/**
+	 * This method aims validate list of countries available in the uploaded file
+	 * and checks if they are in correct format.
+	 * 
+	 * @param tagData Value of the countries tag
+	 * @return flag of type boolean determines if the entered countries are valid
+	 */
 	public boolean validatecountries(String tagData) {
 
 		listOfCountries = new ArrayList<Country>();
@@ -381,7 +411,13 @@ public class ReadAndWriteMap {
 		}
 	}
 
-	// Validate MetaData available in File be in correct format
+	/**
+	 * This method aims validate list of map tag data available in the uploaded file
+	 * and checks if they are in correct format.
+	 * 
+	 * @param tagData Value of the map tag data
+	 * @return flag of type boolean determines if the entered map tags are valid
+	 */
 	public boolean validatemetadata(String tagData) {
 
 		boolean checkdata = true, duplicatedata = true, formatdata = true;
@@ -474,6 +510,14 @@ public class ReadAndWriteMap {
 		}
 	}
 
+	/**
+	 * This method aims to check adjacency between countries in the uploaded file
+	 * and checks if they are in correct format.
+	 * 
+	 * @return flag of type boolean determines if the entered countries are properly
+	 *         defined as adjacent.
+	 * @throws IOException
+	 */
 	public boolean checkcountryadjancy() throws IOException {
 
 		String aderror = new String(), conterror = new String(), adjacencyEr = new String();
@@ -557,7 +601,6 @@ public class ReadAndWriteMap {
 		else {
 
 			adjancencyerror = "\n".concat(conterror).concat(aderror);
-			// System.out.println(error);
 			return false;
 		}
 

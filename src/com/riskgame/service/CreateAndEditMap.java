@@ -22,7 +22,7 @@ import com.riskgame.model.MapTag;
  * in the form of an object and then passed to the called function to perform
  * user asked operation.
  * 
- * @author Shresthi
+ * @author Shresthi Garg
  *
  */
 public class CreateAndEditMap {
@@ -927,11 +927,10 @@ public class CreateAndEditMap {
 		}
 
 		else {
-			System.err.println(
+			System.out.println(
 					"Below are the error present in Map.Entry Please resolve all the below issues before saving the Map.\n");
 			error = mapTagError.concat(nullerror).concat(conterror).concat(error).concat(aderror);
-			System.err.println(error);
-			System.out.flush();
+			System.out.println(error);
 			return false;
 		}
 
