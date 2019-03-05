@@ -397,9 +397,9 @@ public class CreateAndEditMap {
 						Country country = new Country();
 						String[] input = countryDetails.split(",");
 						if (alreadyDefinedContinent(input[3].trim())) {
-							System.out.println("inside already defined a continent");
+//							System.out.println("inside already defined a continent");
 							String details[] = countryDetails.split(",");
-							System.out.println("details " + details);
+//							System.out.println("details " + details);
 							continentAndCountryDetails[i] = countryDetails;
 							country.setName(details[0]);
 							country.setxValue(details[1]);
@@ -420,15 +420,15 @@ public class CreateAndEditMap {
 									index = listOfCountries.indexOf(availableCountry);
 									listOfCountries.set(index, country);
 									countryexist = true;
-									System.out.println("country exist ****" + listOfCountries);
+//									System.out.println("country exist ****" + listOfCountries);
 								}
 							}
 							if (!countryexist) {
-								System.out.println("inside country exist " + countryexist);
+//								System.out.println("inside country exist " + countryexist);
 								listOfCountries.add(country);
 								index = listOfCountries.indexOf(country);
-								System.out.println("index " + index);
-								System.out.println("listOfCountries inside country exist" + listOfCountries);
+//								System.out.println("index " + index);
+//								System.out.println("listOfCountries inside country exist" + listOfCountries);
 							}
 							for (int j = 4; j < details.length; j++) {
 								adjacentCountries.add(details[j]);
@@ -436,8 +436,8 @@ public class CreateAndEditMap {
 							}
 							country.setAdjacentCountries(adjacentCountries);
 							listOfCountries.set(index, country);
-							System.out.println(listOfContinents + " listOfContinents");
-							System.out.println("listOfCountries " + listOfCountries);
+//							System.out.println(listOfContinents + " listOfContinents");
+//							System.out.println("listOfCountries " + listOfCountries);
 
 						} else {
 							System.out.println(
@@ -467,6 +467,14 @@ public class CreateAndEditMap {
 		}
 	}
 
+	/**
+	 * This method aims to check whether the continent is already defined by the
+	 * user.
+	 * 
+	 * @param continentName - The continent name entered by the user.
+	 * @return flag of type boolean which tells the continent is already defined or
+	 *         not.
+	 */
 	public boolean alreadyDefinedContinent(String continentName) {
 		boolean flag = false;
 		if (listOfContinents != null) {
@@ -480,6 +488,12 @@ public class CreateAndEditMap {
 		return flag;
 	}
 
+	/**
+	 * This method checks and updates the adjacency between two countries.
+	 * 
+	 * @param forcountry - The country which has defined an adjacent country.
+	 * @param adcountry  - The country which has been defined adjacent.
+	 */
 	public void checkandupdateAdjacentCountries(String forcountry, String adcountry) {
 
 		boolean flag = false;
@@ -503,7 +517,7 @@ public class CreateAndEditMap {
 			countryupdated.setAdjacentCountries(adjacentCountry);
 			listOfCountries.add(countryupdated);
 
-			System.out.println(listOfCountries.indexOf(countryupdated));
+//			System.out.println(listOfCountries.indexOf(countryupdated));
 		}
 
 	}
