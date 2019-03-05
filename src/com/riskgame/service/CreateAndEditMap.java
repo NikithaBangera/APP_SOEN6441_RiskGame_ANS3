@@ -16,6 +16,15 @@ import com.riskgame.model.Country;
 import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.MapTag;
 
+/**
+ * This class aims to create the new map by taking user inputs and also checks
+ * the validation of various fields before saving the map. The values are saved
+ * in the form of an object and then passed to the called function to perform
+ * user asked operation.
+ * 
+ * @author Shresthi
+ *
+ */
 public class CreateAndEditMap {
 
 	// private ReadandWriteMap saveMap;
@@ -37,7 +46,7 @@ public class CreateAndEditMap {
 	public void setMapGraph(GameMapGraph mapGraph) {
 		this.mapGraph = mapGraph;
 	}
-	
+
 	public ArrayList<Continent> getListOfContinents() {
 		return listOfContinents;
 	}
@@ -45,14 +54,23 @@ public class CreateAndEditMap {
 	public void setListOfContinents(ArrayList<Continent> listOfContinents) {
 		this.listOfContinents = listOfContinents;
 	}
-	
+
+	/**
+	 * This method is called when the user prompts to create a map. It takes values
+	 * from user for Map tag data, continents, country, adjacency and lets user
+	 * delete/add the same. Also, lets user view the contents added.
+	 * 
+	 * @return returnflag of type boolean whose value decides whether the user is
+	 *         good to start the start game.
+	 * @throws Exception
+	 */
 	public boolean newMapCreation() throws Exception {
 		boolean exit = false;
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		while (!exit) {
 			System.out.println("\nWelcome to Risk Game!");
 			System.out.println("\nChoose the below options to create a new map\n");
-			System.out.println("1. Enter Map name and Author name");
+			System.out.println("1. Enter Map tag data.");
 			System.out.println("2. Add the continents\n3. Delete a continent");
 			System.out.println("4. Add the countries\n5. Delete a country");
 			System.out.println("6. Add adjacency\n7. Delete Adjacency");
@@ -106,8 +124,10 @@ public class CreateAndEditMap {
 				System.out.println(
 						"\nAll the entries made would be lost and not saved.Do you want to exit without saving?? - Yes/No ");
 				String choice = br.readLine();
-				if (choice.equalsIgnoreCase("yes"))
+				if (choice.equalsIgnoreCase("yes")) {
 					exit = true;
+					System.exit(0);
+				}
 				break;
 			default:
 				System.out.println("Invalid option. Please choose the correct option.");
@@ -117,6 +137,17 @@ public class CreateAndEditMap {
 		return returnflag;
 	}
 
+	/**
+	 * This method is called when the user prompts to load a map. It lets user to
+	 * edit the map and save the map and continue further with the game if the ap is
+	 * valid.
+	 * 
+	 * @param uploadedmapGraph - It is an object of GameMapGraph class and contains
+	 *                         the data retrieved from the loaded file.
+	 * @return returnflag of type boolean which decides whether user can start the
+	 *         same.
+	 * @throws Exception
+	 */
 	public boolean uploadMap(GameMapGraph uploadedmapGraph) throws Exception {
 		mapGraph = uploadedmapGraph;
 		System.out.println("\nUploaded Map Details\n");
@@ -124,7 +155,7 @@ public class CreateAndEditMap {
 		boolean exit = false;
 		while (!exit) {
 			System.out.println("\nChoose the below options to edit the uploaded map\n");
-			System.out.println("1. Enter Map name and Author name");
+			System.out.println("1. Enter Map tag data.");
 			System.out.println("2. Add the continents\n3. Delete a continent");
 			System.out.println("4. Add the countries\n5. Delete a country");
 			System.out.println("6. Add adjacency\n7. Delete Adjacency");
@@ -143,7 +174,6 @@ public class CreateAndEditMap {
 				match = pattern.matcher(option.trim());
 			}
 
-
 			switch (Integer.parseInt(option)) {
 			case 1:
 				createMapTag();
@@ -180,8 +210,10 @@ public class CreateAndEditMap {
 				System.out.println(
 						"\nAll the entries made would be lost and not saved.Do you want to exit without saving?? - Yes/No ");
 				String choice = br.readLine();
-				if (choice.equalsIgnoreCase("yes"))
+				if (choice.equalsIgnoreCase("yes")) {
 					exit = true;
+					System.exit(0);
+				}
 				break;
 			default:
 				System.out.println("Invalid option. Please choose the correct option.");
@@ -191,6 +223,14 @@ public class CreateAndEditMap {
 		return returnflag;
 	}
 
+	/**
+	 * This method aims to create map tag data. It prompts the user to enter the
+	 * fields related to map tag and also performs various validation with respect
+	 * to the map tag. Post validating it stores the details of the map tag in the
+	 * GameMapGraph object It returns to the parent function for creating a map.
+	 * 
+	 * @throws Exception
+	 */
 	public void createMapTag() throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -247,6 +287,15 @@ public class CreateAndEditMap {
 		System.out.println("Map tag data Added successfully.");
 	}
 
+	/**
+	 * This method aims to create continent details. It prompts the user to enter
+	 * the fields related to continent and also performs various validation with
+	 * respect to the continent. Post validating it stores the details of the
+	 * continent in the GameMapGraph object It returns to the parent function for
+	 * creating a map.
+	 * 
+	 * @throws Exception
+	 */
 	public void setContinentDetails() throws Exception {
 		listOfContinents = new ArrayList<>();
 		String num;
@@ -304,6 +353,14 @@ public class CreateAndEditMap {
 		}
 	}
 
+	/**
+	 * This method aims to create country details. It prompts the user to enter the
+	 * fields related to country and also performs various validation with respect
+	 * to the country. Post validating it stores the details of the country in the
+	 * GameMapGraph object It returns to the parent function for creating a map.
+	 * 
+	 * @throws Exception
+	 */
 	public void setCountryDetails() throws Exception {
 		listOfContinents = new ArrayList<>();
 		listOfCountries = new ArrayList<>();
@@ -340,7 +397,9 @@ public class CreateAndEditMap {
 						Country country = new Country();
 						String[] input = countryDetails.split(",");
 						if (alreadyDefinedContinent(input[3].trim())) {
+							System.out.println("inside already defined a continent");
 							String details[] = countryDetails.split(",");
+							System.out.println("details " + details);
 							continentAndCountryDetails[i] = countryDetails;
 							country.setName(details[0]);
 							country.setxValue(details[1]);
@@ -361,11 +420,15 @@ public class CreateAndEditMap {
 									index = listOfCountries.indexOf(availableCountry);
 									listOfCountries.set(index, country);
 									countryexist = true;
+									System.out.println("country exist ****" + listOfCountries);
 								}
 							}
 							if (!countryexist) {
+								System.out.println("inside country exist " + countryexist);
 								listOfCountries.add(country);
 								index = listOfCountries.indexOf(country);
+								System.out.println("index " + index);
+								System.out.println("listOfCountries inside country exist" + listOfCountries);
 							}
 							for (int j = 4; j < details.length; j++) {
 								adjacentCountries.add(details[j]);
@@ -373,6 +436,8 @@ public class CreateAndEditMap {
 							}
 							country.setAdjacentCountries(adjacentCountries);
 							listOfCountries.set(index, country);
+							System.out.println(listOfContinents + " listOfContinents");
+							System.out.println("listOfCountries " + listOfCountries);
 
 						} else {
 							System.out.println(
@@ -400,31 +465,6 @@ public class CreateAndEditMap {
 		} else {
 			System.out.println("\nContinents are not defined for map yet. Initalize Continents in Map first");
 		}
-	}
-
-	public boolean alreadyDefined(String tempcontinentName) {
-		try {
-			String workingDir = System.getProperty("user.dir");
-			File file = new File(workingDir + "/resources/maps/" + fileName);
-
-			@SuppressWarnings("resource")
-			BufferedReader reader = new BufferedReader(new FileReader(file));
-			String line;
-			while ((line = reader.readLine()) != null) {
-				line = line.split("=")[0];
-				if (line.equals(tempcontinentName)) {
-					return true;
-				} else {
-					continue;
-				}
-			}
-			reader.close();
-		} catch (Exception e) {
-			System.err.format("Exception occurred trying to read '%s'.", fileName);
-			e.printStackTrace();
-			return false;
-		}
-		return false;
 	}
 
 	public boolean alreadyDefinedContinent(String continentName) {
@@ -456,31 +496,26 @@ public class CreateAndEditMap {
 			}
 		}
 		if (!flag) {
-			// System.out.println("Country updated Successfully");
-			// listOfCountries.add(index, countryupdated);
 			countryupdated = new Country();
 			ArrayList<String> adjacentCountry = new ArrayList<>();
 			countryupdated.setName(forcountry);
 			adjacentCountry.add(adcountry);
 			countryupdated.setAdjacentCountries(adjacentCountry);
 			listOfCountries.add(countryupdated);
-			// System.out.println(listOfCountries.indexOf(countryupdated));
+
+			System.out.println(listOfCountries.indexOf(countryupdated));
 		}
 
 	}
 
-	public boolean isCountryInAdjacentCountryList(String[] input) {
-		String country = input[0];
-
-		for (int i = 4; i < input.length; i++) {
-			if (country.equals(input[i]))
-				return true;
-			else
-				continue;
-		}
-		return false;
-	}
-
+	/**
+	 * 
+	 * This method aims to delete a continent. It prompts the user to enter the
+	 * continent to be deleted and also performs various validation with respect to
+	 * the country. Post validating it stores the details of the country in the
+	 * GameMapGraph object It returns to the parent function for creating a map.
+	 * 
+	 */
 	public void deleteContinent() {
 		boolean removed = false;
 		listOfContinents = mapGraph.getContinents();
@@ -494,7 +529,6 @@ public class CreateAndEditMap {
 			try {
 				deleteContinent = br.readLine().trim();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			while (deleteContinent.isEmpty()) {
@@ -540,9 +574,11 @@ public class CreateAndEditMap {
 				mapGraph.setCountries(listOfCountries);
 			}
 			mapGraph.setContinents(listOfContinents);
-			System.out.println("\n " + deleteContinent + " deleted successfully");
-			if (removed == false)
-				System.out.println("Continent " + deleteContinent + " does not exist in the Map");
+			if (removed == false) {
+				System.out.println("\nContinent " + deleteContinent + " does not exist in the Map");
+			} else {
+				System.out.println("\n " + deleteContinent + " deleted successfully");
+			}
 
 		} else {
 			System.out.println(
@@ -550,6 +586,14 @@ public class CreateAndEditMap {
 		}
 	}
 
+	/**
+	 * 
+	 * This method aims to delete a country. It prompts the user to enter the
+	 * country to be deleted and also performs various validation with respect to
+	 * the country. Post validating it stores the details of the country in the
+	 * GameMapGraph object It returns to the parent function for creating a map.
+	 * 
+	 */
 	public void deleteCountry() {
 		boolean removed = false;
 		listOfCountries = mapGraph.getCountries();
@@ -604,6 +648,15 @@ public class CreateAndEditMap {
 		}
 	}
 
+	/**
+	 * This method aims to add adjacency between two countries. It prompts the user
+	 * to enter the the countries they wish to be adjacent and also performs various
+	 * validation with respect to the country. Post validating it stores the details
+	 * of the country in the GameMapGraph object It returns to the parent function
+	 * for creating a map.
+	 * 
+	 * @throws IOException
+	 */
 	public void addAdjacency() throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		ArrayList<Country> countrylist = mapGraph.getCountries();
@@ -652,6 +705,15 @@ public class CreateAndEditMap {
 		}
 	}
 
+	/**
+	 * This method aims to remove adjacency between two countries. It prompts the
+	 * user to enter the the countries they wish to not be adjacent and also
+	 * performs various validation with respect to the country. Post validating it
+	 * stores the details of the country in the GameMapGraph object It returns to
+	 * the parent function for creating a map.
+	 * 
+	 * @throws IOException
+	 */
 	public void removeAdjacency() throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		ArrayList<Country> countrylist = mapGraph.getCountries();
@@ -702,6 +764,16 @@ public class CreateAndEditMap {
 		}
 	}
 
+	/**
+	 * This method aims to perform various validation with respect to the saving a
+	 * map info entered by user during create to the map. Post validating it throws
+	 * the error for the user to resolve and returns the control back to the calling
+	 * method.
+	 * 
+	 * @return flag- Boolean type, which determines whether we can allow the player
+	 *         to go ahead and play the game.
+	 * @throws IOException
+	 */
 	public boolean checkandSave() throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -865,12 +937,19 @@ public class CreateAndEditMap {
 
 	}
 
+	/**
+	 * 
+	 * This method aims to print the content of the map over the console.
+	 * 
+	 */
 	public void printMap() {
 		System.out.println(
-				"\n##-------------------------------------------------------------------------------------------------------##\n");
+				"\n------------------------------------------------------------------------------------------------------------");
+		System.out.println(
+				"\n------------------------------------------------------------------------------------------------------------");
 		System.out.println("Map Meta Data:");
 		if (mapGraph.getMapTag() == null)
-			System.out.println("No MetaDta Declared for Map Yet");
+			System.out.println("No Map Tag data Declared for Map Yet");
 		else
 			System.out.println(mapGraph.getMapTag());
 		System.out.println("\nContinents:");
@@ -905,7 +984,9 @@ public class CreateAndEditMap {
 			System.out.println("No Country Defined for Map\n");
 		}
 		System.out.println(
-				"\n##-------------------------------------------------------------------------------------------------------##");
+				"\n------------------------------------------------------------------------------------------------------------");
+		System.out.println(
+				"\n------------------------------------------------------------------------------------------------------------");
 	}
 
 }
