@@ -34,6 +34,7 @@ public class RiskMain extends JFrame {
 	 * and also for exiting.
 	 */
 	JButton createNewMapButton, loadExistingMapButton, exitMapButton;
+	
 	JLabel label1, label2;
 	private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	boolean uploadSuccessful = false;
@@ -171,8 +172,8 @@ public class RiskMain extends JFrame {
 			createMapGraph = createandeditmap.getMapGraph();
 //			mockData(mapGraph);
 			String choice = br.readLine().trim();
-			while (choice.isEmpty()) {
-				System.err.println("\nChoice cannot be blank. Please enter the correct choice below:");
+			while (!(choice.equalsIgnoreCase("Yes") || choice.equalsIgnoreCase("No") || choice == null)) {
+				System.err.println("\nPlease enter the choice as either Yes or No:");
 				System.out.flush();
 				choice = br.readLine().trim();
 			}

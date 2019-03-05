@@ -65,7 +65,7 @@ public class ReinforcementPhaseTest {
 	 */
 	@Test
 	public void isControlValueAssignedToPlayer() {
-		assertEquals(7, ReinforcementPhase.armiesToBeAssigned(player, continent));
+		assertEquals(continent.getControlValue(), ReinforcementPhase.armiesToBeAssigned(player, continent));
 	}
 	
 	/**

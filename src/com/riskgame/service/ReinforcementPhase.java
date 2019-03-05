@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 import com.riskgame.model.Continent;
 import com.riskgame.model.Country;
+import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.RiskPlayer;
 
 /**
@@ -20,7 +21,8 @@ import com.riskgame.model.RiskPlayer;
  *
  */
 public class ReinforcementPhase {
-	private static ArrayList<Country> countriesList;
+	
+	public static ArrayList<Country> countriesList = new ArrayList<Country>();
 
 	/**
 	 * This method prompts the player whether he/she wants to play the reinforcement
@@ -30,9 +32,14 @@ public class ReinforcementPhase {
 	 * @param player
 	 * @throws Exception
 	 */
-	public void startReinforcement(RiskPlayer player) throws Exception {
+	public void startReinforcement(RiskPlayer player, GameMapGraph mapGraph) throws Exception {
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 		Continent continent = player.getMyCountries().get(0).getPartOfContinent();
+		for(Country country : mapGraph.getCountries()) {
+			if(country.getPartOfContinent().getContinentName().equalsIgnoreCase(continent.getContinentName())) {
+				countriesList.add(country);
+			}
+		}
 		int reinforcementArmies = armiesToBeAssigned(player, continent);
 		System.out.println("Armies available for Reinforcement: " + reinforcementArmies);
 		player.setArmyCount(player.getArmyCount() + reinforcementArmies);
@@ -73,7 +80,7 @@ public class ReinforcementPhase {
 	 *         player.
 	 */
 	public static int armiesToBeAssigned(RiskPlayer player, Continent continent) {
-		countriesList = continent.getCountriesInContinent();
+		//countriesList = continent.getCountriesInContinent();
 		int countriesPerPlayer = player.getMyCountries().size();
 		int armiesAssignedPerPlayer;
 
@@ -83,8 +90,8 @@ public class ReinforcementPhase {
 			armiesAssignedPerPlayer = (int) Math.floor(countriesPerPlayer / 3);
 		}
 
-		if (isPlayerOwnsContinent(player))
-			armiesAssignedPerPlayer += continent.getControlValue();
+		if (isPlayerOwnsContinent(player, countriesList))
+			armiesAssignedPerPlayer = continent.getControlValue();
 
 		return armiesAssignedPerPlayer;
 	}
@@ -95,7 +102,7 @@ public class ReinforcementPhase {
 	 * @param player
 	 * @return true if player owns the continent else return false.
 	 */
-	private static boolean isPlayerOwnsContinent(RiskPlayer player) {
+	private static boolean isPlayerOwnsContinent(RiskPlayer player, ArrayList<Country> countriesList) {
 		boolean flag = true;
 		for (Country country : countriesList) {
 			if (!player.getMyCountries().contains(country))
