@@ -157,7 +157,7 @@ public class StartupPhase {
 
 			// Reinforcement Phase starts here
 
-			System.out.println("Reinforcement Phase begins!\n");
+			System.out.println("\nReinforcement Phase begins!\n");
 			System.out.println("Player: " + player.getName() + "\n");
 			System.out.println("Do you want to continue with Reinforcement phase? (Yes or No) ");
 			String choice = br.readLine().trim();

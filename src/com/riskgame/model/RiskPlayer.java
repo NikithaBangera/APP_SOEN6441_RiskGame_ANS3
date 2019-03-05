@@ -91,10 +91,10 @@ public class RiskPlayer {
 				country.setNoOfArmies(country.getNoOfArmies() + armiesCount);
 				this.setArmyCount(this.getArmyCount() - armiesCount);
 			} else {
-				System.out.println("Insufficient number of armies.");
+				System.out.println("Insufficient number of armies.\n");
 			}
 		} else {
-			System.out.println("This country is not owned by you!");
+			System.out.println("This country is not owned by you!\n");
 		}
 	}
 

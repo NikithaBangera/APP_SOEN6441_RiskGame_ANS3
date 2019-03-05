@@ -23,7 +23,9 @@ import com.riskgame.service.StartupPhase;
  * RiskMain class launches the Risk Game and provided options for the users to
  * create a new map or load an existing map in-order to begin the game.
  * 
- * @author
+ * @author Shresthi
+ * @author Shiva
+ * @author Sumeetha
  *
  */
 public class RiskMain extends JFrame {

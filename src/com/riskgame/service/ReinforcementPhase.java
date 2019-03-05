@@ -18,6 +18,7 @@ import com.riskgame.model.RiskPlayer;
  * the attack phase begins
  * 
  * @author Nikitha
+ * @author Shresthi Garg
  *
  */
 public class ReinforcementPhase {
@@ -80,7 +81,6 @@ public class ReinforcementPhase {
 	 *         player.
 	 */
 	public static int armiesToBeAssigned(RiskPlayer player, Continent continent) {
-		//countriesList = continent.getCountriesInContinent();
 		int countriesPerPlayer = player.getMyCountries().size();
 		int armiesAssignedPerPlayer;
 
