@@ -62,7 +62,7 @@ public class ReadAndWriteMap {
 	 * @param mapgraph    - GameMapGraph object containing the details of the loaded
 	 *                    map.
 	 * @param oldFileName - The file name of the loaded map.
-	 * @throws IOException
+	 * @throws IOException - throws input output
 	 */
 	public void saveMap(GameMapGraph mapgraph, String oldFileName) throws IOException {
 
@@ -138,7 +138,7 @@ public class ReadAndWriteMap {
 	 * 
 	 * @param fileName - The file which was uploaded.
 	 * @return flag - To determine if the returned content is valid.
-	 * @throws IOException
+	 * @throws IOException -throws input output
 	 */
 	public boolean uploadMap(String fileName) throws IOException {
 
@@ -487,7 +487,7 @@ public class ReadAndWriteMap {
 	 * 
 	 * @return flag of type boolean determines if the entered countries are properly
 	 *         defined as adjacent.
-	 * @throws IOException
+	 * @throws IOException - throws input output
 	 */
 	public boolean checkcountryadjancy() throws IOException {
 
