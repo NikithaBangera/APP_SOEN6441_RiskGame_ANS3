@@ -31,8 +31,9 @@ public class FortificationPhase {
 	 * fortification. It internally calls the moveArmies method once all the
 	 * validation with respect to fortification are performed.
 	 * 
-	 * @param player
-	 * @throws IOException
+	 * @param player  - The player whose turn is to do fortification.
+	 * @param mapData - GameMapGraph object
+	 * @throws IOException - throws Input output exception
 	 */
 	public void startGameFortification(RiskPlayer player, GameMapGraph mapData) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -57,8 +58,7 @@ public class FortificationPhase {
 					Pattern namePattern1 = Pattern.compile("[a-zA-Z\\s]+");
 					Matcher match = namePattern1.matcher(fromCountry);
 					while (!match.matches() || fromCountry.isEmpty()) {
-						System.err.println("\nPlease enter the correct country name below:");
-						System.out.flush();
+						System.out.println("\nPlease enter the correct country name below:");
 						fromCountry = br.readLine().trim().toUpperCase();
 						match = namePattern1.matcher(fromCountry);
 					}
@@ -69,8 +69,8 @@ public class FortificationPhase {
 					Pattern namePattern2 = Pattern.compile("[a-zA-Z\\s]+");
 					match = namePattern2.matcher(toCountry);
 					while (!match.matches() || toCountry.isEmpty()) {
-						System.err.println("\nPlease enter the correct country name below:");
-						System.out.flush();
+						System.out.println("\nPlease enter the correct country name below:");
+						
 						toCountry = br.readLine().trim().toUpperCase();
 						match = namePattern2.matcher(toCountry);
 					}
@@ -100,8 +100,8 @@ public class FortificationPhase {
 						Pattern numberPattern3 = Pattern.compile("[0-9]+");
 						Matcher match = numberPattern3.matcher(countOfArmy);
 						while (!match.matches() || countOfArmy.isEmpty()) {
-							System.err.println("\nPlease enter the correct army count below:");
-							System.out.flush();
+							System.out.println("\nPlease enter the correct army count below:");
+							
 							countOfArmy = br.readLine().trim();
 							match = numberPattern3.matcher(countOfArmy);
 						}
@@ -147,9 +147,9 @@ public class FortificationPhase {
 	 * This method takes the values for each player from the startFortification
 	 * method and does the manipulation of armies and assign the armies
 	 * 
-	 * @param fromCountry
-	 * @param toCountry
-	 * @param armiesCount
+	 * @param fromCountry - The country from where player want to move army
+	 * @param toCountry   - The country to where player want to move army
+	 * @param armiesCount - Count of armies player wish to move
 	 */
 	public void moveArmies(Country fromCountry, Country toCountry, int armiesCount) {
 
