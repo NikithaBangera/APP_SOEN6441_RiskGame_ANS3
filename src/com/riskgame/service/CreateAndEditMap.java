@@ -25,7 +25,6 @@ import com.riskgame.model.MapTag;
  */
 public class CreateAndEditMap {
 
-	// private ReadandWriteMap saveMap;
 	// create a new map
 	private GameMapGraph mapGraph = new GameMapGraph();
 	private String fileName;
@@ -78,8 +77,8 @@ public class CreateAndEditMap {
 			String option = br.readLine().trim();
 			Matcher match = pattern.matcher(option.trim());
 			while (!(match.matches())) {
-				System.err.println("Please enter a valid option(number) from the game menu!");
-				System.out.flush();
+				System.out.println("Please enter a valid option(number) from the game menu!");
+
 				option = br.readLine().trim();
 				match = pattern.matcher(option.trim());
 			}
@@ -164,8 +163,8 @@ public class CreateAndEditMap {
 			String option = br.readLine().trim();
 			Matcher match = pattern.matcher(option.trim());
 			while (!(match.matches())) {
-				System.err.println("Please enter a valid option(number) from the game menu!");
-				System.out.flush();
+				System.out.println("Please enter a valid option(number) from the game menu!");
+
 				option = br.readLine().trim();
 				match = pattern.matcher(option.trim());
 			}
@@ -236,8 +235,8 @@ public class CreateAndEditMap {
 		String name = br.readLine().trim();
 		Matcher match = pattern.matcher(name.trim());
 		while (!match.matches()) {
-			System.err.println("\nPlease enter valid image name.");
-			System.out.flush();
+			System.out.println("\nPlease enter valid image name.");
+
 			name = br.readLine().trim();
 			match = pattern.matcher(name.trim());
 		}
@@ -246,16 +245,16 @@ public class CreateAndEditMap {
 		System.out.println("Please specify scroll is horizontal or vertical");
 		String scroll = br.readLine().trim();
 		while (!((scroll.equalsIgnoreCase("horizontal")) || (scroll.equalsIgnoreCase("vertical")) || scroll == null)) {
-			System.err.println("Invalid/Blank value entered, please enter horizontal or vertical");
-			System.out.flush();
+			System.out.println("Invalid/Blank value entered, please enter horizontal or vertical");
+
 			scroll = br.readLine().trim();
 		}
 
 		System.out.println("Please specify wrap is Yes or No");
 		String wrap = br.readLine().trim();
 		while (!((wrap.equalsIgnoreCase("Yes")) || (wrap.equalsIgnoreCase("No")) || wrap == null)) {
-			System.err.println("Invalid/Blank value entered, please enter Yes or No");
-			System.out.flush();
+			System.out.println("Invalid/Blank value entered, please enter Yes or No");
+
 			wrap = br.readLine().trim();
 		}
 
@@ -263,8 +262,8 @@ public class CreateAndEditMap {
 		String author = br.readLine().trim();
 		while (author.isEmpty()) {
 
-			System.err.println("Sorry! The entered author name cannot be blank. Please enter again \n");
-			System.out.flush();
+			System.out.println("Sorry! The entered author name cannot be blank. Please enter again \n");
+
 			author = br.readLine().trim();
 
 		}
@@ -272,8 +271,8 @@ public class CreateAndEditMap {
 		System.out.println("Please specify warn is Yes or No");
 		String warn = br.readLine().trim();
 		while (!((warn.equalsIgnoreCase("Yes")) || (warn.equalsIgnoreCase("No")) || warn == null)) {
-			System.err.println("Invalid/Blank value entered, please enter Yes or No");
-			System.out.flush();
+			System.out.println("Invalid/Blank value entered, please enter Yes or No");
+
 			warn = br.readLine().trim();
 		}
 
@@ -305,8 +304,8 @@ public class CreateAndEditMap {
 		Pattern pattern = Pattern.compile("[0-9]+");
 		Matcher match = pattern.matcher(num);
 		while (!(match.matches())) {
-			System.err.println("Invalid input.Please enter valid number of continents!");
-			System.err.flush();
+			System.out.println("Invalid input.Please enter valid number of continents!");
+
 			num = br.readLine().trim();
 			match = pattern.matcher(num.trim());
 		}
@@ -377,8 +376,8 @@ public class CreateAndEditMap {
 					numberOfCountries = Integer.parseInt(br.readLine());
 					proceed = false;
 				} catch (NumberFormatException e) {
-					System.err.println("\nInvalid Input provided.");
-					System.err.flush();
+					System.out.println("\nInvalid Input provided.");
+
 					System.out.println("\nPlease enter valid number of Countries:");
 					br = new BufferedReader(new InputStreamReader(System.in));
 				}

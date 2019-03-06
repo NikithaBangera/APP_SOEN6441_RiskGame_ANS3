@@ -70,7 +70,7 @@ public class StartupPhase {
 	}
 
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-	
+
 	/**
 	 * This method starts the game, obtaining the number of payers , details and
 	 * initializing them.
@@ -88,8 +88,8 @@ public class StartupPhase {
 			Pattern numberPattern = Pattern.compile("[0-9]+");
 			Matcher match = numberPattern.matcher(playerCount);
 			while (!match.matches() || playerCount.isEmpty()) {
-				System.err.println("\nPlease enter the correct player count below:");
-				System.out.flush();
+				System.out.println("\nPlease enter the correct player count below:");
+
 				playerCount = br.readLine().trim();
 				match = numberPattern.matcher(playerCount);
 			}
@@ -112,8 +112,8 @@ public class StartupPhase {
 			Pattern namePattern = Pattern.compile("[a-zA-z]+");
 			Matcher match = namePattern.matcher(playername);
 			while (!match.matches() || playername.isEmpty()) {
-				System.err.println("\nPlease enter the correct player name below:");
-				System.out.flush();
+				System.out.println("\nPlease enter the correct player name below:");
+
 				playername = br.readLine().trim();
 				match = namePattern.matcher(playername);
 			}
@@ -150,8 +150,8 @@ public class StartupPhase {
 			System.out.println("Do you want to continue with Reinforcement phase? (Yes or No) ");
 			String choice = br.readLine().trim();
 			while (!((choice.equalsIgnoreCase("Yes")) || (choice.equalsIgnoreCase("No")) || choice == null)) {
-				System.err.println("Invalid/Blank value entered, please enter Yes or No");
-				System.out.flush();
+				System.out.println("Invalid/Blank value entered, please enter Yes or No");
+
 				choice = br.readLine().trim();
 			}
 
@@ -171,8 +171,8 @@ public class StartupPhase {
 			System.out.println("Do you wish to start the Fortification phase? (Yes or No)");
 			String choice1 = br.readLine().trim();
 			while (!((choice1.equalsIgnoreCase("Yes")) || (choice1.equalsIgnoreCase("No")) || choice1 == null)) {
-				System.err.println("Invalid/Blank value entered, please enter Yes or No");
-				System.out.flush();
+				System.out.println("Invalid/Blank value entered, please enter Yes or No");
+
 				choice1 = br.readLine().trim();
 			}
 			if (choice1.equalsIgnoreCase("Yes")) {
@@ -278,8 +278,8 @@ public class StartupPhase {
 						Pattern numberPattern = Pattern.compile("[0-9]+");
 						Matcher match = numberPattern.matcher(numArmies);
 						while (!match.matches() || numArmies.isEmpty()) {
-							System.err.println("\nPlease enter the correct number of armies below:");
-							System.out.flush();
+							System.out.println("\nPlease enter the correct number of armies below:");
+
 							numArmies = br.readLine().trim();
 							match = numberPattern.matcher(numArmies);
 						}
