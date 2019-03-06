@@ -200,7 +200,6 @@ public class RiskMain extends JFrame {
 		try {
 			GameMapGraph createMapGraph = new GameMapGraph();
 			createMapGraph = createandeditmap.getMapGraph();
-//			mockData(mapGraph);
 			String choice = br.readLine().trim();
 			while (!(choice.equalsIgnoreCase("Yes") || choice.equalsIgnoreCase("No") || choice == null)) {
 				System.err.println("\nPlease enter the choice as either Yes or No:");
@@ -210,7 +209,6 @@ public class RiskMain extends JFrame {
 
 			if (choice.equalsIgnoreCase("Yes")) {
 				StartupPhase start = new StartupPhase();
-//				System.out.println(createMapGraph);
 				start.gamePlay(createMapGraph);
 			} else {
 				System.out.println("\nThank you!");
