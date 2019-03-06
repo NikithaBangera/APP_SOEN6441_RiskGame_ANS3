@@ -14,24 +14,23 @@ import java.util.regex.Pattern;
 import java.io.IOException;
 
 /**
- * StartupPhase class is for the beginning of the game play. Its contains 
- * methods which will take the details from the players, and randomly assign 
- * the countries to the them. 
+ * StartupPhase class is for the beginning of the game play. Its contains
+ * methods which will take the details from the players, and randomly assign the
+ * countries to the them.
  * 
- * Armies allocation will happen to the players
- * as per the Conquest game rule.
+ * Armies allocation will happen to the players as per the Conquest game rule.
  *
- *@author Anusha
- *@author Shresthi
- *@author Nikitha
+ * @author Anusha
+ * @author Shresthi
+ * @author Nikitha
  *
  */
 public class StartupPhase {
 
 	/** Variable to store the total number of players in game. */
 	private int countOfthePlayers = 0;
-	
-	/**List which consists of players name.*/
+
+	/** List which consists of players name. */
 	ArrayList<RiskPlayer> playersList = new ArrayList<RiskPlayer>();
 
 	/**
@@ -55,7 +54,7 @@ public class StartupPhase {
 	/**
 	 * Method setting the count of the players
 	 * 
-	 * @return Integer which has Player's count.
+	 * @param countOfthePlayers - This is the count of players in game.
 	 */
 	public void setCountOfthePlayers(int countOfthePlayers) {
 		this.countOfthePlayers = countOfthePlayers;
@@ -64,8 +63,7 @@ public class StartupPhase {
 	/**
 	 * Method for setting the Player's list
 	 * 
-	 * @param playersList
-	 *            It is the player's list needs to be set.
+	 * @param playersList It is the player's list needs to be set.
 	 */
 	public void setPlayersList(ArrayList<RiskPlayer> playersList) {
 		this.playersList = playersList;
@@ -74,36 +72,29 @@ public class StartupPhase {
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 	/**
-	 * This method starts the game, obtaining the number of payers , details
-	 * and initializing them.
+	 * This method starts the game, obtaining the number of payers , details and
+	 * initializing them.
 	 * 
-	 * @param mapGraph
-	 *            Object of mapGraph which consists of map details
+	 * @param mapGraph - Object of mapGraph which consists of map details
+	 * @throws Exception - IOException
 	 */
 	public void gamePlay(GameMapGraph mapGraph) throws Exception {
 		RiskPlayer player = new RiskPlayer();
-
 		// Startup Phase starts here
-//		System.out.println("****************");
-//		System.out.println("****************");
-//		System.out.println(mapGraph);
-//		System.out.println("****************");
-//		System.out.println("****************");
 		boolean proceed = false;
 		do {
 			System.out.println("Enter the number of players below");
 			String playerCount = br.readLine().trim();
 			Pattern numberPattern = Pattern.compile("[0-9]+");
 			Matcher match = numberPattern.matcher(playerCount);
-			while(!match.matches() || playerCount.isEmpty()) {
-				System.err.println("\nPlease enter the correct player count below:");
-				System.out.flush();
+			while (!match.matches() || playerCount.isEmpty()) {
+				System.out.println("\nPlease enter the correct player count below:");
+
 				playerCount = br.readLine().trim();
 				match = numberPattern.matcher(playerCount);
 			}
 			countOfthePlayers = Integer.parseInt(playerCount);
-	
-	//		System.out.println("countOfthePlayers " + countOfthePlayers);
+
 			if (countOfthePlayers > 1 && countOfthePlayers < 7) {
 				System.out.println("Great! Let's Play.");
 				proceed = false;
@@ -111,8 +102,8 @@ public class StartupPhase {
 				System.out.println("Sorry! The numbers of players can be between 2 and 6.");
 				proceed = true;
 			}
-		}while(proceed);
-		
+		} while (proceed);
+
 		System.out.println("Enter the name of the players");
 		for (int count = 1; count <= countOfthePlayers; count++) {
 			boolean continue1 = true;
@@ -121,8 +112,8 @@ public class StartupPhase {
 			Pattern namePattern = Pattern.compile("[a-zA-z]+");
 			Matcher match = namePattern.matcher(playername);
 			while (!match.matches() || playername.isEmpty()) {
-				System.err.println("\nPlease enter the correct player name below:");
-				System.out.flush();
+				System.out.println("\nPlease enter the correct player name below:");
+
 				playername = br.readLine().trim();
 				match = namePattern.matcher(playername);
 			}
@@ -138,9 +129,6 @@ public class StartupPhase {
 			}
 			playersList.add(riskPlayer);
 		}
-		// playersList.forEach(P -> {
-		// System.out.println(P + " *\n");
-		// });
 		allocationOfCountry(mapGraph);
 		allocationOfArmyToPlayers();
 		allocationOfArmyToCountriesInitially(mapGraph);
@@ -162,15 +150,15 @@ public class StartupPhase {
 			System.out.println("Do you want to continue with Reinforcement phase? (Yes or No) ");
 			String choice = br.readLine().trim();
 			while (!((choice.equalsIgnoreCase("Yes")) || (choice.equalsIgnoreCase("No")) || choice == null)) {
-				System.err.println("Invalid/Blank value entered, please enter Yes or No");
-				System.out.flush();
+				System.out.println("Invalid/Blank value entered, please enter Yes or No");
+
 				choice = br.readLine().trim();
 			}
 
 			if (choice.equalsIgnoreCase("Yes")) {
 				ReinforcementPhase reinforcement = new ReinforcementPhase();
 				reinforcement.startReinforcement(player, mapGraph);
-			} else if (choice.equalsIgnoreCase("No")){
+			} else if (choice.equalsIgnoreCase("No")) {
 				System.out.println("Exited the Reinforcement Phase!");
 			}
 
@@ -183,28 +171,28 @@ public class StartupPhase {
 			System.out.println("Do you wish to start the Fortification phase? (Yes or No)");
 			String choice1 = br.readLine().trim();
 			while (!((choice1.equalsIgnoreCase("Yes")) || (choice1.equalsIgnoreCase("No")) || choice1 == null)) {
-				System.err.println("Invalid/Blank value entered, please enter Yes or No");
-				System.out.flush();
+				System.out.println("Invalid/Blank value entered, please enter Yes or No");
+
 				choice1 = br.readLine().trim();
 			}
 			if (choice1.equalsIgnoreCase("Yes")) {
 				FortificationPhase fortification = new FortificationPhase();
 				fortification.startGameFortification(player, mapGraph);
-			} else if (choice.equalsIgnoreCase("No")){
+			} else if (choice.equalsIgnoreCase("No")) {
 				System.out.println("Exited the Fortification phase!");
 			}
 			// Fortification Phase ends here
 
 		}
 	}
-	
+
 	// Function of StartUp Phase starts here
 
 	/**
-	 * Method to assign countries to the players. Random allocation of countries
-	 * to the players will happen in this method.
-	 * @param mapGraph
-	 *            Object of mapGraph which consists of map details
+	 * Method to assign countries to the players. Random allocation of countries to
+	 * the players will happen in this method.
+	 * 
+	 * @param mapGraph Object of mapGraph which consists of map details
 	 */
 	public void allocationOfCountry(GameMapGraph mapGraph) {
 		int i, countryIndexAssignment;
@@ -227,9 +215,8 @@ public class StartupPhase {
 	}
 
 	/**
-	 * Method to assign the number of armies to the players which differs 
-	 * based on the players count. Army allocation is done as per the 
-	 * conquest game rule.
+	 * Method to assign the number of armies to the players which differs based on
+	 * the players count. Army allocation is done as per the conquest game rule.
 	 * 
 	 */
 	public void allocationOfArmyToPlayers() {
@@ -255,10 +242,10 @@ public class StartupPhase {
 	}
 
 	/**
-	 * Method to assign armies to the countries so that each country will get
-	 * at least one army as per the conquest game rule.
-	 * @param mapGraph
-	 *            Object of mapGraph which consists of map details
+	 * Method to assign armies to the countries so that each country will get at
+	 * least one army as per the conquest game rule.
+	 * 
+	 * @param mapGraph Object of mapGraph which consists of map details
 	 */
 	public void allocationOfArmyToCountriesInitially(GameMapGraph mapGraph) {
 
@@ -272,8 +259,8 @@ public class StartupPhase {
 	}
 
 	/**
-	 * Method for armies assignment to the countries so that the number
-	 * of armies in the countries will be balanced
+	 * Method for armies assignment to the countries so that the number of armies in
+	 * the countries will be balanced
 	 * 
 	 */
 	public void allocationOfRemainingArmyToCountries() {
@@ -291,8 +278,8 @@ public class StartupPhase {
 						Pattern numberPattern = Pattern.compile("[0-9]+");
 						Matcher match = numberPattern.matcher(numArmies);
 						while (!match.matches() || numArmies.isEmpty()) {
-							System.err.println("\nPlease enter the correct number of armies below:");
-							System.out.flush();
+							System.out.println("\nPlease enter the correct number of armies below:");
+
 							numArmies = br.readLine().trim();
 							match = numberPattern.matcher(numArmies);
 						}

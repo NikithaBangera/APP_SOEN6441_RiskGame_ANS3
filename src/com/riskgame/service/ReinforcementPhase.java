@@ -55,8 +55,7 @@ public class ReinforcementPhase {
 				Pattern numberPattern = Pattern.compile("[0-9+]");
 				Matcher match = numberPattern.matcher(armyCount);
 				while (!match.matches() || armyCount.isEmpty()) {
-					System.err.println("\nPlease enter the correct army count below:");
-					System.out.flush();
+					System.out.println("\nPlease enter the correct army count below:");
 					armyCount = in.readLine().trim();
 					match = numberPattern.matcher(armyCount);
 				}
