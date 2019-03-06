@@ -435,7 +435,7 @@ public class CreateAndEditMap {
 
 						} else {
 							System.out.println(
-									"\nContinent " + input[3].trim() + "is not available in current continents list");
+									"\nContinent " + input[3].trim() + " is not available in current continents list");
 							System.out.println("Please enter valid continent name while providing country details\n");
 							--i;
 							continue;

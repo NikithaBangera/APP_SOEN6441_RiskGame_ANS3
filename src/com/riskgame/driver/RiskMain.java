@@ -56,9 +56,8 @@ public class RiskMain extends JFrame {
 	 * user clicks on load map button, then the uploadMap method of ReadAndWriteMap
 	 * class is called. Exit button exits the user from the game.
 	 * 
-	 * @throws Exception
 	 */
-	public RiskMain() throws Exception {
+	public RiskMain() {
 		setLayout(new GridLayout(3, 3));
 		createNewMapButton = new JButton("Create a new Map");
 		createNewMapButton.setPreferredSize(new Dimension(60, 60));
@@ -175,7 +174,7 @@ public class RiskMain extends JFrame {
 	 * This method sets up a layout for the risk game by displaying the create a
 	 * map, load a map and exit buttons respectively using Java Swing framework.
 	 * 
-	 * @throws Exception
+	 * @throws Exception - ClassNotFoundException
 	 */
 	public static void setUp() throws Exception {
 		RiskMain layout = new RiskMain();
@@ -192,7 +191,7 @@ public class RiskMain extends JFrame {
 	 * This is the method where the gameplay begins after the creation of new map or
 	 * loading of existing map.
 	 * 
-	 * @throws Exception
+	 * @throws Exception - NoSuchMethodException
 	 */
 	private void startGame() throws Exception {
 		System.out.println("Do you want to start the game? (Yes or No)");
@@ -225,7 +224,7 @@ public class RiskMain extends JFrame {
 	 * This is the main method which launches the entire Risk Game.
 	 * 
 	 * @param args main arguments
-	 * @throws Exception
+	 * @throws Exception - NoSuchMethodException
 	 */
 	public static void main(String[] args) throws Exception {
 		setUp();
