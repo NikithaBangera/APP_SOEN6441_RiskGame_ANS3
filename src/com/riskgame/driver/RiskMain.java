@@ -122,8 +122,7 @@ public class RiskMain extends JFrame {
 									System.out.println(" \n Thank You !! ");
 								System.exit(0);
 							} else {
-								System.err.println(ReadAndWriteMap.getError());
-								System.err.flush();
+								System.out.println(ReadAndWriteMap.getError());
 								System.out.println(
 										"\nPlease rectify all the above mentioned issues and upload the file again");
 								System.out.println("\n Do you want to upload the correct file again? :Yes/ No ");

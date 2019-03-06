@@ -70,7 +70,7 @@ public class FortificationPhase {
 					match = namePattern2.matcher(toCountry);
 					while (!match.matches() || toCountry.isEmpty()) {
 						System.out.println("\nPlease enter the correct country name below:");
-						
+
 						toCountry = br.readLine().trim().toUpperCase();
 						match = namePattern2.matcher(toCountry);
 					}
@@ -101,7 +101,7 @@ public class FortificationPhase {
 						Matcher match = numberPattern3.matcher(countOfArmy);
 						while (!match.matches() || countOfArmy.isEmpty()) {
 							System.out.println("\nPlease enter the correct army count below:");
-							
+
 							countOfArmy = br.readLine().trim();
 							match = numberPattern3.matcher(countOfArmy);
 						}
@@ -162,6 +162,7 @@ public class FortificationPhase {
 				toCountry.setNoOfArmies(toCountryArmy + armiesCount);
 				adjacentCountries = true;
 				doFortification = false;
+				System.out.println("\nArmies successfully moved!");
 				System.out.println("\nFortification phase ends!");
 				break;
 			}
