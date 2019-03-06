@@ -25,7 +25,7 @@ import com.riskgame.model.RiskPlayer;
  */
 public class FortificationPhase {
 	public boolean doFortification = false;
-	
+
 	/**
 	 * This method is called from the Startup phase when the user opts to start the
 	 * fortification. It internally calls the moveArmies method once all the
@@ -44,56 +44,61 @@ public class FortificationPhase {
 
 			while (doFortification) {
 				doFortification = true;
-				System.out.println("\nPlayer has the following list of countries with armies: \n");
-				for (Country country : player.getMyCountries()) {
-					System.out.println("* " + country.getName() + ":" + country.getNoOfArmies() + "\n");
-				}
-				System.out.println("Enter the name of country from which you want to move some armies :");
-				fromCountry = br.readLine().trim().toUpperCase();
-				Pattern namePattern1 = Pattern.compile("[a-zA-Z]+");
-				Matcher match = namePattern1.matcher(fromCountry);
-				while (!match.matches() || fromCountry.isEmpty()) {
-					System.err.println("\nPlease enter the correct country name below:");
-					System.out.flush();
-					fromCountry = br.readLine().trim().toUpperCase();
-					match = namePattern1.matcher(fromCountry);
-				}
-				
-				System.out.println(
-						"Enter the name of country to which you want to move some armies, from country " + fromCountry);
-				toCountry = br.readLine().trim().toUpperCase();
-				Pattern namePattern2 = Pattern.compile("[a-zA-Z]+");
-				match = namePattern2.matcher(toCountry);
-				while (!match.matches() || toCountry.isEmpty()) {
-					System.err.println("\nPlease enter the correct country name below:");
-					System.out.flush();
-					toCountry = br.readLine().trim().toUpperCase();
-					match = namePattern2.matcher(toCountry);
-				}
+				Country givingCountry = new Country();
+				Country receivingCountry = new Country();
 
-				if (!mapData.getCountrySet().containsKey(fromCountry)
-						|| !mapData.getCountrySet().containsKey(toCountry)) {
-					doFortification = false;
-					System.out.println("Country doesn't exist!\n");
-				}
-				
-				Country givingCountry = mapData.getCountrySet().get(fromCountry);
-				Country receivingCountry = mapData.getCountrySet().get(toCountry);
-				if (player.getMyCountries().contains(givingCountry)
-						&& player.getMyCountries().contains(receivingCountry)) {
-					doFortification = true;
-				} else {
-					System.out.println(
-							"Entered countries doesn't exist in player's owned country list, please enter country names again\n");
-					doFortification = false;
-				}
-				
-				if(doFortification) {
+				do {
+					System.out.println("\nPlayer has the following list of countries with armies: \n");
+					for (Country country : player.getMyCountries()) {
+						System.out.println("* " + country.getName() + ":" + country.getNoOfArmies() + "\n");
+					}
+					System.out.println("Enter the name of country from which you want to move some armies :");
+					fromCountry = br.readLine().trim().toUpperCase();
+					Pattern namePattern1 = Pattern.compile("[a-zA-Z\\s]+");
+					Matcher match = namePattern1.matcher(fromCountry);
+					while (!match.matches() || fromCountry.isEmpty()) {
+						System.err.println("\nPlease enter the correct country name below:");
+						System.out.flush();
+						fromCountry = br.readLine().trim().toUpperCase();
+						match = namePattern1.matcher(fromCountry);
+					}
+
+					System.out.println("Enter the name of country to which you want to move some armies, from country "
+							+ fromCountry);
+					toCountry = br.readLine().trim().toUpperCase();
+					Pattern namePattern2 = Pattern.compile("[a-zA-Z\\s]+");
+					match = namePattern2.matcher(toCountry);
+					while (!match.matches() || toCountry.isEmpty()) {
+						System.err.println("\nPlease enter the correct country name below:");
+						System.out.flush();
+						toCountry = br.readLine().trim().toUpperCase();
+						match = namePattern2.matcher(toCountry);
+					}
+
+					if (!mapData.getCountrySet().containsKey(fromCountry)
+							|| !mapData.getCountrySet().containsKey(toCountry)) {
+						doFortification = false;
+						System.out.println("Country doesn't exist!\n");
+					}
+
+					givingCountry = mapData.getCountrySet().get(fromCountry);
+					receivingCountry = mapData.getCountrySet().get(toCountry);
+					if (player.getMyCountries().contains(givingCountry)
+							&& player.getMyCountries().contains(receivingCountry)) {
+						doFortification = true;
+					} else {
+						System.out.println(
+								"Entered countries doesn't exist in player's owned country list, please enter country names again\n");
+						doFortification = false;
+
+					}
+				} while (!doFortification);
+				if (doFortification) {
 					System.out.println("\nEnter the number of armies to move from " + fromCountry + " to " + toCountry);
 					try {
 						String countOfArmy = br.readLine().trim();
 						Pattern numberPattern3 = Pattern.compile("[0-9]+");
-						match = numberPattern3.matcher(countOfArmy);
+						Matcher match = numberPattern3.matcher(countOfArmy);
 						while (!match.matches() || countOfArmy.isEmpty()) {
 							System.err.println("\nPlease enter the correct army count below:");
 							System.out.flush();
@@ -106,13 +111,29 @@ public class FortificationPhase {
 									"Insufficient armies available, fortification is not possible with asked number of armies.");
 							doFortification = false;
 						}
-	
+
 					} catch (NumberFormatException e) {
 						System.out.println("Invalid number of armies.");
 					}
 				}
+
 				if (doFortification) {
-					moveArmies(givingCountry, receivingCountry, countOfArmies);
+					boolean fortify = false;
+					for (Country country : player.getMyCountries()) {
+						for (String country1 : country.getAdjacentCountries()) {
+							if (country1.equalsIgnoreCase(fromCountry) || country1.equalsIgnoreCase(toCountry)) {
+								fortify = true;
+							}
+						}
+					}
+					if (fortify) {
+						moveArmies(givingCountry, receivingCountry, countOfArmies);
+					} else {
+						doFortification = false;
+						System.out
+								.println("None of the player's countries are adjacent\n Fortification phase ends..!!");
+					}
+
 				}
 
 			}
