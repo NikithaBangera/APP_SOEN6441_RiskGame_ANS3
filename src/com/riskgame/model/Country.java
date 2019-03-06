@@ -5,7 +5,8 @@ import java.util.ArrayList;
 /**
  * Country class which gives information with respect to the Countries.
  * 
- * @author
+ * @author Shresthi
+ * @author Sumeetha
  */
 public class Country {
 
