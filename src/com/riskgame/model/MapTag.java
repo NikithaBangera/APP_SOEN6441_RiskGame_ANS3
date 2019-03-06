@@ -10,19 +10,19 @@ package com.riskgame.model;
  */
 public class MapTag {
 
-	/**Name of the author for the map.*/
+	/** Name of the author for the map. */
 	private String authorName;
-	
+
 	/** Warn option for the map. */
 	private String warn;
-	
+
 	/** Stores the name of the Image. */
 	private String imageName;
-	
-	/** Wrap option for the map.*/
+
+	/** Wrap option for the map. */
 	private String wrap;
-	
-	/** Scroll option for the map.*/
+
+	/** Scroll option for the map. */
 	private String scroll;
 
 	/**
@@ -35,12 +35,11 @@ public class MapTag {
 	/**
 	 * MapTag class constructor
 	 * 
-	 * @param Author name
-	 * @param Warn
-	 * @param Image name
-	 * @param Wrap
-	 * @param Scroll
-	 *            
+	 * @param authorName - Name of the author
+	 * @param warn       - Value of warn
+	 * @param imageName  - name of the image
+	 * @param wrap       - wrap value
+	 * @param scroll     - scroll value
 	 */
 	public MapTag(String authorName, String warn, String imageName, String wrap, String scroll) {
 		super();
@@ -52,7 +51,7 @@ public class MapTag {
 	}
 
 	/**
-	 * Gets name of an Author 
+	 * Gets name of an Author
 	 *
 	 * @return Author name
 	 */
@@ -61,16 +60,16 @@ public class MapTag {
 	}
 
 	/**
-	 * Sets Author name for the map 
+	 * Sets Author name for the map
 	 *
-	 * @param authorName
+	 * @param authorName - name of the author
 	 */
 	public void setAuthorName(String authorName) {
 		this.authorName = authorName;
 	}
 
 	/**
-	 * Gets Warn option for the map 
+	 * Gets Warn option for the map
 	 *
 	 * @return Warn option
 	 */
@@ -79,16 +78,16 @@ public class MapTag {
 	}
 
 	/**
-	 * Sets Warn option for the map 
+	 * Sets Warn option for the map
 	 *
-	 * @param warn
+	 * @param warn - warn value
 	 */
 	public void setWarn(String warn) {
 		this.warn = warn;
 	}
 
 	/**
-	 * Gets name of the image 
+	 * Gets name of the image
 	 *
 	 * @return Image name
 	 */
@@ -97,9 +96,9 @@ public class MapTag {
 	}
 
 	/**
-	 * Sets name of the image 
+	 * Sets name of the image
 	 *
-	 * @param imageName
+	 * @param imageName - name of the image
 	 */
 	public void setImageName(String imageName) {
 		this.imageName = imageName;
@@ -117,7 +116,7 @@ public class MapTag {
 	/**
 	 * Sets Wrap option for the map
 	 *
-	 * @param wrap
+	 * @param wrap - wrap value
 	 */
 	public void setWrap(String wrap) {
 		this.wrap = wrap;
@@ -133,9 +132,9 @@ public class MapTag {
 	}
 
 	/**
-	 * Sets scroll option of the map 
+	 * Sets scroll option of the map
 	 *
-	 * @param scroll
+	 * @param scroll - scroll value
 	 */
 	public void setScroll(String scroll) {
 		this.scroll = scroll;

@@ -19,7 +19,7 @@ public class RiskPlayer {
 	private int armyCount = 0;
 
 	/** List of countries held by the Player */
-	private ArrayList<Country> myCountries= new ArrayList<Country>();
+	private ArrayList<Country> myCountries = new ArrayList<Country>();
 
 	/**
 	 * Get the Player name.
@@ -33,8 +33,7 @@ public class RiskPlayer {
 	/**
 	 * Set the Player name.
 	 * 
-	 * @param name
-	 *            To set the name of the Player
+	 * @param name To set the name of the Player
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -52,8 +51,7 @@ public class RiskPlayer {
 	/**
 	 * Set the army count of the player.
 	 * 
-	 * @param armyCount
-	 *            To set the army count of the player
+	 * @param armyCount To set the army count of the player
 	 */
 	public void setArmyCount(int armyCount) {
 		this.armyCount = armyCount;
@@ -71,8 +69,7 @@ public class RiskPlayer {
 	/**
 	 * Set the list of the countries to player.
 	 * 
-	 * @param myCountries
-	 *            To set the list of the countries to player.
+	 * @param myCountries To set the list of the countries to player.
 	 */
 	public void setMyCountries(ArrayList<Country> myCountries) {
 		this.myCountries = myCountries;
@@ -82,8 +79,8 @@ public class RiskPlayer {
 	 * This method is used to assign armies to the Countries. It checks the
 	 * available army and assigns the army to the requested country
 	 * 
-	 * @param country
-	 * @param armiesCount
+	 * @param country     - the country given to players
+	 * @param armiesCount - the count of the armies player has
 	 */
 	public void armiesAssignedToCountries(Country country, int armiesCount) {
 		if (this.getMyCountries().contains(country)) {
@@ -101,7 +98,7 @@ public class RiskPlayer {
 	/**
 	 * This method is used to add the country to the player's countries list.
 	 * 
-	 * @param country
+	 * @param country - The country that needs to be added.
 	 */
 	public void additionOfCountry(Country country) {
 

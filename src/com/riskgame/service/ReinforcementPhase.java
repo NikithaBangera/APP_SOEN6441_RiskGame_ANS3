@@ -22,7 +22,7 @@ import com.riskgame.model.RiskPlayer;
  *
  */
 public class ReinforcementPhase {
-	
+
 	public static ArrayList<Country> countriesList = new ArrayList<Country>();
 
 	/**
@@ -30,14 +30,15 @@ public class ReinforcementPhase {
 	 * phase. If the player wants to play reinforcement phase then this method will
 	 * call the armiesToBeAssigned function to assign armies to the player.
 	 * 
-	 * @param player
-	 * @throws Exception
+	 * @param player   - player for reinforcement
+	 * @param mapGraph - GameMapGraph Object
+	 * @throws Exception - IOException
 	 */
 	public void startReinforcement(RiskPlayer player, GameMapGraph mapGraph) throws Exception {
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 		Continent continent = player.getMyCountries().get(0).getPartOfContinent();
-		for(Country country : mapGraph.getCountries()) {
-			if(country.getPartOfContinent().getContinentName().equalsIgnoreCase(continent.getContinentName())) {
+		for (Country country : mapGraph.getCountries()) {
+			if (country.getPartOfContinent().getContinentName().equalsIgnoreCase(continent.getContinentName())) {
 				countriesList.add(country);
 			}
 		}
@@ -62,11 +63,10 @@ public class ReinforcementPhase {
 				int armiesCount = Integer.parseInt(armyCount);
 				player.armiesAssignedToCountries(country, armiesCount);
 
-			}
-			else {
+			} else {
 				System.out.println("Sorry you have insufficient armies left! \n");
 				break;
-			} 
+			}
 		}
 	}
 
@@ -74,8 +74,8 @@ public class ReinforcementPhase {
 	 * This method assigns the number of armies to the player when certain
 	 * conditions are met.
 	 * 
-	 * @param player
-	 * @param continent
+	 * @param player    - players whose armies are to be assigned
+	 * @param continent - continent which has the country
 	 * @return armiesAssignedPerPlayer returns the number of armies assigned to the
 	 *         player.
 	 */
@@ -98,7 +98,7 @@ public class ReinforcementPhase {
 	/**
 	 * This method checks whether the player owns the complete continent.
 	 * 
-	 * @param player
+	 * @param player - player whose turn is going on
 	 * @return true if player owns the continent else return false.
 	 */
 	private static boolean isPlayerOwnsContinent(RiskPlayer player, ArrayList<Country> countriesList) {

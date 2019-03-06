@@ -57,7 +57,7 @@ public class CreateAndEditMap {
 	 * 
 	 * @return returnflag of type boolean whose value decides whether the user is
 	 *         good to start the start game.
-	 * @throws Exception
+	 * @throws Exception - Input output Exception
 	 */
 	public boolean newMapCreation() throws Exception {
 		boolean exit = false;
@@ -141,7 +141,7 @@ public class CreateAndEditMap {
 	 *                         the data retrieved from the loaded file.
 	 * @return returnflag of type boolean which decides whether user can start the
 	 *         same.
-	 * @throws Exception
+	 * @throws Exception - Input output Exception
 	 */
 	public boolean uploadMap(GameMapGraph uploadedmapGraph) throws Exception {
 		mapGraph = uploadedmapGraph;
@@ -224,7 +224,7 @@ public class CreateAndEditMap {
 	 * to the map tag. Post validating it stores the details of the map tag in the
 	 * GameMapGraph object It returns to the parent function for creating a map.
 	 * 
-	 * @throws Exception
+	 * @throws Exception - Input Output Exception
 	 */
 	public void createMapTag() throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -290,7 +290,7 @@ public class CreateAndEditMap {
 	 * continent in the GameMapGraph object It returns to the parent function for
 	 * creating a map.
 	 * 
-	 * @throws Exception
+	 * @throws Exception - Input output Exception
 	 */
 	public void setContinentDetails() throws Exception {
 		listOfContinents = new ArrayList<>();
@@ -354,7 +354,7 @@ public class CreateAndEditMap {
 	 * to the country. Post validating it stores the details of the country in the
 	 * GameMapGraph object It returns to the parent function for creating a map.
 	 * 
-	 * @throws Exception
+	 * @throws Exception - Input output Exception
 	 */
 	public void setCountryDetails() throws Exception {
 		listOfContinents = new ArrayList<>();
@@ -659,7 +659,7 @@ public class CreateAndEditMap {
 	 * of the country in the GameMapGraph object It returns to the parent function
 	 * for creating a map.
 	 * 
-	 * @throws IOException
+	 * @throws IOException - Input output Exception
 	 */
 	public void addAdjacency() throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -725,7 +725,7 @@ public class CreateAndEditMap {
 	 * stores the details of the country in the GameMapGraph object It returns to
 	 * the parent function for creating a map.
 	 * 
-	 * @throws IOException
+	 * @throws IOException - Input output Exception
 	 */
 	public void removeAdjacency() throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -794,7 +794,7 @@ public class CreateAndEditMap {
 	 * 
 	 * @return flag- Boolean type, which determines whether we can allow the player
 	 *         to go ahead and play the game.
-	 * @throws IOException
+	 * @throws IOException - Input output Exception
 	 */
 	public boolean checkandSave() throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));

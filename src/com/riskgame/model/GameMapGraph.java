@@ -16,19 +16,18 @@ import java.util.HashMap;
  * @author Nikitha
  */
 public class GameMapGraph {
-private MapTag mapTag;
-    
-    
-    /** Count of the number of countries */
+	private MapTag mapTag;
+
+	/** Count of the number of countries */
 	private int countOfContinents = 0;
-	
-    /** ArrayList of Continent objects to store the continent details */
-    private ArrayList<Continent> continents;
-	
-    /** Count of the number of countries */
+
+	/** ArrayList of Continent objects to store the continent details */
+	private ArrayList<Continent> continents;
+
+	/** Count of the number of countries */
 	private int countOfCountries = 0;
-    
-    /** ArrayList of Country objects to store the country details */
+
+	/** ArrayList of Country objects to store the country details */
 	private ArrayList<Country> countries;
 
 	private String filename;
@@ -36,21 +35,21 @@ private MapTag mapTag;
 	/** HashMap for set of countries */
 	private HashMap<String, Country> countrySet;
 
-	/** 
+	/**
 	 * GameMapGraph Constructor
 	 */
 	public GameMapGraph() {
 		super();
 	}
-	
+
 	/**
-	 * GameMapGraph Constructor
+	 * Its a GameMapGraph constructor
 	 * 
-	 * @param Maptag 
-	 * @param Count of continents 
-	 * @param list of continents
-	 * @param count of countries 
-	 * @param list of countries
+	 * @param mapTag            - Map tag info
+	 * @param countOfContinents - count of continents
+	 * @param continents        - continent details
+	 * @param countOfCountries  - count of countries
+	 * @param countries         - countries detail
 	 */
 	public GameMapGraph(MapTag mapTag, int countOfContinents, ArrayList<Continent> continents, int countOfCountries,
 			ArrayList<Country> countries) {
@@ -74,8 +73,7 @@ private MapTag mapTag;
 	/**
 	 * Set the Country details.
 	 * 
-	 * @param countrySet
-	 *            To set the Country details
+	 * @param countrySet To set the Country details
 	 */
 	public void setCountrySet(HashMap<String, Country> countrySet) {
 		this.countrySet = countrySet;
@@ -93,8 +91,7 @@ private MapTag mapTag;
 	/**
 	 * Set the Maptag details.
 	 * 
-	 * @param mapTag
-	 *            To set the Maptag details
+	 * @param mapTag To set the Maptag details
 	 */
 	public void setMapTag(MapTag mapTag) {
 		this.mapTag = mapTag;
@@ -112,8 +109,7 @@ private MapTag mapTag;
 	/**
 	 * Set the total number of continents
 	 * 
-	 * @param countOfContinents
-	 *            To set the count of continents.
+	 * @param countOfContinents To set the count of continents.
 	 */
 	public void setCountOfContinents(int countOfContinents) {
 		this.countOfContinents = countOfContinents;
@@ -131,8 +127,7 @@ private MapTag mapTag;
 	/**
 	 * Set the list of continents
 	 * 
-	 * @param continents
-	 *            To set the list of continents.
+	 * @param continents To set the list of continents.
 	 */
 	public void setContinents(ArrayList<Continent> continents) {
 		this.continents = continents;
@@ -150,8 +145,7 @@ private MapTag mapTag;
 	/**
 	 * Set the total number of Countries
 	 * 
-	 * @param countOfCountries
-	 *            To set the count of Countries.
+	 * @param countOfCountries To set the count of Countries.
 	 */
 	public void setCountOfCountries(int countOfCountries) {
 		this.countOfCountries = countOfCountries;
@@ -169,8 +163,7 @@ private MapTag mapTag;
 	/**
 	 * Set the list of Countries
 	 * 
-	 * @param countries
-	 *            To set the list of Countries.
+	 * @param countries To set the list of Countries.
 	 */
 	public void setCountries(ArrayList<Country> countries) {
 		this.countries = countries;
@@ -188,8 +181,7 @@ private MapTag mapTag;
 	/**
 	 * Set the name of the file
 	 * 
-	 * @param filename
-	 *            To set the file name.
+	 * @param filename To set the file name.
 	 */
 	public void setFilename(String filename) {
 		this.filename = filename;
