@@ -80,8 +80,8 @@ public class StartupPhase {
 	 */
 	public void gamePlay(GameMapGraph mapGraph) throws Exception {
 		RiskPlayer player = new RiskPlayer();
-		// Startup Phase starts here
 		boolean proceed = false;
+		System.out.println("Startup phase begins!\n");
 		do {
 			System.out.println("Enter the number of players below");
 			String playerCount = br.readLine().trim();
