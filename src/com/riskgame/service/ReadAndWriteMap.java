@@ -59,8 +59,7 @@ public class ReadAndWriteMap {
 	 * It also checks if the user wishes to rename the file and performs various
 	 * validation with respect to it.
 	 * 
-	 * @param mapgraph    - GameMapGraph object containing the details of the loaded
-	 *                    map.
+	 * @param mapgraph    - GameMapGraph object containing the details of the loaded map.
 	 * @param oldFileName - The file name of the loaded map.
 	 * @throws IOException
 	 */
