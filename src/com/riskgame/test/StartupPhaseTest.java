@@ -6,10 +6,10 @@ import java.util.HashMap;
 
 import org.junit.jupiter.api.Test;
 
+import com.riskgame.controller.StartupPhase;
 import com.riskgame.model.Country;
 import com.riskgame.model.GameMapGraph;
-import com.riskgame.model.RiskPlayer;
-import com.riskgame.service.StartupPhase;
+import com.riskgame.model.Player;
 
 /**
  * Test Class for StartUpPhase class
@@ -20,7 +20,7 @@ import com.riskgame.service.StartupPhase;
  */
 public class StartupPhaseTest {
 	/** Object for RiskPlayer Class */
-	RiskPlayer player1;
+	Player player1;
 	
 	/** Object for StartUp Class */
 	StartupPhase startUpPhase;
@@ -44,7 +44,7 @@ public class StartupPhaseTest {
        startUpPhase = new StartupPhase();
        startUpPhase.setCountOfthePlayers(2);
 
-       player1 = new RiskPlayer();
+       player1 = new Player();
        startUpPhase.getPlayersList().add(player1);
 
        country = new Country();

@@ -3,8 +3,9 @@ package com.riskgame.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
+
+import com.riskgame.controller.FortificationPhase;
 import com.riskgame.model.Country;
-import com.riskgame.service.FortificationPhase;
 
 /**
  * Test class for FortificationPhase Class
