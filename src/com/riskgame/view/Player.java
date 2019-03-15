@@ -73,8 +73,8 @@ public class Player {
 		JLabel lblArmies = new JLabel("1");
 		lblArmies.setFont(new Font("Helvetica", Font.PLAIN, 13));
 		lblArmies.setForeground(new Color(0, 0, 255));
-		lblArmies.setBackground(new Color(0, 0, 255));
-		lblArmies.setBounds(132, 22, 52, 29);
+		lblArmies.setBackground(Color.WHITE);
+		lblArmies.setBounds(147, 22, 31, 29);
 		panel.add(lblArmies);
 		
 		/** when clicked on the country, the number of
@@ -94,7 +94,7 @@ public class Player {
 		
 		JToggleButton tglbtnReinforcement = new JToggleButton("Reinforcement");
 		
-		tglbtnReinforcement.setBackground(new Color(0, 0, 0));
+		tglbtnReinforcement.setBackground(Color.WHITE);
 		tglbtnReinforcement.setBounds(23, 193, 161, 29);
 		panel.add(tglbtnReinforcement);
 		
@@ -107,7 +107,7 @@ public class Player {
 		});
 		
 		
-		tglbtnAttack.setBackground(new Color(204, 255, 51));
+		tglbtnAttack.setBackground(Color.WHITE);
 		tglbtnAttack.setBounds(177, 193, 161, 29);
 		panel.add(tglbtnAttack);
 		
@@ -120,7 +120,7 @@ public class Player {
 				tglbtnAttack.setEnabled(false);
 			}
 		});
-		tglbtnFortification.setBackground(new Color(51, 102, 51));
+		tglbtnFortification.setBackground(Color.WHITE);
 		tglbtnFortification.setBounds(339, 193, 161, 29);
 		panel.add(tglbtnFortification);
 		
