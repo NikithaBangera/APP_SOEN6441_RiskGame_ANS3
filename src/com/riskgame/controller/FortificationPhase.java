@@ -1,4 +1,4 @@
-package com.riskgame.service;
+package com.riskgame.controller;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 
 import com.riskgame.model.Country;
 import com.riskgame.model.GameMapGraph;
-import com.riskgame.model.RiskPlayer;
+import com.riskgame.model.Player;
 
 /**
  * This class is dedicated for the fortification phase of the game. It takes
@@ -35,7 +35,7 @@ public class FortificationPhase {
 	 * @param mapData - GameMapGraph object
 	 * @throws IOException - throws Input output exception
 	 */
-	public void startGameFortification(RiskPlayer player, GameMapGraph mapData) throws IOException {
+	public void startGameFortification(Player player, GameMapGraph mapData) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int countOfArmies = 0;
 		if (player.getMyCountries().size() >= 2) {

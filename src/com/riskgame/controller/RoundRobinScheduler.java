@@ -1,9 +1,9 @@
-package com.riskgame.service;
+package com.riskgame.controller;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import com.riskgame.model.RiskPlayer;
+import com.riskgame.model.Player;
 
 /**
  * RoundRobinScheduler class is to iterate the Player turns.
@@ -15,17 +15,17 @@ import com.riskgame.model.RiskPlayer;
 public class RoundRobinScheduler {
 	
 	/** List of Players */
-	private ArrayList<RiskPlayer> playersList;
+	private ArrayList<Player> playersList;
 	
 	/** Iterator for players */
-	private Iterator<RiskPlayer> iterator;
+	private Iterator<Player> iterator;
 	
 	/**
 	 * RoundRobinScheduler Constructor
 	 * 
 	 * @param playersList list of Players
 	 */
-	public RoundRobinScheduler(ArrayList<RiskPlayer> playersList) {
+	public RoundRobinScheduler(ArrayList<Player> playersList) {
 		this.playersList = playersList;
 		iterator = playersList.iterator();
 	}
@@ -35,7 +35,7 @@ public class RoundRobinScheduler {
 	 * 
 	 * @return Turn of the player
 	 */
-	public RiskPlayer nextTurn() {
+	public Player nextTurn() {
 		if(!iterator.hasNext()) {
 			iterator = playersList.iterator();
 		}

@@ -5,10 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
+import com.riskgame.controller.ReinforcementPhase;
 import com.riskgame.model.Continent;
 import com.riskgame.model.Country;
-import com.riskgame.model.RiskPlayer;
-import com.riskgame.service.ReinforcementPhase;
+import com.riskgame.model.Player;
 
 /**
  * Test Class for ReinforcementPhase Class
@@ -20,7 +20,7 @@ import com.riskgame.service.ReinforcementPhase;
 public class ReinforcementPhaseTest {
 	
 	/** Objects for RiskPlayer Class */
-	RiskPlayer player, player1;
+	Player player, player1;
 	
 	/** Objects for Country Class */
 	Country country1, country2, country3;
@@ -34,8 +34,8 @@ public class ReinforcementPhaseTest {
 	public ReinforcementPhaseTest() {
 		
 		continent = new Continent();
-		player = new RiskPlayer();
-		player1 = new RiskPlayer();
+		player = new Player();
+		player1 = new Player();
 		
 		country1 = new Country();
 		country1.setName("Egypt");

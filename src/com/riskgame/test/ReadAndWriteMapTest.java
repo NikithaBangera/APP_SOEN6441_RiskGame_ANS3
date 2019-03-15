@@ -4,7 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
-import com.riskgame.service.ReadAndWriteMap;
+
+import com.riskgame.controller.ReadAndWriteMap;
 
 /**
  * Test Class for ReadAndWriteMap Class

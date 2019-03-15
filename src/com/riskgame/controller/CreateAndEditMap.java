@@ -1,4 +1,4 @@
-package com.riskgame.service;
+package com.riskgame.controller;
 
 import java.io.BufferedReader;
 import java.io.IOException;
