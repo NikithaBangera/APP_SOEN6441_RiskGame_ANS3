@@ -8,7 +8,7 @@ public class Card {
 	
 	private Country country;
 	
-	private RiskPlayer cardHolder;
+	private Player cardHolder;
 
 
 	public Country getCountryCard() {
@@ -19,11 +19,11 @@ public class Card {
 		this.country = country;
 	}
 
-	public RiskPlayer getCardHolder() {
+	public Player getCardHolder() {
 		return cardHolder;
 	}
 
-	public void setCardHolder(RiskPlayer cardHolder) {
+	public void setCardHolder(Player cardHolder) {
 		this.cardHolder = cardHolder;
 	}
 	

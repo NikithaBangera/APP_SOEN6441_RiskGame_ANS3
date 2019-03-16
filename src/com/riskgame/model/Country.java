@@ -46,8 +46,7 @@ public class Country {
 	/**
 	 * Set the Country name.
 	 * 
-	 * @param name
-	 *            To set the name of the Country
+	 * @param name To set the name of the Country
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -65,8 +64,7 @@ public class Country {
 	/**
 	 * Set the player name to whom country belong to.
 	 * 
-	 * @param name
-	 *            To set the name of the player
+	 * @param player name To set the name of the player
 	 */
 	public void setPlayer(String player) {
 		this.player = player;
@@ -84,8 +82,7 @@ public class Country {
 	/**
 	 * Set the continent name.
 	 * 
-	 * @param continent
-	 *            To set the continent
+	 * @param continent To set the continent
 	 */
 	public void setContinent(String continent) {
 		this.continent = continent;
@@ -103,8 +100,7 @@ public class Country {
 	/**
 	 * Set the X coordinate value of the Country.
 	 * 
-	 * @param xValue
-	 *            To set X-value to Country
+	 * @param xValue To set X-value to Country
 	 */
 	public void setxValue(String xValue) {
 		this.xValue = xValue;
@@ -122,8 +118,7 @@ public class Country {
 	/**
 	 * Set the Y coordinate value of the Country.
 	 * 
-	 * @param yValue
-	 *            To set Y-value to Country
+	 * @param yValue To set Y-value to Country
 	 */
 	public void setyValue(String yValue) {
 		this.yValue = yValue;
@@ -141,8 +136,7 @@ public class Country {
 	/**
 	 * Set the number armies in country.
 	 * 
-	 * @param noOfArmies
-	 *            To set the number of the armies
+	 * @param noOfArmies To set the number of the armies
 	 */
 	public void setNoOfArmies(int noOfArmies) {
 		this.noOfArmies = noOfArmies;
@@ -160,13 +154,12 @@ public class Country {
 	/**
 	 * Set the adjacent countries.
 	 * 
-	 * @param adjacentCountries
-	 *            To set the list of adjacent countries
+	 * @param adjacentCountries To set the list of adjacent countries
 	 */
 	public void setAdjacentCountries(ArrayList<String> adjacentCountries) {
 		this.adjacentCountries = adjacentCountries;
 	}
-	
+
 	/**
 	 * Get the continent name to which country belongs to.
 	 * 
@@ -179,8 +172,7 @@ public class Country {
 	/**
 	 * Set the continent name to which country belong to.
 	 * 
-	 * @param partOfContinent
-	 *            To set the continent
+	 * @param partOfContinent To set the continent
 	 */
 	public void setPartOfContinent(Continent partOfContinent) {
 		this.partOfContinent = partOfContinent;

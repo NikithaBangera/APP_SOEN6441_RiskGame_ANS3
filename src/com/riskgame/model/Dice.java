@@ -20,4 +20,5 @@ public class Dice {
 		int number = random.nextInt(6) + 1;
 		return number;
 	}
+
 }
