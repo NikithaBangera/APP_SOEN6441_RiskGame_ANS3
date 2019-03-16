@@ -12,6 +12,7 @@ import com.riskgame.model.Continent;
 import com.riskgame.model.Country;
 import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.Player;
+import com.riskgame.view.PlayerView;
 
 public class PlayerController {
 
@@ -95,6 +96,8 @@ public class PlayerController {
 			}
 			playersList.add(riskPlayer);
 		}
+		
+		PlayerView playerView = new PlayerView(mapGraph, playersList);
 		allocationOfCountry(mapGraph);
 		allocationOfArmyToPlayers();
 		allocationOfArmyToCountriesInitially(mapGraph);
