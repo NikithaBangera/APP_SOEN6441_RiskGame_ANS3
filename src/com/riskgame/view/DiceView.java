@@ -9,6 +9,8 @@ import javax.swing.JTextField;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import java.awt.Font;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class DiceView {
 
@@ -19,6 +21,8 @@ public class DiceView {
 	private JTextField textField_3;
 	private JTextField textField_4;
 	private JTextField textField_5;
+	int attackerDiceCount = 0;
+	int defenderDiceCount = 0;
 
 	/**
 	 * Launch the application.
@@ -135,7 +139,40 @@ public class DiceView {
 		frame.getContentPane().add(textField_4);
 		textField_4.setColumns(10);
 		
+		//Group attacker radio buttons.
+	    ButtonGroup attackerGroup = new ButtonGroup();
+	    attackerGroup.add(attackerDice1Radio);
+	    attackerGroup.add(attackerDice2Radio);
+	    attackerGroup.add(attackerDice3Radio);
+	    
+		//Group defender radio buttons.
+	    ButtonGroup defenderGroup = new ButtonGroup();
+	    defenderGroup.add(defenderDice1Radio);
+	    defenderGroup.add(defenderDice2Radio);
+		
 		JButton btnRollDice = new JButton("Roll Dice");
+		btnRollDice.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if(attackerDice1Radio.isSelected() && defenderDice1Radio.isSelected()) {
+					defenderDiceCount = 1;
+					attackerDiceCount = 1;
+				}
+				else if(attackerDice2Radio.isSelected() && defenderDice2Radio.isSelected()) {
+					defenderDiceCount = 2;
+					attackerDiceCount = 2;
+				}
+				else if(attackerDice3Radio.isSelected() && defenderDice2Radio.isSelected()) {
+					defenderDiceCount = 2;
+					attackerDiceCount = 3;
+				}
+				else if(attackerDice3Radio.isSelected() && defenderDice1Radio.isSelected()) {
+					defenderDiceCount = 1;
+					attackerDiceCount = 3;
+				}
+				
+			}
+		});
 		btnRollDice.setFont(new Font("Arial", Font.PLAIN, 17));
 		btnRollDice.setBounds(401, 73, 115, 29);
 		frame.getContentPane().add(btnRollDice);
@@ -147,15 +184,7 @@ public class DiceView {
 		frame.getContentPane().add(textField_5);
 		textField_5.setColumns(10);
 		
-		//Group attacker radio buttons.
-	    ButtonGroup attackerGroup = new ButtonGroup();
-	    attackerGroup.add(attackerDice1Radio);
-	    attackerGroup.add(attackerDice2Radio);
-	    attackerGroup.add(attackerDice3Radio);
-	    
-		//Group defender radio buttons.
-	    ButtonGroup defenderGroup = new ButtonGroup();
-	    defenderGroup.add(defenderDice1Radio);
-	    defenderGroup.add(defenderDice2Radio);
 	}
+	
+	
 }

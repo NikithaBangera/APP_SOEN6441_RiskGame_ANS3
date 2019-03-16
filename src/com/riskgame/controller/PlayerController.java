@@ -351,6 +351,32 @@ public class PlayerController {
 		return flag;
 	}
 
+	//Attack Phase
+	
+	public void attackPhase(Country attacker, Country defender) {
+		boolean isAttackPossible = false;
+		if(attacker != null && defender != null) {
+			if(attacker.getAdjacentCountries().contains(defender.getName())) {
+				if(attacker.getNoOfArmies() > 1 && defender.getNoOfArmies() > 0) {
+					isAttackPossible = true;
+				}
+				else {
+					System.out.println("Insufficient armies in the attacker country/defender country");
+				}
+			}
+			else {
+				System.out.println("Attacker and Defender Countries are not adjacent!");
+			}	
+		}
+		
+		if(isAttackPossible) {
+			//attacker and defender need to select the number of dice to roll
+			
+		}
+	}
+	
+	
+	
 	// Fortification Phase
 
 	/**

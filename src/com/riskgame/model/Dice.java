@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Dice {
+	
 	private int attackDice1, attackDice2, attackDice3;
 	private int defendDice1, defendDice2;
 	private List<Integer> attackerDiceList;
