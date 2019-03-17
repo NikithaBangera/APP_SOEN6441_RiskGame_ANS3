@@ -145,6 +145,9 @@ public class GameView {
 		btnCountry.setFont(new Font("Arial", Font.PLAIN, 12));
 		btnCountry.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				DefaultListModel dlm= new DefaultListModel();
+				dlm.addElement("hello");
+				list.setModel(dlm);
 //					ArrayList<String> adjacentcountries=mapGraph.getCountrySet().get(btnCountry.getText()).getAdjacentCountries();
 //					for(int i=0; i<adjacentcountries.size();i++) {
 //						JLabel adjacent = new JLabel(adjacentcountries.get(i));
@@ -161,6 +164,7 @@ public class GameView {
 		btnCountyr.setFont(new Font("Arial", Font.PLAIN, 12));
 		btnCountyr.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+
 					ArrayList<String> adjacentcountries=mapGraph.getCountrySet().get(btnCountyr.getText()).getAdjacentCountries();
 					for(int i=0; i<adjacentcountries.size();i++) {
 						JLabel adjacent = new JLabel(adjacentcountries.get(i));
