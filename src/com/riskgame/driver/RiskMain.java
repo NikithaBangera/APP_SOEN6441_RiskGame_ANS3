@@ -13,11 +13,12 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 
+import com.riskgame.controller.CreateAndEditMap;
+import com.riskgame.controller.PlayerController;
+import com.riskgame.controller.ReadAndWriteMap;
+import com.riskgame.controller.StartupPhase;
 import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.MapTag;
-import com.riskgame.service.CreateAndEditMap;
-import com.riskgame.service.ReadAndWriteMap;
-import com.riskgame.service.StartupPhase;
 
 /**
  * RiskMain class launches the Risk Game and provided options for the users to
@@ -207,9 +208,10 @@ public class RiskMain extends JFrame {
 			}
 
 			if (choice.equalsIgnoreCase("Yes")) {
-				StartupPhase start = new StartupPhase();
-				System.out.println("Startup phase begins!!"+"\n");
-				start.gamePlay(createMapGraph);
+//				StartupPhase start = new StartupPhase();
+//				start.gamePlay(createMapGraph);
+				PlayerController play = new PlayerController();
+				play.gamePlay(createMapGraph);
 			} else {
 				System.out.println("\nThank you!");
 				System.exit(0);

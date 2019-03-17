@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * @author Anusha
  *
  */
-public class RiskPlayer {
+public class Player {
 	/** Name of the Player */
 	private String name;
 

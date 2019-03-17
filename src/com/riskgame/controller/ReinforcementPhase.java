@@ -1,4 +1,4 @@
-package com.riskgame.service;
+package com.riskgame.controller;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 import com.riskgame.model.Continent;
 import com.riskgame.model.Country;
 import com.riskgame.model.GameMapGraph;
-import com.riskgame.model.RiskPlayer;
+import com.riskgame.model.Player;
 
 /**
  * ReinforcementPhase class contains the methods needed for reinforcing the
@@ -34,7 +34,7 @@ public class ReinforcementPhase {
 	 * @param mapGraph - GameMapGraph Object
 	 * @throws Exception - IOException
 	 */
-	public void startReinforcement(RiskPlayer player, GameMapGraph mapGraph) throws Exception {
+	public void startReinforcement(Player player, GameMapGraph mapGraph) throws Exception {
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 		Continent continent = player.getMyCountries().get(0).getPartOfContinent();
 		for (Country country : mapGraph.getCountries()) {
@@ -79,7 +79,7 @@ public class ReinforcementPhase {
 	 * @return armiesAssignedPerPlayer returns the number of armies assigned to the
 	 *         player.
 	 */
-	public static int armiesToBeAssigned(RiskPlayer player, Continent continent) {
+	public static int armiesToBeAssigned(Player player, Continent continent) {
 		int countriesPerPlayer = player.getMyCountries().size();
 		int armiesAssignedPerPlayer;
 
@@ -101,7 +101,7 @@ public class ReinforcementPhase {
 	 * @param player - player whose turn is going on
 	 * @return true if player owns the continent else return false.
 	 */
-	private static boolean isPlayerOwnsContinent(RiskPlayer player, ArrayList<Country> countriesList) {
+	private static boolean isPlayerOwnsContinent(Player player, ArrayList<Country> countriesList) {
 		boolean flag = true;
 		for (Country country : countriesList) {
 			if (!player.getMyCountries().contains(country))

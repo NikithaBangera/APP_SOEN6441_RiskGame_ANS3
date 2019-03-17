@@ -12,8 +12,16 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
+import javax.swing.border.MatteBorder;
+import javax.swing.border.SoftBevelBorder;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.CompoundBorder;
+import javax.swing.UIManager;
 
-public class Player {
+public class PlayerView {
 
 	private JFrame frame;
 
@@ -24,7 +32,7 @@ public class Player {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Player window = new Player();
+					PlayerView window = new PlayerView();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -36,7 +44,7 @@ public class Player {
 	/**
 	 * Create the application.
 	 */
-	public Player() {
+	public PlayerView() {
 		initialize();
 	}
 
@@ -45,7 +53,7 @@ public class Player {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 678, 387);
+		frame.setBounds(100, 100, 723, 638);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -138,6 +146,57 @@ public class Player {
 		});
 		tglbtnEndTurn.setBounds(491, 193, 161, 29);
 		panel.add(tglbtnEndTurn);
-	}
-
+		
+		JPanel DominationPanel = new JPanel();
+		DominationPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		DominationPanel.setBounds(10, 304, 676, 245);
+		frame.getContentPane().add(DominationPanel);
+		DominationPanel.setLayout(null);
+		
+		JLabel lblDomination = new JLabel("Domination");
+		lblDomination.setFont(new Font("Arial", Font.BOLD, 18));
+		lblDomination.setBounds(284, 0, 119, 36);
+		DominationPanel.add(lblDomination);
+		
+		JLabel lblPlayerName = new JLabel("Player Name");
+		lblPlayerName.setFont(new Font("Arial", Font.BOLD, 17));
+		lblPlayerName.setBounds(15, 52, 99, 26);
+		DominationPanel.add(lblPlayerName);
+		
+		JLabel label = new JLabel("%");
+		label.setFont(new Font("Arial", Font.BOLD, 17));
+		label.setBounds(154, 52, 30, 26);
+		DominationPanel.add(label);
+		
+		JLabel lblArmies_1 = new JLabel("Armies #");
+		lblArmies_1.setFont(new Font("Arial", Font.BOLD, 17));
+		lblArmies_1.setBounds(215, 54, 73, 23);
+		DominationPanel.add(lblArmies_1);
+		
+		JLabel lblContinents = new JLabel("Continents");
+		lblContinents.setFont(new Font("Arial", Font.BOLD, 17));
+		lblContinents.setBounds(319, 52, 99, 26);
+		DominationPanel.add(lblContinents);
+		
+		JLabel lblPlayer = new JLabel("Player1");
+		lblPlayer.setFont(new Font("Arial", Font.PLAIN, 17));
+		lblPlayer.setBounds(25, 101, 69, 20);
+		DominationPanel.add(lblPlayer);
+		
+		JLabel label_1 = new JLabel("50");
+		label_1.setFont(new Font("Arial", Font.PLAIN, 17));
+		label_1.setBounds(151, 101, 37, 20);
+		DominationPanel.add(label_1);
+		
+		JLabel label_2 = new JLabel("6");
+		label_2.setFont(new Font("Arial", Font.PLAIN, 17));
+		label_2.setBounds(225, 101, 37, 20);
+		DominationPanel.add(label_2);
+		
+		JLabel lblNewLabel_1 = new JLabel("Asia");
+		lblNewLabel_1.setFont(new Font("Arial", Font.PLAIN, 17));
+		lblNewLabel_1.setBounds(329, 101, 55, 20);
+		DominationPanel.add(lblNewLabel_1);
+		
+   }
 }

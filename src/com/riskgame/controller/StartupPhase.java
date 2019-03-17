@@ -1,4 +1,4 @@
-package com.riskgame.service;
+package com.riskgame.controller;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import com.riskgame.model.Country;
 import com.riskgame.model.GameMapGraph;
-import com.riskgame.model.RiskPlayer;
+import com.riskgame.model.Player;
 
 import java.util.Random;
 import java.util.regex.Matcher;
@@ -31,14 +31,14 @@ public class StartupPhase {
 	private int countOfthePlayers = 0;
 
 	/** List which consists of players name. */
-	ArrayList<RiskPlayer> playersList = new ArrayList<RiskPlayer>();
+	ArrayList<Player> playersList = new ArrayList<Player>();
 
 	/**
 	 * Method to get the list of the player's name
 	 * 
 	 * @return ArrayList which has Players name.
 	 */
-	public ArrayList<RiskPlayer> getPlayersList() {
+	public ArrayList<Player> getPlayersList() {
 		return playersList;
 	}
 
@@ -65,7 +65,7 @@ public class StartupPhase {
 	 * 
 	 * @param playersList It is the player's list needs to be set.
 	 */
-	public void setPlayersList(ArrayList<RiskPlayer> playersList) {
+	public void setPlayersList(ArrayList<Player> playersList) {
 		this.playersList = playersList;
 	}
 
@@ -79,7 +79,7 @@ public class StartupPhase {
 	 * @throws Exception - IOException
 	 */
 	public void gamePlay(GameMapGraph mapGraph) throws Exception {
-		RiskPlayer player = new RiskPlayer();
+		Player player = new Player();
 		// Startup Phase starts here
 		boolean proceed = false;
 		do {
@@ -107,7 +107,7 @@ public class StartupPhase {
 		System.out.println("Enter the name of the players");
 		for (int count = 1; count <= countOfthePlayers; count++) {
 			boolean continue1 = true;
-			RiskPlayer riskPlayer = new RiskPlayer();
+			Player riskPlayer = new Player();
 			String playername = br.readLine().trim();
 			Pattern namePattern = Pattern.compile("[a-zA-z]+");
 			Matcher match = namePattern.matcher(playername);
