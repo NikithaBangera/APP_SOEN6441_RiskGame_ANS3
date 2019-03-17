@@ -273,7 +273,10 @@ public class GameView {
 		
 		
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-
+//		for(int i=0; i<player.getCountOfthePlayers();i++) {
+//		Player playerdetail=player.getPlayersList().get(i);
+//		dataset.setValue(playerdetail.getMyCountries().size(),"number of countries",playerdetail.getName());
+//	}
 		dataset.setValue(10, "marks","Player 1");
 		dataset.setValue(20, "marks","Player 2");
 		dataset.setValue(30, "marks","Player 3");
