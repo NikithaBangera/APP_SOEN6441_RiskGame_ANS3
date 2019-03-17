@@ -5,21 +5,35 @@ import java.util.List;
 import java.util.Random;
 
 public class Dice {
-	
-	private int attackDice1, attackDice2, attackDice3;
-	private int defendDice1, defendDice2;
-	private List<Integer> attackerDiceList;
-	private List<Integer> defenderDiceList;
-	
+
+	private List<Integer> attackerDiceValues;
+	private List<Integer> defenderDiceValues;
+
 	public Dice() {
-		attackerDiceList = new ArrayList<Integer>();
-		defenderDiceList = new ArrayList<Integer>();
+		attackerDiceValues = new ArrayList<Integer>();
+		defenderDiceValues = new ArrayList<Integer>();
 	}
-	
-	public int diceRoll() {
+
+	public int generateDiceValue() {
 		Random random = new Random();
 		int number = random.nextInt(6) + 1;
 		return number;
+	}
+
+	public List<Integer> getAttackerDiceValues() {
+		return attackerDiceValues;
+	}
+
+	public void setAttackerDiceValues(List<Integer> attackerDiceValues) {
+		this.attackerDiceValues = attackerDiceValues;
+	}
+
+	public List<Integer> getDefenderDiceValues() {
+		return defenderDiceValues;
+	}
+
+	public void setDefenderDiceValues(List<Integer> defenderDiceValues) {
+		this.defenderDiceValues = defenderDiceValues;
 	}
 
 }

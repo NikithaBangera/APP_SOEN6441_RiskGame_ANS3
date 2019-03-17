@@ -5,16 +5,20 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.riskgame.model.Continent;
 import com.riskgame.model.Country;
+import com.riskgame.model.Dice;
 import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.Player;
+import com.riskgame.view.PlayerView;
 
-public class PlayerController {
+public class PlayerController extends Observable implements Observer{
 
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -96,9 +100,18 @@ public class PlayerController {
 			}
 			playersList.add(riskPlayer);
 		}
+		
+		
 		allocationOfCountry(mapGraph);
 		allocationOfArmyToPlayers();
 		allocationOfArmyToCountriesInitially(mapGraph);
+		
+	//  PlayerView playerView = new PlayerView(mapGraph, playersList);
+		
+		PlayerView playerView = new PlayerView();
+		
+		setChanged();
+		notifyObservers();
 		allocationOfRemainingArmyToCountries();
 
 		// Startup Phase starts here
@@ -371,6 +384,9 @@ public class PlayerController {
 		
 		if(isAttackPossible) {
 			//attacker and defender need to select the number of dice to roll
+			Dice dice = new Dice();
+			
+			
 			
 		}
 	}
@@ -525,6 +541,12 @@ public class PlayerController {
 			System.out.println("Countries are not adjacanet!");
 			doFortification = true;
 		}
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

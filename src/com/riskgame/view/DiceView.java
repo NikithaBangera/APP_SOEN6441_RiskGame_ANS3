@@ -6,6 +6,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+
+import com.riskgame.controller.DiceController;
+
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import java.awt.Font;
@@ -170,7 +173,16 @@ public class DiceView {
 					defenderDiceCount = 1;
 					attackerDiceCount = 3;
 				}
-				
+				else if(attackerDice1Radio.isSelected() && defenderDice2Radio.isSelected()) {
+					defenderDiceCount = 2;
+					attackerDiceCount = 1;
+				}
+				else if(attackerDice2Radio.isSelected() && defenderDice1Radio.isSelected()) {
+					defenderDiceCount = 1;
+					attackerDiceCount = 2;
+				}
+				DiceController diceController = new DiceController();
+				diceController.startDiceRoll(attackerDiceCount, defenderDiceCount);
 			}
 		});
 		btnRollDice.setFont(new Font("Arial", Font.PLAIN, 17));

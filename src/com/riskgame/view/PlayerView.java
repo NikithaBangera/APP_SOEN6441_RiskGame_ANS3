@@ -9,14 +9,25 @@ import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+
+import com.riskgame.controller.PlayerController;
+import com.riskgame.model.GameMapGraph;
+import com.riskgame.model.Player;
+
 import javax.swing.border.MatteBorder;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.BevelBorder;
@@ -24,19 +35,25 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.CompoundBorder;
 import javax.swing.UIManager;
 
-public class PlayerView {
+public class PlayerView implements Observer {
 
 	private JFrame frame;
+	private JTextField textField;
+	PlayerController play = new PlayerController();
+	GameMapGraph mapGraph = new GameMapGraph();
+	/** The players. */
+	private ArrayList<Player> players;
 
 	/**
 	 * Launch the application.
 	 */
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					PlayerView window = new PlayerView();
-					window.frame.setVisible(true);
+					//window.frmGameplay.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -47,161 +64,178 @@ public class PlayerView {
 	/**
 	 * Create the application.
 	 */
+//	public PlayerView(GameMapGraph mapGraph, ArrayList<Player> players) {
+//		this.mapGraph = mapGraph;
+//		this.players = players;
+//		
+//	}
+
 	public PlayerView() {
-		initialize();
+		try {
+			initialize();
+			frame.setVisible(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
+	frame = new JFrame();
+	frame.setBounds(100, 100, 883, 568);
+	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	frame.getContentPane().setLayout(null);
+	
+	JPanel panel_1 = new JPanel();
+	panel_1.setBounds(15, 38, 165, 108);
+	frame.getContentPane().add(panel_1);
+	
+	JLabel lblPlayerName = new JLabel("Player Name");
+	lblPlayerName.setFont(new Font("Tahoma", Font.PLAIN, 12));
+	panel_1.add(lblPlayerName);
+	
+	JLabel lblNumberOfArmies_1 = new JLabel("Number of Armies");
+	lblNumberOfArmies_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+	panel_1.add(lblNumberOfArmies_1);
+	
+	
+	JButton btnNewButton = new JButton("Place Army");
+	btnNewButton.setFont(new Font("Arial", Font.PLAIN, 12));
+	btnNewButton.setBounds(426, 38, 165, 29);
+	frame.getContentPane().add(btnNewButton);
+	
+	
+	
+	JButton btnCompleteAttack = new JButton("Complete Attack");
+	btnCompleteAttack.setFont(new Font("Arial", Font.PLAIN, 12));
+	btnCompleteAttack.setBounds(426, 91, 165, 29);
+	frame.getContentPane().add(btnCompleteAttack);
+	
+	JButton btnFortify = new JButton("Fortify");
+	btnFortify.setFont(new Font("Arial", Font.PLAIN, 12));
+	btnFortify.setBounds(426, 117, 165, 29);
+	frame.getContentPane().add(btnFortify);
+	
+	JButton btnEndTurn = new JButton("End Turn");
+	btnEndTurn.setFont(new Font("Arial", Font.PLAIN, 12));
+	btnEndTurn.setBounds(426, 146, 165, 29);
+	frame.getContentPane().add(btnEndTurn);
+	
+	JButton btnCards = new JButton("End Phase");
+	btnCards.setFont(new Font("Arial", Font.PLAIN, 12));
+	btnCards.setBounds(426, 173, 165, 29);
+	frame.getContentPane().add(btnCards);
+	
+	textField = new JTextField();
+	textField.setBounds(630, 38, 214, 191);
+	frame.getContentPane().add(textField);
+	textField.setColumns(10);
+	
+	JLabel lblAdjacentCountry = new JLabel("Adjacent Country");
+	lblAdjacentCountry.setFont(new Font("Arial", Font.PLAIN, 12));
+	lblAdjacentCountry.setBounds(684, 12, 107, 20);
+	frame.getContentPane().add(lblAdjacentCountry);
+	
+	JLabel lblSelectedCountries = new JLabel("Selected Country");
+	lblSelectedCountries.setFont(new Font("Arial", Font.PLAIN, 12));
+	lblSelectedCountries.setBounds(240, 4, 152, 37);
+	frame.getContentPane().add(lblSelectedCountries);
+	
+	JButton btnCards_1 = new JButton("Cards");
+	btnCards_1.setFont(new Font("Arial", Font.PLAIN, 12));
+	btnCards_1.setBounds(426, 200, 165, 29);
+	frame.getContentPane().add(btnCards_1);
+	
+	JButton btnCountry = new JButton("Country 1");
+	btnCountry.setFont(new Font("Arial", Font.PLAIN, 12));
+	btnCountry.setBounds(195, 38, 196, 29);
+	frame.getContentPane().add(btnCountry);
+	
+	JButton btnCountyr = new JButton("Country 2");
+	btnCountyr.setBackground(UIManager.getColor("Button.background"));
+	btnCountyr.setFont(new Font("Arial", Font.PLAIN, 12));
+	btnCountyr.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+		}
+	});
+	btnCountyr.setBounds(195, 65, 196, 29);
+	frame.getContentPane().add(btnCountyr);
+	
+	JButton btnCountry_1 = new JButton("Country 3");
+	btnCountry_1.setFont(new Font("Arial", Font.PLAIN, 12));
+	btnCountry_1.setBounds(195, 91, 196, 29);
+	frame.getContentPane().add(btnCountry_1);
+	
+	JButton btnCountry_2 = new JButton("Country 4");
+	btnCountry_2.setFont(new Font("Arial", Font.PLAIN, 12));
+	btnCountry_2.setBounds(195, 117, 196, 29);
+	frame.getContentPane().add(btnCountry_2);
+	
+	JButton btnCountry_3 = new JButton("Country 5");
+	btnCountry_3.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+		}
+	});
+	btnCountry_3.setFont(new Font("Arial", Font.PLAIN, 12));
+	btnCountry_3.setBounds(195, 146, 196, 29);
+	frame.getContentPane().add(btnCountry_3);
+	
+	JButton btnCountry_4 = new JButton("Country 6");
+	btnCountry_4.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+		}
+	});
+	btnCountry_4.setFont(new Font("Arial", Font.PLAIN, 12));
+	btnCountry_4.setBounds(195, 173, 196, 29);
+	frame.getContentPane().add(btnCountry_4);
+	
+	JButton btnCountry_5 = new JButton("Country 7");
+	btnCountry_5.setFont(new Font("Arial", Font.PLAIN, 12));
+	btnCountry_5.setBounds(195, 200, 197, 29);
+	frame.getContentPane().add(btnCountry_5);
+	
+	JPanel panel = new JPanel();
+	panel.setBounds(195, 38, 196, 188);
+	frame.getContentPane().add(panel);
+	
+	JPanel panel_2 = new JPanel();
+	panel_2.setBounds(15, 146, 165, 83);
+	frame.getContentPane().add(panel_2);
+	
+	JLabel lblNumberOfArmies = new JLabel("Phase Name");
+	lblNumberOfArmies.setFont(new Font("Tahoma", Font.PLAIN, 12));
+	panel_2.add(lblNumberOfArmies);
+	
+	JLabel lblWorldDomination = new JLabel("  World Domination");
+	lblWorldDomination.setFont(new Font("Tahoma", Font.PLAIN, 12));
+	lblWorldDomination.setBounds(119, 259, 273, 37);
+	frame.getContentPane().add(lblWorldDomination);
+	
+	JProgressBar progressBar = new JProgressBar();
+	progressBar.setValue(1);
+	progressBar.setToolTipText("");
+	progressBar.setBounds(15, 259, 376, 233);
+	frame.getContentPane().add(progressBar);
+	
+	JButton btnReinforcement = new JButton("Reinforcement");
+	btnReinforcement.setFont(new Font("Arial", Font.PLAIN, 12));
+	btnReinforcement.setBounds(426, 65, 165, 29);
+	frame.getContentPane().add(btnReinforcement);
+	
+	JPanel panel_3 = new JPanel();
+	panel_3.setBorder(new LineBorder(new Color(0, 0, 0)));
+	panel_3.setBounds(436, 259, 408, 233);
+	frame.getContentPane().add(panel_3);
+	
+	JLabel lblContinentName = new JLabel("Continent Name");
+	panel_3.add(lblContinentName);}
 
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		//frmGameplay.setVisible(true);
 
-		frame.setBounds(100, 100, 723, 638);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
-		
-		JLabel lblNewLabel = new JLabel("player");
-		lblNewLabel.setBounds(75, 15, 59, 42);
-		lblNewLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
-		frame.getContentPane().add(lblNewLabel);
-		
-		JLabel lblArmy = new JLabel("army");
-		lblArmy.setBounds(474, 28, 61, 16);
-		lblArmy.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
-		frame.getContentPane().add(lblArmy);
-		
-		JPanel panel = new JPanel();
-		panel.setBackground(SystemColor.control);
-		panel.setBounds(0, 59, 687, 229);
-		frame.getContentPane().add(panel);
-		panel.setLayout(null);
-		
-		JButton btnCountry = new JButton("country");
-		
-		btnCountry.setBounds(18, 22, 117, 29);
-		panel.add(btnCountry);
-		
-		JLabel lblArmies = new JLabel("1");
-		lblArmies.setFont(new Font("Helvetica", Font.PLAIN, 13));
-		lblArmies.setForeground(new Color(0, 0, 255));
-		lblArmies.setBackground(Color.WHITE);
-		lblArmies.setBounds(147, 22, 31, 29);
-		panel.add(lblArmies);
-		
-		/** when clicked on the country, the number of
-		 * 
-		 *  armies assigned to it will be changed **/
-		
-		btnCountry.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String armies=lblArmies.getText();
-				int numberofarmies=Integer.parseInt(armies);
-				numberofarmies++;
-				armies=String.valueOf(numberofarmies);
-				lblArmies.setText(armies );
-				
-			}
-		});
-		
-		JToggleButton tglbtnReinforcement = new JToggleButton("Reinforcement");
-		
-		tglbtnReinforcement.setBackground(Color.WHITE);
-		tglbtnReinforcement.setBounds(23, 193, 161, 29);
-		panel.add(tglbtnReinforcement);
-		
-		JToggleButton tglbtnAttack = new JToggleButton("Attack");
-		tglbtnAttack.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				tglbtnReinforcement.setSelected(false);
-				tglbtnReinforcement.setEnabled(false);
-			}
-		});
-		
-		
-		tglbtnAttack.setBackground(Color.WHITE);
-		tglbtnAttack.setBounds(177, 193, 161, 29);
-		panel.add(tglbtnAttack);
-		
-		JToggleButton tglbtnFortification = new JToggleButton("fortification");
-		tglbtnFortification.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				tglbtnReinforcement.setSelected(false);
-				tglbtnReinforcement.setEnabled(false);
-				tglbtnAttack.setSelected(false);
-				tglbtnAttack.setEnabled(false);
-			}
-		});
-		tglbtnFortification.setBackground(Color.WHITE);
-		tglbtnFortification.setBounds(339, 193, 161, 29);
-		panel.add(tglbtnFortification);
-		
-		JToggleButton tglbtnEndTurn = new JToggleButton("End Turn");
-		tglbtnEndTurn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				tglbtnReinforcement.setSelected(false);
-				tglbtnReinforcement.setEnabled(false);
-				tglbtnAttack.setSelected(false);
-				tglbtnAttack.setEnabled(false);
-				tglbtnFortification.setSelected(false);
-				tglbtnFortification.setEnabled(false);
-				
-			}
-		});
-		tglbtnEndTurn.setBounds(491, 193, 161, 29);
-		panel.add(tglbtnEndTurn);
-		
-		JPanel DominationPanel = new JPanel();
-		DominationPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		DominationPanel.setBounds(10, 304, 676, 245);
-		frame.getContentPane().add(DominationPanel);
-		DominationPanel.setLayout(null);
-		
-		JLabel lblDomination = new JLabel("Domination");
-		lblDomination.setFont(new Font("Arial", Font.BOLD, 18));
-		lblDomination.setBounds(284, 0, 119, 36);
-		DominationPanel.add(lblDomination);
-		
-		JLabel lblPlayerName = new JLabel("Player Name");
-		lblPlayerName.setFont(new Font("Arial", Font.BOLD, 17));
-		lblPlayerName.setBounds(15, 52, 99, 26);
-		DominationPanel.add(lblPlayerName);
-		
-		JLabel label = new JLabel("%");
-		label.setFont(new Font("Arial", Font.BOLD, 17));
-		label.setBounds(154, 52, 30, 26);
-		DominationPanel.add(label);
-		
-		JLabel lblArmies_1 = new JLabel("Armies #");
-		lblArmies_1.setFont(new Font("Arial", Font.BOLD, 17));
-		lblArmies_1.setBounds(215, 54, 73, 23);
-		DominationPanel.add(lblArmies_1);
-		
-		JLabel lblContinents = new JLabel("Continents");
-		lblContinents.setFont(new Font("Arial", Font.BOLD, 17));
-		lblContinents.setBounds(319, 52, 99, 26);
-		DominationPanel.add(lblContinents);
-		
-		JLabel lblPlayer = new JLabel("Player1");
-		lblPlayer.setFont(new Font("Arial", Font.PLAIN, 17));
-		lblPlayer.setBounds(25, 101, 69, 20);
-		DominationPanel.add(lblPlayer);
-		
-		JLabel label_1 = new JLabel("50");
-		label_1.setFont(new Font("Arial", Font.PLAIN, 17));
-		label_1.setBounds(151, 101, 37, 20);
-		DominationPanel.add(label_1);
-		
-		JLabel label_2 = new JLabel("6");
-		label_2.setFont(new Font("Arial", Font.PLAIN, 17));
-		label_2.setBounds(225, 101, 37, 20);
-		DominationPanel.add(label_2);
-		
-		JLabel lblNewLabel_1 = new JLabel("Asia");
-		lblNewLabel_1.setFont(new Font("Arial", Font.PLAIN, 17));
-		lblNewLabel_1.setBounds(329, 101, 55, 20);
-		DominationPanel.add(lblNewLabel_1);
-		
-   }
+	}
 }
