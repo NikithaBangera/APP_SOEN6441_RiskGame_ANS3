@@ -9,6 +9,8 @@ import javax.swing.JLabel;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
+
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
@@ -23,18 +25,21 @@ import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
+import com.riskgame.controller.FortificationPhase;
 import com.riskgame.controller.PlayerController;
 import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.Player;
 
 import java.awt.Color;
 import java.awt.List;
+import javax.swing.ListSelectionModel;
 
 public class GameView {
 	private PlayerController player;
 	private GameMapGraph mapGraph;
 	private JFrame frame;
-	boolean fortify;
+	public Player playername;
+	
 
 	/**
 	 * Launch the application.
@@ -70,7 +75,7 @@ public class GameView {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		fortify=false;
+		
 		frame = new JFrame();
 		frame.setBounds(-32, -45, 883, 568);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -101,13 +106,9 @@ public class GameView {
 		btnCompleteAttack.setBounds(426, 91, 165, 29);
 		frame.getContentPane().add(btnCompleteAttack);
 		
-		fortify = false;
+		
 		JButton btnFortify = new JButton("Fortify");
-		btnFortify.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				fortify = true;
-			}
-		});
+		
 		btnFortify.setFont(new Font("Arial", Font.PLAIN, 12));
 		btnFortify.setBounds(426, 117, 165, 29);
 		frame.getContentPane().add(btnFortify);
@@ -128,6 +129,7 @@ public class GameView {
 		frame.getContentPane().add(lblAdjacentCountry);
 		
 		JList list = new JList();
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setBounds(648, 38, 196, 191);
 		frame.getContentPane().add(list);
 		
@@ -158,6 +160,21 @@ public class GameView {
 		});
 		btnCountry.setBounds(195, 38, 196, 29);
 		frame.getContentPane().add(btnCountry);
+		
+		btnFortify.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String countrytofortify=(String) list.getSelectedValue();
+				FortificationPhase fortification=new FortificationPhase();
+				String armiesCount;
+				//if(playername.getMyCountries().contains(mapGraph.getCountrySet().get(countrytofortify))) {
+					armiesCount=JOptionPane.showInputDialog("enter the nuber of armies you want to move");
+					//fortification.moveArmies(mapGraph.getCountrySet().get(btnCountry), mapGraph.getCountrySet().get(countrytofortify), Integer.parseInt(armiesCount));
+				//}
+				//else {
+					//JOptionPane.showMessageDialog(null,playername.getName()+" does not own this country");
+				//}
+			}
+		});
 		
 		JButton btnCountyr = new JButton("Country 2");
 		btnCountyr.setBackground(UIManager.getColor("Button.background"));
