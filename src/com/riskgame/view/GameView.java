@@ -164,11 +164,10 @@ public class GameView {
 		btnFortify.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String countrytofortify=(String) list.getSelectedValue();
-				FortificationPhase fortification=new FortificationPhase();
 				String armiesCount;
 				//if(playername.getMyCountries().contains(mapGraph.getCountrySet().get(countrytofortify))) {
 					armiesCount=JOptionPane.showInputDialog("enter the nuber of armies you want to move");
-					//fortification.moveArmies(mapGraph.getCountrySet().get(btnCountry), mapGraph.getCountrySet().get(countrytofortify), Integer.parseInt(armiesCount));
+//					player.moveArmies(mapGraph.getCountrySet().get(btnCountry), mapGraph.getCountrySet().get(countrytofortify), Integer.parseInt(armiesCount));
 				//}
 				//else {
 					//JOptionPane.showMessageDialog(null,playername.getName()+" does not own this country");
