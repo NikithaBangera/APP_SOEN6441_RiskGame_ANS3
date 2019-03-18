@@ -1,6 +1,7 @@
 package com.riskgame.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class stores the value associated to each player. It stores player's
@@ -105,9 +106,27 @@ public class Player {
 		this.myCountries.add(country);
 	}
 
+	
 	@Override
 	public String toString() {
 		return "RiskPlayer [name=" + name + ", armyCount=" + armyCount + ", myCountries=" + myCountries + "]";
 
+	}
+	
+	public List<String> getPlayerCountryNames(){
+		List<String> playerCountries = new ArrayList<String>();
+		for(Country country: getMyCountries()) {
+			playerCountries.add(country.getName());
+		}
+		return playerCountries;
+	}
+	
+	public Country getSelectedCountry(String countryName) {
+		for(Country country: getMyCountries()) {
+			if(country.getName().equalsIgnoreCase(countryName)) {
+				return country;
+			}
+		}
+		return null;
 	}
 }

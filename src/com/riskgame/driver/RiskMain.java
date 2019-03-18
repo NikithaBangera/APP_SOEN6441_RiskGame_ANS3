@@ -117,11 +117,14 @@ public class RiskMain extends JFrame {
 								fileName = fileName.substring(0, fileName.lastIndexOf("."));
 								loadMapGraph.setFilename(fileName);
 								isGoodToStartGame = createandeditmap.uploadMap(loadMapGraph);
-								if (isGoodToStartGame)
+								if (isGoodToStartGame) {
 									startGame();
+									exit = true;
+								}
+									
 								else
 									System.out.println(" \n Thank You !! ");
-								System.exit(0);
+								//System.exit(0);
 							} else {
 								System.out.println(ReadAndWriteMap.getError());
 								System.out.println(
@@ -154,7 +157,7 @@ public class RiskMain extends JFrame {
 						}
 					}
 				}
-				System.exit(0);
+				//System.exit(0);
 			}
 		});
 
