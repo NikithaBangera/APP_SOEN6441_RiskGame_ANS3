@@ -27,6 +27,13 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
+
 import com.riskgame.controller.PlayerController;
 import com.riskgame.model.Country;
 import com.riskgame.model.GameMapGraph;
@@ -40,6 +47,7 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.UIManager;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import java.awt.BorderLayout;
 
 public class PlayerView implements Observer {
 
@@ -152,6 +160,7 @@ public class PlayerView implements Observer {
 	JButton btnFortify = new JButton("Fortify");
 	btnFortify.setFont(new Font("Arial", Font.PLAIN, 12));
 	btnFortify.setBounds(426, 131, 165, 29);
+	
 	frame.getContentPane().add(btnFortify);
 	
 	JButton btnEndTurn = new JButton("End Turn");
@@ -216,11 +225,25 @@ public class PlayerView implements Observer {
 	lblWorldDomination.setBounds(119, 259, 273, 37);
 	frame.getContentPane().add(lblWorldDomination);
 	
-	JProgressBar progressBar = new JProgressBar();
-	progressBar.setValue(1);
-	progressBar.setToolTipText("");
-	progressBar.setBounds(15, 259, 376, 233);
-	frame.getContentPane().add(progressBar);
+	JPanel world_domination = new JPanel();
+	world_domination.setBounds(6, 259, 386, 233);
+	frame.getContentPane().add(world_domination);
+	world_domination.setLayout(new BorderLayout(0, 0));
+	
+	DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+	for(int i=0; i<play.getCountOfthePlayers();i++) {
+		Player playerdetail=play.getPlayersList().get(i);
+		dataset.setValue(playerdetail.getMyCountries().size(),"number of countries",playerdetail.getName());
+	}
+	JFreeChart chart=ChartFactory.createBarChart("Domination View", "player", "number of countries", dataset,PlotOrientation.VERTICAL,false,true,false);
+	CategoryPlot p=chart.getCategoryPlot();
+	p.setRangeGridlinePaint(Color.RED);
+	ChartPanel CP = new ChartPanel(chart);
+	world_domination.removeAll();
+	world_domination.setLayout(new BorderLayout(0, 0));
+	world_domination.validate();
+	world_domination.setLayout(new BorderLayout(0, 0));
+	world_domination.add(CP);
 	
 	JButton btnReinforcement = new JButton("Reinforcement");
 	btnReinforcement.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -243,6 +266,19 @@ public class PlayerView implements Observer {
 	JList listAdjacentCountries = new JList(selectedCountryObject.getAdjacentCountries().toArray());
 	listAdjacentCountries.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	panelAdjacentCountries.add(listAdjacentCountries);
+	btnFortify.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			String countrytofortify=(String) listAdjacentCountries.getSelectedValue();
+			String armiesCount;
+			if(mapGraph.getCountrySet().get(countrytofortify).getPlayer()== lblPlayerName.getText()) {
+				armiesCount=JOptionPane.showInputDialog("enter the nuber of armies you want to move");
+				play.moveArmies(mapGraph.getCountrySet().get(listPlayerCountryList.getSelectedValue()), mapGraph.getCountrySet().get(countrytofortify), Integer.parseInt(armiesCount));
+			}
+			else {
+				JOptionPane.showMessageDialog(null,lblPlayerName.getText()+" does not own this country");
+			}
+		}
+	});
 	listAdjacentCountries.addListSelectionListener(new ListSelectionListener() {
 		
 		@Override
