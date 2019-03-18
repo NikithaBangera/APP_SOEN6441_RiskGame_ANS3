@@ -21,10 +21,14 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import com.riskgame.controller.PlayerController;
+import com.riskgame.model.Country;
 import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.Player;
 
@@ -34,15 +38,20 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.CompoundBorder;
 import javax.swing.UIManager;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
 
 public class PlayerView implements Observer {
 
 	private JFrame frame;
-	private JTextField textField;
 	PlayerController play = new PlayerController();
 	GameMapGraph mapGraph = new GameMapGraph();
 	/** The players. */
 	private ArrayList<Player> players;
+	private String selectedCountry;
+	private String selectedAdjacentCountry;
+	private Country selectedCountryObject;
+	
 
 	/**
 	 * Launch the application.
@@ -52,7 +61,7 @@ public class PlayerView implements Observer {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					PlayerView window = new PlayerView();
+					PlayerView window = new PlayerView(new PlayerController().getPlayersList().get(0));
 					//window.frmGameplay.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -70,9 +79,9 @@ public class PlayerView implements Observer {
 //		
 //	}
 
-	public PlayerView() {
+	public PlayerView(Player player) {
 		try {
-			initialize();
+			initialize(player);
 			frame.setVisible(true);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -82,7 +91,7 @@ public class PlayerView implements Observer {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize(Player player) {
 	frame = new JFrame();
 	frame.setBounds(100, 100, 883, 568);
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -101,104 +110,98 @@ public class PlayerView implements Observer {
 	panel_1.add(lblNumberOfArmies_1);
 	
 	
-	JButton btnNewButton = new JButton("Place Army");
-	btnNewButton.setFont(new Font("Arial", Font.PLAIN, 12));
-	btnNewButton.setBounds(426, 38, 165, 29);
-	frame.getContentPane().add(btnNewButton);
+	JButton btnPlaceArmy = new JButton("Place Army");
+	btnPlaceArmy.setFont(new Font("Arial", Font.PLAIN, 12));
+	btnPlaceArmy.setBounds(426, 23, 165, 29);
+	frame.getContentPane().add(btnPlaceArmy);
 	
+	JButton btnAttack = new JButton("Attack");
+	btnAttack.setFont(new Font("Arial", Font.PLAIN, 12));
+	btnAttack.setBounds(426, 78, 165, 29);
+	frame.getContentPane().add(btnAttack);
+	btnAttack.addActionListener(new ActionListener() {
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			PlayerController playerController = new PlayerController();
+			Country selectedAdjCountryObject = playerController.getDefenderCountry(getSelectedAdjacentCountry());
+			if(selectedCountryObject != null && selectedAdjCountryObject != null) {
+				playerController.attackPhase(selectedCountryObject, selectedAdjCountryObject);
+			}
+		}
+	});
 	
-	
-	JButton btnCompleteAttack = new JButton("Complete Attack");
+	JButton btnCompleteAttack = new JButton("All Out");
 	btnCompleteAttack.setFont(new Font("Arial", Font.PLAIN, 12));
-	btnCompleteAttack.setBounds(426, 91, 165, 29);
+	btnCompleteAttack.setBounds(426, 105, 165, 29);
+	btnCompleteAttack.addActionListener(new ActionListener() {
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			PlayerController playerController = new PlayerController();
+			Country selectedAdjCountryObject = playerController.getDefenderCountry(getSelectedAdjacentCountry());
+			if(selectedCountryObject != null && selectedAdjCountryObject != null) {
+				playerController.allOutAttack(selectedCountryObject, selectedAdjCountryObject);
+			}
+			
+		}
+	});
+	
 	frame.getContentPane().add(btnCompleteAttack);
 	
 	JButton btnFortify = new JButton("Fortify");
 	btnFortify.setFont(new Font("Arial", Font.PLAIN, 12));
-	btnFortify.setBounds(426, 117, 165, 29);
+	btnFortify.setBounds(426, 131, 165, 29);
 	frame.getContentPane().add(btnFortify);
 	
 	JButton btnEndTurn = new JButton("End Turn");
 	btnEndTurn.setFont(new Font("Arial", Font.PLAIN, 12));
-	btnEndTurn.setBounds(426, 146, 165, 29);
+	btnEndTurn.setBounds(426, 159, 165, 29);
 	frame.getContentPane().add(btnEndTurn);
 	
-	JButton btnCards = new JButton("End Phase");
-	btnCards.setFont(new Font("Arial", Font.PLAIN, 12));
-	btnCards.setBounds(426, 173, 165, 29);
-	frame.getContentPane().add(btnCards);
-	
-	textField = new JTextField();
-	textField.setBounds(630, 38, 214, 191);
-	frame.getContentPane().add(textField);
-	textField.setColumns(10);
+	JButton btnEndPhase = new JButton("End Phase");
+	btnEndPhase.setFont(new Font("Arial", Font.PLAIN, 12));
+	btnEndPhase.setBounds(426, 185, 165, 29);
+	frame.getContentPane().add(btnEndPhase);
 	
 	JLabel lblAdjacentCountry = new JLabel("Adjacent Country");
 	lblAdjacentCountry.setFont(new Font("Arial", Font.PLAIN, 12));
 	lblAdjacentCountry.setBounds(684, 12, 107, 20);
 	frame.getContentPane().add(lblAdjacentCountry);
 	
-	JLabel lblSelectedCountries = new JLabel("Selected Country");
+	JLabel lblSelectedCountries = new JLabel("Player Countries");
 	lblSelectedCountries.setFont(new Font("Arial", Font.PLAIN, 12));
 	lblSelectedCountries.setBounds(240, 4, 152, 37);
 	frame.getContentPane().add(lblSelectedCountries);
 	
-	JButton btnCards_1 = new JButton("Cards");
-	btnCards_1.setFont(new Font("Arial", Font.PLAIN, 12));
-	btnCards_1.setBounds(426, 200, 165, 29);
-	frame.getContentPane().add(btnCards_1);
+	JButton btnCards = new JButton("Cards");
+	btnCards.setFont(new Font("Arial", Font.PLAIN, 12));
+	btnCards.setBounds(426, 212, 165, 29);
+	frame.getContentPane().add(btnCards);
 	
-	JButton btnCountry = new JButton("Country 1");
-	btnCountry.setFont(new Font("Arial", Font.PLAIN, 12));
-	btnCountry.setBounds(195, 38, 196, 29);
-	frame.getContentPane().add(btnCountry);
+	JPanel panelPlayerCountries = new JPanel();
+	panelPlayerCountries.setBounds(195, 38, 196, 188);
+	frame.getContentPane().add(panelPlayerCountries);
 	
-	JButton btnCountyr = new JButton("Country 2");
-	btnCountyr.setBackground(UIManager.getColor("Button.background"));
-	btnCountyr.setFont(new Font("Arial", Font.PLAIN, 12));
-	btnCountyr.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
+	//dummy values
+	String[] countries = {"India", "Montreal", "Nepal"};
+	
+	JList listPlayerCountryList = new JList(player.getPlayerCountryNames().toArray());
+	listPlayerCountryList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+	
+	panelPlayerCountries.add(listPlayerCountryList);
+	listPlayerCountryList.addListSelectionListener(new ListSelectionListener() {
+		
+		@Override
+		public void valueChanged(ListSelectionEvent e) {
+			if(!e.getValueIsAdjusting()) {
+				setSelectedCountry(listPlayerCountryList.getSelectedValue().toString());
+				selectedCountryObject = player.getSelectedCountry(getSelectedCountry());
+			//	JOptionPane.showMessageDialog(null, getSelectedCountry());
+			}
 		}
 	});
-	btnCountyr.setBounds(195, 65, 196, 29);
-	frame.getContentPane().add(btnCountyr);
 	
-	JButton btnCountry_1 = new JButton("Country 3");
-	btnCountry_1.setFont(new Font("Arial", Font.PLAIN, 12));
-	btnCountry_1.setBounds(195, 91, 196, 29);
-	frame.getContentPane().add(btnCountry_1);
-	
-	JButton btnCountry_2 = new JButton("Country 4");
-	btnCountry_2.setFont(new Font("Arial", Font.PLAIN, 12));
-	btnCountry_2.setBounds(195, 117, 196, 29);
-	frame.getContentPane().add(btnCountry_2);
-	
-	JButton btnCountry_3 = new JButton("Country 5");
-	btnCountry_3.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		}
-	});
-	btnCountry_3.setFont(new Font("Arial", Font.PLAIN, 12));
-	btnCountry_3.setBounds(195, 146, 196, 29);
-	frame.getContentPane().add(btnCountry_3);
-	
-	JButton btnCountry_4 = new JButton("Country 6");
-	btnCountry_4.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-		}
-	});
-	btnCountry_4.setFont(new Font("Arial", Font.PLAIN, 12));
-	btnCountry_4.setBounds(195, 173, 196, 29);
-	frame.getContentPane().add(btnCountry_4);
-	
-	JButton btnCountry_5 = new JButton("Country 7");
-	btnCountry_5.setFont(new Font("Arial", Font.PLAIN, 12));
-	btnCountry_5.setBounds(195, 200, 197, 29);
-	frame.getContentPane().add(btnCountry_5);
-	
-	JPanel panel = new JPanel();
-	panel.setBounds(195, 38, 196, 188);
-	frame.getContentPane().add(panel);
 	
 	JPanel panel_2 = new JPanel();
 	panel_2.setBounds(15, 146, 165, 83);
@@ -221,7 +224,7 @@ public class PlayerView implements Observer {
 	
 	JButton btnReinforcement = new JButton("Reinforcement");
 	btnReinforcement.setFont(new Font("Arial", Font.PLAIN, 12));
-	btnReinforcement.setBounds(426, 65, 165, 29);
+	btnReinforcement.setBounds(426, 50, 165, 29);
 	frame.getContentPane().add(btnReinforcement);
 	
 	JPanel panel_3 = new JPanel();
@@ -230,12 +233,46 @@ public class PlayerView implements Observer {
 	frame.getContentPane().add(panel_3);
 	
 	JLabel lblContinentName = new JLabel("Continent Name");
-	panel_3.add(lblContinentName);}
+	panel_3.add(lblContinentName);
+	
+	JPanel panelAdjacentCountries = new JPanel();
+	panelAdjacentCountries.setBounds(626, 38, 218, 188);
+	frame.getContentPane().add(panelAdjacentCountries);
+
+	
+	JList listAdjacentCountries = new JList(selectedCountryObject.getAdjacentCountries().toArray());
+	listAdjacentCountries.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+	panelAdjacentCountries.add(listAdjacentCountries);
+	listAdjacentCountries.addListSelectionListener(new ListSelectionListener() {
+		
+		@Override
+		public void valueChanged(ListSelectionEvent e) {
+			setSelectedAdjacentCountry(listAdjacentCountries.getSelectedValue().toString());
+		}
+	});
+	
+	}
 
 	@Override
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub
 		//frmGameplay.setVisible(true);
 
+	}
+
+	public String getSelectedCountry() {
+		return selectedCountry;
+	}
+
+	public void setSelectedCountry(String selectedCountry) {
+		this.selectedCountry = selectedCountry;
+	}
+
+	public String getSelectedAdjacentCountry() {
+		return selectedAdjacentCountry;
+	}
+
+	public void setSelectedAdjacentCountry(String selectedAdjacentCountry) {
+		this.selectedAdjacentCountry = selectedAdjacentCountry;
 	}
 }
