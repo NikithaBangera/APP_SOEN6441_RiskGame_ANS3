@@ -31,8 +31,11 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PiePlot;
+import org.jfree.chart.plot.PiePlot3D;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
 
 import com.riskgame.controller.PlayerController;
 import com.riskgame.model.Country;
@@ -230,14 +233,14 @@ public class PlayerView implements Observer {
 	frame.getContentPane().add(world_domination);
 	world_domination.setLayout(new BorderLayout(0, 0));
 	
-	DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+	DefaultPieDataset dataset = new DefaultPieDataset();
 	for(int i=0; i<play.getCountOfthePlayers();i++) {
 		Player playerdetail=play.getPlayersList().get(i);
-		dataset.setValue(playerdetail.getMyCountries().size(),"number of countries",playerdetail.getName());
+		dataset.setValue(playerdetail.getName(),playerdetail.getMyCountries().size());
 	}
-	JFreeChart chart=ChartFactory.createBarChart("Domination View", "player", "number of countries", dataset,PlotOrientation.VERTICAL,false,true,false);
-	CategoryPlot p=chart.getCategoryPlot();
-	p.setRangeGridlinePaint(Color.RED);
+	JFreeChart chart=ChartFactory.createPieChart("World Domination", dataset,true,true,true);
+	PiePlot p=(PiePlot)chart.getPlot();
+//	p.setForegroundAlpha(alpha);
 	ChartPanel CP = new ChartPanel(chart);
 	world_domination.removeAll();
 	world_domination.setLayout(new BorderLayout(0, 0));
