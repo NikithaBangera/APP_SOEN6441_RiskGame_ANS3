@@ -9,7 +9,10 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import com.riskgame.controller.DiceController;
+import com.riskgame.controller.PlayerController;
 import com.riskgame.model.Country;
+import com.riskgame.model.GameMapGraph;
+import com.riskgame.model.Player;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -37,7 +40,7 @@ public class DiceView {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					DiceView window = new DiceView(new Country(), new Country());
+					DiceView window = new DiceView(new GameMapGraph(), new Country(), new Country());
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -48,20 +51,22 @@ public class DiceView {
 
 	/**
 	 * Create the application.
+	 * @param gameMapGraph 
 	 * @param defender 
 	 * @param attacker 
 	 */
-	public DiceView(Country attacker, Country defender) {
+	public DiceView(GameMapGraph gameMapGraph, Country attacker, Country defender) {
 		diceController = new DiceController();
-		initialize(attacker, defender);
+		initialize(gameMapGraph, attacker, defender);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
+	 * @param gameMapGraph 
 	 * @param defenderCountry 
 	 * @param attackerCountry 
 	 */
-	private void initialize(Country attackerCountry, Country defenderCountry) {
+	private void initialize(GameMapGraph gameMapGraph, Country attackerCountry, Country defenderCountry) {
 		frame = new JFrame();
 
 		frame.setBounds(600, 300, 571, 442);
@@ -250,7 +255,7 @@ public class DiceView {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				initialize(attackerCountry, defenderCountry);
+				initialize(gameMapGraph, attackerCountry, defenderCountry);
 			}
 		});
 		
@@ -274,9 +279,10 @@ public class DiceView {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JFrame moveArmyFrame = new JFrame();
+				PlayerController playerController = new PlayerController();
+				JFrame moveArmyFrame = new JFrame("Move Armies");
 				String armiesToMove = JOptionPane.showInputDialog(moveArmyFrame, "Enter the number of armies to be moved:");
-				diceController.moveArmies(Integer.parseInt(armiesToMove), attackerCountry, defenderCountry);
+				diceController.moveArmies(Integer.parseInt(armiesToMove), attackerCountry, defenderCountry, gameMapGraph);
 			}
 		});
 		

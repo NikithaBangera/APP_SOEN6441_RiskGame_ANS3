@@ -1,11 +1,14 @@
 package com.riskgame.controller;
 
+import java.util.ArrayList;
 import java.util.Collections;
 
 import javax.swing.JOptionPane;
 
 import com.riskgame.model.Country;
 import com.riskgame.model.Dice;
+import com.riskgame.model.GameMapGraph;
+import com.riskgame.model.Player;
 
 public class DiceController {
 
@@ -55,13 +58,53 @@ public class DiceController {
 		}
 	}
 	
-	public void moveArmies(int armiesToBeMoved, Country attackerCountry, Country defenderCountry) {
+	public void moveArmies(int armiesToBeMoved, Country attackerCountry, Country defenderCountry, GameMapGraph gameMapGraph) {
+		boolean attackerFound = false;
+		boolean defenderFound = false;
 		if((attackerCountry.getNoOfArmies() - armiesToBeMoved) > 1) {
 			attackerCountry.setNoOfArmies(attackerCountry.getNoOfArmies() - armiesToBeMoved);
 			defenderCountry.setNoOfArmies(defenderCountry.getNoOfArmies() + armiesToBeMoved);
+			for(Player player : gameMapGraph.getPlayers()) {
+				for(Country country : player.getMyCountries()) {
+					if(country.getName().equalsIgnoreCase(attackerCountry.getName())) {
+						attackerFound = true;
+						break;
+					}
+				}
+				if(attackerFound) {
+					player.getMyCountries().add(defenderCountry);
+					break;
+				}
+			}
+			int i=0;
+			for(Player player : gameMapGraph.getPlayers()) {
+				for(Country country : player.getMyCountries()) {
+					if(country.getName().equalsIgnoreCase(defenderCountry.getName())) {
+						defenderFound = true;
+						break;
+					}
+					i++;
+					if(defenderFound) {
+						player.getMyCountries().remove(i);
+						break;
+					}
+				}
+			}
+			
 		}
 		else {
 			JOptionPane.showMessageDialog(null, "Allowed number of armies to be moved: "+(attackerCountry.getNoOfArmies() - 1));
 		}
+	}
+	
+	public Player getPlayerForCountry(GameMapGraph mapGraph, String countryName) {
+		for(Player player : mapGraph.getPlayers()) {
+			for(Country country : player.getMyCountries()) {
+				if(country.getName().equalsIgnoreCase(countryName)) {
+					return player;
+				}
+			}
+		}
+		return null;
 	}
 }
