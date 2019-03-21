@@ -648,25 +648,33 @@ public class PlayerController extends Observable implements Observer {
 	}
 
 	// exchange cards
-	public Player exchangeCards(List<Card> selectedCards) {
-
+	public Player exchangeCards(Card selectedCard) {
+		int numberOfTimesExchanged = 0;
 		if (playerPlaying.getCardList().size() > 3) {
-			playerPlaying.setArmyCount(playerPlaying.getArmyCount() + (5 * playerPlaying.getExchangedTimes()));
-		} else {
-
-		}
-		
-		System.out.println(playerPlaying.getName() + " successfully exchanged 3 cards for 1 army! \n");
-
-		for (Card card : selectedCards) {
-			if (playerPlaying.getMyCountries().contains(card.getCountry())) {
-				card.getCountry().setNoOfArmies(card.getCountry().getNoOfArmies() + 2);
-				System.out.println(
-						playerPlaying.getName() + "\" got extra 2 armies on \"" + card.getCountry().getName() + "\n");
-
-				break;
+			try {
+				numberOfTimesExchanged = playerPlaying.getExchangedTimes();
+			} catch (Exception e) {
+				System.out.println("exchanged is null.");
 			}
+			numberOfTimesExchanged += 1;
+			playerPlaying.setArmyCount(playerPlaying.getArmyCount() + (5 * playerPlaying.getExchangedTimes()));
+			playerPlaying.setExchangedTimes(numberOfTimesExchanged);
+
+		} else {
+			System.out.println("Cannot exchange cards");
 		}
+
+		System.out.println(playerPlaying.getName() + " successfully exchanged 3 cards for 1 army! \n");
+//
+//		for (Card card : selectedCards) {
+//			if (playerPlaying.getMyCountries().contains(card.getCountry())) {
+//				card.getCountry().setNoOfArmies(card.getCountry().getNoOfArmies() + 2);
+//				System.out.println(
+//						playerPlaying.getName() + "\" got extra 2 armies on \"" + card.getCountry().getName() + "\n");
+//
+//				break;
+//			}
+//		}
 		return playerPlaying;
 	}
 
