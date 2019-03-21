@@ -664,7 +664,7 @@ public class PlayerController extends Observable implements Observer {
 			System.out.println("Cannot exchange cards");
 		}
 
-		System.out.println(playerPlaying.getName() + " successfully exchanged 3 cards for 1 army! \n");
+		System.out.println(playerPlaying.getName() + " successfully exchanged");
 //
 //		for (Card card : selectedCards) {
 //			if (playerPlaying.getMyCountries().contains(card.getCountry())) {
