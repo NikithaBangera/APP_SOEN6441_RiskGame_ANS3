@@ -196,7 +196,7 @@ public class PlayerController extends Observable implements Observer{
 	/**
 	 * Method for armies assignment to the countries so that the number of armies in
 	 * the countries will be balanced
-	 * @param selectedCountryObject 
+	 * @param mapGraph 
 	 * 
 	 */
 	public void allocationOfRemainingArmyToCountries(Country selectedCountryObject, Player player) {
