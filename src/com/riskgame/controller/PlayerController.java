@@ -1,27 +1,19 @@
 package com.riskgame.controller;
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.swing.JOptionPane;
-
 import com.riskgame.model.Continent;
 import com.riskgame.model.Country;
-import com.riskgame.model.Dice;
 import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.Player;
-import com.riskgame.view.DiceView;
-import com.riskgame.view.PlayerView;
 
-public class PlayerController extends Observable implements Observer{
+public class PlayerController {
 
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -103,19 +95,9 @@ public class PlayerController extends Observable implements Observer{
 			}
 			playersList.add(riskPlayer);
 		}
-		
-		
 		allocationOfCountry(mapGraph);
 		allocationOfArmyToPlayers();
 		allocationOfArmyToCountriesInitially(mapGraph);
-		
-	//  PlayerView playerView = new PlayerView(mapGraph, playersList);
-		
-	//	PlayerView playerView = new PlayerView();
-		
-		
-		setChanged();
-		notifyObservers();
 		allocationOfRemainingArmyToCountries();
 
 		// Startup Phase starts here
@@ -368,53 +350,6 @@ public class PlayerController extends Observable implements Observer{
 		return flag;
 	}
 
-	//Attack Phase
-	
-	public void attackPhase(Country attacker, Country defender) {
-		boolean isAttackPossible = false;
-		if(attacker != null && defender != null) {
-			if(attacker.getAdjacentCountries().contains(defender.getName())) {
-				if(attacker.getNoOfArmies() > 1 && defender.getNoOfArmies() > 0) {
-					isAttackPossible = true;
-				}
-				else {
-					System.out.println("Insufficient armies in the attacker country/defender country");
-				}
-			}
-			else {
-				System.out.println("Attacker and Defender Countries are not adjacent!");
-			}	
-		}
-		
-		if(isAttackPossible) {
-			//attacker and defender need to select the number of dice to roll
-			DiceView diceView = new DiceView(attacker, defender);
-			
-			
-			
-		}
-	}
-	
-	public void allOutAttack(Country attackerCountry, Country defenderCountry) {
-		int attackerDiceCount = 0;
-		int defenderDiceCount = 0;
-		String message = "";
-		
-		while(attackerCountry.getNoOfArmies() > 1 && defenderCountry.getNoOfArmies() > 0) {
-			attackerDiceCount = attackerCountry.getNoOfArmies() > 3 ? 3 :(attackerCountry.getNoOfArmies() > 2 ? 2 : 1);
-			defenderDiceCount = defenderCountry.getNoOfArmies() >= 2 ? 2 : 1;
-			
-			DiceController diceController = new DiceController();
-			diceController.startDiceRoll(attackerDiceCount, defenderDiceCount, attackerCountry, defenderCountry);
-		}
-		
-		if(defenderCountry.getNoOfArmies() == 0) {
-			attackerCountry.setNoOfArmies(attackerCountry.getNoOfArmies() - 1);
-			defenderCountry.setNoOfArmies(defenderCountry.getNoOfArmies() + 1);
-			JOptionPane.showMessageDialog(null, "Defender has lost the country to attacker!");
-		}
-	}
-	
 	// Fortification Phase
 
 	/**
@@ -563,25 +498,6 @@ public class PlayerController extends Observable implements Observer{
 			System.out.println("Countries are not adjacanet!");
 			doFortification = true;
 		}
-	}
-	
-	public Country getDefenderCountry(String attackerAdjCountry) {
-		for(Player player : playersList) {
-			for(Country country : player.getMyCountries()) {
-				if(country.getName().equalsIgnoreCase(attackerAdjCountry)) {
-					return country;
-				}
-			}
-		}
-		return null;
-	}
-
-	
-	
-	@Override
-	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }
