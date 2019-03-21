@@ -36,6 +36,8 @@ public class GameMapGraph {
 	private HashMap<String, Country> countrySet;
 	
 	private ArrayList<Player> players = new ArrayList<Player>();
+	
+	private String gamePhase;
 
 	/**
 	 * GameMapGraph Constructor
@@ -203,5 +205,13 @@ public class GameMapGraph {
 
 	public void setPlayers(ArrayList<Player> players) {
 		this.players = players;
+	}
+
+	public String getGamePhase() {
+		return gamePhase;
+	}
+
+	public void setGamePhase(String gamePhase) {
+		this.gamePhase = gamePhase;
 	}
 }

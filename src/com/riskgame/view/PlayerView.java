@@ -1,10 +1,13 @@
 package com.riskgame.view;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Iterator;
+import java.util.Map.Entry;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -21,11 +24,23 @@ import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PiePlot;
+import org.jfree.chart.plot.PiePlot3D;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
+
 import com.riskgame.controller.PlayerController;
 import com.riskgame.controller.RoundRobinScheduler;
 import com.riskgame.model.Country;
 import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.Player;
+import com.riskgame.model.PlayerDomination;
+import javax.swing.SwingConstants;
 
 public class PlayerView implements Observer {
 
@@ -42,7 +57,10 @@ public class PlayerView implements Observer {
 	private boolean nextPlayer = false;
 	private int nextPlayerNumber;
 	private int totalNumberOfPlayers = 0;
+	private boolean isAttackNotPossible = true;
 	RoundRobinScheduler roundRobin;
+	private String playerCountryDetails;
+	private String playerAdjCountryDetails;
 
 	/**
 	 * Launch the application.
@@ -94,7 +112,10 @@ public class PlayerView implements Observer {
 		}
 		nextPlayerNumber++;
 		Player player = roundRobin.nextTurn();
-		startReinforcement(mapGraph, player);
+		
+		if(mapGraph.getGamePhase().equalsIgnoreCase("Reinforcement")) {
+			startReinforcement(mapGraph, player);
+		}
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBounds(15, 38, 165, 108);
@@ -107,6 +128,7 @@ public class PlayerView implements Observer {
 		textFieldPlayerName = new JTextField();
 		panel_1.add(textFieldPlayerName);
 		textFieldPlayerName.setColumns(10);
+		textFieldPlayerName.setText(player.getName());
 		
 		JLabel lblArmies = new JLabel("Armies");
 		panel_1.add(lblArmies);
@@ -114,13 +136,11 @@ public class PlayerView implements Observer {
 		textFieldArmies = new JTextField();
 		panel_1.add(textFieldArmies);
 		textFieldArmies.setColumns(10);
+		textFieldArmies.setText(Integer.toString(player.getArmyCount()));
 		
 		JPanel panelPlayerCountries = new JPanel();
 		panelPlayerCountries.setBounds(195, 38, 196, 188);
 		frame.getContentPane().add(panelPlayerCountries);
-		
-		//dummy values
-		String[] countries = {"India", "Montreal", "Nepal"};
 		
 		JList listPlayerCountryList = new JList(player.getPlayerCountryNames().toArray());
 		listPlayerCountryList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -134,6 +154,7 @@ public class PlayerView implements Observer {
 					setSelectedCountry(listPlayerCountryList.getSelectedValue().toString());
 					selectedCountryObject = player.getSelectedCountry(getSelectedCountry());
 				}
+				setPlayerCountryDetails(getSelectedCountry()+" has "+selectedCountryObject.getNoOfArmies()+" armies.");
 			}
 		});
 		
@@ -149,6 +170,9 @@ public class PlayerView implements Observer {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				setSelectedAdjacentCountry(listAdjacentCountries.getSelectedValue().toString());
+				Country selectedAdjCountryObject = playerController.getAdjacentCountry(mapGraph, getSelectedAdjacentCountry());
+				Player adjCountryPlayer = playerController.getPlayerForCountry(mapGraph, getSelectedAdjacentCountry());
+				setPlayerAdjCountryDetails(getSelectedAdjacentCountry()+" belongs to "+adjCountryPlayer.getName()+" - has "+selectedAdjCountryObject.getNoOfArmies()+" armies.");
 			}
 		});
 		
@@ -177,9 +201,6 @@ public class PlayerView implements Observer {
 		});
 		frame.getContentPane().add(btnReinforcement);
 		
-		if(player.getArmyCount() == 0) {
-			btnReinforcement.setEnabled(false);
-		}
 		
 		JButton btnAttack = new JButton("Attack");
 		btnAttack.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -194,6 +215,8 @@ public class PlayerView implements Observer {
 				if(selectedCountryObject != null && selectedAdjCountryObject != null) {
 					playerController.attackPhase(mapGraph,selectedCountryObject, selectedAdjCountryObject);
 				}
+				frame.revalidate();
+				frame.repaint();
 			}
 		});
 		
@@ -208,23 +231,35 @@ public class PlayerView implements Observer {
 				Country selectedAdjCountryObject = playerController.getAdjacentCountry(mapGraph, getSelectedAdjacentCountry());
 				if(selectedCountryObject != null && selectedAdjCountryObject != null) {
 					playerController.allOutAttack(mapGraph, selectedCountryObject, selectedAdjCountryObject);
+					mapGraph.setGamePhase("Fortification");
 				}
 				
+				frame.revalidate();
+				frame.repaint();
 			}
 		});
-		
 		frame.getContentPane().add(btnCompleteAttack);
+		
+		if(player.getArmyCount() == 0) {
+			btnReinforcement.setEnabled(false);
+			btnAttack.setEnabled(true);
+			btnCompleteAttack.setEnabled(true);
+			if(mapGraph.getGamePhase().equalsIgnoreCase("Reinforcement")) {
+				mapGraph.setGamePhase("Attack");
+			}
+		}
 		
 		JButton btnFortify = new JButton("Fortify");
 		btnFortify.setFont(new Font("Arial", Font.PLAIN, 12));
 		btnFortify.setBounds(426, 143, 165, 29);
-		
+		btnFortify.putClientProperty("isFortificationComplete", isFortificationComplete);
 		btnFortify.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				boolean playerFound = false;
 				boolean isAdjCountry = false;
+				boolean isFortificationComplete = (boolean)((JButton)(e.getSource())).getClientProperty("isFortificationComplete");
 				Country selectedAdjCountryObject = playerController.getAdjacentCountry(mapGraph, getSelectedAdjacentCountry());
 				JFrame fortifyArmy = new JFrame();
 				String armiesCount=JOptionPane.showInputDialog(fortifyArmy,"Enter the number of armies you want to move:");
@@ -240,6 +275,8 @@ public class PlayerView implements Observer {
 							if(country.getName().equalsIgnoreCase(selectedAdjCountryObject.getName())) {
 								playerController.moveArmies(selectedCountryObject, selectedAdjCountryObject, Integer.parseInt(armiesCount));
 								isAdjCountry = true;
+								isFortificationComplete = true;
+								mapGraph.setGamePhase("Reinforcement");
 								break;
 							}
 						}
@@ -247,11 +284,15 @@ public class PlayerView implements Observer {
 				}
 				if(!isAdjCountry)
 				{
-					JOptionPane.showMessageDialog(null,lblPlayerName.getText()+" does not own this country");
+					JOptionPane.showMessageDialog(null, lblPlayerName.getText()+" does not own this country");
 				}
+				((JButton)(e.getSource())).putClientProperty("isFortificationComplete", isFortificationComplete);
 			}
 		});
 		frame.getContentPane().add(btnFortify);
+		if(isFortificationComplete) {
+			initialize(mapGraph);
+		}
 		
 		JButton btnEndTurn = new JButton("End Turn");
 		btnEndTurn.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -260,6 +301,10 @@ public class PlayerView implements Observer {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if(mapGraph.getGamePhase().equalsIgnoreCase("Place Armies")) {
+					mapGraph.setGamePhase("Reinforcement");
+				}
+				
 				if(nextPlayerNumber == totalNumberOfPlayers) {
 					roundRobin = null;
 					nextPlayerNumber  = 0;
@@ -278,7 +323,7 @@ public class PlayerView implements Observer {
 			btnCompleteAttack.setEnabled(true);
 		}
 		
-		JLabel lblAdjacentCountry = new JLabel("Adjacent Country");
+		JLabel lblAdjacentCountry = new JLabel("Adjacent Countries");
 		lblAdjacentCountry.setFont(new Font("Arial", Font.PLAIN, 12));
 		lblAdjacentCountry.setBounds(684, 12, 107, 20);
 		frame.getContentPane().add(lblAdjacentCountry);
@@ -301,36 +346,74 @@ public class PlayerView implements Observer {
 		lblPhaseName.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		panelPhaseName.add(lblPhaseName);
 		
-		textFieldPhaseName = new JTextField();
+		textFieldPhaseName = new JTextField(mapGraph.getGamePhase());
 		textFieldPhaseName.setEnabled(false);
 		panelPhaseName.add(textFieldPhaseName);
 		textFieldPhaseName.setColumns(10);
 		
-		JLabel lblWorldDomination = new JLabel("  World Domination");
-		lblWorldDomination.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblWorldDomination.setBounds(119, 259, 273, 37);
-		frame.getContentPane().add(lblWorldDomination);
+		//world domination panel
 		
-		JProgressBar progressBar = new JProgressBar();
-		progressBar.setValue(1);
-		progressBar.setToolTipText("");
-		progressBar.setBounds(15, 259, 376, 233);
-		frame.getContentPane().add(progressBar);
+		JPanel world_domination = new JPanel();
+		world_domination.setBounds(6, 259, 386, 233);
+		frame.getContentPane().add(world_domination);
+		world_domination.setLayout(new BorderLayout(0, 0));
 		
-		JPanel panel_3 = new JPanel();
-		panel_3.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel_3.setBounds(436, 259, 408, 233);
-		frame.getContentPane().add(panel_3);
+		DefaultPieDataset dataset = new DefaultPieDataset();
+		PlayerDomination playerDomination = new PlayerDomination();
+		Iterator<Entry<String, Integer>> iterator = playerDomination.dominationPercentage(mapGraph).entrySet().iterator();
+		while(iterator.hasNext()) {
+			Entry<String, Integer> nextItem = iterator.next();
+			dataset.setValue(nextItem.getKey(), nextItem.getValue());
+		}
 		
-		JLabel lblContinentName = new JLabel("Continent Name");
-		panel_3.add(lblContinentName);
+		JFreeChart chart=ChartFactory.createPieChart("World Domination", dataset, true, true, true);
+		PiePlot p=(PiePlot)chart.getPlot();
+//		p.setForegroundAlpha(alpha);
+		ChartPanel CP = new ChartPanel(chart);
+		world_domination.removeAll();
+		world_domination.setLayout(new BorderLayout(0, 0));
+		world_domination.validate();
+		world_domination.setLayout(new BorderLayout(0, 0));
+		world_domination.add(CP);
+		
+		
+		JPanel panelMapDetails = new JPanel();
+		panelMapDetails.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panelMapDetails.setBounds(436, 259, 408, 233);
+		frame.getContentPane().add(panelMapDetails);
+		panelMapDetails.setLayout(null);
+		
+		JPanel panelPlayerCountryDetails = new JPanel();
+		panelPlayerCountryDetails.setBounds(12, 34, 384, 70);
+		panelMapDetails.add(panelPlayerCountryDetails);
+		panelPlayerCountryDetails.setLayout(null);
+		
+		JLabel lblPlayerCountryDetails = new JLabel(getPlayerCountryDetails());
+		lblPlayerCountryDetails.setBounds(0, 13, 384, 44);
+		lblPlayerCountryDetails.setVerticalAlignment(SwingConstants.TOP);
+		panelPlayerCountryDetails.add(lblPlayerCountryDetails);
+		
+		JLabel lblContinentName = new JLabel("Map Details");
+		lblContinentName.setBounds(178, 6, 66, 16);
+		panelMapDetails.add(lblContinentName);
+		
+		JPanel panelPlayerAdjCountryDetails = new JPanel();
+		panelPlayerAdjCountryDetails.setBounds(12, 117, 384, 70);
+		panelMapDetails.add(panelPlayerAdjCountryDetails);
+		panelPlayerAdjCountryDetails.setLayout(null);
+		
+		
+		
+		JLabel lblPlayerAdjCountryDetails = new JLabel(getPlayerAdjCountryDetails());
+		lblPlayerAdjCountryDetails.setBounds(0, 13, 384, 44);
+		panelPlayerAdjCountryDetails.add(lblPlayerAdjCountryDetails);
+		lblPlayerAdjCountryDetails.setVerticalAlignment(SwingConstants.TOP);
 	
 	}
 	
 	public void startReinforcement(GameMapGraph mapGraph, Player player) {
 		int reinforcementArmies = playerController.reinforcementPhase(player, mapGraph);
 		player.setArmyCount(player.getArmyCount() + reinforcementArmies);
-		
 	}
 	
 	
@@ -356,4 +439,19 @@ public class PlayerView implements Observer {
 		this.selectedAdjacentCountry = selectedAdjacentCountry;
 	}
 
+	public String getPlayerCountryDetails() {
+		return playerCountryDetails;
+	}
+
+	public void setPlayerCountryDetails(String playerCountryDetails) {
+		this.playerCountryDetails = playerCountryDetails;
+	}
+
+	public String getPlayerAdjCountryDetails() {
+		return playerAdjCountryDetails;
+	}
+
+	public void setPlayerAdjCountryDetails(String playerAdjCountryDetails) {
+		this.playerAdjCountryDetails = playerAdjCountryDetails;
+	}
 }

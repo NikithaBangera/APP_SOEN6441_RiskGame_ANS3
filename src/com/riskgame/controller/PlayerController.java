@@ -109,20 +109,14 @@ public class PlayerController extends Observable implements Observer{
 		notifyObservers();
 		allocationOfRemainingArmyToCountries(mapGraph);
 
-		// Startup Phase starts here
+		// Place Army Phase starts here
 
-		RoundRobinScheduler roundRobin = new RoundRobinScheduler(mapGraph.getPlayers());
-
-		// Loop for allowing players to execute actions, turn by turn
-		for (int round = 1; round <= mapGraph.getPlayers().size(); round++) {
-
-			player = roundRobin.nextTurn();
-			
-		//	startReinforcement(mapGraph, player);
-			PlayerView playerView = new PlayerView(mapGraph);
-
-		}
+		mapGraph.setGamePhase("Place Armies");
+		PlayerView playerView = new PlayerView(mapGraph);
+		
 	}
+
+
 
 	// Function of StartUp Phase starts here
 	
@@ -570,6 +564,17 @@ public class PlayerController extends Observable implements Observer{
 			for(Country country : player.getMyCountries()) {
 				if(country.getName().equalsIgnoreCase(attackerAdjCountry)) {
 					return country;
+				}
+			}
+		}
+		return null;
+	}
+	
+	public Player getPlayerForCountry(GameMapGraph mapGraph, String countryName) {
+		for(Player player : mapGraph.getPlayers()) {
+			for(Country country : player.getMyCountries()) {
+				if(country.getName().equalsIgnoreCase(countryName)) {
+					return player;
 				}
 			}
 		}
