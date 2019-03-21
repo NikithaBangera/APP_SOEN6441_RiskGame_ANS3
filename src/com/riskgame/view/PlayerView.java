@@ -115,6 +115,7 @@ public class PlayerView implements Observer {
 		
 		if(mapGraph.getGamePhase().equalsIgnoreCase("Reinforcement")) {
 			startReinforcement(mapGraph, player);
+			
 		}
 		
 		JPanel panel_1 = new JPanel();
