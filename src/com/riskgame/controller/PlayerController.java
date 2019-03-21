@@ -28,9 +28,6 @@ public class PlayerController extends Observable implements Observer{
 	/** Variable to store the total number of players in game. */
 	private int countOfthePlayers = 0;
 
-	/** List which consists of players name. */
-	ArrayList<Player> playersList = new ArrayList<Player>();
-	
 	/** List which countries. */
 	public static ArrayList<Country> countriesList = new ArrayList<Country>();
 	
@@ -42,14 +39,6 @@ public class PlayerController extends Observable implements Observer{
 
 	public void setCountOfthePlayers(int countOfthePlayers) {
 		this.countOfthePlayers = countOfthePlayers;
-	}
-
-	public ArrayList<Player> getPlayersList() {
-		return playersList;
-	}
-
-	public void setPlayersList(ArrayList<Player> playersList) {
-		this.playersList = playersList;
 	}
 
 	public void gamePlay(GameMapGraph mapGraph) throws Exception {
@@ -101,74 +90,37 @@ public class PlayerController extends Observable implements Observer{
 					System.out.println("Player name cannot be empty");
 				}
 			}
-			playersList.add(riskPlayer);
+			mapGraph.getPlayers().add(riskPlayer);
 		}
 		
 		
 		allocationOfCountry(mapGraph);
-		allocationOfArmyToPlayers();
+		allocationOfArmyToPlayers(mapGraph);
 		allocationOfArmyToCountriesInitially(mapGraph);
 		
-	//  PlayerView playerView = new PlayerView(mapGraph, playersList);
+		CardController cardController = new CardController();
+		cardController.assignCountryToCard(mapGraph);
 		
-	//	PlayerView playerView = new PlayerView();
+		
+		
 		
 		
 		setChanged();
 		notifyObservers();
-		allocationOfRemainingArmyToCountries();
+		allocationOfRemainingArmyToCountries(mapGraph);
 
-		// Startup Phase starts here
+		// Place Army Phase starts here
 
-		RoundRobinScheduler roundRobin = new RoundRobinScheduler(getPlayersList());
-
-		// Loop for allowing players to execute actions, turn by turn
-		for (int round = 1; round <= getPlayersList().size(); round++) {
-
-			player = roundRobin.nextTurn();
-
-			// Reinforcement Phase starts here
-
-			System.out.println("\nReinforcement Phase begins!\n");
-			System.out.println("Player: " + player.getName() + "\n");
-			System.out.println("Do you want to continue with Reinforcement phase? (Yes or No) ");
-			String choice = br.readLine().trim();
-			while (!((choice.equalsIgnoreCase("Yes")) || (choice.equalsIgnoreCase("No")) || choice == null)) {
-				System.out.println("Invalid/Blank value entered, please enter Yes or No");
-
-				choice = br.readLine().trim();
-			}
-
-			if (choice.equalsIgnoreCase("Yes")) {
-				startReinforcement(player, mapGraph);
-			} else if (choice.equalsIgnoreCase("No")) {
-				System.out.println("Exited the Reinforcement Phase!");
-			}
-
-			// Reinforcement Phase ends here
-
-			// Fortification Phase starts here
-
-			System.out.println("\nFortification Phase begins!\n");
-			System.out.println("Player: " + player.getName() + "\n");
-			System.out.println("Do you wish to start the Fortification phase? (Yes or No)");
-			String choice1 = br.readLine().trim();
-			while (!((choice1.equalsIgnoreCase("Yes")) || (choice1.equalsIgnoreCase("No")) || choice1 == null)) {
-				System.out.println("Invalid/Blank value entered, please enter Yes or No");
-
-				choice1 = br.readLine().trim();
-			}
-			if (choice1.equalsIgnoreCase("Yes")) {
-				startGameFortification(player, mapGraph);
-			} else if (choice.equalsIgnoreCase("No")) {
-				System.out.println("Exited the Fortification phase!");
-			}
-			// Fortification Phase ends here
-
-		}
+		mapGraph.setGamePhase("Place Armies");
+		PlayerView playerView = new PlayerView(mapGraph);
+		
 	}
 
+
+
 	// Function of StartUp Phase starts here
+	
+	
 
 	/**
 	 * Method to assign countries to the players. Random allocation of countries to
@@ -180,13 +132,13 @@ public class PlayerController extends Observable implements Observer{
 		int i, countryIndexAssignment;
 		ArrayList<Country> countrySet = new ArrayList<>(mapGraph.getCountrySet().values());
 		while (countrySet.size() > 0) {
-			for (i = 0; i < this.playersList.size(); ++i) {
+			for (i = 0; i < mapGraph.getPlayers().size(); ++i) {
 				if (countrySet.size() > 1) {
 					countryIndexAssignment = new Random().nextInt(countrySet.size());
-					this.playersList.get(i).additionOfCountry(countrySet.get(countryIndexAssignment));
+					mapGraph.getPlayers().get(i).additionOfCountry(countrySet.get(countryIndexAssignment));
 					countrySet.remove(countryIndexAssignment);
 				} else if (countrySet.size() == 1) {
-					this.playersList.get(i).additionOfCountry(countrySet.get(0));
+					mapGraph.getPlayers().get(i).additionOfCountry(countrySet.get(0));
 					countrySet.remove(0);
 					break;
 				} else {
@@ -199,10 +151,11 @@ public class PlayerController extends Observable implements Observer{
 	/**
 	 * Method to assign the number of armies to the players which differs based on
 	 * the players count. Army allocation is done as per the conquest game rule.
+	 * @param mapGraph 
 	 * 
 	 */
-	public void allocationOfArmyToPlayers() {
-		playersList.forEach(player -> {
+	public void allocationOfArmyToPlayers(GameMapGraph mapGraph) {
+		mapGraph.getPlayers().forEach(player -> {
 			switch (countOfthePlayers) {
 			case 2:
 				player.setArmyCount(40);
@@ -235,7 +188,7 @@ public class PlayerController extends Observable implements Observer{
 			country.setNoOfArmies(1);
 		});
 
-		playersList.forEach(player -> {
+		mapGraph.getPlayers().forEach(player -> {
 			player.setArmyCount(player.getArmyCount() - player.getMyCountries().size());
 		});
 	}
@@ -243,11 +196,12 @@ public class PlayerController extends Observable implements Observer{
 	/**
 	 * Method for armies assignment to the countries so that the number of armies in
 	 * the countries will be balanced
+	 * @param mapGraph 
 	 * 
 	 */
-	public void allocationOfRemainingArmyToCountries() {
+	public void allocationOfRemainingArmyToCountries(GameMapGraph mapGraph) {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		playersList.forEach(player -> {
+		mapGraph.getPlayers().forEach(player -> {
 			System.out.println("\nPlayer Name: " + player.getName() + "\n");
 			player.getMyCountries().forEach(con -> {
 				if (player.getArmyCount() > 0) {
@@ -293,39 +247,34 @@ public class PlayerController extends Observable implements Observer{
 	 * @throws Exception - IOException
 	 */
 	public void startReinforcement(Player player, GameMapGraph mapGraph) throws Exception {
-		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-		Continent continent = player.getMyCountries().get(0).getPartOfContinent();
-		for (Country country : mapGraph.getCountries()) {
-			if (country.getPartOfContinent().getContinentName().equalsIgnoreCase(continent.getContinentName())) {
-				countriesList.add(country);
-			}
-		}
-		int reinforcementArmies = armiesToBeAssigned(player, continent);
-		System.out.println("Armies available for Reinforcement: " + reinforcementArmies);
-		player.setArmyCount(player.getArmyCount() + reinforcementArmies);
-
-		for (Country country : player.getMyCountries()) {
-			if (player.getArmyCount() > 0) {
-				System.out.println(
-						"Number of armies present in country " + country.getName() + " are " + country.getNoOfArmies());
-				System.out.println("Current available armies to be reinforced: " + player.getArmyCount());
-				System.out.println("Enter the number of armies to be deployed to country " + country.getName());
-				String armyCount = in.readLine().trim();
-				Pattern numberPattern = Pattern.compile("[0-9+]");
-				Matcher match = numberPattern.matcher(armyCount);
-				while (!match.matches() || armyCount.isEmpty()) {
-					System.out.println("\nPlease enter the correct army count below:");
-					armyCount = in.readLine().trim();
-					match = numberPattern.matcher(armyCount);
-				}
-				int armiesCount = Integer.parseInt(armyCount);
-				player.armiesAssignedToCountries(country, armiesCount);
-
-			} else {
-				System.out.println("Sorry you have insufficient armies left! \n");
-				break;
-			}
-		}
+//		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+//		
+//		int reinforcementArmies = armiesToBeAssigned(player, continent);
+//		System.out.println("Armies available for Reinforcement: " + reinforcementArmies);
+//		player.setArmyCount(player.getArmyCount() + reinforcementArmies);
+//
+//		for (Country country : player.getMyCountries()) {
+//			if (player.getArmyCount() > 0) {
+//				System.out.println(
+//						"Number of armies present in country " + country.getName() + " are " + country.getNoOfArmies());
+//				System.out.println("Current available armies to be reinforced: " + player.getArmyCount());
+//				System.out.println("Enter the number of armies to be deployed to country " + country.getName());
+//				String armyCount = in.readLine().trim();
+//				Pattern numberPattern = Pattern.compile("[0-9+]");
+//				Matcher match = numberPattern.matcher(armyCount);
+//				while (!match.matches() || armyCount.isEmpty()) {
+//					System.out.println("\nPlease enter the correct army count below:");
+//					armyCount = in.readLine().trim();
+//					match = numberPattern.matcher(armyCount);
+//				}
+//				int armiesCount = Integer.parseInt(armyCount);
+//				player.armiesAssignedToCountries(country, armiesCount);
+//
+//			} else {
+//				System.out.println("Sorry you have insufficient armies left! \n");
+//				break;
+//			}
+//		}
 	}
 
 	/**
@@ -337,9 +286,15 @@ public class PlayerController extends Observable implements Observer{
 	 * @return armiesAssignedPerPlayer returns the number of armies assigned to the
 	 *         player.
 	 */
-	public static int armiesToBeAssigned(Player player, Continent continent) {
+	public int reinforcementPhase(Player player, GameMapGraph mapGraph) {
 		int countriesPerPlayer = player.getMyCountries().size();
 		int armiesAssignedPerPlayer;
+		Continent continent = player.getMyCountries().get(0).getPartOfContinent();
+		for (Country country : mapGraph.getCountries()) {
+			if (country.getPartOfContinent().getContinentName().equalsIgnoreCase(continent.getContinentName())) {
+				countriesList.add(country);
+			}
+		}
 
 		if (countriesPerPlayer < 9) {
 			armiesAssignedPerPlayer = 3;
@@ -370,48 +325,87 @@ public class PlayerController extends Observable implements Observer{
 
 	//Attack Phase
 	
-	public void attackPhase(Country attacker, Country defender) {
+	public void attackPhase(GameMapGraph gameMapGraph, Country attacker, Country defender) {
 		boolean isAttackPossible = false;
+		boolean playerFound = false;
+		boolean isPlayerCountry = false;
 		if(attacker != null && defender != null) {
-			if(attacker.getAdjacentCountries().contains(defender.getName())) {
-				if(attacker.getNoOfArmies() > 1 && defender.getNoOfArmies() > 0) {
-					isAttackPossible = true;
+			for(Player player : gameMapGraph.getPlayers()) {
+				for(Country country : player.getMyCountries()) {
+					if(country.getName().equalsIgnoreCase(attacker.getName())) {
+						playerFound = true;
+						break;
+					}
 				}
-				else {
-					System.out.println("Insufficient armies in the attacker country/defender country");
+				if(playerFound) {
+					for(Country country: player.getMyCountries()) {
+						if(country.getName().equalsIgnoreCase(defender.getName())) {
+							JOptionPane.showMessageDialog(null, "Cannot attack your own country!!");
+							isPlayerCountry = true;
+							break;
+						}
+					}
 				}
 			}
-			else {
-				System.out.println("Attacker and Defender Countries are not adjacent!");
-			}	
+			
+			if(!isPlayerCountry) {
+				if(attacker.getAdjacentCountries().contains(defender.getName())) {
+					if(attacker.getNoOfArmies() > 1 && defender.getNoOfArmies() > 0) {
+						isAttackPossible = true;
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "Insufficient armies in the attacker country/defender country");
+					}
+				}
+				else {
+					JOptionPane.showMessageDialog(null,"Attacker and Defender Countries are not adjacent!");
+				}	
+			}
 		}
 		
 		if(isAttackPossible) {
-			//attacker and defender need to select the number of dice to roll
-			DiceView diceView = new DiceView(attacker, defender);
-			
-			
-			
+			DiceView diceView = new DiceView(gameMapGraph, attacker, defender);
 		}
 	}
 	
-	public void allOutAttack(Country attackerCountry, Country defenderCountry) {
+	public void allOutAttack(GameMapGraph gameMapGraph, Country attackerCountry, Country defenderCountry) {
 		int attackerDiceCount = 0;
 		int defenderDiceCount = 0;
+		boolean playerFound = false;
+		boolean isPlayerCountry = false;
 		String message = "";
 		
-		while(attackerCountry.getNoOfArmies() > 1 && defenderCountry.getNoOfArmies() > 0) {
-			attackerDiceCount = attackerCountry.getNoOfArmies() > 3 ? 3 :(attackerCountry.getNoOfArmies() > 2 ? 2 : 1);
-			defenderDiceCount = defenderCountry.getNoOfArmies() >= 2 ? 2 : 1;
-			
-			DiceController diceController = new DiceController();
-			diceController.startDiceRoll(attackerDiceCount, defenderDiceCount, attackerCountry, defenderCountry);
+		for(Player player : gameMapGraph.getPlayers()) {
+			for(Country country : player.getMyCountries()) {
+				if(country.getName().equalsIgnoreCase(attackerCountry.getName())) {
+					playerFound = true;
+					break;
+				}
+			}
+			if(playerFound) {
+				for(Country country: player.getMyCountries()) {
+					if(country.getName().equalsIgnoreCase(defenderCountry.getName())) {
+						isPlayerCountry = true;
+						break;
+					}
+				}
+			}
 		}
 		
-		if(defenderCountry.getNoOfArmies() == 0) {
-			attackerCountry.setNoOfArmies(attackerCountry.getNoOfArmies() - 1);
-			defenderCountry.setNoOfArmies(defenderCountry.getNoOfArmies() + 1);
-			JOptionPane.showMessageDialog(null, "Defender has lost the country to attacker!");
+		if(!isPlayerCountry) {
+			while(attackerCountry.getNoOfArmies() > 1 && defenderCountry.getNoOfArmies() > 0) {
+				attackerDiceCount = attackerCountry.getNoOfArmies() > 3 ? 3 :(attackerCountry.getNoOfArmies() > 2 ? 2 : 1);
+				defenderDiceCount = defenderCountry.getNoOfArmies() >= 2 ? 2 : 1;
+				
+				DiceController diceController = new DiceController();
+				diceController.startDiceRoll(attackerDiceCount, defenderDiceCount, attackerCountry, defenderCountry);
+			}
+			
+			if(defenderCountry.getNoOfArmies() == 0) {
+				attackerCountry.setNoOfArmies(attackerCountry.getNoOfArmies() - 1);
+				defenderCountry.setNoOfArmies(defenderCountry.getNoOfArmies() + 1);
+				JOptionPane.showMessageDialog(null, "Defender has lost the country to attacker!");
+			}
 		}
 	}
 	
@@ -426,113 +420,113 @@ public class PlayerController extends Observable implements Observer{
 	 * @param mapData - GameMapGraph object
 	 * @throws IOException - throws Input output exception
 	 */
-	public void startGameFortification(Player player, GameMapGraph mapData) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		int countOfArmies = 0;
-		if (player.getMyCountries().size() >= 2) {
-			doFortification = true;
-			String fromCountry = "";
-			String toCountry = "";
-
-			while (doFortification) {
-				doFortification = true;
-				Country givingCountry = new Country();
-				Country receivingCountry = new Country();
-
-				do {
-					System.out.println("\nPlayer has the following list of countries with armies: \n");
-					for (Country country : player.getMyCountries()) {
-						System.out.println("* " + country.getName() + ":" + country.getNoOfArmies() + "\n");
-					}
-					System.out.println("Enter the name of country from which you want to move some armies :");
-					fromCountry = br.readLine().trim().toUpperCase();
-					Pattern namePattern1 = Pattern.compile("[a-zA-Z\\s]+");
-					Matcher match = namePattern1.matcher(fromCountry);
-					while (!match.matches() || fromCountry.isEmpty()) {
-						System.out.println("\nPlease enter the correct country name below:");
-						fromCountry = br.readLine().trim().toUpperCase();
-						match = namePattern1.matcher(fromCountry);
-					}
-
-					System.out.println("Enter the name of country to which you want to move some armies, from country "
-							+ fromCountry);
-					toCountry = br.readLine().trim().toUpperCase();
-					Pattern namePattern2 = Pattern.compile("[a-zA-Z\\s]+");
-					match = namePattern2.matcher(toCountry);
-					while (!match.matches() || toCountry.isEmpty()) {
-						System.out.println("\nPlease enter the correct country name below:");
-
-						toCountry = br.readLine().trim().toUpperCase();
-						match = namePattern2.matcher(toCountry);
-					}
-
-					if (!mapData.getCountrySet().containsKey(fromCountry)
-							|| !mapData.getCountrySet().containsKey(toCountry)) {
-						doFortification = false;
-						System.out.println("Country doesn't exist!\n");
-					}
-
-					givingCountry = mapData.getCountrySet().get(fromCountry);
-					receivingCountry = mapData.getCountrySet().get(toCountry);
-					if (player.getMyCountries().contains(givingCountry)
-							&& player.getMyCountries().contains(receivingCountry)) {
-						doFortification = true;
-					} else {
-						System.out.println(
-								"Entered countries doesn't exist in player's owned country list, please enter country names again\n");
-						doFortification = false;
-
-					}
-				} while (!doFortification);
-				if (doFortification) {
-					System.out.println("\nEnter the number of armies to move from " + fromCountry + " to " + toCountry);
-					try {
-						String countOfArmy = br.readLine().trim();
-						Pattern numberPattern3 = Pattern.compile("[0-9]+");
-						Matcher match = numberPattern3.matcher(countOfArmy);
-						while (!match.matches() || countOfArmy.isEmpty()) {
-							System.out.println("\nPlease enter the correct army count below:");
-
-							countOfArmy = br.readLine().trim();
-							match = numberPattern3.matcher(countOfArmy);
-						}
-						countOfArmies = Integer.parseInt(countOfArmy);
-						if (countOfArmies > mapData.getCountrySet().get(fromCountry).getNoOfArmies()) {
-							System.out.println(
-									"Insufficient armies available, fortification is not possible with asked number of armies.");
-							doFortification = false;
-						}
-
-					} catch (NumberFormatException e) {
-						System.out.println("Invalid number of armies.");
-					}
-				}
-
-				if (doFortification) {
-					boolean fortify = false;
-					for (Country country : player.getMyCountries()) {
-						for (String country1 : country.getAdjacentCountries()) {
-							if (country1.equalsIgnoreCase(fromCountry) || country1.equalsIgnoreCase(toCountry)) {
-								fortify = true;
-							}
-						}
-					}
-					if (fortify) {
-						moveArmies(givingCountry, receivingCountry, countOfArmies);
-					} else {
-						doFortification = false;
-						System.out
-								.println("None of the player's countries are adjacent\n Fortification phase ends..!!");
-					}
-
-				}
-
-			}
-
-		} else {
-			System.out.println("Sorry, Fortification is not possible if the country owned is less than 2");
-		}
-	}
+//	public void startGameFortification(Player player, GameMapGraph mapData) throws IOException {
+//		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+//		int countOfArmies = 0;
+//		if (player.getMyCountries().size() >= 2) {
+//			doFortification = true;
+//			String fromCountry = "";
+//			String toCountry = "";
+//
+//			while (doFortification) {
+//				doFortification = true;
+//				Country givingCountry = new Country();
+//				Country receivingCountry = new Country();
+//
+//				do {
+//					System.out.println("\nPlayer has the following list of countries with armies: \n");
+//					for (Country country : player.getMyCountries()) {
+//						System.out.println("* " + country.getName() + ":" + country.getNoOfArmies() + "\n");
+//					}
+//					System.out.println("Enter the name of country from which you want to move some armies :");
+//					fromCountry = br.readLine().trim().toUpperCase();
+//					Pattern namePattern1 = Pattern.compile("[a-zA-Z\\s]+");
+//					Matcher match = namePattern1.matcher(fromCountry);
+//					while (!match.matches() || fromCountry.isEmpty()) {
+//						System.out.println("\nPlease enter the correct country name below:");
+//						fromCountry = br.readLine().trim().toUpperCase();
+//						match = namePattern1.matcher(fromCountry);
+//					}
+//
+//					System.out.println("Enter the name of country to which you want to move some armies, from country "
+//							+ fromCountry);
+//					toCountry = br.readLine().trim().toUpperCase();
+//					Pattern namePattern2 = Pattern.compile("[a-zA-Z\\s]+");
+//					match = namePattern2.matcher(toCountry);
+//					while (!match.matches() || toCountry.isEmpty()) {
+//						System.out.println("\nPlease enter the correct country name below:");
+//
+//						toCountry = br.readLine().trim().toUpperCase();
+//						match = namePattern2.matcher(toCountry);
+//					}
+//
+//					if (!mapData.getCountrySet().containsKey(fromCountry)
+//							|| !mapData.getCountrySet().containsKey(toCountry)) {
+//						doFortification = false;
+//						System.out.println("Country doesn't exist!\n");
+//					}
+//
+//					givingCountry = mapData.getCountrySet().get(fromCountry);
+//					receivingCountry = mapData.getCountrySet().get(toCountry);
+//					if (player.getMyCountries().contains(givingCountry)
+//							&& player.getMyCountries().contains(receivingCountry)) {
+//						doFortification = true;
+//					} else {
+//						System.out.println(
+//								"Entered countries doesn't exist in player's owned country list, please enter country names again\n");
+//						doFortification = false;
+//
+//					}
+//				} while (!doFortification);
+//				if (doFortification) {
+//					System.out.println("\nEnter the number of armies to move from " + fromCountry + " to " + toCountry);
+//					try {
+//						String countOfArmy = br.readLine().trim();
+//						Pattern numberPattern3 = Pattern.compile("[0-9]+");
+//						Matcher match = numberPattern3.matcher(countOfArmy);
+//						while (!match.matches() || countOfArmy.isEmpty()) {
+//							System.out.println("\nPlease enter the correct army count below:");
+//
+//							countOfArmy = br.readLine().trim();
+//							match = numberPattern3.matcher(countOfArmy);
+//						}
+//						countOfArmies = Integer.parseInt(countOfArmy);
+//						if (countOfArmies > mapData.getCountrySet().get(fromCountry).getNoOfArmies()) {
+//							System.out.println(
+//									"Insufficient armies available, fortification is not possible with asked number of armies.");
+//							doFortification = false;
+//						}
+//
+//					} catch (NumberFormatException e) {
+//						System.out.println("Invalid number of armies.");
+//					}
+//				}
+//
+//				if (doFortification) {
+//					boolean fortify = false;
+//					for (Country country : player.getMyCountries()) {
+//						for (String country1 : country.getAdjacentCountries()) {
+//							if (country1.equalsIgnoreCase(fromCountry) || country1.equalsIgnoreCase(toCountry)) {
+//								fortify = true;
+//							}
+//						}
+//					}
+//					if (fortify) {
+//						moveArmies(givingCountry, receivingCountry, countOfArmies);
+//					} else {
+//						doFortification = false;
+//						System.out
+//								.println("None of the player's countries are adjacent\n Fortification phase ends..!!");
+//					}
+//
+//				}
+//
+//			}
+//
+//		} else {
+//			System.out.println("Sorry, Fortification is not possible if the country owned is less than 2");
+//		}
+//	}
 
 	/**
 	 * This method takes the values for each player from the startFortification
@@ -553,20 +547,20 @@ public class PlayerController extends Observable implements Observer{
 				toCountry.setNoOfArmies(toCountryArmy + armiesCount);
 				adjacentCountries = true;
 				doFortification = false;
-				System.out.println("\nArmies successfully moved!");
-				System.out.println("\nFortification phase ends!");
+			//	System.out.println("\nArmies successfully moved!");
+			//	System.out.println("\nFortification phase ends!");
 				break;
 			}
 		}
 
 		if (!adjacentCountries) {
-			System.out.println("Countries are not adjacanet!");
+			JOptionPane.showMessageDialog(null, "Countries are not adjacanet!");
 			doFortification = true;
 		}
 	}
 	
-	public Country getDefenderCountry(String attackerAdjCountry) {
-		for(Player player : playersList) {
+	public Country getAdjacentCountry(GameMapGraph mapGraph, String attackerAdjCountry) {
+		for(Player player : mapGraph.getPlayers()) {
 			for(Country country : player.getMyCountries()) {
 				if(country.getName().equalsIgnoreCase(attackerAdjCountry)) {
 					return country;
@@ -575,7 +569,17 @@ public class PlayerController extends Observable implements Observer{
 		}
 		return null;
 	}
-
+	
+	public Player getPlayerForCountry(GameMapGraph mapGraph, String countryName) {
+		for(Player player : mapGraph.getPlayers()) {
+			for(Country country : player.getMyCountries()) {
+				if(country.getName().equalsIgnoreCase(countryName)) {
+					return player;
+				}
+			}
+		}
+		return null;
+	}
 	
 	
 	@Override

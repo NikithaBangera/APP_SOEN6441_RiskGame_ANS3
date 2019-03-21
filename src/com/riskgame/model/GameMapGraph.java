@@ -34,6 +34,10 @@ public class GameMapGraph {
 
 	/** HashMap for set of countries */
 	private HashMap<String, Country> countrySet;
+	
+	private ArrayList<Player> players = new ArrayList<Player>();
+	
+	private String gamePhase;
 
 	/**
 	 * GameMapGraph Constructor
@@ -59,6 +63,7 @@ public class GameMapGraph {
 		this.continents = continents;
 		this.countOfCountries = countOfCountries;
 		this.countries = countries;
+		this.players = new ArrayList<Player>();
 	}
 
 	/**
@@ -192,5 +197,21 @@ public class GameMapGraph {
 		return "GameMapGraph [mapTag=" + mapTag + ", countOfContinents=" + countOfContinents + ", continents="
 				+ continents + ", countOfCountries=" + countOfCountries + ", countries=" + countries + ", filename="
 				+ filename + ", countrySet=" + countrySet + "]";
+	}
+
+	public ArrayList<Player> getPlayers() {
+		return players;
+	}
+
+	public void setPlayers(ArrayList<Player> players) {
+		this.players = players;
+	}
+
+	public String getGamePhase() {
+		return gamePhase;
+	}
+
+	public void setGamePhase(String gamePhase) {
+		this.gamePhase = gamePhase;
 	}
 }
