@@ -107,7 +107,7 @@ public class PlayerController extends Observable implements Observer{
 		
 		setChanged();
 		notifyObservers();
-		allocationOfRemainingArmyToCountries(mapGraph);
+	//	allocationOfRemainingArmyToCountries(mapGraph);
 
 		// Place Army Phase starts here
 
@@ -199,39 +199,40 @@ public class PlayerController extends Observable implements Observer{
 	 * @param mapGraph 
 	 * 
 	 */
-	public void allocationOfRemainingArmyToCountries(GameMapGraph mapGraph) {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		mapGraph.getPlayers().forEach(player -> {
-			System.out.println("\nPlayer Name: " + player.getName() + "\n");
-			player.getMyCountries().forEach(con -> {
-				if (player.getArmyCount() > 0) {
-					System.out.println("Country Name : " + con.getName());
-					System.out.println("Number of Armies assigned : " + con.getNoOfArmies());
-					System.out.println("Available Armies: " + player.getArmyCount());
-					System.out.println("Enter number of armies you want to assign to " + con.getName());
-					try {
-						String numArmies = br.readLine().trim();
-						Pattern numberPattern = Pattern.compile("[0-9]+");
-						Matcher match = numberPattern.matcher(numArmies);
-						while (!match.matches() || numArmies.isEmpty()) {
-							System.out.println("\nPlease enter the correct number of armies below:");
-
-							numArmies = br.readLine().trim();
-							match = numberPattern.matcher(numArmies);
-						}
-						int numberOFarmies = Integer.parseInt(numArmies);
-						player.armiesAssignedToCountries(con, numberOFarmies);
-					} catch (NumberFormatException e) {
-						System.out.println("Please enter a valid number.");
-						e.printStackTrace();
-					} catch (IOException e) {
-						System.out.println("Please enter a valid number.");
-						e.printStackTrace();
-					}
-
-				}
-			});
-		});
+	public void allocationOfRemainingArmyToCountries(Country selectedCountryObject, Player player) {
+		player.armiesAssignedToCountries(selectedCountryObject, 1);
+//		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+//		mapGraph.getPlayers().forEach(player -> {
+//			System.out.println("\nPlayer Name: " + player.getName() + "\n");
+//			player.getMyCountries().forEach(con -> {
+//				if (player.getArmyCount() > 0) {
+//					System.out.println("Country Name : " + con.getName());
+//					System.out.println("Number of Armies assigned : " + con.getNoOfArmies());
+//					System.out.println("Available Armies: " + player.getArmyCount());
+//					System.out.println("Enter number of armies you want to assign to " + con.getName());
+//					try {
+//						String numArmies = br.readLine().trim();
+//						Pattern numberPattern = Pattern.compile("[0-9]+");
+//						Matcher match = numberPattern.matcher(numArmies);
+//						while (!match.matches() || numArmies.isEmpty()) {
+//							System.out.println("\nPlease enter the correct number of armies below:");
+//
+//							numArmies = br.readLine().trim();
+//							match = numberPattern.matcher(numArmies);
+//						}
+//						int numberOFarmies = Integer.parseInt(numArmies);
+//						player.armiesAssignedToCountries(con, numberOFarmies);
+//					} catch (NumberFormatException e) {
+//						System.out.println("Please enter a valid number.");
+//						e.printStackTrace();
+//					} catch (IOException e) {
+//						System.out.println("Please enter a valid number.");
+//						e.printStackTrace();
+//					}
+//
+//				}
+//			});
+//		});
 
 	}
 	// Function of StartUp Phase ends here

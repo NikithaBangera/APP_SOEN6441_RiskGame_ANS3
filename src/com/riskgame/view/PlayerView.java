@@ -179,6 +179,15 @@ public class PlayerView implements Observer {
 		
 		
 		JButton btnPlaceArmy = new JButton("Place Army");
+		btnPlaceArmy.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				PlayerController playerController = new PlayerController();
+                playerController.allocationOfRemainingArmyToCountries(selectedCountryObject, player);
+                frame.revalidate();
+				frame.repaint();
+				initialize(mapGraph);
+			}
+		});
 		btnPlaceArmy.setFont(new Font("Arial", Font.PLAIN, 12));
 		btnPlaceArmy.setBounds(426, 38, 165, 29);
 		frame.getContentPane().add(btnPlaceArmy);
