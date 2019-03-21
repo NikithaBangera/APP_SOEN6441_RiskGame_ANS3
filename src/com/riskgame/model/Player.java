@@ -22,6 +22,26 @@ public class Player {
 	/** List of countries held by the Player */
 	private ArrayList<Country> myCountries = new ArrayList<Country>();
 
+	private ArrayList<Card> cardList;
+
+	public ArrayList<Card> getCardList() {
+		return cardList;
+	}
+
+	private int exchangedTimes;
+
+	public int getExchangedTimes() {
+		return exchangedTimes;
+	}
+
+	public void setExchangedTimes(int exchangedTimes) {
+		this.exchangedTimes = exchangedTimes;
+	}
+
+	public void setCardList(ArrayList<Card> cardList) {
+		this.cardList = cardList;
+	}
+
 	/**
 	 * Get the Player name.
 	 * 
@@ -106,27 +126,27 @@ public class Player {
 		this.myCountries.add(country);
 	}
 
-	
 	@Override
 	public String toString() {
-		return "RiskPlayer [name=" + name + ", armyCount=" + armyCount + ", myCountries=" + myCountries + "]";
-
+		return "Player [name=" + name + ", armyCount=" + armyCount + ", myCountries=" + myCountries + ", cardList="
+				+ cardList + "]";
 	}
-	
-	public List<String> getPlayerCountryNames(){
+
+	public List<String> getPlayerCountryNames() {
 		List<String> playerCountries = new ArrayList<String>();
-		for(Country country: getMyCountries()) {
+		for (Country country : getMyCountries()) {
 			playerCountries.add(country.getName());
 		}
 		return playerCountries;
 	}
-	
+
 	public Country getSelectedCountry(String countryName) {
-		for(Country country: getMyCountries()) {
-			if(country.getName().equalsIgnoreCase(countryName)) {
+		for (Country country : getMyCountries()) {
+			if (country.getName().equalsIgnoreCase(countryName)) {
 				return country;
 			}
 		}
 		return null;
 	}
+
 }

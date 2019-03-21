@@ -1,32 +1,74 @@
 package com.riskgame.model;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
 public class Card {
-	
-	enum CardType{
-		Infantry, Cavalry, Artillery
-	}
-	
+
+	public final static String INFANTRY = "infantry";
+	public final static String CAVALRY = "cavalry";
+	public final static String ARTILLERY = "artillery";
+
 	private Country country;
+	private Player currentPlayer;
+	private String cardType;
+	private ArrayList<Card> countryCards = new ArrayList<Card>();
+	private ArrayList<Card> cardsToExchange;
 	
-	private Player cardHolder;
 
+	public ArrayList<Card> getCountryCards() {
+		return countryCards;
+	}
 
-	public Country getCountryCard() {
+	public void setCountryCards(ArrayList<Card> countryCards) {
+		this.countryCards = countryCards;
+	}
+
+	public Country getCountry() {
 		return country;
 	}
 
-	public void setCountryCard(Country country) {
+	public void setCountry(Country country) {
 		this.country = country;
 	}
 
-	public Player getCardHolder() {
-		return cardHolder;
+	public Player getCurrentPlayer() {
+		return currentPlayer;
 	}
 
-	public void setCardHolder(Player cardHolder) {
-		this.cardHolder = cardHolder;
+	public void setCurrentPlayer(Player currentPlayer) {
+		this.currentPlayer = currentPlayer;
 	}
-	
-	
-	
+
+	public String getCardType() {
+		return cardType;
+	}
+
+	public void setCardType(String cardType) {
+		this.cardType = cardType;
+	}
+
+	public ArrayList<Card> getCardsToExchange() {
+		return cardsToExchange;
+	}
+
+	public void setCardsToExchange(ArrayList<Card> cardsToExchange) {
+		this.cardsToExchange = cardsToExchange;
+	}
+
+	@Override
+	public String toString() {
+		return "Card [country=" + country + ", currentPlayer=" + currentPlayer + ", cardType=" + cardType
+				+ ", countryCards=" + countryCards + ", cardsToExchange=" + cardsToExchange + "]";
+	}
+
+	// Methods related to Card
+	public ArrayList<String> totalCardType() {
+		ArrayList<String> cardTypes = new ArrayList<>();
+		cardTypes.add(ARTILLERY);
+		cardTypes.add(CAVALRY);
+		cardTypes.add(INFANTRY);
+		return cardTypes;
+	}
+
 }

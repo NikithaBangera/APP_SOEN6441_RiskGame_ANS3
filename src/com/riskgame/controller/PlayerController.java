@@ -1,18 +1,22 @@
 package com.riskgame.controller;
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
+import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
+import com.risk.services.controller.Util.WindowUtil;
+import com.riskgame.model.Card;
 import com.riskgame.model.Continent;
 import com.riskgame.model.Country;
 import com.riskgame.model.Dice;
@@ -21,7 +25,9 @@ import com.riskgame.model.Player;
 import com.riskgame.view.DiceView;
 import com.riskgame.view.PlayerView;
 
-public class PlayerController extends Observable implements Observer{
+import javafx.scene.control.TextArea;
+
+public class PlayerController extends Observable implements Observer {
 
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -30,11 +36,20 @@ public class PlayerController extends Observable implements Observer{
 
 	/** List which consists of players name. */
 	ArrayList<Player> playersList = new ArrayList<Player>();
-	
+
 	/** List which countries. */
 	public static ArrayList<Country> countriesList = new ArrayList<Country>();
-	
+
 	public boolean doFortification = false;
+	private Player playerPlaying;
+
+	public Player getPlayerPlaying() {
+		return playerPlaying;
+	}
+
+	public void setPlayerPlaying(Player playerPlaying) {
+		this.playerPlaying = playerPlaying;
+	}
 
 	public int getCountOfthePlayers() {
 		return countOfthePlayers;
@@ -103,20 +118,19 @@ public class PlayerController extends Observable implements Observer{
 			}
 			playersList.add(riskPlayer);
 		}
-		
-		
+
 		allocationOfCountry(mapGraph);
 		allocationOfArmyToPlayers();
 		allocationOfArmyToCountriesInitially(mapGraph);
-		
-	//  PlayerView playerView = new PlayerView(mapGraph, playersList);
-		
-	//	PlayerView playerView = new PlayerView();
-		
-		
+
+		// PlayerView playerView = new PlayerView(mapGraph, playersList);
+
+		// PlayerView playerView = new PlayerView();
+
 		setChanged();
 		notifyObservers();
 		allocationOfRemainingArmyToCountries();
+		assignCardToCountry(mapGraph);
 
 		// Startup Phase starts here
 
@@ -126,7 +140,7 @@ public class PlayerController extends Observable implements Observer{
 		for (int round = 1; round <= getPlayersList().size(); round++) {
 
 			player = roundRobin.nextTurn();
-
+			playerPlaying = player;
 			// Reinforcement Phase starts here
 
 			System.out.println("\nReinforcement Phase begins!\n");
@@ -368,53 +382,50 @@ public class PlayerController extends Observable implements Observer{
 		return flag;
 	}
 
-	//Attack Phase
-	
+	// Attack Phase
+
 	public void attackPhase(Country attacker, Country defender) {
 		boolean isAttackPossible = false;
-		if(attacker != null && defender != null) {
-			if(attacker.getAdjacentCountries().contains(defender.getName())) {
-				if(attacker.getNoOfArmies() > 1 && defender.getNoOfArmies() > 0) {
+		if (attacker != null && defender != null) {
+			if (attacker.getAdjacentCountries().contains(defender.getName())) {
+				if (attacker.getNoOfArmies() > 1 && defender.getNoOfArmies() > 0) {
 					isAttackPossible = true;
-				}
-				else {
+				} else {
 					System.out.println("Insufficient armies in the attacker country/defender country");
 				}
-			}
-			else {
+			} else {
 				System.out.println("Attacker and Defender Countries are not adjacent!");
-			}	
+			}
 		}
-		
-		if(isAttackPossible) {
-			//attacker and defender need to select the number of dice to roll
+
+		if (isAttackPossible) {
+			// attacker and defender need to select the number of dice to roll
 			DiceView diceView = new DiceView(attacker, defender);
-			
-			
-			
+
 		}
 	}
-	
+
 	public void allOutAttack(Country attackerCountry, Country defenderCountry) {
 		int attackerDiceCount = 0;
 		int defenderDiceCount = 0;
 		String message = "";
-		
-		while(attackerCountry.getNoOfArmies() > 1 && defenderCountry.getNoOfArmies() > 0) {
-			attackerDiceCount = attackerCountry.getNoOfArmies() > 3 ? 3 :(attackerCountry.getNoOfArmies() > 2 ? 2 : 1);
+
+		while (attackerCountry.getNoOfArmies() > 1 && defenderCountry.getNoOfArmies() > 0) {
+			attackerDiceCount = attackerCountry.getNoOfArmies() > 3 ? 3 : (attackerCountry.getNoOfArmies() > 2 ? 2 : 1);
 			defenderDiceCount = defenderCountry.getNoOfArmies() >= 2 ? 2 : 1;
-			
+
 			DiceController diceController = new DiceController();
 			diceController.startDiceRoll(attackerDiceCount, defenderDiceCount, attackerCountry, defenderCountry);
 		}
-		
-		if(defenderCountry.getNoOfArmies() == 0) {
+
+		if (defenderCountry.getNoOfArmies() == 0) {
 			attackerCountry.setNoOfArmies(attackerCountry.getNoOfArmies() - 1);
 			defenderCountry.setNoOfArmies(defenderCountry.getNoOfArmies() + 1);
 			JOptionPane.showMessageDialog(null, "Defender has lost the country to attacker!");
+
 		}
 	}
-	
+
 	// Fortification Phase
 
 	/**
@@ -564,11 +575,11 @@ public class PlayerController extends Observable implements Observer{
 			doFortification = true;
 		}
 	}
-	
+
 	public Country getDefenderCountry(String attackerAdjCountry) {
-		for(Player player : playersList) {
-			for(Country country : player.getMyCountries()) {
-				if(country.getName().equalsIgnoreCase(attackerAdjCountry)) {
+		for (Player player : playersList) {
+			for (Country country : player.getMyCountries()) {
+				if (country.getName().equalsIgnoreCase(attackerAdjCountry)) {
 					return country;
 				}
 			}
@@ -576,12 +587,87 @@ public class PlayerController extends Observable implements Observer{
 		return null;
 	}
 
-	
-	
 	@Override
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub
+
+	}
+
+	// Cards
+
+	public void assignCardToCountry(GameMapGraph map) {
+
+		ArrayList<Card> temp = new ArrayList<Card>();
+		ArrayList<Country> allCountries = new ArrayList<>(map.getCountrySet().values());
+
+		for (Country country : allCountries) {
+			Card card = new Card();
+			card.setCardType(card.totalCardType().get(new Random().nextInt(card.totalCardType().size())));
+			card.setCountry(country);
+			temp.add(card);
+			card.setCountryCards(temp);
+		}
+	}
+
+	// if player wins a country
+	private void allocateCardToPlayer() {
+		Card cardToBeAdded = new Card();
+//        cardToBeAdded = cardToBeAdded.getCountryCards(0);
+
+		cardToBeAdded.setCardType(
+				cardToBeAdded.totalCardType().get(new Random().nextInt(cardToBeAdded.totalCardType().size())));
+		playerPlaying.getCardList().add(cardToBeAdded);
+		System.out.println("Added card " + cardToBeAdded.getCardType());
+	}
+
+	// showing cards during reinforcement phase
+	private HashMap<String, Integer> showCards() {
+		HashMap<String, Integer> showCard = new HashMap<String, Integer>();
+		int artilleryCount = 0;
+		int cavilaryCount = 0;
+		int infantryCount = 0;
+		ArrayList<Card> cardsToShow = new ArrayList<Card>();
+
+		cardsToShow = playerPlaying.getCardList();
+
+		for (Card card : cardsToShow) {
+			if (card.getCardType().equalsIgnoreCase("infantry")) {
+				infantryCount += 1;
+			} else if (card.getCardType().equalsIgnoreCase("cavalry")) {
+				cavilaryCount += 1;
+			} else {
+				artilleryCount += 1;
+			}
+		}
+
+		showCard.put("Infantry", infantryCount);
+		showCard.put("Cavalry", cavilaryCount);
+		showCard.put("Artillery", artilleryCount);
+
+		return showCard;
+	}
+
+	// exchange cards
+	public Player exchangeCards(List<Card> selectedCards) {
+
+		if (playerPlaying.getCardList().size() > 3) {
+			playerPlaying.setArmyCount(playerPlaying.getArmyCount() + (5 * playerPlaying.getExchangedTimes()));
+		} else {
+
+		}
 		
+		System.out.println(playerPlaying.getName() + " successfully exchanged 3 cards for 1 army! \n");
+
+		for (Card card : selectedCards) {
+			if (playerPlaying.getMyCountries().contains(card.getCountry())) {
+				card.getCountry().setNoOfArmies(card.getCountry().getNoOfArmies() + 2);
+				System.out.println(
+						playerPlaying.getName() + "\" got extra 2 armies on \"" + card.getCountry().getName() + "\n");
+
+				break;
+			}
+		}
+		return playerPlaying;
 	}
 
 }
