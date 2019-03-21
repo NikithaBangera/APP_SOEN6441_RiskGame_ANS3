@@ -107,7 +107,7 @@ public class PlayerController extends Observable implements Observer{
 		
 		setChanged();
 		notifyObservers();
-		allocationOfRemainingArmyToCountries(mapGraph);
+	//	allocationOfRemainingArmyToCountries(mapGraph);
 
 		// Place Army Phase starts here
 
