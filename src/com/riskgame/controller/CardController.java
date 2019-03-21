@@ -12,6 +12,10 @@ public class CardController {
 	private Card card;
 	private ArrayList<Card> playerOwnedCards;
 	
+	public void assignCardsToCountry() {
+
+	}
+	
 	public void allocateCardToPlayer() {
 		
 

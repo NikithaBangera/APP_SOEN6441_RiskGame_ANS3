@@ -2,6 +2,8 @@ package com.riskgame.model;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Stack;
 
 public class Card {
 
@@ -12,17 +14,8 @@ public class Card {
 	private Country country;
 	private Player currentPlayer;
 	private String cardType;
-	private ArrayList<Card> countryCards = new ArrayList<Card>();
-	private ArrayList<Card> cardsToExchange;
-	
-
-	public ArrayList<Card> getCountryCards() {
-		return countryCards;
-	}
-
-	public void setCountryCards(ArrayList<Card> countryCards) {
-		this.countryCards = countryCards;
-	}
+	private HashMap<String, String> countryCardsList = new HashMap<String, String>();
+	private HashMap<String, Integer> playersCardList = new HashMap<String, Integer>();
 
 	public Country getCountry() {
 		return country;
@@ -48,18 +41,28 @@ public class Card {
 		this.cardType = cardType;
 	}
 
-	public ArrayList<Card> getCardsToExchange() {
-		return cardsToExchange;
+	public HashMap<String, String> getCountryCardsList() {
+		return countryCardsList;
 	}
 
-	public void setCardsToExchange(ArrayList<Card> cardsToExchange) {
-		this.cardsToExchange = cardsToExchange;
+	public void setCountryCardsList(HashMap<String, String> countryCardsList) {
+		this.countryCardsList = countryCardsList;
 	}
+
+	public HashMap<String, Integer> getPlayersCardList() {
+		return playersCardList;
+	}
+
+	public void setPlayersCardList(HashMap<String, Integer> playersCardList) {
+		this.playersCardList = playersCardList;
+	}
+	
+	
 
 	@Override
 	public String toString() {
 		return "Card [country=" + country + ", currentPlayer=" + currentPlayer + ", cardType=" + cardType
-				+ ", countryCards=" + countryCards + ", cardsToExchange=" + cardsToExchange + "]";
+				+ ", countryCardsList=" + countryCardsList + ", playersCardList=" + playersCardList + "]";
 	}
 
 	// Methods related to Card

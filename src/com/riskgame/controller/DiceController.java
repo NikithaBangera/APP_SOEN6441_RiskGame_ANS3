@@ -93,6 +93,7 @@ public class DiceController {
 			
 		}
 		else {
+			//allocateCard
 			JOptionPane.showMessageDialog(null, "Allowed number of armies to be moved: "+(attackerCountry.getNoOfArmies() - 1));
 		}
 	}

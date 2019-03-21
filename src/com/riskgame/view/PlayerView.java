@@ -24,6 +24,11 @@ import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PiePlot;
+import org.jfree.data.general.DefaultPieDataset;
 
 import com.riskgame.controller.PlayerController;
 import com.riskgame.controller.RoundRobinScheduler;
@@ -106,7 +111,7 @@ public class PlayerView implements Observer {
 		
 		if(mapGraph.getGamePhase().equalsIgnoreCase("Reinforcement")) {
 			startReinforcement(mapGraph, player);
-			
+			CardView cardView = new CardView(mapGraph, player);
 		}
 		
 		JPanel panel_1 = new JPanel();
