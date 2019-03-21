@@ -4,7 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 
-public class MainView {
+public class DominationView {
 
 	private JFrame frame;
 
@@ -15,7 +15,7 @@ public class MainView {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MainView window = new MainView();
+					DominationView window = new DominationView();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -27,7 +27,7 @@ public class MainView {
 	/**
 	 * Create the application.
 	 */
-	public MainView() {
+	public DominationView() {
 		initialize();
 	}
 
@@ -39,4 +39,5 @@ public class MainView {
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
+
 }
