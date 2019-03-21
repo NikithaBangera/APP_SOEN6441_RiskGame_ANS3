@@ -3,6 +3,8 @@ package com.riskgame.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 /**
  * This class stores the value associated to each player. It stores player's
  * name of String type, total armyCount of player as Integer type, and the
@@ -109,10 +111,10 @@ public class Player {
 				country.setNoOfArmies(country.getNoOfArmies() + armiesCount);
 				this.setArmyCount(this.getArmyCount() - armiesCount);
 			} else {
-				System.out.println("Insufficient number of armies.\n");
+				JOptionPane.showMessageDialog(null, "Insufficient number of armies.");
 			}
 		} else {
-			System.out.println("This country is not owned by you!\n");
+			JOptionPane.showMessageDialog(null, "This country is not owned by you!");
 		}
 	}
 
