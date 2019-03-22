@@ -10,11 +10,13 @@ import java.awt.Font;
 import javax.swing.JTextField;
 
 import com.riskgame.controller.CardController;
+import com.riskgame.model.Card;
 import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.Player;
 
 import javax.swing.JRadioButton;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import java.awt.event.ActionEvent;
 
 public class CardView {
@@ -98,39 +100,54 @@ public class CardView {
 		lblSelectCardTo.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		lblSelectCardTo.setBounds(144, 145, 189, 29);
 		frame.getContentPane().add(lblSelectCardTo);
-		
+
 		JLabel lblInfrantryAssign = new JLabel("Infantry");
 		lblInfrantryAssign.setBounds(40, 235, 61, 16);
 		frame.getContentPane().add(lblInfrantryAssign);
-		
+
 		infantryAssign = new JTextField();
 		infantryAssign.setBounds(99, 230, 71, 26);
 		frame.getContentPane().add(infantryAssign);
 		infantryAssign.setColumns(10);
-		
+
 		JLabel lblCavalryAssign = new JLabel("Cavalry");
 		lblCavalryAssign.setBounds(182, 235, 61, 16);
 		frame.getContentPane().add(lblCavalryAssign);
-		
+
 		cavalryAssign = new JTextField();
 		cavalryAssign.setBounds(234, 230, 67, 26);
 		frame.getContentPane().add(cavalryAssign);
 		cavalryAssign.setColumns(10);
-		
+
 		JLabel lblArtileryAssign = new JLabel("Artilery");
 		lblArtileryAssign.setBounds(320, 235, 61, 16);
 		frame.getContentPane().add(lblArtileryAssign);
-		
+
 		artileryAssign = new JTextField();
 		artileryAssign.setBounds(371, 230, 79, 26);
 		frame.getContentPane().add(artileryAssign);
 		artileryAssign.setColumns(10);
-		
+
 		JButton btnExchange = new JButton("Exchange");
+		btnExchange.setEnabled(true);
 		btnExchange.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				CardController cardAction = new CardController();
-				cardAction
+				HashMap<String, Integer> cardsSelected = new HashMap<String, Integer>();
+				if (player.getPlayersCardList().size() < 3) {
+					btnExchange.setEnabled(false);
+				}
+				if (artileryAssign.getText() != null) {
+					cardsSelected.put(Card.ARTILLERY, Integer.parseInt(artileryAssign.getText()));
+				}
+				if (infantryAssign.getText() != null) {
+					cardsSelected.put(Card.INFANTRY, Integer.parseInt(artileryAssign.getText()));
+				}
+				if (cavalryAssign.getText() != null) {
+					cardsSelected.put(Card.CAVALRY, Integer.parseInt(artileryAssign.getText()));
+				}
+				
+				cardAction.exchangeCards(cardsSelected, player);
 			}
 		});
 		btnExchange.setFont(new Font("Times New Roman", Font.PLAIN, 14));
@@ -140,7 +157,7 @@ public class CardView {
 		JButton btnExit = new JButton("Exit");
 		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//to be implemented
+				// to be implemented
 			}
 		});
 		btnExit.setFont(new Font("Times New Roman", Font.PLAIN, 14));

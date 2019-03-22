@@ -14,8 +14,7 @@ public class Card {
 	private Country country;
 	private Player currentPlayer;
 	private String cardType;
-	private HashMap<String, String> countryCardsList = new HashMap<String, String>();
-	private HashMap<String, Integer> playersCardList = new HashMap<String, Integer>();
+	
 
 	public Country getCountry() {
 		return country;
@@ -40,30 +39,8 @@ public class Card {
 	public void setCardType(String cardType) {
 		this.cardType = cardType;
 	}
-
-	public HashMap<String, String> getCountryCardsList() {
-		return countryCardsList;
-	}
-
-	public void setCountryCardsList(HashMap<String, String> countryCardsList) {
-		this.countryCardsList = countryCardsList;
-	}
-
-	public HashMap<String, Integer> getPlayersCardList() {
-		return playersCardList;
-	}
-
-	public void setPlayersCardList(HashMap<String, Integer> playersCardList) {
-		this.playersCardList = playersCardList;
-	}
 	
 	
-
-	@Override
-	public String toString() {
-		return "Card [country=" + country + ", currentPlayer=" + currentPlayer + ", cardType=" + cardType
-				+ ", countryCardsList=" + countryCardsList + ", playersCardList=" + playersCardList + "]";
-	}
 
 	// Methods related to Card
 	public ArrayList<String> totalCardType() {

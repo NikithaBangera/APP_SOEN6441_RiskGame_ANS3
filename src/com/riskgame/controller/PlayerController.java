@@ -99,6 +99,7 @@ public class PlayerController extends Observable implements Observer{
 		allocationOfArmyToCountriesInitially(mapGraph);
 		
 		CardController cardController = new CardController();
+		cardController.assignCardsToCountry(mapGraph);
 		
 		setChanged();
 		notifyObservers();

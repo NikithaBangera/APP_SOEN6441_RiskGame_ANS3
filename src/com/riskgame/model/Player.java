@@ -1,6 +1,7 @@
 package com.riskgame.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -23,26 +24,8 @@ public class Player {
 
 	/** List of countries held by the Player */
 	private ArrayList<Country> myCountries = new ArrayList<Country>();
-
-	private ArrayList<Card> cardList;
-
-	public ArrayList<Card> getCardList() {
-		return cardList;
-	}
-
-	private int exchangedTimes;
-
-	public int getExchangedTimes() {
-		return exchangedTimes;
-	}
-
-	public void setExchangedTimes(int exchangedTimes) {
-		this.exchangedTimes = exchangedTimes;
-	}
-
-	public void setCardList(ArrayList<Card> cardList) {
-		this.cardList = cardList;
-	}
+	
+	private HashMap<String, Integer> playersCardList = new HashMap<String, Integer>();
 
 	/**
 	 * Get the Player name.
@@ -128,10 +111,18 @@ public class Player {
 		this.myCountries.add(country);
 	}
 
+	public HashMap<String, Integer> getPlayersCardList() {
+		return playersCardList;
+	}
+
+	public void setPlayersCardList(HashMap<String, Integer> playersCardList) {
+		this.playersCardList = playersCardList;
+	}
+	
 	@Override
 	public String toString() {
-		return "Player [name=" + name + ", armyCount=" + armyCount + ", myCountries=" + myCountries + ", cardList="
-				+ cardList + "]";
+		return "Player [name=" + name + ", armyCount=" + armyCount + ", myCountries=" + myCountries
+				+ ", playersCardList=" + playersCardList + "]";
 	}
 
 	public List<String> getPlayerCountryNames() {
