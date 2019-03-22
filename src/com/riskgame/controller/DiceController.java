@@ -93,6 +93,10 @@ public class DiceController {
 			
 		}
 		else {
+			//allocateCard
+			CardController cardAction = new CardController();
+			Player currentPlayer = getPlayerForCountry(gameMapGraph, attackerCountry.getName());
+			cardAction.allocateCardToPlayer(currentPlayer);
 			JOptionPane.showMessageDialog(null, "Allowed number of armies to be moved: "+(attackerCountry.getNoOfArmies() - 1));
 		}
 	}

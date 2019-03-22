@@ -1,40 +1,35 @@
 package com.riskgame.model;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Stack;
 
 public class Card {
-	
-//	enum CardType{
-//		Infantry, Cavalry, Artillery
-//	}
-	
+
+	public final static String INFANTRY = "infantry";
+	public final static String CAVALRY = "cavalry";
+	public final static String ARTILLERY = "artillery";
+
 	private Country country;
-	
-	private Player playerCardHolder;
-	
+	private Player currentPlayer;
 	private String cardType;
 	
-	private List<String> cardCategories;
-	
-	public Card() {
-		cardCategories = new ArrayList<String>();
-	}
 
-	public Country getCountryToCard() {
+	public Country getCountry() {
 		return country;
 	}
 
-	public void setCountryToCard(Country country) {
+	public void setCountry(Country country) {
 		this.country = country;
 	}
 
-	public Player getPlayerCardHolder() {
-		return playerCardHolder;
+	public Player getCurrentPlayer() {
+		return currentPlayer;
 	}
 
-	public void setPlayerCardHolder(Player cardHolder) {
-		this.playerCardHolder = cardHolder;
+	public void setCurrentPlayer(Player currentPlayer) {
+		this.currentPlayer = currentPlayer;
 	}
 
 	public String getCardType() {
@@ -45,10 +40,15 @@ public class Card {
 		this.cardType = cardType;
 	}
 	
-	public void cardTypeList() {
-		cardCategories.add("Infantry");
-		cardCategories.add("Cavalry");
-		cardCategories.add("Artillery");
-	}
 	
+
+	// Methods related to Card
+	public ArrayList<String> totalCardType() {
+		ArrayList<String> cardTypes = new ArrayList<>();
+		cardTypes.add(ARTILLERY);
+		cardTypes.add(CAVALRY);
+		cardTypes.add(INFANTRY);
+		return cardTypes;
+	}
+
 }

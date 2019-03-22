@@ -1,6 +1,7 @@
 package com.riskgame.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -23,6 +24,8 @@ public class Player {
 
 	/** List of countries held by the Player */
 	private ArrayList<Country> myCountries = new ArrayList<Country>();
+	
+	private HashMap<String, Integer> playersCardList = new HashMap<String, Integer>();
 
 	/**
 	 * Get the Player name.
@@ -108,27 +111,35 @@ public class Player {
 		this.myCountries.add(country);
 	}
 
+	public HashMap<String, Integer> getPlayersCardList() {
+		return playersCardList;
+	}
+
+	public void setPlayersCardList(HashMap<String, Integer> playersCardList) {
+		this.playersCardList = playersCardList;
+	}
 	
 	@Override
 	public String toString() {
-		return "RiskPlayer [name=" + name + ", armyCount=" + armyCount + ", myCountries=" + myCountries + "]";
-
+		return "Player [name=" + name + ", armyCount=" + armyCount + ", myCountries=" + myCountries
+				+ ", playersCardList=" + playersCardList + "]";
 	}
-	
-	public List<String> getPlayerCountryNames(){
+
+	public List<String> getPlayerCountryNames() {
 		List<String> playerCountries = new ArrayList<String>();
-		for(Country country: getMyCountries()) {
+		for (Country country : getMyCountries()) {
 			playerCountries.add(country.getName());
 		}
 		return playerCountries;
 	}
-	
+
 	public Country getSelectedCountry(String countryName) {
-		for(Country country: getMyCountries()) {
-			if(country.getName().equalsIgnoreCase(countryName)) {
+		for (Country country : getMyCountries()) {
+			if (country.getName().equalsIgnoreCase(countryName)) {
 				return country;
 			}
 		}
 		return null;
 	}
+
 }
