@@ -71,33 +71,6 @@ public class CardController {
 			operation = "Should select atleast 3 cards";
 		}
 		return operation;
-
-//		if (playerPlaying.getCardList().size() > 3) {
-//			try {
-//				numberOfTimesExchanged = playerPlaying.getExchangedTimes();
-//			} catch (Exception e) {
-//				System.out.println("exchanged is null.");
-//			}
-//			numberOfTimesExchanged += 1;
-//			playerPlaying.setArmyCount(playerPlaying.getArmyCount() + (5 * playerPlaying.getExchangedTimes()));
-//			playerPlaying.setExchangedTimes(numberOfTimesExchanged);
-//
-//		} else {
-//			System.out.println("Cannot exchange cards");
-//		}
-//
-//		System.out.println(playerPlaying.getName() + " successfully exchanged");
-////
-////		for (Card card : selectedCards) {
-////			if (playerPlaying.getMyCountries().contains(card.getCountry())) {
-////				card.getCountry().setNoOfArmies(card.getCountry().getNoOfArmies() + 2);
-////				System.out.println(
-////						playerPlaying.getName() + "\" got extra 2 armies on \"" + card.getCountry().getName() + "\n");
-////
-////				break;
-////			}
-////		}
-//		return playerPlaying;
 	}
 
 }
