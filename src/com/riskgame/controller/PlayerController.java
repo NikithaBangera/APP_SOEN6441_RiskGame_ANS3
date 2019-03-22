@@ -21,7 +21,7 @@ import com.riskgame.model.Player;
 import com.riskgame.view.DiceView;
 import com.riskgame.view.PlayerView;
 
-public class PlayerController extends Observable implements Observer{
+public class PlayerController{
 
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -105,13 +105,12 @@ public class PlayerController extends Observable implements Observer{
 		
 		
 		
-		setChanged();
-		notifyObservers();
 	//	allocationOfRemainingArmyToCountries(mapGraph);
 
 		// Place Army Phase starts here
 
 		mapGraph.setGamePhase("Place Armies");
+		mapGraph.setExchangeCount(1);
 		PlayerView playerView = new PlayerView(mapGraph);
 		
 	}
@@ -582,11 +581,4 @@ public class PlayerController extends Observable implements Observer{
 		return null;
 	}
 	
-	
-	@Override
-	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

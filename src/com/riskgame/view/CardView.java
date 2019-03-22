@@ -7,9 +7,14 @@ import javax.swing.JLabel;
 import javax.swing.JCheckBox;
 import javax.swing.JButton;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Observable;
+import java.util.Observer;
+
 import javax.swing.JTextField;
 
-public class CardView {
+public class CardView implements Observer{
 
 	private JFrame frame;
 	private JTextField textField;
@@ -71,6 +76,14 @@ public class CardView {
 		JButton btnExit = new JButton("Exit");
 		btnExit.setFont(new Font("Arial", Font.PLAIN, 17));
 		btnExit.setBounds(285, 280, 115, 29);
+		btnExit.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//Pending: Condition to not allow user to exit card view if card count = 5
+				System.exit(0);
+			}
+		});
 		frame.getContentPane().add(btnExit);
 		
 		JLabel label = new JLabel("0");
@@ -130,5 +143,11 @@ public class CardView {
 		textField_2.setColumns(10);
 		textField_2.setBounds(391, 205, 31, 26);
 		frame.getContentPane().add(textField_2);
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		frame.revalidate();
+		frame.repaint();
 	}
 }

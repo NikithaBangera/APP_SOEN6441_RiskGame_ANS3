@@ -79,6 +79,9 @@ public class PlayerView implements Observer {
 		});
 	}
 
+	public PlayerView() {
+		
+	}
 	/**
 	 * Create the application.
 	 */
@@ -183,8 +186,13 @@ public class PlayerView implements Observer {
 			public void actionPerformed(ActionEvent arg0) {
 				PlayerController playerController = new PlayerController();
                 playerController.allocationOfRemainingArmyToCountries(selectedCountryObject, player);
-                frame.revalidate();
-				frame.repaint();
+                
+                if(nextPlayerNumber == totalNumberOfPlayers) {
+					roundRobin = null;
+					nextPlayerNumber  = 0;
+					mapGraph.setGamePhase("Reinforcement");
+					btnPlaceArmy.setEnabled(false);
+				}
 				initialize(mapGraph);
 			}
 		});
@@ -199,9 +207,6 @@ public class PlayerView implements Observer {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-					//check for the number of cards
-				
-				
 				JFrame reinforceArmy = new JFrame("Reinforce Armies");
 				String armyReinforce = JOptionPane.showInputDialog(reinforceArmy, "Enter the number of armies to be reinforced:");
 				player.armiesAssignedToCountries(selectedCountryObject, Integer.parseInt(armyReinforce));
@@ -422,6 +427,7 @@ public class PlayerView implements Observer {
 	}
 	
 	public void startReinforcement(GameMapGraph mapGraph, Player player) {
+		//Pending: implement opening card view for reinforcement if number of cards > 3 
 		int reinforcementArmies = playerController.reinforcementPhase(player, mapGraph);
 		player.setArmyCount(player.getArmyCount() + reinforcementArmies);
 	}
@@ -429,8 +435,8 @@ public class PlayerView implements Observer {
 	
 	@Override
 	public void update(Observable o, Object arg) {
-		
-
+		frame.revalidate();
+		frame.repaint();
 	}
 
 	public String getSelectedCountry() {

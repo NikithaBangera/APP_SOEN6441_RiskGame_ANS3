@@ -1,40 +1,49 @@
 package com.riskgame.model;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Observable;
 
-public class Card {
-	
-//	enum CardType{
-//		Infantry, Cavalry, Artillery
-//	}
-	
+import com.riskgame.view.CardView;
+import com.riskgame.view.DiceView;
+import com.riskgame.view.PlayerView;
+
+public class Card extends Observable{
+
+	public final static String INFANTRY = "infantry";
+	public final static String CAVALRY = "cavalry";
+	public final static String ARTILLERY = "artillery";
+
 	private Country country;
-	
-	private Player playerCardHolder;
-	
+	private Player currentPlayer;
 	private String cardType;
 	
-	private List<String> cardCategories;
-	
 	public Card() {
-		cardCategories = new ArrayList<String>();
+		PlayerView playerView = new PlayerView();
+		DiceView diceView = new DiceView();
+		CardView cardView = new CardView();
+		this.addObserver(playerView);
+		this.addObserver(diceView);
+		this.addObserver(cardView);
 	}
 
-	public Country getCountryToCard() {
+	public Country getCountry() {
 		return country;
 	}
 
-	public void setCountryToCard(Country country) {
+	public void setCountry(Country country) {
 		this.country = country;
+		setChanged();
+		notifyObservers();
 	}
 
-	public Player getPlayerCardHolder() {
-		return playerCardHolder;
+	public Player getCurrentPlayer() {
+		return currentPlayer;
 	}
 
-	public void setPlayerCardHolder(Player cardHolder) {
-		this.playerCardHolder = cardHolder;
+	public void setCurrentPlayer(Player currentPlayer) {
+		this.currentPlayer = currentPlayer;
+		setChanged();
+		notifyObservers();
 	}
 
 	public String getCardType() {
@@ -43,12 +52,19 @@ public class Card {
 
 	public void setCardType(String cardType) {
 		this.cardType = cardType;
+		setChanged();
+		notifyObservers();
 	}
 	
-	public void cardTypeList() {
-		cardCategories.add("Infantry");
-		cardCategories.add("Cavalry");
-		cardCategories.add("Artillery");
-	}
 	
+
+	// Methods related to Card
+	public ArrayList<String> totalCardType() {
+		ArrayList<String> cardTypes = new ArrayList<>();
+		cardTypes.add(ARTILLERY);
+		cardTypes.add(CAVALRY);
+		cardTypes.add(INFANTRY);
+		return cardTypes;
+	}
+
 }

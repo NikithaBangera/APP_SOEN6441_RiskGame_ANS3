@@ -3,9 +3,14 @@ package com.riskgame.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Observable;
 import java.util.Random;
 
-public class Dice {
+import com.riskgame.view.CardView;
+import com.riskgame.view.DiceView;
+import com.riskgame.view.PlayerView;
+
+public class Dice extends Observable{
 
 	private List<Integer> attackerDiceValues;
 	private List<Integer> defenderDiceValues;
@@ -14,6 +19,12 @@ public class Dice {
 	public Dice() {
 		attackerDiceValues = new ArrayList<Integer>();
 		defenderDiceValues = new ArrayList<Integer>();
+		PlayerView playerView = new PlayerView();
+		DiceView diceView = new DiceView();
+		CardView cardView = new CardView();
+		this.addObserver(playerView);
+		this.addObserver(diceView);
+		this.addObserver(cardView);
 	}
 
 	public List<Integer> getAttackerDiceValues() {
@@ -22,6 +33,8 @@ public class Dice {
 
 	public void setAttackerDiceValues(List<Integer> attackerDiceValues) {
 		this.attackerDiceValues = attackerDiceValues;
+		setChanged();
+		notifyObservers();
 	}
 
 	public List<Integer> getDefenderDiceValues() {
@@ -30,6 +43,8 @@ public class Dice {
 
 	public void setDefenderDiceValues(List<Integer> defenderDiceValues) {
 		this.defenderDiceValues = defenderDiceValues;
+		setChanged();
+		notifyObservers();
 	}
 	
 	public int generateDiceValue() {

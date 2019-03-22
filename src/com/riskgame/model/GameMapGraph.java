@@ -2,6 +2,11 @@ package com.riskgame.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Observable;
+
+import com.riskgame.view.CardView;
+import com.riskgame.view.DiceView;
+import com.riskgame.view.PlayerView;
 
 /**
  * This class stores the value associated to each map. It stores the content
@@ -15,7 +20,7 @@ import java.util.HashMap;
  * @author Shresthi Garg
  * @author Nikitha
  */
-public class GameMapGraph {
+public class GameMapGraph extends Observable{
 	private MapTag mapTag;
 
 	/** Count of the number of countries */
@@ -38,12 +43,20 @@ public class GameMapGraph {
 	private ArrayList<Player> players = new ArrayList<Player>();
 	
 	private String gamePhase;
-
+	
+	private int exchangeCount;
+	
 	/**
 	 * GameMapGraph Constructor
 	 */
 	public GameMapGraph() {
-		super();
+		this.players = new ArrayList<Player>();
+		PlayerView playerView = new PlayerView();
+		DiceView diceView = new DiceView();
+		CardView cardView = new CardView();
+		this.addObserver(playerView);
+		this.addObserver(diceView);
+		this.addObserver(cardView);
 	}
 
 	/**
@@ -57,13 +70,19 @@ public class GameMapGraph {
 	 */
 	public GameMapGraph(MapTag mapTag, int countOfContinents, ArrayList<Continent> continents, int countOfCountries,
 			ArrayList<Country> countries) {
-		super();
 		this.mapTag = mapTag;
 		this.countOfContinents = countOfContinents;
 		this.continents = continents;
 		this.countOfCountries = countOfCountries;
 		this.countries = countries;
 		this.players = new ArrayList<Player>();
+		PlayerView playerView = new PlayerView();
+		DiceView diceView = new DiceView();
+		CardView cardView = new CardView();
+		this.addObserver(playerView);
+		this.addObserver(diceView);
+		this.addObserver(cardView);
+		
 	}
 
 	/**
@@ -82,6 +101,8 @@ public class GameMapGraph {
 	 */
 	public void setCountrySet(HashMap<String, Country> countrySet) {
 		this.countrySet = countrySet;
+		setChanged();
+		notifyObservers();
 	}
 
 	/**
@@ -100,6 +121,8 @@ public class GameMapGraph {
 	 */
 	public void setMapTag(MapTag mapTag) {
 		this.mapTag = mapTag;
+		setChanged();
+		notifyObservers();
 	}
 
 	/**
@@ -118,6 +141,8 @@ public class GameMapGraph {
 	 */
 	public void setCountOfContinents(int countOfContinents) {
 		this.countOfContinents = countOfContinents;
+		setChanged();
+		notifyObservers();
 	}
 
 	/**
@@ -136,6 +161,8 @@ public class GameMapGraph {
 	 */
 	public void setContinents(ArrayList<Continent> continents) {
 		this.continents = continents;
+		setChanged();
+		notifyObservers();
 	}
 
 	/**
@@ -154,6 +181,8 @@ public class GameMapGraph {
 	 */
 	public void setCountOfCountries(int countOfCountries) {
 		this.countOfCountries = countOfCountries;
+		setChanged();
+		notifyObservers();
 	}
 
 	/**
@@ -172,6 +201,8 @@ public class GameMapGraph {
 	 */
 	public void setCountries(ArrayList<Country> countries) {
 		this.countries = countries;
+		setChanged();
+		notifyObservers();
 	}
 
 	/**
@@ -205,6 +236,8 @@ public class GameMapGraph {
 
 	public void setPlayers(ArrayList<Player> players) {
 		this.players = players;
+		setChanged();
+		notifyObservers();
 	}
 
 	public String getGamePhase() {
@@ -213,5 +246,15 @@ public class GameMapGraph {
 
 	public void setGamePhase(String gamePhase) {
 		this.gamePhase = gamePhase;
+		setChanged();
+		notifyObservers();
+	}
+
+	public int getExchangeCount() {
+		return exchangeCount;
+	}
+
+	public void setExchangeCount(int exchangeCount) {
+		this.exchangeCount = exchangeCount;
 	}
 }

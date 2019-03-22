@@ -18,9 +18,11 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.util.Observable;
+import java.util.Observer;
 import java.awt.event.ActionEvent;
 
-public class DiceView {
+public class DiceView implements Observer{
 
 	private JFrame frame;
 	private JTextField textField;
@@ -49,6 +51,9 @@ public class DiceView {
 		});
 	}
 
+	public DiceView() {
+		
+	}
 	/**
 	 * Create the application.
 	 * @param gameMapGraph 
@@ -264,7 +269,15 @@ public class DiceView {
 		JButton btnEndTurn = new JButton("End Turn");
 		btnEndTurn.setFont(new Font("Arial", Font.PLAIN, 14));
 		btnEndTurn.setBounds(426, 151, 115, 25);
+		btnEndTurn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
 		frame.getContentPane().add(btnEndTurn);
+		
 		
 		JButton btnMoveArmies = new JButton("MoveArmies");
 		btnMoveArmies.setFont(new Font("Arial", Font.PLAIN, 14));
@@ -282,7 +295,14 @@ public class DiceView {
 				PlayerController playerController = new PlayerController();
 				JFrame moveArmyFrame = new JFrame("Move Armies");
 				String armiesToMove = JOptionPane.showInputDialog(moveArmyFrame, "Enter the number of armies to be moved:");
+				Player attacker = diceController.getPlayerForCountry(gameMapGraph, attackerCountry.getName());
+				Player defender = diceController.getPlayerForCountry(gameMapGraph, defenderCountry.getName());
 				diceController.moveArmies(Integer.parseInt(armiesToMove), attackerCountry, defenderCountry, gameMapGraph);
+				if(defender.getMyCountries().size() == 1) {
+					attacker.getPlayersCardList().putAll(defender.getPlayersCardList());
+					JOptionPane.showMessageDialog(null, "Player "+defender.getName()+" has lost the game!!");
+				}
+				
 			}
 		});
 		
@@ -318,5 +338,11 @@ public class DiceView {
 		messageField.setText(message);
 		
 		frame.setVisible(true);
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		frame.revalidate();
+		frame.repaint();
 	}
 }
