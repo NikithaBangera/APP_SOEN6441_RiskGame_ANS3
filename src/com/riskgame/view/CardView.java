@@ -76,20 +76,23 @@ public class CardView {
 		lblArtillery.setBounds(314, 71, 67, 30);
 		frame.getContentPane().add(lblArtillery);
 
-		JLabel InfantryLabel = new JLabel("0");
+		JLabel InfantryLabel = new JLabel();
+		InfantryLabel.setText(player.getPlayersCardList().get(Card.INFANTRY).toString());
 		InfantryLabel.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		InfantryLabel.setBounds(116, 72, 26, 29);
 		frame.getContentPane().add(InfantryLabel);
 
-		JLabel label_1 = new JLabel("0");
-		label_1.setFont(new Font("Times New Roman", Font.PLAIN, 14));
-		label_1.setBounds(257, 72, 16, 29);
-		frame.getContentPane().add(label_1);
+		JLabel cavalryLabel = new JLabel();
+		InfantryLabel.setText(player.getPlayersCardList().get(Card.CAVALRY).toString());
+		cavalryLabel.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+		cavalryLabel.setBounds(257, 72, 16, 29);
+		frame.getContentPane().add(cavalryLabel);
 
-		JLabel label_2 = new JLabel("0");
-		label_2.setFont(new Font("Times New Roman", Font.PLAIN, 14));
-		label_2.setBounds(406, 74, 16, 25);
-		frame.getContentPane().add(label_2);
+		JLabel artilleryLabel = new JLabel();
+		InfantryLabel.setText(player.getPlayersCardList().get(Card.ARTILLERY).toString());
+		artilleryLabel.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+		artilleryLabel.setBounds(406, 74, 16, 25);
+		frame.getContentPane().add(artilleryLabel);
 
 		JLabel lblAvailableCardFor = new JLabel("Available Card for Player");
 		lblAvailableCardFor.setFont(new Font("Times New Roman", Font.PLAIN, 14));
