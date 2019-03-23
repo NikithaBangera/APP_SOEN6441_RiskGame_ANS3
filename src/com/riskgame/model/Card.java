@@ -1,11 +1,12 @@
 package com.riskgame.model;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Stack;
+import java.util.Observable;
+import com.riskgame.view.CardView;
+import com.riskgame.view.DiceView;
+import com.riskgame.view.PlayerView;
 
-public class Card {
+public class Card extends Observable{
 
 	public final static String INFANTRY = "infantry";
 	public final static String CAVALRY = "cavalry";
@@ -15,6 +16,14 @@ public class Card {
 	private Player currentPlayer;
 	private String cardType;
 	
+	public Card() {
+		PlayerView playerView = new PlayerView();
+		DiceView diceView = new DiceView();
+		CardView cardView = new CardView();
+		this.addObserver(playerView);
+		this.addObserver(diceView);
+		this.addObserver(cardView);
+	}
 
 	public Country getCountry() {
 		return country;
@@ -22,6 +31,8 @@ public class Card {
 
 	public void setCountry(Country country) {
 		this.country = country;
+		setChanged();
+		notifyObservers();
 	}
 
 	public Player getCurrentPlayer() {
@@ -30,6 +41,8 @@ public class Card {
 
 	public void setCurrentPlayer(Player currentPlayer) {
 		this.currentPlayer = currentPlayer;
+		setChanged();
+		notifyObservers();
 	}
 
 	public String getCardType() {
@@ -38,10 +51,10 @@ public class Card {
 
 	public void setCardType(String cardType) {
 		this.cardType = cardType;
+		setChanged();
+		notifyObservers();
 	}
 	
-	
-
 	// Methods related to Card
 	public ArrayList<String> totalCardType() {
 		ArrayList<String> cardTypes = new ArrayList<>();

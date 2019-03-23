@@ -2,6 +2,7 @@ package com.riskgame.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -37,6 +38,9 @@ import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.Player;
 import com.riskgame.model.PlayerDomination;
 import javax.swing.SwingConstants;
+import java.awt.GridLayout;
+import javax.swing.JSpinner;
+import javax.swing.JCheckBox;
 
 public class PlayerView implements Observer {
 
@@ -75,6 +79,9 @@ public class PlayerView implements Observer {
 		});
 	}
 
+	public PlayerView() {
+		
+	}
 	/**
 	 * Create the application.
 	 */
@@ -108,6 +115,9 @@ public class PlayerView implements Observer {
 		}
 		nextPlayerNumber++;
 		Player player = roundRobin.nextTurn();
+		if(mapGraph.getGamePhase().equalsIgnoreCase("Place Armies") && player.isEndPlaceArmies()) {
+			initialize(mapGraph);
+		}
 		
 		if(mapGraph.getGamePhase().equalsIgnoreCase("Reinforcement")) {
 			startReinforcement(mapGraph, player);
@@ -179,8 +189,13 @@ public class PlayerView implements Observer {
 			public void actionPerformed(ActionEvent arg0) {
 				PlayerController playerController = new PlayerController();
                 playerController.allocationOfRemainingArmyToCountries(selectedCountryObject, player);
-                frame.revalidate();
-				frame.repaint();
+                
+                if(nextPlayerNumber == totalNumberOfPlayers) {
+					roundRobin = null;
+					nextPlayerNumber  = 0;
+					mapGraph.setGamePhase("Reinforcement");
+					btnPlaceArmy.setEnabled(false);
+				}
 				initialize(mapGraph);
 			}
 		});
@@ -191,13 +206,14 @@ public class PlayerView implements Observer {
 		JButton btnReinforcement = new JButton("Reinforcement");
 		btnReinforcement.setFont(new Font("Arial", Font.PLAIN, 12));
 		btnReinforcement.setBounds(426, 65, 165, 29);
+		btnReinforcement.setEnabled(false);
+		if(mapGraph.getGamePhase().equalsIgnoreCase("Reinforcement")) {
+			btnReinforcement.setEnabled(true);
+		}
 		btnReinforcement.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-					//check for the number of cards
-				
-				
 				JFrame reinforceArmy = new JFrame("Reinforce Armies");
 				String armyReinforce = JOptionPane.showInputDialog(reinforceArmy, "Enter the number of armies to be reinforced:");
 				player.armiesAssignedToCountries(selectedCountryObject, Integer.parseInt(armyReinforce));
@@ -308,6 +324,10 @@ public class PlayerView implements Observer {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(mapGraph.getGamePhase().equalsIgnoreCase("Place Armies")) {
+					playerController.getCurrentPlayer(mapGraph, player.getName()).setEndPlaceArmies(true);
+				}
+				
+				if(playerController.isPlaceArmiesComplete(mapGraph)) {
 					mapGraph.setGamePhase("Reinforcement");
 				}
 				
@@ -342,7 +362,15 @@ public class PlayerView implements Observer {
 		JButton btnCards = new JButton("Cards");
 		btnCards.setFont(new Font("Arial", Font.PLAIN, 12));
 		btnCards.setBounds(426, 197, 165, 29);
+		btnCards.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				CardView cardView = new CardView(mapGraph, player);
+			}
+		});
 		frame.getContentPane().add(btnCards);
+		
 		
 		JPanel panelPhaseName = new JPanel();
 		panelPhaseName.setBounds(15, 146, 165, 83);
@@ -357,12 +385,29 @@ public class PlayerView implements Observer {
 		panelPhaseName.add(textFieldPhaseName);
 		textFieldPhaseName.setColumns(10);
 		
-		//world domination panel
+		JCheckBox chckbxCompleteAttack = new JCheckBox("Complete Attack");
+		if(mapGraph.getGamePhase().equalsIgnoreCase("Attack")) {
+			panelPhaseName.add(chckbxCompleteAttack);
+		}
+		chckbxCompleteAttack.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(chckbxCompleteAttack.isSelected()) {
+					btnFortify.setEnabled(true);
+				}
+			}
+		});
 		
-		JPanel world_domination = new JPanel();
-		world_domination.setBounds(6, 259, 386, 233);
-		frame.getContentPane().add(world_domination);
-		world_domination.setLayout(new BorderLayout(0, 0));
+		
+		//world domination panel
+		JPanel worldDomination = new JPanel();
+		worldDomination.setBounds(15, 259, 386, 233);
+		frame.getContentPane().add(worldDomination);
+		worldDomination.setLayout(null);
+		
+		JPanel panelMapOccupied = new JPanel();
+		panelMapOccupied.setBounds(0, 31, 195, 202);
 		
 		DefaultPieDataset dataset = new DefaultPieDataset();
 		PlayerDomination playerDomination = new PlayerDomination();
@@ -372,16 +417,29 @@ public class PlayerView implements Observer {
 			dataset.setValue(nextItem.getKey(), nextItem.getValue());
 		}
 		
-		JFreeChart chart=ChartFactory.createPieChart("World Domination", dataset, true, true, true);
+		JFreeChart chart=ChartFactory.createPieChart("% Map Occupied", dataset, true, true, true);
 		PiePlot p=(PiePlot)chart.getPlot();
-//		p.setForegroundAlpha(alpha);
-		ChartPanel CP = new ChartPanel(chart);
-		world_domination.removeAll();
-		world_domination.setLayout(new BorderLayout(0, 0));
-		world_domination.validate();
-		world_domination.setLayout(new BorderLayout(0, 0));
-		world_domination.add(CP);
+		ChartPanel chartPanel = new ChartPanel(chart);
+		chartPanel.setBounds(0, 0, 195, 202);
+		chartPanel.setPreferredSize(new Dimension(panelMapOccupied.getWidth(), panelMapOccupied.getHeight()));
 		
+		panelMapOccupied.removeAll();
+		panelMapOccupied.validate();
+		panelMapOccupied.setLayout(null);
+		panelMapOccupied.add(chartPanel);
+		chartPanel.setLayout(null);
+		worldDomination.add(panelMapOccupied);
+		
+		JPanel panel = new JPanel();
+		panel.setBounds(196, 31, 190, 202);
+		worldDomination.add(panel);
+		
+		JLabel lblWorldDomination = new JLabel("World Domination");
+		lblWorldDomination.setBackground(Color.WHITE);
+		lblWorldDomination.setFont(new Font("Times New Roman", Font.BOLD, 24));
+		lblWorldDomination.setHorizontalAlignment(SwingConstants.CENTER);
+		lblWorldDomination.setBounds(0, 0, 386, 30);
+		worldDomination.add(lblWorldDomination);
 		
 		JPanel panelMapDetails = new JPanel();
 		panelMapDetails.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -418,6 +476,7 @@ public class PlayerView implements Observer {
 	}
 	
 	public void startReinforcement(GameMapGraph mapGraph, Player player) {
+		//Pending: implement opening card view for reinforcement if number of cards > 3 
 		int reinforcementArmies = playerController.reinforcementPhase(player, mapGraph);
 		player.setArmyCount(player.getArmyCount() + reinforcementArmies);
 	}
@@ -425,8 +484,8 @@ public class PlayerView implements Observer {
 	
 	@Override
 	public void update(Observable o, Object arg) {
-		
-
+		frame.revalidate();
+		frame.repaint();
 	}
 
 	public String getSelectedCountry() {

@@ -2,17 +2,12 @@ package com.riskgame.controller;
 
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import javax.swing.JOptionPane;
-
 import com.riskgame.model.Continent;
 import com.riskgame.model.Country;
 import com.riskgame.model.Dice;
@@ -21,7 +16,7 @@ import com.riskgame.model.Player;
 import com.riskgame.view.DiceView;
 import com.riskgame.view.PlayerView;
 
-public class PlayerController extends Observable implements Observer{
+public class PlayerController{
 
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -101,13 +96,12 @@ public class PlayerController extends Observable implements Observer{
 		CardController cardController = new CardController();
 		cardController.assignCardsToCountry(mapGraph);
 		
-		setChanged();
-		notifyObservers();
 	//	allocationOfRemainingArmyToCountries(mapGraph);
 
 		// Place Army Phase starts here
 
 		mapGraph.setGamePhase("Place Armies");
+		mapGraph.setExchangeCount(1);
 		PlayerView playerView = new PlayerView(mapGraph);
 		
 	}
@@ -131,7 +125,9 @@ public class PlayerController extends Observable implements Observer{
 			for (i = 0; i < mapGraph.getPlayers().size(); ++i) {
 				if (countrySet.size() > 1) {
 					countryIndexAssignment = new Random().nextInt(countrySet.size());
+					countrySet.get(countryIndexAssignment).setPlayer(mapGraph.getPlayers().get(i).getName());
 					mapGraph.getPlayers().get(i).additionOfCountry(countrySet.get(countryIndexAssignment));
+					
 					countrySet.remove(countryIndexAssignment);
 				} else if (countrySet.size() == 1) {
 					mapGraph.getPlayers().get(i).additionOfCountry(countrySet.get(0));
@@ -197,82 +193,10 @@ public class PlayerController extends Observable implements Observer{
 	 */
 	public void allocationOfRemainingArmyToCountries(Country selectedCountryObject, Player player) {
 		player.armiesAssignedToCountries(selectedCountryObject, 1);
-//		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-//		mapGraph.getPlayers().forEach(player -> {
-//			System.out.println("\nPlayer Name: " + player.getName() + "\n");
-//			player.getMyCountries().forEach(con -> {
-//				if (player.getArmyCount() > 0) {
-//					System.out.println("Country Name : " + con.getName());
-//					System.out.println("Number of Armies assigned : " + con.getNoOfArmies());
-//					System.out.println("Available Armies: " + player.getArmyCount());
-//					System.out.println("Enter number of armies you want to assign to " + con.getName());
-//					try {
-//						String numArmies = br.readLine().trim();
-//						Pattern numberPattern = Pattern.compile("[0-9]+");
-//						Matcher match = numberPattern.matcher(numArmies);
-//						while (!match.matches() || numArmies.isEmpty()) {
-//							System.out.println("\nPlease enter the correct number of armies below:");
-//
-//							numArmies = br.readLine().trim();
-//							match = numberPattern.matcher(numArmies);
-//						}
-//						int numberOFarmies = Integer.parseInt(numArmies);
-//						player.armiesAssignedToCountries(con, numberOFarmies);
-//					} catch (NumberFormatException e) {
-//						System.out.println("Please enter a valid number.");
-//						e.printStackTrace();
-//					} catch (IOException e) {
-//						System.out.println("Please enter a valid number.");
-//						e.printStackTrace();
-//					}
-//
-//				}
-//			});
-//		});
-
 	}
 	// Function of StartUp Phase ends here
 
 	// Reinforcement Phase
-	/**
-	 * This method prompts the player whether he/she wants to play the reinforcement
-	 * phase. If the player wants to play reinforcement phase then this method will
-	 * call the armiesToBeAssigned function to assign armies to the player.
-	 * 
-	 * @param player   - player for reinforcement
-	 * @param mapGraph - GameMapGraph Object
-	 * @throws Exception - IOException
-	 */
-	public void startReinforcement(Player player, GameMapGraph mapGraph) throws Exception {
-//		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-//		
-//		int reinforcementArmies = armiesToBeAssigned(player, continent);
-//		System.out.println("Armies available for Reinforcement: " + reinforcementArmies);
-//		player.setArmyCount(player.getArmyCount() + reinforcementArmies);
-//
-//		for (Country country : player.getMyCountries()) {
-//			if (player.getArmyCount() > 0) {
-//				System.out.println(
-//						"Number of armies present in country " + country.getName() + " are " + country.getNoOfArmies());
-//				System.out.println("Current available armies to be reinforced: " + player.getArmyCount());
-//				System.out.println("Enter the number of armies to be deployed to country " + country.getName());
-//				String armyCount = in.readLine().trim();
-//				Pattern numberPattern = Pattern.compile("[0-9+]");
-//				Matcher match = numberPattern.matcher(armyCount);
-//				while (!match.matches() || armyCount.isEmpty()) {
-//					System.out.println("\nPlease enter the correct army count below:");
-//					armyCount = in.readLine().trim();
-//					match = numberPattern.matcher(armyCount);
-//				}
-//				int armiesCount = Integer.parseInt(armyCount);
-//				player.armiesAssignedToCountries(country, armiesCount);
-//
-//			} else {
-//				System.out.println("Sorry you have insufficient armies left! \n");
-//				break;
-//			}
-//		}
-	}
 
 	/**
 	 * This method assigns the number of armies to the player when certain
@@ -409,123 +333,6 @@ public class PlayerController extends Observable implements Observer{
 	// Fortification Phase
 
 	/**
-	 * This method is called from the Startup phase when the user opts to start the
-	 * fortification. It internally calls the moveArmies method once all the
-	 * validation with respect to fortification are performed.
-	 * 
-	 * @param player  - The player whose turn is to do fortification.
-	 * @param mapData - GameMapGraph object
-	 * @throws IOException - throws Input output exception
-	 */
-//	public void startGameFortification(Player player, GameMapGraph mapData) throws IOException {
-//		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-//		int countOfArmies = 0;
-//		if (player.getMyCountries().size() >= 2) {
-//			doFortification = true;
-//			String fromCountry = "";
-//			String toCountry = "";
-//
-//			while (doFortification) {
-//				doFortification = true;
-//				Country givingCountry = new Country();
-//				Country receivingCountry = new Country();
-//
-//				do {
-//					System.out.println("\nPlayer has the following list of countries with armies: \n");
-//					for (Country country : player.getMyCountries()) {
-//						System.out.println("* " + country.getName() + ":" + country.getNoOfArmies() + "\n");
-//					}
-//					System.out.println("Enter the name of country from which you want to move some armies :");
-//					fromCountry = br.readLine().trim().toUpperCase();
-//					Pattern namePattern1 = Pattern.compile("[a-zA-Z\\s]+");
-//					Matcher match = namePattern1.matcher(fromCountry);
-//					while (!match.matches() || fromCountry.isEmpty()) {
-//						System.out.println("\nPlease enter the correct country name below:");
-//						fromCountry = br.readLine().trim().toUpperCase();
-//						match = namePattern1.matcher(fromCountry);
-//					}
-//
-//					System.out.println("Enter the name of country to which you want to move some armies, from country "
-//							+ fromCountry);
-//					toCountry = br.readLine().trim().toUpperCase();
-//					Pattern namePattern2 = Pattern.compile("[a-zA-Z\\s]+");
-//					match = namePattern2.matcher(toCountry);
-//					while (!match.matches() || toCountry.isEmpty()) {
-//						System.out.println("\nPlease enter the correct country name below:");
-//
-//						toCountry = br.readLine().trim().toUpperCase();
-//						match = namePattern2.matcher(toCountry);
-//					}
-//
-//					if (!mapData.getCountrySet().containsKey(fromCountry)
-//							|| !mapData.getCountrySet().containsKey(toCountry)) {
-//						doFortification = false;
-//						System.out.println("Country doesn't exist!\n");
-//					}
-//
-//					givingCountry = mapData.getCountrySet().get(fromCountry);
-//					receivingCountry = mapData.getCountrySet().get(toCountry);
-//					if (player.getMyCountries().contains(givingCountry)
-//							&& player.getMyCountries().contains(receivingCountry)) {
-//						doFortification = true;
-//					} else {
-//						System.out.println(
-//								"Entered countries doesn't exist in player's owned country list, please enter country names again\n");
-//						doFortification = false;
-//
-//					}
-//				} while (!doFortification);
-//				if (doFortification) {
-//					System.out.println("\nEnter the number of armies to move from " + fromCountry + " to " + toCountry);
-//					try {
-//						String countOfArmy = br.readLine().trim();
-//						Pattern numberPattern3 = Pattern.compile("[0-9]+");
-//						Matcher match = numberPattern3.matcher(countOfArmy);
-//						while (!match.matches() || countOfArmy.isEmpty()) {
-//							System.out.println("\nPlease enter the correct army count below:");
-//
-//							countOfArmy = br.readLine().trim();
-//							match = numberPattern3.matcher(countOfArmy);
-//						}
-//						countOfArmies = Integer.parseInt(countOfArmy);
-//						if (countOfArmies > mapData.getCountrySet().get(fromCountry).getNoOfArmies()) {
-//							System.out.println(
-//									"Insufficient armies available, fortification is not possible with asked number of armies.");
-//							doFortification = false;
-//						}
-//
-//					} catch (NumberFormatException e) {
-//						System.out.println("Invalid number of armies.");
-//					}
-//				}
-//
-//				if (doFortification) {
-//					boolean fortify = false;
-//					for (Country country : player.getMyCountries()) {
-//						for (String country1 : country.getAdjacentCountries()) {
-//							if (country1.equalsIgnoreCase(fromCountry) || country1.equalsIgnoreCase(toCountry)) {
-//								fortify = true;
-//							}
-//						}
-//					}
-//					if (fortify) {
-//						moveArmies(givingCountry, receivingCountry, countOfArmies);
-//					} else {
-//						doFortification = false;
-//						System.out
-//								.println("None of the player's countries are adjacent\n Fortification phase ends..!!");
-//					}
-//
-//				}
-//
-//			}
-//
-//		} else {
-//			System.out.println("Sorry, Fortification is not possible if the country owned is less than 2");
-//		}
-//	}
-
-	/**
 	 * This method takes the values for each player from the startFortification
 	 * method and does the manipulation of armies and assign the armies
 	 * 
@@ -578,11 +385,30 @@ public class PlayerController extends Observable implements Observer{
 		return null;
 	}
 	
-	
-	@Override
-	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-		
+	public Player getCurrentPlayer(GameMapGraph mapGraph, String playerName) {
+		for(Player player : mapGraph.getPlayers()) {
+			if(player.getName().equalsIgnoreCase(playerName)) {
+				return player;
+			}
+		}
+		return null;
 	}
-
+	
+	public boolean isPlaceArmiesComplete(GameMapGraph mapGraph) {
+		boolean complete = true;
+		for(Player player : mapGraph.getPlayers()) {
+			if(player.isEndPlaceArmies() || player.getArmyCount() == 0) {
+				complete &= true;
+			}
+			else {
+				complete &= false;
+			}
+		}
+		return complete;
+	}
+	
+	public void populatePlayerContinents(GameMapGraph mapGraph) {
+		//Pending: create new continent list in player object and populate it to be used to show player's continents in world domination
+	}
+	
 }

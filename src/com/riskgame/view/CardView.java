@@ -8,19 +8,18 @@ import javax.swing.JOptionPane;
 import javax.swing.JCheckBox;
 import javax.swing.JButton;
 import java.awt.Font;
-import javax.swing.JTextField;
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.HashMap;
 import com.riskgame.controller.CardController;
 import com.riskgame.model.Card;
 import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.Player;
+import javax.swing.JTextField;
 
-import javax.swing.JRadioButton;
-import java.awt.event.ActionListener;
-import java.util.HashMap;
-import java.awt.event.ActionEvent;
-
-public class CardView {
+public class CardView implements Observer{
 
 	private JFrame frame;
 	private JTextField infantryAssign;
@@ -43,6 +42,10 @@ public class CardView {
 				}
 			}
 		});
+	}
+	
+	public CardView() {
+		
 	}
 
 	/**
@@ -183,5 +186,11 @@ public class CardView {
 		btnExit.setBounds(270, 280, 115, 29);
 		frame.getContentPane().add(btnExit);
 
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		frame.revalidate();
+		frame.repaint();
 	}
 }

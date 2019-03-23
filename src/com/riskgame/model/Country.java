@@ -1,6 +1,10 @@
 package com.riskgame.model;
 
 import java.util.ArrayList;
+import java.util.Observable;
+import com.riskgame.view.CardView;
+import com.riskgame.view.DiceView;
+import com.riskgame.view.PlayerView;
 import java.util.HashMap;
 
 /**
@@ -9,7 +13,7 @@ import java.util.HashMap;
  * @author Shresthi
  * @author Sumeetha
  */
-public class Country {
+public class Country extends Observable{
 
 	/** Name of country. */
 	private String name;
@@ -37,6 +41,16 @@ public class Country {
 	
 	private HashMap<String, String> countryCardsList = new HashMap<String, String>();
 
+	
+	public Country() {
+		PlayerView playerView = new PlayerView();
+		DiceView diceView = new DiceView();
+		CardView cardView = new CardView();
+		this.addObserver(playerView);
+		this.addObserver(diceView);
+		this.addObserver(cardView);
+	}
+	
 	/**
 	 * Get the Country name.
 	 * 
@@ -53,6 +67,8 @@ public class Country {
 	 */
 	public void setName(String name) {
 		this.name = name;
+		setChanged();
+		notifyObservers();
 	}
 
 	/**
@@ -71,6 +87,8 @@ public class Country {
 	 */
 	public void setPlayer(String player) {
 		this.player = player;
+		setChanged();
+		notifyObservers();
 	}
 
 	/**
@@ -89,6 +107,8 @@ public class Country {
 	 */
 	public void setContinent(String continent) {
 		this.continent = continent;
+		setChanged();
+		notifyObservers();
 	}
 
 	/**
@@ -107,6 +127,8 @@ public class Country {
 	 */
 	public void setxValue(String xValue) {
 		this.xValue = xValue;
+		setChanged();
+		notifyObservers();
 	}
 
 	/**
@@ -125,6 +147,8 @@ public class Country {
 	 */
 	public void setyValue(String yValue) {
 		this.yValue = yValue;
+		setChanged();
+		notifyObservers();
 	}
 
 	/**
@@ -143,6 +167,8 @@ public class Country {
 	 */
 	public void setNoOfArmies(int noOfArmies) {
 		this.noOfArmies = noOfArmies;
+		setChanged();
+		notifyObservers();
 	}
 
 	/**
@@ -161,6 +187,8 @@ public class Country {
 	 */
 	public void setAdjacentCountries(ArrayList<String> adjacentCountries) {
 		this.adjacentCountries = adjacentCountries;
+		setChanged();
+		notifyObservers();
 	}
 
 	/**
@@ -179,6 +207,8 @@ public class Country {
 	 */
 	public void setPartOfContinent(Continent partOfContinent) {
 		this.partOfContinent = partOfContinent;
+		setChanged();
+		notifyObservers();
 	}
 
 	public HashMap<String, String> getCountryCardsList() {
@@ -187,6 +217,8 @@ public class Country {
 
 	public void setCountryCardsList(HashMap<String, String> countryCardsList) {
 		this.countryCardsList = countryCardsList;
+		setChanged();
+		notifyObservers();
 	}
 
 	@Override
