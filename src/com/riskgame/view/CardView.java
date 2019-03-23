@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JCheckBox;
 import javax.swing.JButton;
 import java.awt.Font;
@@ -149,8 +150,15 @@ public class CardView {
 				if (cavalryAssign.getText() != null) {
 					cardsSelected.put(Card.CAVALRY, Integer.parseInt(artileryAssign.getText()));
 				}
-				
-				cardAction.exchangeCards(cardsSelected, player);
+
+				String message = cardAction.exchangeCards(cardsSelected, player);
+
+				if (message.contains("Cannot")) {
+					JLabel lblMessage = new JLabel("Error:" + message);
+					lblMessage.setBounds(50, 339, 61, 16);
+					frame.getContentPane().add(lblMessage);
+				}
+
 			}
 		});
 		btnExchange.setFont(new Font("Times New Roman", Font.PLAIN, 14));
@@ -161,10 +169,19 @@ public class CardView {
 		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// to be implemented
+
+				if (player.getPlayersCardList().size() >= 5) {
+					JOptionPane.showMessageDialog(null, "Maximum card limit reached! Please Exchange the cards.");
+
+				} else {
+					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//					System.exit(0);
+				}
 			}
 		});
 		btnExit.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		btnExit.setBounds(270, 280, 115, 29);
 		frame.getContentPane().add(btnExit);
+
 	}
 }

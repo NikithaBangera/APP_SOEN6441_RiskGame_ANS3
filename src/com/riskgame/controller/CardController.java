@@ -60,15 +60,34 @@ public class CardController {
 		int iCount = cardsSelected.get(Card.INFANTRY);
 		int cCount = cardsSelected.get(Card.CAVALRY);
 		int total = aCount + iCount + cCount;
+
+		HashMap<String, Integer> playersCard = new HashMap<String, Integer>();
+		playersCard = player.getPlayersCardList();
+
+		int a = playersCard.get(Card.ARTILLERY);
+		int i = playersCard.get(Card.INFANTRY);
+		int c = playersCard.get(Card.CAVALRY);
 		String operation = "";
 
-		if (total == 3) {
-			if ((aCount == 1 && iCount == 1 && cCount == 1) || aCount == 3 || cCount == 3 || iCount == 3) {
+		if (total >= 3 && player.getPlayersCardList().size() >= 3) {
+			if (((aCount >= 1 && a >= 1) && (iCount >= 1 && i >= 1) && (cCount >= 1 && c >= 1))) {
 				player.setArmyCount(player.getArmyCount() + 5 * exchange);
-//				player.getPlayersCardList().size()-3;
+				playersCard.replace(Card.ARTILLERY, a, a - 1);
+				playersCard.replace(Card.CAVALRY, c, c - 1);
+				playersCard.replace(Card.INFANTRY, i, i - 1);
+			} else if (aCount >= 3 && playersCard.get(Card.ARTILLERY) >= 3) {
+				player.setArmyCount(player.getArmyCount() + 5 * exchange);
+				playersCard.replace(Card.ARTILLERY, a, a - 3);
+			} else if (cCount >= 3 && playersCard.get(Card.CAVALRY) >= 3) {
+				player.setArmyCount(player.getArmyCount() + 5 * exchange);
+				playersCard.replace(Card.CAVALRY, c, c - 3);
+			} else if (iCount >= 3 && playersCard.get(Card.INFANTRY) >= 3) {
+				player.setArmyCount(player.getArmyCount() + 5 * exchange);
+				playersCard.replace(Card.INFANTRY, i, i - 3);
+
 			}
 		} else {
-			operation = "Should select atleast 3 cards";
+			operation = "Cannot perform exchange. Should select atleast 3 cards";
 		}
 		return operation;
 	}
