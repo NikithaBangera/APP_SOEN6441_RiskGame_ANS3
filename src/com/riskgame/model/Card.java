@@ -2,7 +2,6 @@ package com.riskgame.model;
 
 import java.util.ArrayList;
 import java.util.Observable;
-
 import com.riskgame.view.CardView;
 import com.riskgame.view.DiceView;
 import com.riskgame.view.PlayerView;
@@ -56,8 +55,6 @@ public class Card extends Observable{
 		notifyObservers();
 	}
 	
-	
-
 	// Methods related to Card
 	public ArrayList<String> totalCardType() {
 		ArrayList<String> cardTypes = new ArrayList<>();

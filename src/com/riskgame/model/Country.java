@@ -2,10 +2,10 @@ package com.riskgame.model;
 
 import java.util.ArrayList;
 import java.util.Observable;
-
 import com.riskgame.view.CardView;
 import com.riskgame.view.DiceView;
 import com.riskgame.view.PlayerView;
+import java.util.HashMap;
 
 /**
  * Country class which gives information with respect to the Countries.
@@ -39,6 +39,9 @@ public class Country extends Observable{
 	/** Country holder */
 	private String player;
 	
+	private HashMap<String, String> countryCardsList = new HashMap<String, String>();
+
+	
 	public Country() {
 		PlayerView playerView = new PlayerView();
 		DiceView diceView = new DiceView();
@@ -47,7 +50,7 @@ public class Country extends Observable{
 		this.addObserver(diceView);
 		this.addObserver(cardView);
 	}
-
+	
 	/**
 	 * Get the Country name.
 	 * 
@@ -208,11 +211,23 @@ public class Country extends Observable{
 		notifyObservers();
 	}
 
+	public HashMap<String, String> getCountryCardsList() {
+		return countryCardsList;
+	}
+
+	public void setCountryCardsList(HashMap<String, String> countryCardsList) {
+		this.countryCardsList = countryCardsList;
+		setChanged();
+		notifyObservers();
+	}
+
 	@Override
 	public String toString() {
 		return "Country [name=" + name + ", partOfContinent=" + partOfContinent + ", xValue=" + xValue + ", yValue="
 				+ yValue + ", adjacentCountries=" + adjacentCountries + ", noOfArmies=" + noOfArmies + ", continent="
-				+ continent + ", player=" + player + "]";
+				+ continent + ", player=" + player + ", countryCardsList=" + countryCardsList + "]";
 	}
+
+	
 
 }

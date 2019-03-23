@@ -273,7 +273,8 @@ public class DiceView implements Observer{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
+				frame.dispose();
+				//System.exit(0);
 			}
 		});
 		frame.getContentPane().add(btnEndTurn);

@@ -73,6 +73,10 @@ public class DiceController {
 				}
 				if(attackerFound) {
 					player.getMyCountries().add(defenderCountry);
+					//allocateCard
+					CardController cardAction = new CardController();
+					//Player currentPlayer = getPlayerForCountry(gameMapGraph, attackerCountry.getName());
+					cardAction.allocateCardToPlayer(player);
 					break;
 				}
 			}

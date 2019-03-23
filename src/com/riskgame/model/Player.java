@@ -26,6 +26,8 @@ public class Player extends Observable{
 
 	/** Initial army count of the Player */
 	private int armyCount = 0;
+	
+	private boolean endPlaceArmies;
 
 	/** List of countries held by the Player */
 	private ArrayList<Country> myCountries = new ArrayList<Country>();
@@ -33,6 +35,7 @@ public class Player extends Observable{
 	private HashMap<String, Integer> playersCardList = new HashMap<String, Integer>();
 
 	public Player() {
+		this.endPlaceArmies = false;
 		PlayerView playerView = new PlayerView();
 		DiceView diceView = new DiceView();
 		CardView cardView = new CardView();
@@ -40,6 +43,7 @@ public class Player extends Observable{
 		this.addObserver(diceView);
 		this.addObserver(cardView);
 	}
+	
 	/**
 	 * Get the Player name.
 	 * 
@@ -161,6 +165,14 @@ public class Player extends Observable{
 			}
 		}
 		return null;
+	}
+
+	public boolean isEndPlaceArmies() {
+		return endPlaceArmies;
+	}
+
+	public void setEndPlaceArmies(boolean endPlaceArmies) {
+		this.endPlaceArmies = endPlaceArmies;
 	}
 
 }
