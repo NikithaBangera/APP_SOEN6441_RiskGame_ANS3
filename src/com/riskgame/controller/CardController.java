@@ -2,6 +2,8 @@ package com.riskgame.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
 import java.util.Random;
 import com.riskgame.model.Card;
 import com.riskgame.model.Country;
@@ -10,8 +12,8 @@ import com.riskgame.model.Player;
 
 public class CardController {
 
-	Country countryObj;
-	Card card;
+	Country countryObj = new Country();
+	Card card = new Card();
 	private int exchange = 0;
 
 	/**
@@ -20,15 +22,25 @@ public class CardController {
 	 * @param gameGraph - the GameMapGraph object passed from playerController
 	 */
 	public void assignCardsToCountry(GameMapGraph gameGraph) {
-		HashMap<String, String> countryCardList = new HashMap<String, String>();
-		ArrayList<Country> allCountries = new ArrayList<>(gameGraph.getCountrySet().values());
 
-		for (Country country : allCountries) {
+		Iterator<Entry<String,Country>> countryIt = gameGraph.getCountrySet().entrySet().iterator(); 
+		
+		while(countryIt.hasNext()) {
+			Entry<String, Country> country = countryIt.next();
 			card = new Card();
 			String cardType = card.totalCardType().get(new Random().nextInt(card.totalCardType().size()));
-			countryCardList.put(country.getName(), cardType);
+			card.setCardType(cardType);
+			country.getValue().setCard(card);
 		}
-		countryObj.setCountryCardsList(countryCardList);
+//		HashMap<String, String> countryCardList = new HashMap<String, String>();
+//		ArrayList<Country> allCountries = new ArrayList<>(gameGraph.getCountrySet().values());
+//
+//		for (Country country : allCountries) {
+//			card = new Card();
+//			String cardType = card.totalCardType().get(new Random().nextInt(card.totalCardType().size()));
+//			countryCardList.put(country.getName(), cardType);
+//		}
+//		countryObj.setCountryCardsList(countryCardList);
 	}
 
 	public void allocateCardToPlayer(Player player) {

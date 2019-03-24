@@ -102,6 +102,8 @@ public class PlayerController{
 
 		mapGraph.setGamePhase("Place Armies");
 		mapGraph.setExchangeCount(1);
+		mapGraph.setRefreshFrame(false);	
+
 		PlayerView playerView = new PlayerView(mapGraph);
 		
 	}
@@ -185,15 +187,6 @@ public class PlayerController{
 		});
 	}
 
-	/**
-	 * Method for armies assignment to the countries so that the number of armies in
-	 * the countries will be balanced
-	 * @param mapGraph 
-	 * 
-	 */
-	public void allocationOfRemainingArmyToCountries(Country selectedCountryObject, Player player) {
-		player.armiesAssignedToCountries(selectedCountryObject, 1);
-	}
 	// Function of StartUp Phase ends here
 
 	// Reinforcement Phase
@@ -363,6 +356,36 @@ public class PlayerController{
 		}
 	}
 	
+	/**
+	 * This method is used to assign armies to the Countries. It checks the
+	 * available army and assigns the army to the requested country
+	 * @param mapGraph 
+	 * 
+	 * @param country     - the country given to players
+	 * @param armiesCount - the count of the armies player has
+	 */
+	public void armiesAssignedToCountries(GameMapGraph mapGraph, String country, int armiesCount) {
+		Player player = getPlayerForCountry(mapGraph, country);
+		if (getPlayerForCountry(mapGraph, country) != null) {
+			if ((player.getArmyCount()) > 0 && player.getArmyCount() >= armiesCount) {
+				getPlayerForCountry(mapGraph, country).setArmyCount(player.getArmyCount() - armiesCount);
+				int i = 0;
+				for(Country playerCountry : getPlayerForCountry(mapGraph, country).getMyCountries()) {
+					if(playerCountry.getName().equalsIgnoreCase(country)) {
+						getPlayerForCountry(mapGraph, country).getMyCountries().get(i).setNoOfArmies(playerCountry.getNoOfArmies() + armiesCount);
+						break;
+					}
+					i++;
+				}
+				
+			} else {
+				JOptionPane.showMessageDialog(null, "Insufficient number of armies.");
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "This country is not owned by you!");
+		}
+	}
+	
 	public Country getAdjacentCountry(GameMapGraph mapGraph, String attackerAdjCountry) {
 		for(Player player : mapGraph.getPlayers()) {
 			for(Country country : player.getMyCountries()) {
@@ -410,5 +433,10 @@ public class PlayerController{
 	public void populatePlayerContinents(GameMapGraph mapGraph) {
 		//Pending: create new continent list in player object and populate it to be used to show player's continents in world domination
 	}
+	
+	
+	
+	
+
 	
 }

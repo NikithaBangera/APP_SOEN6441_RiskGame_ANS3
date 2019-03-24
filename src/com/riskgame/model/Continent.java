@@ -29,13 +29,9 @@ public class Continent extends Observable{
 	ArrayList<Country> countriesInContinent = new ArrayList<Country>();
 
 	public Continent() {
-		PlayerView playerView = new PlayerView();
-		DiceView diceView = new DiceView();
-		CardView cardView = new CardView();
-		this.addObserver(playerView);
-		this.addObserver(diceView);
-		this.addObserver(cardView);
+		
 	}
+	
 	/**
 	 * Get the continent name.
 	 * 

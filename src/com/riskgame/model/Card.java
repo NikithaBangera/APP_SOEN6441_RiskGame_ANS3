@@ -17,12 +17,6 @@ public class Card extends Observable{
 	private String cardType;
 	
 	public Card() {
-		PlayerView playerView = new PlayerView();
-		DiceView diceView = new DiceView();
-		CardView cardView = new CardView();
-		this.addObserver(playerView);
-		this.addObserver(diceView);
-		this.addObserver(cardView);
 	}
 
 	public Country getCountry() {

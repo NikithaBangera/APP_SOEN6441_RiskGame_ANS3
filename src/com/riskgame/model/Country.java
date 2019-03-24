@@ -39,16 +39,12 @@ public class Country extends Observable{
 	/** Country holder */
 	private String player;
 	
+	private Card card;
+	
 	private HashMap<String, String> countryCardsList = new HashMap<String, String>();
 
 	
 	public Country() {
-		PlayerView playerView = new PlayerView();
-		DiceView diceView = new DiceView();
-		CardView cardView = new CardView();
-		this.addObserver(playerView);
-		this.addObserver(diceView);
-		this.addObserver(cardView);
 	}
 	
 	/**
@@ -210,16 +206,24 @@ public class Country extends Observable{
 		setChanged();
 		notifyObservers();
 	}
-
-	public HashMap<String, String> getCountryCardsList() {
-		return countryCardsList;
+	
+	public Card getCard() {
+		return card;
 	}
 
-	public void setCountryCardsList(HashMap<String, String> countryCardsList) {
-		this.countryCardsList = countryCardsList;
-		setChanged();
-		notifyObservers();
+	public void setCard(Card card) {
+		this.card = card;
 	}
+
+//	public HashMap<String, String> getCountryCardsList() {
+//		return countryCardsList;
+//	}
+//
+//	public void setCountryCardsList(HashMap<String, String> countryCardsList) {
+//		this.countryCardsList = countryCardsList;
+//		setChanged();
+//		notifyObservers();
+//	}
 
 	@Override
 	public String toString() {
@@ -227,7 +231,4 @@ public class Country extends Observable{
 				+ yValue + ", adjacentCountries=" + adjacentCountries + ", noOfArmies=" + noOfArmies + ", continent="
 				+ continent + ", player=" + player + ", countryCardsList=" + countryCardsList + "]";
 	}
-
-	
-
 }
