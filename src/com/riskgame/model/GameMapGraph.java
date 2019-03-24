@@ -46,6 +46,8 @@ public class GameMapGraph extends Observable{
 	
 	private int exchangeCount;
 	
+	private boolean refreshFrame;
+	
 	/**
 	 * GameMapGraph Constructor
 	 */
@@ -256,5 +258,13 @@ public class GameMapGraph extends Observable{
 
 	public void setExchangeCount(int exchangeCount) {
 		this.exchangeCount = exchangeCount;
+	}
+
+	public boolean isRefreshFrame() {
+		return refreshFrame;
+	}
+
+	public void setRefreshFrame(boolean refreshFrame) {
+		this.refreshFrame = refreshFrame;
 	}
 }

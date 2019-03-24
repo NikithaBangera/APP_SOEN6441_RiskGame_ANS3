@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 
-import com.riskgame.controller.FortificationPhase;
+import com.riskgame.controller.PlayerController;
 import com.riskgame.model.Country;
 
 /**
@@ -20,7 +20,7 @@ public class FortificationPhaseTest {
 	private Country country, toCountry, fromCountry, toCountry1;
 	
 	/** Object for Fortification Class */
-	private FortificationPhase fortificationPhase;
+	private PlayerController playerController;
 	
 	/** ArrayList for storing adjacent countries list for the countries */
 	private ArrayList<String> adjacentCountries;
@@ -30,7 +30,7 @@ public class FortificationPhaseTest {
 	 */
 	public FortificationPhaseTest() {
 		
-		fortificationPhase = new FortificationPhase();
+		playerController = new PlayerController();
 		adjacentCountries = new ArrayList<String>();
 		
 		country = new Country();
@@ -70,7 +70,7 @@ public class FortificationPhaseTest {
 	 */
 	@Test
 	public void isFortificationComplete() {
-		fortificationPhase.moveArmies(fromCountry, toCountry, 2);
+		playerController.moveArmies(fromCountry, toCountry, 2);
 		assertEquals(6, fromCountry.getNoOfArmies());
 		assertEquals(6, toCountry.getNoOfArmies());
 	}
@@ -81,7 +81,7 @@ public class FortificationPhaseTest {
 	 */
 	@Test 
 	public void isFortificationNotComplete() {
-		fortificationPhase.moveArmies(fromCountry, toCountry1, 2);
+		playerController.moveArmies(fromCountry, toCountry1, 2);
 		assertEquals(8, fromCountry.getNoOfArmies());
 		assertEquals(2, toCountry1.getNoOfArmies());
 	}

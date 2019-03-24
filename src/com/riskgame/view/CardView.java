@@ -25,6 +25,7 @@ public class CardView implements Observer{
 	private JTextField infantryAssign;
 	private JTextField cavalryAssign;
 	private JTextField artileryAssign;
+	private CardController cardAction;
 
 	/**
 	 * Launch the application.
@@ -52,6 +53,8 @@ public class CardView implements Observer{
 	 * Create the application.
 	 */
 	public CardView(GameMapGraph mapObj, Player player) {
+		cardAction = new CardController();
+		frame = new JFrame();
 		initialize(mapObj, player);
 	}
 
@@ -59,7 +62,7 @@ public class CardView implements Observer{
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(GameMapGraph mapObj, Player player) {
-		frame = new JFrame();
+	
 		frame.getContentPane().setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		frame.setBounds(100, 100, 495, 396);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -83,7 +86,7 @@ public class CardView implements Observer{
 		JLabel InfantryLabel = new JLabel();
 		InfantryLabel.setText(player.getPlayersCardList().get(Card.INFANTRY).toString());
 		InfantryLabel.setFont(new Font("Times New Roman", Font.PLAIN, 14));
-		InfantryLabel.setBounds(116, 72, 26, 29);
+		InfantryLabel.setBounds(99, 72, 63, 29);
 		frame.getContentPane().add(InfantryLabel);
 
 		JLabel cavalryLabel = new JLabel();
@@ -139,7 +142,7 @@ public class CardView implements Observer{
 		btnExchange.setEnabled(true);
 		btnExchange.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CardController cardAction = new CardController();
+			//	CardController cardAction = new CardController();
 				HashMap<String, Integer> cardsSelected = new HashMap<String, Integer>();
 				if (player.getPlayersCardList().size() < 3) {
 					btnExchange.setEnabled(false);
@@ -177,7 +180,7 @@ public class CardView implements Observer{
 					JOptionPane.showMessageDialog(null, "Maximum card limit reached! Please Exchange the cards.");
 
 				} else {
-					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					frame.dispose();
 //					System.exit(0);
 				}
 			}
@@ -190,7 +193,9 @@ public class CardView implements Observer{
 
 	@Override
 	public void update(Observable o, Object arg) {
-		frame.revalidate();
-		frame.repaint();
+		if(frame != null) {
+			frame.revalidate();
+			frame.repaint();
+		}
 	}
 }

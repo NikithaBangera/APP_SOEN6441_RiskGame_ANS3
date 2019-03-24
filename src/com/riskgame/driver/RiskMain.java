@@ -16,7 +16,6 @@ import javax.swing.filechooser.FileSystemView;
 import com.riskgame.controller.CreateAndEditMap;
 import com.riskgame.controller.PlayerController;
 import com.riskgame.controller.ReadAndWriteMap;
-import com.riskgame.controller.StartupPhase;
 import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.MapTag;
 

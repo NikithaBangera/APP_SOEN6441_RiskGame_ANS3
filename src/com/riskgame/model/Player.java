@@ -36,12 +36,14 @@ public class Player extends Observable{
 
 	public Player() {
 		this.endPlaceArmies = false;
-		PlayerView playerView = new PlayerView();
-		DiceView diceView = new DiceView();
-		CardView cardView = new CardView();
-		this.addObserver(playerView);
-		this.addObserver(diceView);
-		this.addObserver(cardView);
+	
+		 PlayerView playerView = new PlayerView(); 
+		 DiceView diceView = new DiceView();
+		 CardView cardView = new CardView(); 
+		 this.addObserver(playerView);
+		 this.addObserver(diceView); 
+		 this.addObserver(cardView);
+		 
 	}
 	
 	/**
@@ -104,26 +106,7 @@ public class Player extends Observable{
 		notifyObservers();
 	}
 
-	/**
-	 * This method is used to assign armies to the Countries. It checks the
-	 * available army and assigns the army to the requested country
-	 * 
-	 * @param country     - the country given to players
-	 * @param armiesCount - the count of the armies player has
-	 */
-	public void armiesAssignedToCountries(Country country, int armiesCount) {
-		if (this.getMyCountries().contains(country)) {
-			if ((this.getArmyCount()) > 0 && this.getArmyCount() >= armiesCount) {
-				country.setNoOfArmies(country.getNoOfArmies() + armiesCount);
-				this.setArmyCount(this.getArmyCount() - armiesCount);
-			} else {
-				JOptionPane.showMessageDialog(null, "Insufficient number of armies.");
-			}
-		} else {
-			JOptionPane.showMessageDialog(null, "This country is not owned by you!");
-		}
-	}
-
+	
 	/**
 	 * This method is used to add the country to the player's countries list.
 	 * 
@@ -173,6 +156,8 @@ public class Player extends Observable{
 
 	public void setEndPlaceArmies(boolean endPlaceArmies) {
 		this.endPlaceArmies = endPlaceArmies;
+		setChanged();
+		notifyObservers();
 	}
 
 }
