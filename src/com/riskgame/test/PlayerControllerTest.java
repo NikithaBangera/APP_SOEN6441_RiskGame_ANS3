@@ -18,7 +18,7 @@ import com.riskgame.model.Player;
  * @author Sumeetha
  *
  */
-public class StartupPhaseTest {
+public class PlayerControllerTest {
 	/** Object for RiskPlayer Class */
 	Player player1;
 	
@@ -37,7 +37,7 @@ public class StartupPhaseTest {
 	/**
 	 * StartupPhaseTest Constructor for initial setup 
 	 */
-   public StartupPhaseTest() {
+   public PlayerControllerTest() {
 	   countrySet = new HashMap<String, Country>();
 	   mapGraph = new GameMapGraph();
 	   

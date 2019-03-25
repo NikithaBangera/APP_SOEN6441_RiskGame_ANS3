@@ -5,7 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({CreateAndEditMapTest.class,ReadAndWriteMapTest.class,StartupPhaseTest.class,
+@SuiteClasses({CreateMapControllerTest.class,LoadMapControllerTest.class,PlayerControllerTest.class,
     FortificationPhaseTest.class,ReinforcementPhaseTest.class})
 
 /**

@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
 
-import com.riskgame.controller.ReadAndWriteMap;
+import com.riskgame.controller.LoadMapController;
 
 /**
  * Test Class for ReadAndWriteMap Class
@@ -15,10 +15,10 @@ import com.riskgame.controller.ReadAndWriteMap;
  * @author Shresthi
  *
  */
-public class ReadAndWriteMapTest {
+public class LoadMapControllerTest {
 
 	/** Object for ReadAndWriteMap Class */
-	ReadAndWriteMap readAndWriteMap;
+	LoadMapController readAndWriteMap;
 
 	/** String to hold the valid and invalid map files */
 	private String validMap, invalidMap;
@@ -35,9 +35,9 @@ public class ReadAndWriteMapTest {
 	/**
 	 * ReadAndWriteMapTest Constructor for initial setup
 	 */
-	public ReadAndWriteMapTest() {
+	public LoadMapControllerTest() {
 
-		readAndWriteMap = new ReadAndWriteMap();
+		readAndWriteMap = new LoadMapController();
 		validMap = "resources\\maps\\Valid.map";
 		invalidMap = "resources\\maps\\Invalid.map";
 		validCountryData = "[Country] Libya,314,94,Northern Africa,Tunisia,Algeria,Egypt";

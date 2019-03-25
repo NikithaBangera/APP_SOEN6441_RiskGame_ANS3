@@ -5,9 +5,9 @@ import javax.swing.JLabel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 
-import com.riskgame.controller.CreateAndEditMap;
+import com.riskgame.controller.CreateMapController;
 import com.riskgame.controller.PlayerController;
-import com.riskgame.controller.ReadAndWriteMap;
+import com.riskgame.controller.LoadMapController;
 //import com.riskgame.driver.RiskMain;
 import com.riskgame.model.GameMapGraph;
 
@@ -41,12 +41,12 @@ public class MainView extends JFrame {
 	/**
 	 * createandeditmap a CreateAndEditMap object
 	 */
-	public static CreateAndEditMap createandeditmap = new CreateAndEditMap();
+	public static CreateMapController createandeditmap = new CreateMapController();
 
 	/**
 	 * loadMap a ReadAndWriteMap object
 	 */
-	public static ReadAndWriteMap loadMap = new ReadAndWriteMap();
+	public static LoadMapController loadMap = new LoadMapController();
 
 	/**
 	 * RiskMain constructor contains the action to be performed on the click create
@@ -158,7 +158,7 @@ public class MainView extends JFrame {
 									System.out.println(" \n Thank You !! ");
 								System.exit(0);
 							} else {
-								System.out.println(ReadAndWriteMap.getError());
+								System.out.println(LoadMapController.getError());
 								System.out.println(
 										"\nPlease rectify all the above mentioned issues and upload the file again");
 								System.out.println("\n Do you want to upload the correct file again? :Yes/ No ");

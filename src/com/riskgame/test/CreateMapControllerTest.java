@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 
-import com.riskgame.controller.CreateAndEditMap;
+import com.riskgame.controller.CreateMapController;
 import com.riskgame.model.Continent;
 
 /**
@@ -14,10 +14,10 @@ import com.riskgame.model.Continent;
  * @author Shiva
  *
  */
-public class CreateAndEditMapTest {
+public class CreateMapControllerTest {
 	
 	/** Object for CreateAndEditMap Class */
-	private CreateAndEditMap createAndEditMap; 
+	private CreateMapController createAndEditMap; 
 	
 	/** Objects for Continent class */
 	private Continent continent1, continent2, continent3;
@@ -28,9 +28,9 @@ public class CreateAndEditMapTest {
 	/**
 	 * CreateAndEditMapTest Constructor for initial setup 
 	 */
-	public CreateAndEditMapTest() {
+	public CreateMapControllerTest() {
 		
-		createAndEditMap = new CreateAndEditMap();
+		createAndEditMap = new CreateMapController();
 		listofContinents = new ArrayList<Continent>();
 		
 		continent1 = new Continent();
