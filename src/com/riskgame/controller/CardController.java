@@ -101,7 +101,7 @@ public class CardController {
 		int c = playersCard.get(Card.CAVALRY);
 		String operation = "";
 
-		if (total >= 3 && player.getPlayersCardList().size() >= 3) {
+		if (total >= 3 && (a+i+c) >= 3) {
 			if (((aCount >= 1 && a >= 1) && (iCount >= 1 && i >= 1) && (cCount >= 1 && c >= 1))) {
 				player.setArmyCount(player.getArmyCount() + 5 * exchange);
 				playersCard.replace(Card.ARTILLERY, a, a - 1);

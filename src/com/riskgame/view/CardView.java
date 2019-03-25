@@ -188,8 +188,10 @@ public class CardView implements Observer {
 		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// to be implemented
-
-				if (player.getPlayersCardList().size() >= 5) {
+				int total = (player.getPlayersCardList().get(Card.ARTILLERY))
+						+ (player.getPlayersCardList().get(Card.CAVALRY))
+						+ (player.getPlayersCardList().get(Card.INFANTRY));
+				if (total >= 5) {
 					JOptionPane.showMessageDialog(null, "Maximum card limit reached! Please Exchange the cards.");
 
 				} else {
