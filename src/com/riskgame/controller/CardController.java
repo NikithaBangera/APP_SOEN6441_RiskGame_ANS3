@@ -32,15 +32,6 @@ public class CardController {
 			card.setCardType(cardType);
 			country.getValue().setCard(card);
 		}
-//		HashMap<String, String> countryCardList = new HashMap<String, String>();
-//		ArrayList<Country> allCountries = new ArrayList<>(gameGraph.getCountrySet().values());
-//
-//		for (Country country : allCountries) {
-//			card = new Card();
-//			String cardType = card.totalCardType().get(new Random().nextInt(card.totalCardType().size()));
-//			countryCardList.put(country.getName(), cardType);
-//		}
-//		countryObj.setCountryCardsList(countryCardList);
 	}
 
 	public void allocateCardToPlayer(Player player) {
@@ -54,13 +45,25 @@ public class CardController {
 	private Integer addCardCount(String cardToBeAdded, Player currentPlayer) {
 		int count = 0;
 		if (cardToBeAdded.equalsIgnoreCase(Card.ARTILLERY)) {
-			count = currentPlayer.getPlayersCardList().get(Card.ARTILLERY);
+			if(currentPlayer.getPlayersCardList() != null && currentPlayer.getPlayersCardList().size() > 0) {
+				if(currentPlayer.getPlayersCardList().containsKey(Card.ARTILLERY)) {
+					count = currentPlayer.getPlayersCardList().get(Card.ARTILLERY);
+				}
+			}
 			count += 1;
 		} else if (cardToBeAdded.equalsIgnoreCase(Card.CAVALRY)) {
-			count = currentPlayer.getPlayersCardList().get(Card.CAVALRY);
+			if(currentPlayer.getPlayersCardList() != null && currentPlayer.getPlayersCardList().size() > 0) {
+				if(currentPlayer.getPlayersCardList().containsKey(Card.CAVALRY)) {
+					count = currentPlayer.getPlayersCardList().get(Card.CAVALRY);
+				}
+			}
 			count += 1;
 		} else {
-			count = currentPlayer.getPlayersCardList().get(Card.INFANTRY);
+			if(currentPlayer.getPlayersCardList() != null && currentPlayer.getPlayersCardList().size() > 0) {
+				if(currentPlayer.getPlayersCardList().containsKey(Card.INFANTRY)) {
+					count = currentPlayer.getPlayersCardList().get(Card.INFANTRY);
+				}
+			}			
 			count += 1;
 		}
 		return count;

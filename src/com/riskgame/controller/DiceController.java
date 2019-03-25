@@ -2,6 +2,7 @@ package com.riskgame.controller;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 import javax.swing.JOptionPane;
 
@@ -22,12 +23,25 @@ public class DiceController {
 		String winner = "";
 		int attackerLostCount = 0;
 		int defenderLostCount = 0;
+		attackerCountry.getDiceValues().clear();
+		defenderCountry.getDiceValues().clear();
+		dice.getAttackerDiceValues().clear();
+		dice.getDefenderDiceValues().clear();
+		Random random = new Random();
 		
-		attackerDiceValue(attackerDiceCount);
-		defenderDiceValue(defenderDiceCount);
+		attackerDiceValue(attackerDiceCount, random);
+		defenderDiceValue(defenderDiceCount, random);
 		
 		Collections.sort(dice.getAttackerDiceValues(), Collections.reverseOrder());
 		Collections.sort(dice.getDefenderDiceValues(), Collections.reverseOrder());
+		
+		for(Integer diceValue : dice.getAttackerDiceValues()) {
+			attackerCountry.getDiceValues().add(diceValue);
+		}
+		
+		for(Integer diceValue : dice.getDefenderDiceValues()) {
+			defenderCountry.getDiceValues().add(diceValue);
+		}
 		
 		int iterationSize = attackerDiceCount < defenderDiceCount ? attackerDiceCount : defenderDiceCount;
 		
@@ -44,16 +58,16 @@ public class DiceController {
 		return attackerLostCount+":"+defenderLostCount;
 	}
 
-	private void attackerDiceValue(int attackerDiceCount) {
+	private void attackerDiceValue(int attackerDiceCount, Random random) {
 		for (int i = 1; i <= attackerDiceCount; i++) {
-			int diceValue = dice.generateDiceValue();
+			int diceValue = random.nextInt(6) + 1;
 			dice.getAttackerDiceValues().add(diceValue);
 		}
 	}
 
-	private void defenderDiceValue(int defenderDiceCount) {
+	private void defenderDiceValue(int defenderDiceCount, Random random) {
 		for (int i = 1; i <= defenderDiceCount; i++) {
-			int diceValue = dice.generateDiceValue();
+			int diceValue = random.nextInt(6) + 1;
 			dice.getDefenderDiceValues().add(diceValue);
 		}
 	}
@@ -80,8 +94,9 @@ public class DiceController {
 					break;
 				}
 			}
-			int i=0;
+			
 			for(Player player : gameMapGraph.getPlayers()) {
+				int i=0;
 				for(Country country : player.getMyCountries()) {
 					if(country.getName().equalsIgnoreCase(defenderCountry.getName())) {
 						defenderFound = true;

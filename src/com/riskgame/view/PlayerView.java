@@ -101,7 +101,6 @@ public class PlayerView implements Observer {
 			rootPanel = new JPanel();
 			rootPanel.setBounds(0, 0, 861, 467);
 			frmRiskGame.getContentPane().add(rootPanel);
-			// TODO Auto-generated method stub
 			initialize(inputMapGraph);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -119,19 +118,34 @@ public class PlayerView implements Observer {
 		if(roundRobin == null) {
 			roundRobin = new RoundRobinScheduler(mapGraph.getPlayers());
 		}
+		
 		if(!mapGraph.isRefreshFrame()) {
 			nextPlayerNumber++;
 			selectedAdjacentCountry = "";
 			selectedCountry = "";
 			player = roundRobin.nextTurn();
+			player.setFirstReinforcement(true);
 		}
-		if(mapGraph.getGamePhase().equalsIgnoreCase("Place Armies") && player.isEndPlaceArmies()) {
+		
+		if(playerController.isPlaceArmiesComplete(mapGraph) && mapGraph.getGamePhase().equalsIgnoreCase("Place Armies")) {
+			mapGraph.setGamePhase("Reinforcement");
 			mapGraph.setRefreshFrame(false);
 			rootPanel.removeAll();
+			rootPanel.revalidate();
+			rootPanel.repaint();
 			initialize(mapGraph);
 		}
 		
-		if(mapGraph.getGamePhase().equalsIgnoreCase("Reinforcement")) {
+		if(mapGraph.getGamePhase().equalsIgnoreCase("Place Armies") && player.isEndPlaceArmies()) {
+			mapGraph.setRefreshFrame(false);
+			rootPanel.removeAll();
+			rootPanel.revalidate();
+			rootPanel.repaint();
+			initialize(mapGraph);
+		}
+		
+		if(mapGraph.getGamePhase().equalsIgnoreCase("Reinforcement") && player.isFirstReinforcement()) {
+			player.setFirstReinforcement(false);
 			startReinforcement(mapGraph, player);
 			CardView cardView = new CardView(mapGraph, player);
 		}
@@ -224,7 +238,6 @@ public class PlayerView implements Observer {
 		textFieldPhaseName = new JTextField(mapGraph.getGamePhase());
 		textFieldPhaseName.setFont(new Font("Calibri", Font.PLAIN, 16));
 		textFieldPhaseName.setBounds(0, 25, 179, 26);
-		textFieldPhaseName.setEnabled(false);
 		panelPhaseName.add(textFieldPhaseName);
 		textFieldPhaseName.setColumns(10);
 		listPlayerCountryList.addListSelectionListener(new ListSelectionListener() {
@@ -239,6 +252,8 @@ public class PlayerView implements Observer {
 				setPlayerCountryDetails(selectedCountry+" has "+selectedCountryObject.getNoOfArmies()+" armies.");
 				setPlayerAdjCountryDetails("");
 				rootPanel.removeAll();
+				rootPanel.revalidate();
+				rootPanel.repaint();
 				refreshFrame(mapGraph);
 			}
 		});
@@ -265,6 +280,8 @@ public class PlayerView implements Observer {
 					Player adjCountryPlayer = playerController.getPlayerForCountry(mapGraph, getSelectedAdjacentCountry());
 					setPlayerAdjCountryDetails(getSelectedAdjacentCountry()+" belongs to "+adjCountryPlayer.getName()+" - has "+selectedAdjCountryObject.getNoOfArmies()+" armies.");
 					rootPanel.removeAll();
+					rootPanel.revalidate();
+					rootPanel.repaint();
 					refreshFrame(mapGraph);
 				}
 			});
@@ -272,6 +289,10 @@ public class PlayerView implements Observer {
 		
 		
 		JButton btnPlaceArmy = new JButton("Place Army");
+		btnPlaceArmy.setEnabled(false);
+		if(mapGraph.getGamePhase().equalsIgnoreCase("Place Armies")) {
+			btnPlaceArmy.setEnabled(true);
+		}
 		btnPlaceArmy.setBounds(426, 16, 165, 29);
 		btnPlaceArmy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -285,8 +306,16 @@ public class PlayerView implements Observer {
 	//					mapGraph.setGamePhase("Reinforcement");
 	//					btnPlaceArmy.setEnabled(false);
 					}
+	                
+	               
 	                mapGraph.setRefreshFrame(false);
+	                player.setFirstReinforcement(true);
+	                
+	            	listPlayerCountryList.removeAll();
+					panelPlayerCountries.removeAll();
 	                rootPanel.removeAll();
+	                rootPanel.revalidate();
+					rootPanel.repaint();
 					initialize(mapGraph);
 				}
 				else {
@@ -311,9 +340,16 @@ public class PlayerView implements Observer {
 			public void actionPerformed(ActionEvent e) {
 				JFrame reinforceArmy = new JFrame("Reinforce Armies");
 				String armyReinforce = JOptionPane.showInputDialog(reinforceArmy, "Enter the number of armies to be reinforced:");
-				playerController.armiesAssignedToCountries(mapGraph, selectedCountry, Integer.parseInt(armyReinforce));
-				rootPanel.removeAll();
-				refreshFrame(mapGraph);
+				if(armyReinforce != null) {
+					playerController.armiesAssignedToCountries(mapGraph, selectedCountry, Integer.parseInt(armyReinforce));
+					rootPanel.removeAll();
+					rootPanel.revalidate();
+					rootPanel.repaint();
+					refreshFrame(mapGraph);
+				}
+				else {
+					reinforceArmy.setVisible(false);
+				}
 
 			}
 		});
@@ -333,6 +369,8 @@ public class PlayerView implements Observer {
 					playerController.attackPhase(mapGraph,selectedCountryObject, selectedAdjCountryObject);
 				}
 				rootPanel.removeAll();
+				rootPanel.revalidate();
+				rootPanel.repaint();
 				refreshFrame(mapGraph);
 
 			}
@@ -353,19 +391,27 @@ public class PlayerView implements Observer {
 				}
 				
 				rootPanel.removeAll();
+				rootPanel.revalidate();
+				rootPanel.repaint();
 				refreshFrame(mapGraph);
 
 			}
 		});
 		rootPanel.add(btnCompleteAttack);
 		
-		if(player.getArmyCount() == 0) {
+		btnAttack.setEnabled(false);
+		btnCompleteAttack.setEnabled(false);
+		
+		if(player.getArmyCount() == 0 && mapGraph.getGamePhase().equalsIgnoreCase("Reinforcement")) {
 			btnReinforcement.setEnabled(false);
 			btnAttack.setEnabled(true);
 			btnCompleteAttack.setEnabled(true);
-			if(mapGraph.getGamePhase().equalsIgnoreCase("Reinforcement")) {
-				mapGraph.setGamePhase("Attack");
-			}
+			mapGraph.setGamePhase("Attack");
+		}
+		else if(mapGraph.getGamePhase().equalsIgnoreCase("Attack")) {
+			btnReinforcement.setEnabled(false);
+			btnAttack.setEnabled(true);
+			btnCompleteAttack.setEnabled(true);
 		}
 		
 		JButton btnFortify = new JButton("Fortify");
@@ -412,6 +458,8 @@ public class PlayerView implements Observer {
 		if(isFortificationComplete) {
             mapGraph.setRefreshFrame(false);
             rootPanel.removeAll();
+            rootPanel.revalidate();
+			rootPanel.repaint();
 			initialize(mapGraph);
 		}
 		
@@ -453,19 +501,18 @@ public class PlayerView implements Observer {
 				}
 				mapGraph.setRefreshFrame(false);
 				rootPanel.removeAll();
+				rootPanel.revalidate();
+				rootPanel.repaint();
 				initialize(mapGraph);
 			}
 		});
 		rootPanel.add(btnEndTurn);
 		
-		btnAttack.setEnabled(false);
-		btnCompleteAttack.setEnabled(false);
-		btnFortify.setEnabled(false);
 		
-		if(player.getArmyCount() == 0) {
-			btnAttack.setEnabled(true);
-			btnCompleteAttack.setEnabled(true);
-		}
+//		if(player.getArmyCount() == 0) {
+//			btnAttack.setEnabled(true);
+//			btnCompleteAttack.setEnabled(true);
+//		}
 		
 		
 		//world domination panel
@@ -586,4 +633,5 @@ public class PlayerView implements Observer {
 		mapGraph.setRefreshFrame(true);
 		initialize(mapGraph);
 	}
+	
 }

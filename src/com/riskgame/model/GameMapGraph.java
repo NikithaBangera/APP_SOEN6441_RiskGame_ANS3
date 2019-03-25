@@ -48,6 +48,8 @@ public class GameMapGraph extends Observable{
 	
 	private boolean refreshFrame;
 	
+	private String diceViewMessage;
+	
 	/**
 	 * GameMapGraph Constructor
 	 */
@@ -266,5 +268,13 @@ public class GameMapGraph extends Observable{
 
 	public void setRefreshFrame(boolean refreshFrame) {
 		this.refreshFrame = refreshFrame;
+	}
+
+	public String getDiceViewMessage() {
+		return diceViewMessage;
+	}
+
+	public void setDiceViewMessage(String diceViewMessage) {
+		this.diceViewMessage = diceViewMessage;
 	}
 }

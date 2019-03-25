@@ -28,6 +28,8 @@ public class Player extends Observable{
 	private int armyCount = 0;
 	
 	private boolean endPlaceArmies;
+	
+	private boolean firstReinforcement;
 
 	/** List of countries held by the Player */
 	private ArrayList<Country> myCountries = new ArrayList<Country>();
@@ -158,6 +160,14 @@ public class Player extends Observable{
 		this.endPlaceArmies = endPlaceArmies;
 		setChanged();
 		notifyObservers();
+	}
+
+	public boolean isFirstReinforcement() {
+		return firstReinforcement;
+	}
+
+	public void setFirstReinforcement(boolean firstReinforcement) {
+		this.firstReinforcement = firstReinforcement;
 	}
 
 }

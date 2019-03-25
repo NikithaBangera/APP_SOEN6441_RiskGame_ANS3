@@ -85,9 +85,9 @@ public class PlayerController{
 					System.out.println("Player name cannot be empty");
 				}
 			}
+			riskPlayer.setFirstReinforcement(true);
 			mapGraph.getPlayers().add(riskPlayer);
 		}
-		
 		
 		allocationOfCountry(mapGraph);
 		allocationOfArmyToPlayers(mapGraph);
@@ -259,6 +259,7 @@ public class PlayerController{
 							break;
 						}
 					}
+					break;
 				}
 			}
 			
@@ -356,36 +357,6 @@ public class PlayerController{
 		}
 	}
 	
-	/**
-	 * This method is used to assign armies to the Countries. It checks the
-	 * available army and assigns the army to the requested country
-	 * @param mapGraph 
-	 * 
-	 * @param country     - the country given to players
-	 * @param armiesCount - the count of the armies player has
-	 */
-	public void armiesAssignedToCountries(GameMapGraph mapGraph, String country, int armiesCount) {
-		Player player = getPlayerForCountry(mapGraph, country);
-		if (getPlayerForCountry(mapGraph, country) != null) {
-			if ((player.getArmyCount()) > 0 && player.getArmyCount() >= armiesCount) {
-				getPlayerForCountry(mapGraph, country).setArmyCount(player.getArmyCount() - armiesCount);
-				int i = 0;
-				for(Country playerCountry : getPlayerForCountry(mapGraph, country).getMyCountries()) {
-					if(playerCountry.getName().equalsIgnoreCase(country)) {
-						getPlayerForCountry(mapGraph, country).getMyCountries().get(i).setNoOfArmies(playerCountry.getNoOfArmies() + armiesCount);
-						break;
-					}
-					i++;
-				}
-				
-			} else {
-				JOptionPane.showMessageDialog(null, "Insufficient number of armies.");
-			}
-		} else {
-			JOptionPane.showMessageDialog(null, "This country is not owned by you!");
-		}
-	}
-	
 	public Country getAdjacentCountry(GameMapGraph mapGraph, String attackerAdjCountry) {
 		for(Player player : mapGraph.getPlayers()) {
 			for(Country country : player.getMyCountries()) {
@@ -434,9 +405,36 @@ public class PlayerController{
 		//Pending: create new continent list in player object and populate it to be used to show player's continents in world domination
 	}
 	
-	
-	
-	
-
-	
+	/**
+	 * This method is used to assign armies to the Countries. It checks the
+	 * available army and assigns the army to the requested country
+	 * @param mapGraph 
+	 * 
+	 * @param country     - the country given to players
+	 * @param armiesCount - the count of the armies player has
+	 */
+	public void armiesAssignedToCountries(GameMapGraph mapGraph, String country, int armiesCount) {
+		Player player = getPlayerForCountry(mapGraph, country);
+		if (getPlayerForCountry(mapGraph, country) != null) {
+			if ((player.getArmyCount()) > 0 && player.getArmyCount() >= armiesCount) {
+				getPlayerForCountry(mapGraph, country).setArmyCount(player.getArmyCount() - armiesCount);
+				if(getPlayerForCountry(mapGraph, country).getArmyCount() == 0) {
+					getPlayerForCountry(mapGraph, country).setEndPlaceArmies(true);
+				}
+				int i = 0;
+				for(Country playerCountry : getPlayerForCountry(mapGraph, country).getMyCountries()) {
+					if(playerCountry.getName().equalsIgnoreCase(country)) {
+						getPlayerForCountry(mapGraph, country).getMyCountries().get(i).setNoOfArmies(playerCountry.getNoOfArmies() + armiesCount);
+						break;
+					}
+					i++;
+				}
+				
+			} else {
+				JOptionPane.showMessageDialog(null, "Insufficient number of armies.");
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "This country is not owned by you!");
+		}
+	}
 }
