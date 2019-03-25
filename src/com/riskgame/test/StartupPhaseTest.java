@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 import org.junit.jupiter.api.Test;
 
-import com.riskgame.controller.StartupPhase;
+import com.riskgame.controller.PlayerController;
 import com.riskgame.model.Country;
 import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.Player;
@@ -23,7 +23,7 @@ public class StartupPhaseTest {
 	Player player1;
 	
 	/** Object for StartUp Class */
-	StartupPhase startUpPhase;
+	PlayerController playerController;
 	
 	/** Object for Country Class */
 	Country country;
@@ -41,11 +41,11 @@ public class StartupPhaseTest {
 	   countrySet = new HashMap<String, Country>();
 	   mapGraph = new GameMapGraph();
 	   
-       startUpPhase = new StartupPhase();
-       startUpPhase.setCountOfthePlayers(2);
+       playerController = new PlayerController();
+       playerController.setCountOfthePlayers(2);
 
        player1 = new Player();
-       startUpPhase.getPlayersList().add(player1);
+       mapGraph.getPlayers().add(player1);
 
        country = new Country();
        country.setName("Morocco");
@@ -60,7 +60,7 @@ public class StartupPhaseTest {
     */
    @Test
    public void testAllocationArmy() {
-       startUpPhase.allocationOfArmyToPlayers();
+       playerController.allocationOfArmyToPlayers(mapGraph);
        assertEquals(40, player1.getArmyCount());
    }
 
@@ -70,7 +70,7 @@ public class StartupPhaseTest {
     */
    @Test
    public void testallocationOfArmyToCountriesInitially() {
-       startUpPhase.allocationOfArmyToCountriesInitially(mapGraph);
+       playerController.allocationOfArmyToCountriesInitially(mapGraph);
        assertEquals(1, country.getNoOfArmies() );
    }
 }

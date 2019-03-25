@@ -2,16 +2,23 @@ package com.riskgame.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
 import java.util.Random;
 import com.riskgame.model.Card;
 import com.riskgame.model.Country;
 import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.Player;
 
+/**
+ * This class aims to allocate the cards to the players. It also lets the players exchange those cards for armies.Ï
+ * @author Shresthi Garg
+ *
+ */
 public class CardController {
 
-	Country countryObj;
-	Card card;
+	Country countryObj = new Country();
+	Card card = new Card();
 	private int exchange = 0;
 
 	/**
@@ -20,17 +27,30 @@ public class CardController {
 	 * @param gameGraph - the GameMapGraph object passed from playerController
 	 */
 	public void assignCardsToCountry(GameMapGraph gameGraph) {
-		HashMap<String, String> countryCardList = new HashMap<String, String>();
-		ArrayList<Country> allCountries = new ArrayList<>(gameGraph.getCountrySet().values());
 
-		for (Country country : allCountries) {
+		Iterator<Entry<String,Country>> countryIt = gameGraph.getCountrySet().entrySet().iterator(); 
+		
+		while(countryIt.hasNext()) {
+			Entry<String, Country> country = countryIt.next();
 			card = new Card();
 			String cardType = card.totalCardType().get(new Random().nextInt(card.totalCardType().size()));
-			countryCardList.put(country.getName(), cardType);
+			card.setCardType(cardType);
+			country.getValue().setCard(card);
 		}
-		countryObj.setCountryCardsList(countryCardList);
+//		HashMap<String, String> countryCardList = new HashMap<String, String>();
+//		ArrayList<Country> allCountries = new ArrayList<>(gameGraph.getCountrySet().values());
+//
+//		for (Country country : allCountries) {
+//			card = new Card();
+//			String cardType = card.totalCardType().get(new Random().nextInt(card.totalCardType().size()));
+//			countryCardList.put(country.getName(), cardType);
+//		}
+//		countryObj.setCountryCardsList(countryCardList);
 	}
-
+	/**
+	 * This method  allocates a card randomly to the player if the player wins the country
+	 * @param player - the current player
+	 */
 	public void allocateCardToPlayer(Player player) {
 //		HashMap<String, String> allCards = countryObj.getCountryCardsList();
 		String cardToBeAdded = card.totalCardType().get(new Random().nextInt(card.totalCardType().size()));
@@ -38,7 +58,13 @@ public class CardController {
 		player.getPlayersCardList().put(cardToBeAdded, count);
 
 	}
-
+	
+	/**
+	 * This method adds the cards to players card list
+	 * @param cardToBeAdded - The card that has to be added
+	 * @param currentPlayer - The current player
+	 * @return count - the count of the card type added
+	 */
 	private Integer addCardCount(String cardToBeAdded, Player currentPlayer) {
 		int count = 0;
 		if (cardToBeAdded.equalsIgnoreCase(Card.ARTILLERY)) {
@@ -53,7 +79,13 @@ public class CardController {
 		}
 		return count;
 	}
-
+	
+	/**
+	 * This method is called when player exchanges the card in turn for army
+	 * @param cardsSelected - The cards selected by the player for exchange
+	 * @param player - The current player
+	 * @return - String for the operation
+	 */
 	public String exchangeCards(HashMap<String, Integer> cardsSelected, Player player) {
 		exchange += 1;
 		int aCount = cardsSelected.get(Card.ARTILLERY);

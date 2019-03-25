@@ -8,12 +8,12 @@ import com.riskgame.view.PlayerView;
 import java.util.HashMap;
 
 /**
- * Country class which gives information with respect to the Countries.
+ * Country class is a model which gives information with respect to the Countries.
  * 
  * @author Shresthi
- * @author Sumeetha
+ * @author Nikitha
  */
-public class Country extends Observable{
+public class Country extends Observable {
 
 	/** Name of country. */
 	private String name;
@@ -38,19 +38,16 @@ public class Country extends Observable{
 
 	/** Country holder */
 	private String player;
-	
+
+	/** Card of the player */
+	private Card card;
+
+	/** List of country card */
 	private HashMap<String, String> countryCardsList = new HashMap<String, String>();
 
-	
 	public Country() {
-		PlayerView playerView = new PlayerView();
-		DiceView diceView = new DiceView();
-		CardView cardView = new CardView();
-		this.addObserver(playerView);
-		this.addObserver(diceView);
-		this.addObserver(cardView);
 	}
-	
+
 	/**
 	 * Get the Country name.
 	 * 
@@ -211,15 +208,33 @@ public class Country extends Observable{
 		notifyObservers();
 	}
 
-	public HashMap<String, String> getCountryCardsList() {
-		return countryCardsList;
+	/**
+	 * This method gets the card
+	 * 
+	 * @return The card object
+	 */
+	public Card getCard() {
+		return card;
 	}
 
-	public void setCountryCardsList(HashMap<String, String> countryCardsList) {
-		this.countryCardsList = countryCardsList;
-		setChanged();
-		notifyObservers();
+	/**
+	 * This method sets the card
+	 * 
+	 * @param card - the card object
+	 */
+	public void setCard(Card card) {
+		this.card = card;
 	}
+
+//	public HashMap<String, String> getCountryCardsList() {
+//		return countryCardsList;
+//	}
+//
+//	public void setCountryCardsList(HashMap<String, String> countryCardsList) {
+//		this.countryCardsList = countryCardsList;
+//		setChanged();
+//		notifyObservers();
+//	}
 
 	@Override
 	public String toString() {
@@ -227,7 +242,4 @@ public class Country extends Observable{
 				+ yValue + ", adjacentCountries=" + adjacentCountries + ", noOfArmies=" + noOfArmies + ", continent="
 				+ continent + ", player=" + player + ", countryCardsList=" + countryCardsList + "]";
 	}
-
-	
-
 }
