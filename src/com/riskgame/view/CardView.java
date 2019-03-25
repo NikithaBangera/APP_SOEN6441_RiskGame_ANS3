@@ -214,8 +214,6 @@ public class CardView implements Observer {
 		JButton btnExit = new JButton("Exit");
 		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// to be implemented
-
 				if (player.getPlayersCardList().isEmpty()) {
 					frame.setVisible(false);
 				} else {
@@ -228,8 +226,8 @@ public class CardView implements Observer {
 					} else {
 						frame.setVisible(false);
 					}
-				}
 
+				}
 			}
 		});
 		btnExit.setFont(new Font("Times New Roman", Font.PLAIN, 14));

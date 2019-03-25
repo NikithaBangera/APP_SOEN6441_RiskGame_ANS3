@@ -341,21 +341,24 @@ public class PlayerController {
 				}
 			}
 		}
-
+		
 		if (!isPlayerCountry) {
+			DiceController diceController = new DiceController();
 			while (attackerCountry.getNoOfArmies() > 1 && defenderCountry.getNoOfArmies() > 0) {
 				attackerDiceCount = attackerCountry.getNoOfArmies() > 3 ? 3
 						: (attackerCountry.getNoOfArmies() > 2 ? 2 : 1);
 				defenderDiceCount = defenderCountry.getNoOfArmies() >= 2 ? 2 : 1;
 
-				DiceController diceController = new DiceController();
+				
 				diceController.startDiceRoll(attackerDiceCount, defenderDiceCount, attackerCountry, defenderCountry);
 			}
 
 			if (defenderCountry.getNoOfArmies() == 0) {
-				attackerCountry.setNoOfArmies(attackerCountry.getNoOfArmies() - 1);
-				defenderCountry.setNoOfArmies(defenderCountry.getNoOfArmies() + 1);
+				//attackerCountry.setNoOfArmies(attackerCountry.getNoOfArmies() - 1);
+				//defenderCountry.setNoOfArmies(defenderCountry.getNoOfArmies() + 1);
 				JOptionPane.showMessageDialog(null, "Defender has lost the country to attacker!");
+				diceController.moveArmies(1, attackerCountry, defenderCountry, gameMapGraph);
+				
 			}
 		}
 	}

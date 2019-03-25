@@ -42,6 +42,11 @@ public class Player extends Observable {
 	 * List of players card
 	 */
 	private HashMap<String, Integer> playersCardList = new HashMap<String, Integer>();
+	
+	/**
+	 * Boolean variable to check if player wants to end attack phase
+	 */
+	private boolean completeAttack;
 
 	/**
 	 * Constructor to initialize the initial values
@@ -216,5 +221,23 @@ public class Player extends Observable {
 	 */
 	public void setFirstReinforcement(boolean firstReinforcement) {
 		this.firstReinforcement = firstReinforcement;
+	}
+
+	/**
+	 * Method to check if complete attack is checked
+	 * 
+	 * @return completeAttack - complete attack phase
+	 */
+	public boolean isCompleteAttack() {
+		return completeAttack;
+	}
+
+	/**
+	 * Method to set completeAttach in attack phase
+	 * 
+	 * @param completeAttack - complete attack phase
+	 */
+	public void setCompleteAttack(boolean completeAttack) {
+		this.completeAttack = completeAttack;
 	}
 }
