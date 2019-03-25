@@ -25,6 +25,12 @@ import java.util.Observable;
 import java.util.Observer;
 import java.awt.event.ActionEvent;
 
+/**
+ * This class aims to show the dice view
+ * 
+ * @author Nikitha
+ *
+ */
 public class DiceView implements Observer{
 
 	private JFrame frmDiceView;
@@ -41,6 +47,8 @@ public class DiceView implements Observer{
 
 	/**
 	 * Launch the application.
+	 * 
+	 * @param args- arguments
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -55,14 +63,19 @@ public class DiceView implements Observer{
 		});
 	}
 
+	/**
+	 * DiceView Constructor
+	 */
 	public DiceView() {
 		
 	}
+	
 	/**
-	 * Create the application.
-	 * @param gameMapGraph 
-	 * @param defender 
-	 * @param attacker 
+	 * DiceView Constructor with parameters.
+	 * 
+	 * @param gameMapGraph - GameMapGraph object
+	 * @param defender     - the defender
+	 * @param attacker     - the attacker
 	 */
 	public DiceView(GameMapGraph gameMapGraph, Country attacker, Country defender) {
 		diceController = new DiceController();
@@ -82,15 +95,12 @@ public class DiceView implements Observer{
 
 	/**
 	 * Initialize the contents of the frame.
-	 * @param gameMapGraph 
-	 * @param defenderCountry 
-	 * @param attackerCountry 
+	 * 
+	 * @param gameMapGraph - GameMapGraph object
+	 * @param defender     - the defender
+	 * @param attacker     - the attacker
 	 */
 	private void initialize(GameMapGraph gameMapGraph, Country attackerCountry, Country defenderCountry) {
-		
-		
-		
-		
 		JLabel lblAttacker = new JLabel("Attacker");
 		lblAttacker.setFont(new Font("Calibri", Font.BOLD, 17));
 		lblAttacker.setBounds(74, 8, 66, 20);

@@ -9,7 +9,7 @@ import com.riskgame.view.DiceView;
 import com.riskgame.view.PlayerView;
 
 /**
- * This class stores the value associated to each map. It stores the content
+ * This class is a model and stores the value associated to each map. It stores the content
  * required for building the map. It has variable continents which is a HashMap
  * containing continent name as the key of String type and the value is an
  * object of Continent containing information related to the continent. It has
@@ -20,7 +20,9 @@ import com.riskgame.view.PlayerView;
  * @author Shresthi Garg
  * @author Nikitha
  */
-public class GameMapGraph extends Observable{
+public class GameMapGraph extends Observable {
+	
+	/** Maptag object */
 	private MapTag mapTag;
 
 	/** Count of the number of countries */
@@ -35,19 +37,25 @@ public class GameMapGraph extends Observable{
 	/** ArrayList of Country objects to store the country details */
 	private ArrayList<Country> countries;
 
+	/** Filename */
 	private String filename;
 
 	/** HashMap for set of countries */
 	private HashMap<String, Country> countrySet;
-	
+
+	/** List of players */
 	private ArrayList<Player> players = new ArrayList<Player>();
-	
+
+	/** Gamephase name */
 	private String gamePhase;
-	
+
+	/** Exchange card count */
 	private int exchangeCount;
-	
+
+	/** Refresh frame */
 	private boolean refreshFrame;
 	
+	/** Dice view message */
 	private String diceViewMessage;
 	
 	/**
@@ -86,7 +94,6 @@ public class GameMapGraph extends Observable{
 		this.addObserver(playerView);
 		this.addObserver(diceView);
 		this.addObserver(cardView);
-		
 	}
 
 	/**
@@ -227,54 +234,102 @@ public class GameMapGraph extends Observable{
 		this.filename = filename;
 	}
 
-	@Override
-	public String toString() {
-		return "GameMapGraph [mapTag=" + mapTag + ", countOfContinents=" + countOfContinents + ", continents="
-				+ continents + ", countOfCountries=" + countOfCountries + ", countries=" + countries + ", filename="
-				+ filename + ", countrySet=" + countrySet + "]";
-	}
-
+	/**
+	 * Gets the list of the Plyaers
+	 * 
+	 * @return the arrayList of the Player
+	 */
 	public ArrayList<Player> getPlayers() {
 		return players;
 	}
 
+	/**
+	 * Sets the list of the Players
+	 * 
+	 * @param players - the players array list
+	 */
 	public void setPlayers(ArrayList<Player> players) {
 		this.players = players;
 		setChanged();
 		notifyObservers();
 	}
 
+	/**
+	 * Gets the current game phase
+	 * 
+	 * @return the phase
+	 */
 	public String getGamePhase() {
 		return gamePhase;
 	}
 
+	/**
+	 * Sets the current game phase
+	 * 
+	 * @param gamePhase - the phase of the game
+	 */
 	public void setGamePhase(String gamePhase) {
 		this.gamePhase = gamePhase;
 		setChanged();
 		notifyObservers();
 	}
 
+	/**
+	 * Gets the exchange count
+	 * 
+	 * @return the exchange
+	 */
 	public int getExchangeCount() {
 		return exchangeCount;
 	}
 
+	/**
+	 * Sets the exchange count
+	 * 
+	 * @param exchangeCount - the exchange
+	 */
 	public void setExchangeCount(int exchangeCount) {
 		this.exchangeCount = exchangeCount;
 	}
 
+	/**
+	 * Checks whether frame is to refreshed
+	 * 
+	 * @return boolean value
+	 */
 	public boolean isRefreshFrame() {
 		return refreshFrame;
 	}
 
+	/**
+	 * Sets whether the frame is to be refreshed
+	 * 
+	 * @param refreshFrame - boolean value
+	 */
 	public void setRefreshFrame(boolean refreshFrame) {
 		this.refreshFrame = refreshFrame;
 	}
 
+	/**
+	 * Method to get the dice view message
+	 * @return diceViewMessage - return the message for the dice view
+	 */
 	public String getDiceViewMessage() {
 		return diceViewMessage;
 	}
 
+	/**
+	 * Method to set the message for the dice view
+	 * @param diceViewMessage - contains the dice view message
+	 */
 	public void setDiceViewMessage(String diceViewMessage) {
 		this.diceViewMessage = diceViewMessage;
+	}
+	
+	@Override
+	public String toString() {
+		return "GameMapGraph [mapTag=" + mapTag + ", countOfContinents=" + countOfContinents + ", continents="
+				+ continents + ", countOfCountries=" + countOfCountries + ", countries=" + countries + ", filename="
+				+ filename + ", countrySet=" + countrySet + "]";
 	}
 }

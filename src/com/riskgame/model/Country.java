@@ -9,12 +9,12 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Country class which gives information with respect to the Countries.
+ * Country class is a model which gives information with respect to the Countries.
  * 
  * @author Shresthi
- * @author Sumeetha
+ * @author Nikitha
  */
-public class Country extends Observable{
+public class Country extends Observable {
 
 	/** Name of country. */
 	private String name;
@@ -39,19 +39,25 @@ public class Country extends Observable{
 
 	/** Country holder */
 	private String player;
-	
+
+	/** Card of the player */
 	private Card card;
 	
+	/** List of Dice values */
 	private List<Integer> diceValues = new ArrayList<Integer>();
  	
+	/** List of country card */
+	private HashMap<String, String> countryCardsList = new HashMap<String, String>();
+
+	/**
+	 * Country Constructor
+	 */
 	public Country() {
-		
 		PlayerView playerView = new PlayerView(); DiceView diceView = new DiceView();
 		CardView cardView = new CardView(); this.addObserver(playerView);
 		this.addObserver(diceView); this.addObserver(cardView);
-		
 	}
-	
+
 	/**
 	 * Get the Country name.
 	 * 
@@ -212,7 +218,6 @@ public class Country extends Observable{
 		notifyObservers();
 	}
 
-
 	/*
 	 * @Override public String toString() { return "Country [name=" + name +
 	 * ", partOfContinent=" + partOfContinent + ", xValue=" + xValue + ", yValue=" +
@@ -221,22 +226,37 @@ public class Country extends Observable{
 	 * ", countryCardsList=" + countryCardsList + "]"; }
 	 */
 
+	/**
+	 * This method gets the card
+	 * 
+	 * @return The card object
+	 */
 	public Card getCard() {
 		return card;
 	}
 
+	/**
+	 * This method sets the card
+	 * 
+	 * @param card - the card object
+	 */
 	public void setCard(Card card) {
 		this.card = card;
 	}
 
+	/**
+	 * This method gets the list of dice values
+	 * @return diceValues - return the list of dice values 
+	 */
 	public List<Integer> getDiceValues() {
 		return diceValues;
 	}
 
+	/**
+	 * This method sets the list of dice values
+	 * @param diceValues - list of dice values
+	 */
 	public void setDiceValues(List<Integer> diceValues) {
 		this.diceValues = diceValues;
 	}
-
-	
-
 }

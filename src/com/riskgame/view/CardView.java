@@ -19,7 +19,13 @@ import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.Player;
 import javax.swing.JTextField;
 
-public class CardView implements Observer{
+/**
+ * This class aims to show the card view
+ * 
+ * @author Shresthi
+ *
+ */
+public class CardView implements Observer {
 
 	private JFrame frame;
 	private JTextField infantryAssign;
@@ -28,6 +34,8 @@ public class CardView implements Observer{
 
 	/**
 	 * Launch the application.
+	 * 
+	 * @param args- arguments
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -43,13 +51,19 @@ public class CardView implements Observer{
 			}
 		});
 	}
-	
+
+	/**
+	 * Card View Constructor
+	 */
 	public CardView() {
-		
+
 	}
 
 	/**
 	 * Create the application.
+	 * 
+	 * @param mapObj - GameMapGraph object
+	 * @param player - current player
 	 */
 	public CardView(GameMapGraph mapObj, Player player) {
 		initialize(mapObj, player);
@@ -57,6 +71,9 @@ public class CardView implements Observer{
 
 	/**
 	 * Initialize the contents of the frame.
+	 * 
+	 * @param mapObj - GameMapGraph object
+	 * @param player - current player
 	 */
 	private void initialize(GameMapGraph mapObj, Player player) {
 		String playerCardCount;
@@ -80,6 +97,7 @@ public class CardView implements Observer{
 		lblArtillery.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		lblArtillery.setBounds(314, 71, 67, 30);
 		frame.getContentPane().add(lblArtillery);
+		
 		playerCardCount = player.getPlayersCardList().get(Card.INFANTRY) != null ? player.getPlayersCardList().get(Card.INFANTRY).toString() : "0";
 		JLabel InfantryLabel = new JLabel();
 		InfantryLabel.setText(playerCardCount);
@@ -143,6 +161,7 @@ public class CardView implements Observer{
 		btnExchange.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				CardController cardAction = new CardController();
+				// CardController cardAction = new CardController();
 				HashMap<String, Integer> cardsSelected = new HashMap<String, Integer>();
 				if (player.getPlayersCardList().size() < 3) {
 					btnExchange.setEnabled(false);
@@ -175,8 +194,10 @@ public class CardView implements Observer{
 		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// to be implemented
-
-				if (player.getPlayersCardList().size() >= 5) {
+				int total = (player.getPlayersCardList().get(Card.ARTILLERY))
+						+ (player.getPlayersCardList().get(Card.CAVALRY))
+						+ (player.getPlayersCardList().get(Card.INFANTRY));
+				if (total >= 5) {
 					JOptionPane.showMessageDialog(null, "Maximum card limit reached! Please Exchange the cards.");
 
 				} else {
@@ -192,7 +213,7 @@ public class CardView implements Observer{
 
 	@Override
 	public void update(Observable o, Object arg) {
-		if(frame != null) {
+		if (frame != null) {
 			frame.revalidate();
 			frame.repaint();
 		}

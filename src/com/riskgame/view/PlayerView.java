@@ -33,13 +33,19 @@ import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.general.DefaultPieDataset;
 
 import com.riskgame.controller.PlayerController;
-import com.riskgame.controller.RoundRobinScheduler;
+import com.riskgame.controller.RoundRobinController;
 import com.riskgame.model.Country;
 import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.Player;
 import com.riskgame.model.PlayerDomination;
 import java.awt.Cursor;
 
+/**
+ * This class aims to create the player's view
+ * 
+ * @author Nikitha
+ *
+ */
 public class PlayerView implements Observer {
 
 	private JFrame frmRiskGame;
@@ -58,12 +64,14 @@ public class PlayerView implements Observer {
 	private int nextPlayerNumber;
 	private int totalNumberOfPlayers = 0;
 	private boolean isAttackNotPossible = true;
-	RoundRobinScheduler roundRobin;
+	RoundRobinController roundRobin;
 	private String playerCountryDetails;
 	private String playerAdjCountryDetails;
 
 	/**
 	 * Launch the application.
+	 * 
+	 * @param args - arguments
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -79,18 +87,23 @@ public class PlayerView implements Observer {
 		});
 	}
 
+	/**
+	 * PlayerView Constructor
+	 */
 	public PlayerView() {
 		
 	}
+	
 	/**
-	 * Create the application.
+	 * PlayerView Constructor with parameter.
+	 * @param inputMapGraph - GameMapGraph object
 	 */
 	public PlayerView(GameMapGraph inputMapGraph) {
 		try {
 			playerController = new PlayerController();
 			nextPlayerNumber = 0;
 			totalNumberOfPlayers = inputMapGraph.getPlayers().size();
-			roundRobin = new RoundRobinScheduler(inputMapGraph.getPlayers());
+			roundRobin = new RoundRobinController(inputMapGraph.getPlayers());
 			
 			frmRiskGame = new JFrame();
 			frmRiskGame.setTitle("RISK Game");
@@ -109,14 +122,15 @@ public class PlayerView implements Observer {
 
 	/**
 	 * Initialize the contents of the frame.
-	 * @param roundRobin 
+	 * 
+	 * @param mapGraph - GameMapGraph object
 	 */
 	private void initialize(GameMapGraph mapGraph) {
 		
 		boolean isFortificationComplete = false;
 		
 		if(roundRobin == null) {
-			roundRobin = new RoundRobinScheduler(mapGraph.getPlayers());
+			roundRobin = new RoundRobinController(mapGraph.getPlayers());
 		}
 		
 		if(!mapGraph.isRefreshFrame()) {
@@ -306,7 +320,6 @@ public class PlayerView implements Observer {
 	//					mapGraph.setGamePhase("Reinforcement");
 	//					btnPlaceArmy.setEnabled(false);
 					}
-	                
 	               
 	                mapGraph.setRefreshFrame(false);
 	                player.setFirstReinforcement(true);
@@ -394,7 +407,6 @@ public class PlayerView implements Observer {
 				rootPanel.revalidate();
 				rootPanel.repaint();
 				refreshFrame(mapGraph);
-
 			}
 		});
 		rootPanel.add(btnCompleteAttack);
@@ -583,13 +595,20 @@ public class PlayerView implements Observer {
 		frmRiskGame.setVisible(true);
 	}
 	
+	/**
+	 * This method starts the initial reinforcement phase
+	 * 
+	 * @param mapGraph - The GameMapGraph object
+	 * @param player   - The Player object
+	 */
 	public void startReinforcement(GameMapGraph mapGraph, Player player) {
-		//Pending: implement opening card view for reinforcement if number of cards > 3 
 		int reinforcementArmies = playerController.reinforcementPhase(player, mapGraph);
 		player.setArmyCount(player.getArmyCount() + reinforcementArmies);
 	}
 	
-	
+	/**
+	 * This method is to update the observers
+	 */
 	@Override
 	public void update(Observable o, Object arg) {
 		if(frmRiskGame != null) {
@@ -598,41 +617,85 @@ public class PlayerView implements Observer {
 		}
 	}
 
+	/**
+	 * Method to get the selected country
+	 * 
+	 * @return selectedCountry - the player's country
+	 */
 	public String getSelectedCountry() {
 		return selectedCountry;
 	}
 
+	/**
+	 * Methdo to set the selected country
+	 * 
+	 * @param selectedCountry - the selected country
+	 */
 	public void setSelectedCountry(String selectedCountry) {
 		this.selectedCountry = selectedCountry;
 	}
 
+	/**
+	 * Method to get the selected adjacent country
+	 * 
+	 * @return selectedAdjacentCountry - the country
+	 */
 	public String getSelectedAdjacentCountry() {
 		return selectedAdjacentCountry;
 	}
 
+	/**
+	 * Method to set the selected adjacent country
+	 * 
+	 * @param selectedAdjacentCountry - Sets the selected adjacent country
+	 */
 	public void setSelectedAdjacentCountry(String selectedAdjacentCountry) {
 		this.selectedAdjacentCountry = selectedAdjacentCountry;
 	}
 
+	/**
+	 * Method to get the player's country details
+	 * 
+	 * @return playerCountryDetails - the country details of player
+	 */
 	public String getPlayerCountryDetails() {
 		return playerCountryDetails;
 	}
 
+	/**
+	 * Method to set the player's country details
+	 * 
+	 * @param playerCountryDetails - the country details of player
+	 */
 	public void setPlayerCountryDetails(String playerCountryDetails) {
 		this.playerCountryDetails = playerCountryDetails;
 	}
 
+	/**
+	 * Method to get the player's adjacent country details
+	 * 
+	 * @return playerAdjCountryDetails - the adjacent country details
+	 */
 	public String getPlayerAdjCountryDetails() {
 		return playerAdjCountryDetails;
 	}
 
+	/**
+	 * Method to get the player's adjacent country details
+	 * 
+	 * @param playerAdjCountryDetails - the adjacent country details
+	 */
 	public void setPlayerAdjCountryDetails(String playerAdjCountryDetails) {
 		this.playerAdjCountryDetails = playerAdjCountryDetails;
 	}
 	
+	/**
+	 * This method refreshes the frame
+	 * 
+	 * @param mapGraph - The GameMapGraph object
+	 */
 	private void refreshFrame(GameMapGraph mapGraph) {
 		mapGraph.setRefreshFrame(true);
 		initialize(mapGraph);
 	}
-	
 }

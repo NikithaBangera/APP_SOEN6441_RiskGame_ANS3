@@ -9,7 +9,7 @@ import com.riskgame.view.DiceView;
 import com.riskgame.view.PlayerView;
 
 /**
- * Continent class which gives information with respect to the Continents.
+ * Continent class is the model which gives information with respect to the Continents.
  * 
  * @author Shiva
  * @author Nikitha
@@ -28,13 +28,18 @@ public class Continent extends Observable{
 	/** List of countries in the continent*/
 	ArrayList<Country> countriesInContinent = new ArrayList<Country>();
 
+	/**
+	 * Continent constructor
+	 */
 	public Continent() {
-	
-		PlayerView playerView = new PlayerView(); DiceView diceView = new DiceView();
-		 CardView cardView = new CardView(); this.addObserver(playerView);
-		 this.addObserver(diceView); this.addObserver(cardView);
-		 
+		PlayerView playerView = new PlayerView(); 
+		DiceView diceView = new DiceView();
+		CardView cardView = new CardView(); 
+		this.addObserver(playerView);
+		this.addObserver(diceView); 
+		this.addObserver(cardView);
 	}
+	
 	/**
 	 * Get the continent name.
 	 * 

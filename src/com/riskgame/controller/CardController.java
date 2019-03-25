@@ -10,6 +10,12 @@ import com.riskgame.model.Country;
 import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.Player;
 
+/**
+ * This class aims to allocate the cards to the players. It also lets the players exchange those cards for armies.
+ * 
+ * @author Shresthi Garg
+ *
+ */
 public class CardController {
 
 	Country countryObj = new Country();
@@ -33,7 +39,12 @@ public class CardController {
 			country.getValue().setCard(card);
 		}
 	}
-
+	
+	/**
+	 * This method  allocates a card randomly to the player if the player wins the country
+	 * 
+	 * @param player - the current player
+	 */
 	public void allocateCardToPlayer(Player player) {
 //		HashMap<String, String> allCards = countryObj.getCountryCardsList();
 		String cardToBeAdded = card.totalCardType().get(new Random().nextInt(card.totalCardType().size()));
@@ -41,7 +52,14 @@ public class CardController {
 		player.getPlayersCardList().put(cardToBeAdded, count);
 
 	}
-
+	
+	/**
+	 * This method adds the cards to players card list
+	 * 
+	 * @param cardToBeAdded - The card that has to be added
+	 * @param currentPlayer - The current player
+	 * @return count - the count of the card type added
+	 */
 	private Integer addCardCount(String cardToBeAdded, Player currentPlayer) {
 		int count = 0;
 		if (cardToBeAdded.equalsIgnoreCase(Card.ARTILLERY)) {
@@ -68,7 +86,14 @@ public class CardController {
 		}
 		return count;
 	}
-
+	
+	/**
+	 * This method is called when player exchanges the card in turn for army
+	 * 
+	 * @param cardsSelected - The cards selected by the player for exchange
+	 * @param player - The current player
+	 * @return - String for the operation
+	 */
 	public String exchangeCards(HashMap<String, Integer> cardsSelected, Player player) {
 		exchange += 1;
 		int aCount = cardsSelected.get(Card.ARTILLERY);
@@ -84,7 +109,7 @@ public class CardController {
 		int c = playersCard.get(Card.CAVALRY);
 		String operation = "";
 
-		if (total >= 3 && player.getPlayersCardList().size() >= 3) {
+		if (total >= 3 && (a+i+c) >= 3) {
 			if (((aCount >= 1 && a >= 1) && (iCount >= 1 && i >= 1) && (cCount >= 1 && c >= 1))) {
 				player.setArmyCount(player.getArmyCount() + 5 * exchange);
 				playersCard.replace(Card.ARTILLERY, a, a - 1);

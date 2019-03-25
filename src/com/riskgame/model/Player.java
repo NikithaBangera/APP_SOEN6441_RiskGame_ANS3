@@ -12,7 +12,7 @@ import com.riskgame.view.DiceView;
 import com.riskgame.view.PlayerView;
 
 /**
- * This class stores the value associated to each player. It stores player's
+ * This class is a model stores the value associated to each player. It stores player's
  * name of String type, total armyCount of player as Integer type, and the
  * ArrayList of type Country which the player owns.
  * 
@@ -20,34 +20,42 @@ import com.riskgame.view.PlayerView;
  * @author Anusha
  *
  */
-public class Player extends Observable{
+public class Player extends Observable {
 	/** Name of the Player */
 	private String name;
 
 	/** Initial army count of the Player */
 	private int armyCount = 0;
-	
+
+	/**
+	 * Boolean to check the end place armies option
+	 */
 	private boolean endPlaceArmies;
 	
+	/** Variable to check whether the reinforcement is the first reinforcement */
 	private boolean firstReinforcement;
 
 	/** List of countries held by the Player */
 	private ArrayList<Country> myCountries = new ArrayList<Country>();
-	
+
+	/**
+	 * List of players card
+	 */
 	private HashMap<String, Integer> playersCardList = new HashMap<String, Integer>();
 
+	/**
+	 * Constructor to initialize the initial values
+	 */
 	public Player() {
 		this.endPlaceArmies = false;
-	
-		 PlayerView playerView = new PlayerView(); 
-		 DiceView diceView = new DiceView();
-		 CardView cardView = new CardView(); 
-		 this.addObserver(playerView);
-		 this.addObserver(diceView); 
-		 this.addObserver(cardView);
-		 
+		PlayerView playerView = new PlayerView();
+		DiceView diceView = new DiceView();
+		CardView cardView = new CardView();
+		this.addObserver(playerView);
+		this.addObserver(diceView);
+		this.addObserver(cardView);
 	}
-	
+
 	/**
 	 * Get the Player name.
 	 * 
@@ -108,7 +116,6 @@ public class Player extends Observable{
 		notifyObservers();
 	}
 
-	
 	/**
 	 * This method is used to add the country to the player's countries list.
 	 * 
@@ -119,22 +126,37 @@ public class Player extends Observable{
 		this.myCountries.add(country);
 	}
 
+	/**
+	 * Method to get the players card list
+	 * 
+	 * @return playersCardList - card list of players
+	 */
 	public HashMap<String, Integer> getPlayersCardList() {
 		return playersCardList;
 	}
 
+	/**
+	 * Method to set the players card list
+	 * 
+	 * @param playersCardList - card list of players
+	 */
 	public void setPlayersCardList(HashMap<String, Integer> playersCardList) {
 		this.playersCardList = playersCardList;
 		setChanged();
 		notifyObservers();
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Player [name=" + name + ", armyCount=" + armyCount + ", myCountries=" + myCountries
 				+ ", playersCardList=" + playersCardList + "]";
 	}
 
+	/**
+	 * This method gets the list of the player's country names
+	 * 
+	 * @return list of country names
+	 */
 	public List<String> getPlayerCountryNames() {
 		List<String> playerCountries = new ArrayList<String>();
 		for (Country country : getMyCountries()) {
@@ -143,6 +165,12 @@ public class Player extends Observable{
 		return playerCountries;
 	}
 
+	/**
+	 * This method gets the selected country of the players
+	 * 
+	 * @param countryName - The country name
+	 * @return Country object
+	 */
 	public Country getSelectedCountry(String countryName) {
 		for (Country country : getMyCountries()) {
 			if (country.getName().equalsIgnoreCase(countryName)) {
@@ -152,22 +180,41 @@ public class Player extends Observable{
 		return null;
 	}
 
+	/**
+	 * This method returns the boolean for the closure of placing armies
+	 * 
+	 * @return boolean
+	 */
 	public boolean isEndPlaceArmies() {
 		return endPlaceArmies;
 	}
 
+	/**
+	 * This method sets the value for the player's wish to end the place armies
+	 * 
+	 * @param endPlaceArmies - boolean value
+	 */
 	public void setEndPlaceArmies(boolean endPlaceArmies) {
 		this.endPlaceArmies = endPlaceArmies;
 		setChanged();
 		notifyObservers();
 	}
 
+	/**
+	 * Method to check if the phase is the first reinforcement phase
+	 * 
+	 * @return firstReinforcement - reinforcement phase
+	 */
 	public boolean isFirstReinforcement() {
 		return firstReinforcement;
 	}
 
+	/**
+	 * Method to set the first Reinforcement phase
+	 * 
+	 * @param firstReinforcement - first Reinforcement phase
+	 */
 	public void setFirstReinforcement(boolean firstReinforcement) {
 		this.firstReinforcement = firstReinforcement;
 	}
-
 }

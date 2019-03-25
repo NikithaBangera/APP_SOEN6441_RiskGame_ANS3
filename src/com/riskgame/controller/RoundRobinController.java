@@ -8,11 +8,11 @@ import com.riskgame.model.Player;
 /**
  * RoundRobinScheduler class is to iterate the Player turns.
  * 
- * @author Sumeetha
+ * @author Anusha
  * @author Shiva
  *
  */
-public class RoundRobinScheduler {
+public class RoundRobinController {
 	
 	/** List of Players */
 	private ArrayList<Player> playersList;
@@ -25,7 +25,7 @@ public class RoundRobinScheduler {
 	 * 
 	 * @param playersList list of Players
 	 */
-	public RoundRobinScheduler(ArrayList<Player> playersList) {
+	public RoundRobinController(ArrayList<Player> playersList) {
 		this.playersList = playersList;
 		iterator = playersList.iterator();
 	}
