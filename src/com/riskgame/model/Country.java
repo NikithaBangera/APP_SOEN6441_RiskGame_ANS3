@@ -8,12 +8,12 @@ import com.riskgame.view.PlayerView;
 import java.util.HashMap;
 
 /**
- * Country class which gives information with respect to the Countries.
+ * Country class is a model which gives information with respect to the Countries.
  * 
  * @author Shresthi
- * @author Sumeetha
+ * @author Nikitha
  */
-public class Country extends Observable{
+public class Country extends Observable {
 
 	/** Name of country. */
 	private String name;
@@ -38,15 +38,16 @@ public class Country extends Observable{
 
 	/** Country holder */
 	private String player;
-	
+
+	/** Card of the player */
 	private Card card;
-	
+
+	/** List of country card */
 	private HashMap<String, String> countryCardsList = new HashMap<String, String>();
 
-	
 	public Country() {
 	}
-	
+
 	/**
 	 * Get the Country name.
 	 * 
@@ -206,11 +207,21 @@ public class Country extends Observable{
 		setChanged();
 		notifyObservers();
 	}
-	
+
+	/**
+	 * This method gets the card
+	 * 
+	 * @return The card object
+	 */
 	public Card getCard() {
 		return card;
 	}
 
+	/**
+	 * This method sets the card
+	 * 
+	 * @param card - the card object
+	 */
 	public void setCard(Card card) {
 		this.card = card;
 	}

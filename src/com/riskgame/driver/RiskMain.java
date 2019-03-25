@@ -25,7 +25,6 @@ import com.riskgame.model.MapTag;
  * 
  * @author Shresthi
  * @author Shiva
- * @author Sumeetha
  *
  */
 public class RiskMain extends JFrame {
