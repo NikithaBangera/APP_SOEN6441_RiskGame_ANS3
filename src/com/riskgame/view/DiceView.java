@@ -343,7 +343,9 @@ public class DiceView implements Observer{
 
 	@Override
 	public void update(Observable o, Object arg) {
-		frame.revalidate();
-		frame.repaint();
+		if(frame != null) {
+			frame.revalidate();
+			frame.repaint();
+		}
 	}
 }

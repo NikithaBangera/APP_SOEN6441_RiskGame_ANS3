@@ -19,12 +19,6 @@ public class Dice extends Observable{
 	public Dice() {
 		attackerDiceValues = new ArrayList<Integer>();
 		defenderDiceValues = new ArrayList<Integer>();
-		PlayerView playerView = new PlayerView();
-		DiceView diceView = new DiceView();
-		CardView cardView = new CardView();
-		this.addObserver(playerView);
-		this.addObserver(diceView);
-		this.addObserver(cardView);
 	}
 
 	public List<Integer> getAttackerDiceValues() {

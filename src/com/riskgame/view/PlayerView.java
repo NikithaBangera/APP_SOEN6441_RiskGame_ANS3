@@ -1,6 +1,5 @@
 package com.riskgame.view;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -12,15 +11,17 @@ import java.util.Map.Entry;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -37,14 +38,13 @@ import com.riskgame.model.Country;
 import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.Player;
 import com.riskgame.model.PlayerDomination;
-import javax.swing.SwingConstants;
-import java.awt.GridLayout;
-import javax.swing.JSpinner;
-import javax.swing.JCheckBox;
+import java.awt.Cursor;
 
 public class PlayerView implements Observer {
 
-	private JFrame frame;
+	private JFrame frmRiskGame;
+	private JPanel rootPanel;
+
 	PlayerController playerController; 
 	/** The players. */
 	private Player player;
@@ -92,11 +92,16 @@ public class PlayerView implements Observer {
 			totalNumberOfPlayers = inputMapGraph.getPlayers().size();
 			roundRobin = new RoundRobinScheduler(inputMapGraph.getPlayers());
 			
-			frame = new JFrame();
-			frame.setBounds(100, 100, 883, 568);
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			frame.getContentPane().setLayout(null);
-				
+			frmRiskGame = new JFrame();
+			frmRiskGame.setTitle("RISK Game");
+			frmRiskGame.setBounds(100, 100, 883, 568);
+			frmRiskGame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frmRiskGame.getContentPane().setLayout(null);
+			
+			rootPanel = new JPanel();
+			rootPanel.setBounds(0, 0, 861, 467);
+			frmRiskGame.getContentPane().add(rootPanel);
+			// TODO Auto-generated method stub
 			initialize(inputMapGraph);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -108,14 +113,21 @@ public class PlayerView implements Observer {
 	 * @param roundRobin 
 	 */
 	private void initialize(GameMapGraph mapGraph) {
+		
 		boolean isFortificationComplete = false;
 		
 		if(roundRobin == null) {
 			roundRobin = new RoundRobinScheduler(mapGraph.getPlayers());
 		}
-		nextPlayerNumber++;
-		Player player = roundRobin.nextTurn();
+		if(!mapGraph.isRefreshFrame()) {
+			nextPlayerNumber++;
+			selectedAdjacentCountry = "";
+			selectedCountry = "";
+			player = roundRobin.nextTurn();
+		}
 		if(mapGraph.getGamePhase().equalsIgnoreCase("Place Armies") && player.isEndPlaceArmies()) {
+			mapGraph.setRefreshFrame(false);
+			rootPanel.removeAll();
 			initialize(mapGraph);
 		}
 		
@@ -123,89 +135,172 @@ public class PlayerView implements Observer {
 			startReinforcement(mapGraph, player);
 			CardView cardView = new CardView(mapGraph, player);
 		}
-		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(15, 38, 165, 108);
-		frame.getContentPane().add(panel_1);
+
+		rootPanel.setLayout(null);
+	
+		JPanel playerInformation = new JPanel();
+		playerInformation.setBounds(15, 16, 179, 108);
+		rootPanel.add(playerInformation);
+		playerInformation.setLayout(null);
 		
 		JLabel lblPlayerName = new JLabel("Player Name");
-		lblPlayerName.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		panel_1.add(lblPlayerName);
+		lblPlayerName.setHorizontalAlignment(SwingConstants.CENTER);
+		lblPlayerName.setBounds(0, 0, 179, 26);
+		lblPlayerName.setFont(new Font("Calibri", Font.BOLD, 16));
+		playerInformation.add(lblPlayerName);
 		
 		textFieldPlayerName = new JTextField();
-		panel_1.add(textFieldPlayerName);
+		textFieldPlayerName.setFont(new Font("Calibri", Font.PLAIN, 16));
+		textFieldPlayerName.setBounds(0, 25, 179, 26);
+		playerInformation.add(textFieldPlayerName);
 		textFieldPlayerName.setColumns(10);
 		textFieldPlayerName.setText(player.getName());
 		
 		JLabel lblArmies = new JLabel("Armies");
-		panel_1.add(lblArmies);
+		lblArmies.setFont(new Font("Calibri", Font.BOLD, 16));
+		lblArmies.setHorizontalAlignment(SwingConstants.CENTER);
+		lblArmies.setBounds(0, 56, 179, 20);
+		playerInformation.add(lblArmies);
 		
 		textFieldArmies = new JTextField();
-		panel_1.add(textFieldArmies);
+		textFieldArmies.setFont(new Font("Calibri", Font.PLAIN, 16));
+		textFieldArmies.setBounds(0, 81, 179, 26);
+		playerInformation.add(textFieldArmies);
 		textFieldArmies.setColumns(10);
 		textFieldArmies.setText(Integer.toString(player.getArmyCount()));
 		
-		JPanel panelPlayerCountries = new JPanel();
-		panelPlayerCountries.setBounds(195, 38, 196, 188);
-		frame.getContentPane().add(panelPlayerCountries);
 		
-		JList listPlayerCountryList = new JList(player.getPlayerCountryNames().toArray());
+		JPanel panelPlayerCountries = new JPanel();
+		panelPlayerCountries.setBounds(195, 16, 216, 196);
+		panelPlayerCountries.setBackground(Color.WHITE);
+		rootPanel.add(panelPlayerCountries);
+		panelPlayerCountries.setLayout(null);
+		
+		DefaultListModel playerCountries = new DefaultListModel();
+		for(String playerCountry : player.getPlayerCountryNames()) {
+			playerCountries.addElement(playerCountry);
+		}
+		JList listPlayerCountryList = new JList(playerCountries);
+		listPlayerCountryList.setSelectionForeground(Color.LIGHT_GRAY);
+		listPlayerCountryList.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		listPlayerCountryList.setFont(new Font("Calibri", Font.PLAIN, 16));
+		listPlayerCountryList.setBounds(0, 16, 211, 180);
+		listPlayerCountryList.setVisibleRowCount(20);
+		listPlayerCountryList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		listPlayerCountryList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
 		panelPlayerCountries.add(listPlayerCountryList);
+		
+		JLabel lblSelectedCountries = new JLabel("Player Countries");
+		lblSelectedCountries.setHorizontalAlignment(SwingConstants.CENTER);
+		lblSelectedCountries.setBounds(0, 0, 216, 15);
+		panelPlayerCountries.add(lblSelectedCountries);
+		lblSelectedCountries.setFont(new Font("Calibri", Font.PLAIN, 14));
+		
+		JPanel panelAdjacentCountries = new JPanel();
+		panelAdjacentCountries.setBounds(608, 16, 238, 196);
+		rootPanel.add(panelAdjacentCountries);
+		panelAdjacentCountries.setBackground(Color.WHITE);
+		panelAdjacentCountries.setLayout(null);
+		
+		JLabel lblAdjacentCountry = new JLabel("Adjacent Countries");
+		lblAdjacentCountry.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		lblAdjacentCountry.setBounds(0, 5, 238, 15);
+		lblAdjacentCountry.setHorizontalAlignment(SwingConstants.CENTER);
+		panelAdjacentCountries.add(lblAdjacentCountry);
+		lblAdjacentCountry.setFont(new Font("Calibri", Font.PLAIN, 14));
+		
+		JPanel panelPhaseName = new JPanel();
+		panelPhaseName.setBounds(15, 129, 179, 83);
+		rootPanel.add(panelPhaseName);
+		panelPhaseName.setLayout(null);
+		
+		JLabel lblPhaseName = new JLabel("Phase Name");
+		lblPhaseName.setBounds(0, 0, 179, 20);
+		lblPhaseName.setHorizontalAlignment(SwingConstants.CENTER);
+		lblPhaseName.setFont(new Font("Calibri", Font.BOLD, 16));
+		panelPhaseName.add(lblPhaseName);
+		
+		textFieldPhaseName = new JTextField(mapGraph.getGamePhase());
+		textFieldPhaseName.setFont(new Font("Calibri", Font.PLAIN, 16));
+		textFieldPhaseName.setBounds(0, 25, 179, 26);
+		textFieldPhaseName.setEnabled(false);
+		panelPhaseName.add(textFieldPhaseName);
+		textFieldPhaseName.setColumns(10);
 		listPlayerCountryList.addListSelectionListener(new ListSelectionListener() {
 			
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				if(!e.getValueIsAdjusting()) {
-					setSelectedCountry(listPlayerCountryList.getSelectedValue().toString());
-					selectedCountryObject = player.getSelectedCountry(getSelectedCountry());
+				if(e.getValueIsAdjusting()) {
+					selectedCountry = listPlayerCountryList.getSelectedValue().toString();
+					selectedCountryObject = player.getSelectedCountry(selectedCountry);
+					//Pending: Should reduce the army count on Player and add an army to the country object.
 				}
-				setPlayerCountryDetails(getSelectedCountry()+" has "+selectedCountryObject.getNoOfArmies()+" armies.");
+				setPlayerCountryDetails(selectedCountry+" has "+selectedCountryObject.getNoOfArmies()+" armies.");
+				setPlayerAdjCountryDetails("");
+				rootPanel.removeAll();
+				refreshFrame(mapGraph);
 			}
 		});
+	
 		
-		JPanel panelAdjacentCountries = new JPanel();
-		panelAdjacentCountries.setBounds(626, 38, 218, 188);
-		frame.getContentPane().add(panelAdjacentCountries);
-		
-		JList listAdjacentCountries = new JList(selectedCountryObject.getAdjacentCountries().toArray());
-		listAdjacentCountries.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		panelAdjacentCountries.add(listAdjacentCountries);
-		listAdjacentCountries.addListSelectionListener(new ListSelectionListener() {
-			
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-				setSelectedAdjacentCountry(listAdjacentCountries.getSelectedValue().toString());
-				Country selectedAdjCountryObject = playerController.getAdjacentCountry(mapGraph, getSelectedAdjacentCountry());
-				Player adjCountryPlayer = playerController.getPlayerForCountry(mapGraph, getSelectedAdjacentCountry());
-				setPlayerAdjCountryDetails(getSelectedAdjacentCountry()+" belongs to "+adjCountryPlayer.getName()+" - has "+selectedAdjCountryObject.getNoOfArmies()+" armies.");
+		if(selectedCountryObject != null) {
+			DefaultListModel adjCountryList = new DefaultListModel(); 
+			for(String adjCountry: selectedCountryObject.getAdjacentCountries()) {
+				adjCountryList.addElement(adjCountry);
 			}
-		});
+			JList listAdjacentCountries = new JList(adjCountryList);
+			listAdjacentCountries.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+			listAdjacentCountries.setFont(new Font("Calibri", Font.PLAIN, 16));
+			listAdjacentCountries.setVisibleRowCount(20);
+			listAdjacentCountries.setBounds(0, 23, 238, 173);
+			listAdjacentCountries.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			panelAdjacentCountries.add(listAdjacentCountries);
+			listAdjacentCountries.addListSelectionListener(new ListSelectionListener() {
+				
+				@Override
+				public void valueChanged(ListSelectionEvent e) {
+					setSelectedAdjacentCountry(listAdjacentCountries.getSelectedValue().toString());
+					Country selectedAdjCountryObject = playerController.getAdjacentCountry(mapGraph, getSelectedAdjacentCountry());
+					Player adjCountryPlayer = playerController.getPlayerForCountry(mapGraph, getSelectedAdjacentCountry());
+					setPlayerAdjCountryDetails(getSelectedAdjacentCountry()+" belongs to "+adjCountryPlayer.getName()+" - has "+selectedAdjCountryObject.getNoOfArmies()+" armies.");
+					rootPanel.removeAll();
+					refreshFrame(mapGraph);
+				}
+			});
+		}
 		
 		
 		JButton btnPlaceArmy = new JButton("Place Army");
+		btnPlaceArmy.setBounds(426, 16, 165, 29);
 		btnPlaceArmy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				PlayerController playerController = new PlayerController();
-                playerController.allocationOfRemainingArmyToCountries(selectedCountryObject, player);
-                
-                if(nextPlayerNumber == totalNumberOfPlayers) {
-					roundRobin = null;
-					nextPlayerNumber  = 0;
-					mapGraph.setGamePhase("Reinforcement");
-					btnPlaceArmy.setEnabled(false);
+				if(selectedCountry != null && selectedCountry.length() > 0) {
+	                playerController.armiesAssignedToCountries(mapGraph, selectedCountry, 1);
+	                
+	                if(nextPlayerNumber == totalNumberOfPlayers) {
+						roundRobin = null;
+						nextPlayerNumber  = 0;
+	//					mapGraph.setGamePhase("Reinforcement");
+	//					btnPlaceArmy.setEnabled(false);
+					}
+	                mapGraph.setRefreshFrame(false);
+	                rootPanel.removeAll();
+					initialize(mapGraph);
 				}
-				initialize(mapGraph);
+				else {
+					JOptionPane.showMessageDialog(new JFrame("Error"), "Please select a country to place an Army");
+				}
 			}
 		});
-		btnPlaceArmy.setFont(new Font("Arial", Font.PLAIN, 12));
-		btnPlaceArmy.setBounds(426, 38, 165, 29);
-		frame.getContentPane().add(btnPlaceArmy);
+		btnPlaceArmy.setFont(new Font("Calibri", Font.PLAIN, 16));
+		rootPanel.add(btnPlaceArmy);
+		
 		
 		JButton btnReinforcement = new JButton("Reinforcement");
-		btnReinforcement.setFont(new Font("Arial", Font.PLAIN, 12));
-		btnReinforcement.setBounds(426, 65, 165, 29);
+		btnReinforcement.setBounds(426, 46, 165, 29);
+		btnReinforcement.setFont(new Font("Calibri", Font.PLAIN, 16));
 		btnReinforcement.setEnabled(false);
 		if(mapGraph.getGamePhase().equalsIgnoreCase("Reinforcement")) {
 			btnReinforcement.setEnabled(true);
@@ -216,18 +311,18 @@ public class PlayerView implements Observer {
 			public void actionPerformed(ActionEvent e) {
 				JFrame reinforceArmy = new JFrame("Reinforce Armies");
 				String armyReinforce = JOptionPane.showInputDialog(reinforceArmy, "Enter the number of armies to be reinforced:");
-				player.armiesAssignedToCountries(selectedCountryObject, Integer.parseInt(armyReinforce));
-				frame.revalidate();
-				frame.repaint();
+				playerController.armiesAssignedToCountries(mapGraph, selectedCountry, Integer.parseInt(armyReinforce));
+				rootPanel.removeAll();
+				refreshFrame(mapGraph);
+
 			}
 		});
-		frame.getContentPane().add(btnReinforcement);
-		
+		rootPanel.add(btnReinforcement);
 		
 		JButton btnAttack = new JButton("Attack");
-		btnAttack.setFont(new Font("Arial", Font.PLAIN, 12));
-		btnAttack.setBounds(426, 90, 165, 29);
-		frame.getContentPane().add(btnAttack);
+		btnAttack.setBounds(426, 76, 165, 29);
+		btnAttack.setFont(new Font("Calibri", Font.PLAIN, 16));
+		rootPanel.add(btnAttack);
 		btnAttack.addActionListener(new ActionListener() {
 			
 			@Override
@@ -237,14 +332,15 @@ public class PlayerView implements Observer {
 				if(selectedCountryObject != null && selectedAdjCountryObject != null) {
 					playerController.attackPhase(mapGraph,selectedCountryObject, selectedAdjCountryObject);
 				}
-				frame.revalidate();
-				frame.repaint();
+				rootPanel.removeAll();
+				refreshFrame(mapGraph);
+
 			}
 		});
 		
 		JButton btnCompleteAttack = new JButton("All Out");
-		btnCompleteAttack.setFont(new Font("Arial", Font.PLAIN, 12));
-		btnCompleteAttack.setBounds(426, 117, 165, 29);
+		btnCompleteAttack.setBounds(426, 106, 165, 29);
+		btnCompleteAttack.setFont(new Font("Calibri", Font.PLAIN, 16));
 		btnCompleteAttack.addActionListener(new ActionListener() {
 			
 			@Override
@@ -256,11 +352,12 @@ public class PlayerView implements Observer {
 					mapGraph.setGamePhase("Fortification");
 				}
 				
-				frame.revalidate();
-				frame.repaint();
+				rootPanel.removeAll();
+				refreshFrame(mapGraph);
+
 			}
 		});
-		frame.getContentPane().add(btnCompleteAttack);
+		rootPanel.add(btnCompleteAttack);
 		
 		if(player.getArmyCount() == 0) {
 			btnReinforcement.setEnabled(false);
@@ -272,8 +369,8 @@ public class PlayerView implements Observer {
 		}
 		
 		JButton btnFortify = new JButton("Fortify");
-		btnFortify.setFont(new Font("Arial", Font.PLAIN, 12));
-		btnFortify.setBounds(426, 143, 165, 29);
+		btnFortify.setBounds(426, 136, 165, 29);
+		btnFortify.setFont(new Font("Calibri", Font.PLAIN, 16));
 		btnFortify.putClientProperty("isFortificationComplete", isFortificationComplete);
 		btnFortify.addActionListener(new ActionListener() {
 			
@@ -311,14 +408,33 @@ public class PlayerView implements Observer {
 				((JButton)(e.getSource())).putClientProperty("isFortificationComplete", isFortificationComplete);
 			}
 		});
-		frame.getContentPane().add(btnFortify);
+		rootPanel.add(btnFortify);
 		if(isFortificationComplete) {
+            mapGraph.setRefreshFrame(false);
+            rootPanel.removeAll();
 			initialize(mapGraph);
 		}
 		
+		
+		JCheckBox chckbxCompleteAttack = new JCheckBox("Complete Attack");
+		chckbxCompleteAttack.setBounds(0, 57, 179, 26);
+		chckbxCompleteAttack.setFont(new Font("Calibri", Font.BOLD, 16));
+		if(mapGraph.getGamePhase().equalsIgnoreCase("Attack")) {
+			panelPhaseName.add(chckbxCompleteAttack);
+		}
+		chckbxCompleteAttack.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(chckbxCompleteAttack.isSelected()) {
+				btnFortify.setEnabled(true);
+				}
+			}
+		});
+		
 		JButton btnEndTurn = new JButton("End Turn");
-		btnEndTurn.setFont(new Font("Arial", Font.PLAIN, 12));
-		btnEndTurn.setBounds(426, 171, 165, 29);
+		btnEndTurn.setBounds(426, 166, 165, 29);
+		btnEndTurn.setFont(new Font("Calibri", Font.PLAIN, 16));
 		btnEndTurn.addActionListener(new ActionListener() {
 			
 			@Override
@@ -335,10 +451,12 @@ public class PlayerView implements Observer {
 					roundRobin = null;
 					nextPlayerNumber  = 0;
 				}
+				mapGraph.setRefreshFrame(false);
+				rootPanel.removeAll();
 				initialize(mapGraph);
 			}
 		});
-		frame.getContentPane().add(btnEndTurn);
+		rootPanel.add(btnEndTurn);
 		
 		btnAttack.setEnabled(false);
 		btnCompleteAttack.setEnabled(false);
@@ -349,61 +467,11 @@ public class PlayerView implements Observer {
 			btnCompleteAttack.setEnabled(true);
 		}
 		
-		JLabel lblAdjacentCountry = new JLabel("Adjacent Countries");
-		lblAdjacentCountry.setFont(new Font("Arial", Font.PLAIN, 12));
-		lblAdjacentCountry.setBounds(684, 12, 107, 20);
-		frame.getContentPane().add(lblAdjacentCountry);
-		
-		JLabel lblSelectedCountries = new JLabel("Player Countries");
-		lblSelectedCountries.setFont(new Font("Arial", Font.PLAIN, 12));
-		lblSelectedCountries.setBounds(240, 4, 152, 37);
-		frame.getContentPane().add(lblSelectedCountries);
-		
-		JButton btnCards = new JButton("Cards");
-		btnCards.setFont(new Font("Arial", Font.PLAIN, 12));
-		btnCards.setBounds(426, 197, 165, 29);
-		btnCards.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				CardView cardView = new CardView(mapGraph, player);
-			}
-		});
-		frame.getContentPane().add(btnCards);
-		
-		
-		JPanel panelPhaseName = new JPanel();
-		panelPhaseName.setBounds(15, 146, 165, 83);
-		frame.getContentPane().add(panelPhaseName);
-		
-		JLabel lblPhaseName = new JLabel("Phase Name");
-		lblPhaseName.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		panelPhaseName.add(lblPhaseName);
-		
-		textFieldPhaseName = new JTextField(mapGraph.getGamePhase());
-		textFieldPhaseName.setEnabled(false);
-		panelPhaseName.add(textFieldPhaseName);
-		textFieldPhaseName.setColumns(10);
-		
-		JCheckBox chckbxCompleteAttack = new JCheckBox("Complete Attack");
-		if(mapGraph.getGamePhase().equalsIgnoreCase("Attack")) {
-			panelPhaseName.add(chckbxCompleteAttack);
-		}
-		chckbxCompleteAttack.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(chckbxCompleteAttack.isSelected()) {
-					btnFortify.setEnabled(true);
-				}
-			}
-		});
-		
 		
 		//world domination panel
 		JPanel worldDomination = new JPanel();
-		worldDomination.setBounds(15, 259, 386, 233);
-		frame.getContentPane().add(worldDomination);
+		worldDomination.setBounds(15, 228, 396, 237);
+		rootPanel.add(worldDomination);
 		worldDomination.setLayout(null);
 		
 		JPanel panelMapOccupied = new JPanel();
@@ -431,48 +499,40 @@ public class PlayerView implements Observer {
 		worldDomination.add(panelMapOccupied);
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(196, 31, 190, 202);
+		panel.setBounds(196, 31, 200, 202);
 		worldDomination.add(panel);
 		
 		JLabel lblWorldDomination = new JLabel("World Domination");
 		lblWorldDomination.setBackground(Color.WHITE);
-		lblWorldDomination.setFont(new Font("Times New Roman", Font.BOLD, 24));
+		lblWorldDomination.setFont(new Font("Calibri", Font.BOLD, 24));
 		lblWorldDomination.setHorizontalAlignment(SwingConstants.CENTER);
-		lblWorldDomination.setBounds(0, 0, 386, 30);
+		lblWorldDomination.setBounds(0, 0, 396, 30);
 		worldDomination.add(lblWorldDomination);
 		
+		
 		JPanel panelMapDetails = new JPanel();
-		panelMapDetails.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panelMapDetails.setBounds(436, 259, 408, 233);
-		frame.getContentPane().add(panelMapDetails);
+		panelMapDetails.setBorder(new LineBorder(Color.LIGHT_GRAY));
+		panelMapDetails.setBounds(426, 228, 420, 233);
+		rootPanel.add(panelMapDetails);
 		panelMapDetails.setLayout(null);
 		
-		JPanel panelPlayerCountryDetails = new JPanel();
-		panelPlayerCountryDetails.setBounds(12, 34, 384, 70);
-		panelMapDetails.add(panelPlayerCountryDetails);
-		panelPlayerCountryDetails.setLayout(null);
+		JLabel lblMapDetails = new JLabel("Map Details");
+		lblMapDetails.setFont(new Font("Calibri", Font.BOLD, 24));
+		lblMapDetails.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMapDetails.setBounds(0, 0, 420, 30);
+		panelMapDetails.add(lblMapDetails);
 		
 		JLabel lblPlayerCountryDetails = new JLabel(getPlayerCountryDetails());
-		lblPlayerCountryDetails.setBounds(0, 13, 384, 44);
-		lblPlayerCountryDetails.setVerticalAlignment(SwingConstants.TOP);
-		panelPlayerCountryDetails.add(lblPlayerCountryDetails);
-		
-		JLabel lblContinentName = new JLabel("Map Details");
-		lblContinentName.setBounds(178, 6, 66, 16);
-		panelMapDetails.add(lblContinentName);
-		
-		JPanel panelPlayerAdjCountryDetails = new JPanel();
-		panelPlayerAdjCountryDetails.setBounds(12, 117, 384, 70);
-		panelMapDetails.add(panelPlayerAdjCountryDetails);
-		panelPlayerAdjCountryDetails.setLayout(null);
-		
-		
+		lblPlayerCountryDetails.setBounds(0, 69, 420, 70);
+		panelMapDetails.add(lblPlayerCountryDetails);
+		lblPlayerCountryDetails.setBackground(Color.BLACK);
 		
 		JLabel lblPlayerAdjCountryDetails = new JLabel(getPlayerAdjCountryDetails());
-		lblPlayerAdjCountryDetails.setBounds(0, 13, 384, 44);
-		panelPlayerAdjCountryDetails.add(lblPlayerAdjCountryDetails);
-		lblPlayerAdjCountryDetails.setVerticalAlignment(SwingConstants.TOP);
+		lblPlayerAdjCountryDetails.setBounds(0, 147, 420, 70);
+		panelMapDetails.add(lblPlayerAdjCountryDetails);
+		lblPlayerAdjCountryDetails.setBackground(Color.BLACK);
 	
+		frmRiskGame.setVisible(true);
 	}
 	
 	public void startReinforcement(GameMapGraph mapGraph, Player player) {
@@ -484,8 +544,10 @@ public class PlayerView implements Observer {
 	
 	@Override
 	public void update(Observable o, Object arg) {
-		frame.revalidate();
-		frame.repaint();
+		if(frmRiskGame != null) {
+			frmRiskGame.getContentPane().invalidate();
+			frmRiskGame.getContentPane().repaint();
+		}
 	}
 
 	public String getSelectedCountry() {
@@ -518,5 +580,10 @@ public class PlayerView implements Observer {
 
 	public void setPlayerAdjCountryDetails(String playerAdjCountryDetails) {
 		this.playerAdjCountryDetails = playerAdjCountryDetails;
+	}
+	
+	private void refreshFrame(GameMapGraph mapGraph) {
+		mapGraph.setRefreshFrame(true);
+		initialize(mapGraph);
 	}
 }
