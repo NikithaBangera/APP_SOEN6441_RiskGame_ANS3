@@ -42,6 +42,7 @@ import org.jfree.data.general.DefaultPieDataset;
 
 import com.riskgame.controller.PlayerController;
 import com.riskgame.controller.RoundRobinController;
+import com.riskgame.model.Card;
 import com.riskgame.model.Country;
 import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.Player;

@@ -66,6 +66,11 @@ public class CardView implements Observer {
 	 * @param player - current player
 	 */
 	public CardView(GameMapGraph mapObj, Player player) {
+//		HashMap<String, Integer> mock = new HashMap<String, Integer>();
+//		mock.put(Card.ARTILLERY, 1);
+//		mock.put(Card.CAVALRY, 2);
+//		mock.put(Card.INFANTRY, 1);
+//		player.setPlayersCardList(mock);
 		initialize(mapObj, player);
 	}
 
@@ -85,38 +90,44 @@ public class CardView implements Observer {
 
 		JLabel lblInfantry = new JLabel("Infantry");
 		lblInfantry.setFont(new Font("Times New Roman", Font.PLAIN, 14));
-		lblInfantry.setBounds(32, 72, 69, 29);
+		lblInfantry.setBounds(32, 72, 46, 29);
 		frame.getContentPane().add(lblInfantry);
 
 		JLabel lblCavalry = new JLabel("Cavalry");
 		lblCavalry.setFont(new Font("Times New Roman", Font.PLAIN, 14));
-		lblCavalry.setBounds(174, 70, 69, 33);
+		lblCavalry.setBounds(174, 70, 46, 33);
 		frame.getContentPane().add(lblCavalry);
 
 		JLabel lblArtillery = new JLabel("Artillery");
 		lblArtillery.setFont(new Font("Times New Roman", Font.PLAIN, 14));
-		lblArtillery.setBounds(314, 71, 67, 30);
+		lblArtillery.setBounds(314, 71, 54, 30);
 		frame.getContentPane().add(lblArtillery);
-		
-		playerCardCount = player.getPlayersCardList().get(Card.INFANTRY) != null ? player.getPlayersCardList().get(Card.INFANTRY).toString() : "0";
+
+		playerCardCount = player.getPlayersCardList().get(Card.INFANTRY) != null
+				? player.getPlayersCardList().get(Card.INFANTRY).toString()
+				: "0";
 		JLabel InfantryLabel = new JLabel();
 		InfantryLabel.setText(playerCardCount);
 		InfantryLabel.setFont(new Font("Times New Roman", Font.PLAIN, 14));
-		InfantryLabel.setBounds(116, 72, 26, 29);
+		InfantryLabel.setBounds(90, 72, 26, 29);
 		frame.getContentPane().add(InfantryLabel);
 
-		playerCardCount = player.getPlayersCardList().get(Card.CAVALRY) != null ? player.getPlayersCardList().get(Card.CAVALRY).toString() : "0";
+		playerCardCount = player.getPlayersCardList().get(Card.CAVALRY) != null
+				? player.getPlayersCardList().get(Card.CAVALRY).toString()
+				: "0";
 		JLabel cavalryLabel = new JLabel();
-		InfantryLabel.setText(playerCardCount);
+		cavalryLabel.setText(playerCardCount);
 		cavalryLabel.setFont(new Font("Times New Roman", Font.PLAIN, 14));
-		cavalryLabel.setBounds(257, 72, 16, 29);
+		cavalryLabel.setBounds(232, 72, 26, 29);
 		frame.getContentPane().add(cavalryLabel);
 
-		playerCardCount = player.getPlayersCardList().get(Card.ARTILLERY) != null ? player.getPlayersCardList().get(Card.ARTILLERY).toString() : "0";
+		playerCardCount = player.getPlayersCardList().get(Card.ARTILLERY) != null
+				? player.getPlayersCardList().get(Card.ARTILLERY).toString()
+				: "0";
 		JLabel artilleryLabel = new JLabel();
-		InfantryLabel.setText(playerCardCount);
+		artilleryLabel.setText(playerCardCount);
 		artilleryLabel.setFont(new Font("Times New Roman", Font.PLAIN, 14));
-		artilleryLabel.setBounds(406, 74, 16, 25);
+		artilleryLabel.setBounds(380, 72, 16, 25);
 		frame.getContentPane().add(artilleryLabel);
 
 		JLabel lblAvailableCardFor = new JLabel("Available Card for Player");
@@ -157,22 +168,32 @@ public class CardView implements Observer {
 		artileryAssign.setColumns(10);
 
 		JButton btnExchange = new JButton("Exchange");
-		btnExchange.setEnabled(true);
+//		btnExchange.setEnabled(false);
+		if (!player.getPlayersCardList().isEmpty()) {
+			int total = (player.getPlayersCardList().get(Card.ARTILLERY))
+					+ (player.getPlayersCardList().get(Card.CAVALRY))
+					+ (player.getPlayersCardList().get(Card.INFANTRY));
+			if (total < 3) {
+				btnExchange.setEnabled(false);
+			} else {
+				btnExchange.setEnabled(true);
+			}
+		} else {
+			btnExchange.setEnabled(false);
+		}
 		btnExchange.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				CardController cardAction = new CardController();
 				// CardController cardAction = new CardController();
 				HashMap<String, Integer> cardsSelected = new HashMap<String, Integer>();
-				if (player.getPlayersCardList().size() < 3) {
-					btnExchange.setEnabled(false);
-				}
-				if (artileryAssign.getText() != null) {
+
+				if (artileryAssign.getText().trim() != "") {
 					cardsSelected.put(Card.ARTILLERY, Integer.parseInt(artileryAssign.getText()));
 				}
-				if (infantryAssign.getText() != null) {
+				if (infantryAssign.getText().trim() != "") {
 					cardsSelected.put(Card.INFANTRY, Integer.parseInt(artileryAssign.getText()));
 				}
-				if (cavalryAssign.getText() != null) {
+				if (cavalryAssign.getText().trim() != "") {
 					cardsSelected.put(Card.CAVALRY, Integer.parseInt(artileryAssign.getText()));
 				}
 
@@ -193,8 +214,9 @@ public class CardView implements Observer {
 		JButton btnExit = new JButton("Exit");
 		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// to be implemented
-				if(player.getPlayersCardList() != null && player.getPlayersCardList().size() > 0) {
+				if (player.getPlayersCardList().isEmpty()) {
+					frame.setVisible(false);
+				} else {
 					int total = (player.getPlayersCardList().get(Card.ARTILLERY))
 							+ (player.getPlayersCardList().get(Card.CAVALRY))
 							+ (player.getPlayersCardList().get(Card.INFANTRY));
@@ -204,9 +226,7 @@ public class CardView implements Observer {
 					} else {
 						frame.setVisible(false);
 					}
-				}
-				else {
-					frame.dispose();
+
 				}
 			}
 		});
