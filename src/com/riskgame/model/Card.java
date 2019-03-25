@@ -13,20 +13,35 @@ import com.riskgame.view.PlayerView;
  *
  */
 public class Card extends Observable {
+	
 	/** The constant for infantry */
 	public final static String INFANTRY = "infantry";
+	
 	/** The constant for cavalry */
 	public final static String CAVALRY = "cavalry";
+	
 	/** The constant for artillery */
 	public final static String ARTILLERY = "artillery";
+	
 	/** The object of Country model */
 	private Country country;
+	
 	/** The current player */
 	private Player currentPlayer;
+	
 	/** The card type */
 	private String cardType;
 
+	/**
+	 * Card Constructor
+	 */
 	public Card() {
+		PlayerView playerView = new PlayerView();
+		DiceView diceView = new DiceView();
+		CardView cardView = new CardView();
+		this.addObserver(playerView);
+		this.addObserver(diceView);
+		this.addObserver(cardView);
 	}
 
 	/**
@@ -99,5 +114,4 @@ public class Card extends Observable {
 		cardTypes.add(INFANTRY);
 		return cardTypes;
 	}
-
 }
