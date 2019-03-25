@@ -33,7 +33,7 @@ import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.general.DefaultPieDataset;
 
 import com.riskgame.controller.PlayerController;
-import com.riskgame.controller.RoundRobinScheduler;
+import com.riskgame.controller.RoundRobinController;
 import com.riskgame.model.Country;
 import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.Player;
@@ -64,7 +64,7 @@ public class PlayerView implements Observer {
 	private int nextPlayerNumber;
 	private int totalNumberOfPlayers = 0;
 	private boolean isAttackNotPossible = true;
-	RoundRobinScheduler roundRobin;
+	RoundRobinController roundRobin;
 	private String playerCountryDetails;
 	private String playerAdjCountryDetails;
 
@@ -100,7 +100,7 @@ public class PlayerView implements Observer {
 			playerController = new PlayerController();
 			nextPlayerNumber = 0;
 			totalNumberOfPlayers = inputMapGraph.getPlayers().size();
-			roundRobin = new RoundRobinScheduler(inputMapGraph.getPlayers());
+			roundRobin = new RoundRobinController(inputMapGraph.getPlayers());
 
 			frmRiskGame = new JFrame();
 			frmRiskGame.setTitle("RISK Game");
@@ -128,7 +128,7 @@ public class PlayerView implements Observer {
 		boolean isFortificationComplete = false;
 
 		if (roundRobin == null) {
-			roundRobin = new RoundRobinScheduler(mapGraph.getPlayers());
+			roundRobin = new RoundRobinController(mapGraph.getPlayers());
 		}
 		if (!mapGraph.isRefreshFrame()) {
 			nextPlayerNumber++;
