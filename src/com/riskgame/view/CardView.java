@@ -19,7 +19,13 @@ import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.Player;
 import javax.swing.JTextField;
 
-public class CardView implements Observer{
+/**
+ * This class aims to show the card view
+ * 
+ * @author Shresthi
+ *
+ */
+public class CardView implements Observer {
 
 	private JFrame frame;
 	private JTextField infantryAssign;
@@ -29,6 +35,8 @@ public class CardView implements Observer{
 
 	/**
 	 * Launch the application.
+	 * 
+	 * @param args- arguments
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -44,13 +52,16 @@ public class CardView implements Observer{
 			}
 		});
 	}
-	
+
 	public CardView() {
-		
+
 	}
 
 	/**
 	 * Create the application.
+	 * 
+	 * @param mapObj - GameMapGraph object
+	 * @param player - current player
 	 */
 	public CardView(GameMapGraph mapObj, Player player) {
 		cardAction = new CardController();
@@ -60,9 +71,12 @@ public class CardView implements Observer{
 
 	/**
 	 * Initialize the contents of the frame.
+	 * 
+	 * @param mapObj - GameMapGraph object
+	 * @param player - current player
 	 */
 	private void initialize(GameMapGraph mapObj, Player player) {
-	
+
 		frame.getContentPane().setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		frame.setBounds(100, 100, 495, 396);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -83,8 +97,7 @@ public class CardView implements Observer{
 		lblArtillery.setBounds(314, 71, 67, 30);
 		frame.getContentPane().add(lblArtillery);
 
-		JLabel InfantryLabel = new JLabel();
-		InfantryLabel.setText(player.getPlayersCardList().get(Card.INFANTRY).toString());
+		JLabel InfantryLabel = new JLabel(player.getPlayersCardList().get(Card.INFANTRY).toString());
 		InfantryLabel.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		InfantryLabel.setBounds(99, 72, 63, 29);
 		frame.getContentPane().add(InfantryLabel);
@@ -142,7 +155,7 @@ public class CardView implements Observer{
 		btnExchange.setEnabled(true);
 		btnExchange.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			//	CardController cardAction = new CardController();
+				// CardController cardAction = new CardController();
 				HashMap<String, Integer> cardsSelected = new HashMap<String, Integer>();
 				if (player.getPlayersCardList().size() < 3) {
 					btnExchange.setEnabled(false);
@@ -193,7 +206,7 @@ public class CardView implements Observer{
 
 	@Override
 	public void update(Observable o, Object arg) {
-		if(frame != null) {
+		if (frame != null) {
 			frame.revalidate();
 			frame.repaint();
 		}

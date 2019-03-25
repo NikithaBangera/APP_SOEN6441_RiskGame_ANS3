@@ -9,7 +9,7 @@ import com.riskgame.view.DiceView;
 import com.riskgame.view.PlayerView;
 
 /**
- * Continent class which gives information with respect to the Continents.
+ * Continent class is the model which gives information with respect to the Continents.
  * 
  * @author Shiva
  * @author Nikitha

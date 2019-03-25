@@ -9,7 +9,7 @@ import com.riskgame.view.DiceView;
 import com.riskgame.view.PlayerView;
 
 /**
- * This class stores the value associated to each map. It stores the content
+ * This class is a model and stores the value associated to each map. It stores the content
  * required for building the map. It has variable continents which is a HashMap
  * containing continent name as the key of String type and the value is an
  * object of Continent containing information related to the continent. It has
@@ -20,7 +20,7 @@ import com.riskgame.view.PlayerView;
  * @author Shresthi Garg
  * @author Nikitha
  */
-public class GameMapGraph extends Observable{
+public class GameMapGraph extends Observable {
 	private MapTag mapTag;
 
 	/** Count of the number of countries */
@@ -39,15 +39,15 @@ public class GameMapGraph extends Observable{
 
 	/** HashMap for set of countries */
 	private HashMap<String, Country> countrySet;
-	
+
 	private ArrayList<Player> players = new ArrayList<Player>();
-	
+
 	private String gamePhase;
-	
+
 	private int exchangeCount;
-	
+
 	private boolean refreshFrame;
-	
+
 	/**
 	 * GameMapGraph Constructor
 	 */
@@ -84,7 +84,7 @@ public class GameMapGraph extends Observable{
 		this.addObserver(playerView);
 		this.addObserver(diceView);
 		this.addObserver(cardView);
-		
+
 	}
 
 	/**
@@ -225,6 +225,82 @@ public class GameMapGraph extends Observable{
 		this.filename = filename;
 	}
 
+	/**
+	 * Gets the list of the Plyaers
+	 * 
+	 * @return the arrayList of the Player
+	 */
+	public ArrayList<Player> getPlayers() {
+		return players;
+	}
+
+	/**
+	 * Sets the list of the Players
+	 * 
+	 * @param players - the players array list
+	 */
+	public void setPlayers(ArrayList<Player> players) {
+		this.players = players;
+		setChanged();
+		notifyObservers();
+	}
+
+	/**
+	 * Gets the current game phase
+	 * 
+	 * @return the phase
+	 */
+	public String getGamePhase() {
+		return gamePhase;
+	}
+
+	/**
+	 * Sets the current game phase
+	 * 
+	 * @param gamePhase - the phase of the game
+	 */
+	public void setGamePhase(String gamePhase) {
+		this.gamePhase = gamePhase;
+		setChanged();
+		notifyObservers();
+	}
+
+	/**
+	 * Gets the exchange count
+	 * 
+	 * @return the exchange
+	 */
+	public int getExchangeCount() {
+		return exchangeCount;
+	}
+
+	/**
+	 * Sets the exchange count
+	 * 
+	 * @param exchangeCount - the exchange
+	 */
+	public void setExchangeCount(int exchangeCount) {
+		this.exchangeCount = exchangeCount;
+	}
+
+	/**
+	 * Checks whether frame is to refreshed
+	 * 
+	 * @return boolean value
+	 */
+	public boolean isRefreshFrame() {
+		return refreshFrame;
+	}
+
+	/**
+	 * Sets whether the frame is to be refreshed
+	 * 
+	 * @param refreshFrame - boolean value
+	 */
+	public void setRefreshFrame(boolean refreshFrame) {
+		this.refreshFrame = refreshFrame;
+	}
+
 	@Override
 	public String toString() {
 		return "GameMapGraph [mapTag=" + mapTag + ", countOfContinents=" + countOfContinents + ", continents="
@@ -232,39 +308,4 @@ public class GameMapGraph extends Observable{
 				+ filename + ", countrySet=" + countrySet + "]";
 	}
 
-	public ArrayList<Player> getPlayers() {
-		return players;
-	}
-
-	public void setPlayers(ArrayList<Player> players) {
-		this.players = players;
-		setChanged();
-		notifyObservers();
-	}
-
-	public String getGamePhase() {
-		return gamePhase;
-	}
-
-	public void setGamePhase(String gamePhase) {
-		this.gamePhase = gamePhase;
-		setChanged();
-		notifyObservers();
-	}
-
-	public int getExchangeCount() {
-		return exchangeCount;
-	}
-
-	public void setExchangeCount(int exchangeCount) {
-		this.exchangeCount = exchangeCount;
-	}
-
-	public boolean isRefreshFrame() {
-		return refreshFrame;
-	}
-
-	public void setRefreshFrame(boolean refreshFrame) {
-		this.refreshFrame = refreshFrame;
-	}
 }

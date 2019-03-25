@@ -24,6 +24,8 @@ public class StartUpPhase {
 
 	/**
 	 * Launch the application.
+	 * 
+	 * @param args- arguments
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {

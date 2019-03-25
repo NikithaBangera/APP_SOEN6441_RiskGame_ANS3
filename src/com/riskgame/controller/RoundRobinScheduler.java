@@ -8,7 +8,7 @@ import com.riskgame.model.Player;
 /**
  * RoundRobinScheduler class is to iterate the Player turns.
  * 
- * @author Sumeetha
+ * @author Anusha
  * @author Shiva
  *
  */

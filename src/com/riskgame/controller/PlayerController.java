@@ -1,6 +1,5 @@
 package com.riskgame.controller;
 
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -17,10 +16,15 @@ import com.riskgame.view.DiceView;
 import com.riskgame.view.PlayerView;
 
 /**
- * @author SGarg
+ * Player Controller is for the beginning of the game play. Its contains methods
+ * which will take the details from the players, and starts the eventual phase.
+ * 
+ * @author Shresthi Garg
+ * @author Nikitha
+ * @author Anusha
  *
  */
-public class PlayerController{
+public class PlayerController {
 
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -29,7 +33,10 @@ public class PlayerController{
 
 	/** List which countries. */
 	public static ArrayList<Country> countriesList = new ArrayList<Country>();
-	
+
+	/**
+	 * Variable for the fortification phase
+	 */
 	public boolean doFortification = false;
 
 	public int getCountOfthePlayers() {
@@ -40,6 +47,13 @@ public class PlayerController{
 		this.countOfthePlayers = countOfthePlayers;
 	}
 
+	/**
+	 * This method starts the game, obtaining the number of payers , details and
+	 * initializing them.
+	 * 
+	 * @param mapGraph - Object of mapGraph which consists of map details
+	 * @throws Exception - IOException
+	 */
 	public void gamePlay(GameMapGraph mapGraph) throws Exception {
 		Player player = new Player();
 		// Startup Phase starts here
@@ -91,32 +105,27 @@ public class PlayerController{
 			}
 			mapGraph.getPlayers().add(riskPlayer);
 		}
-		
-		
+
 		allocationOfCountry(mapGraph);
 		allocationOfArmyToPlayers(mapGraph);
 		allocationOfArmyToCountriesInitially(mapGraph);
-		
+
 		CardController cardController = new CardController();
 		cardController.assignCardsToCountry(mapGraph);
-		
-	//	allocationOfRemainingArmyToCountries(mapGraph);
+
+		// allocationOfRemainingArmyToCountries(mapGraph);
 
 		// Place Army Phase starts here
 
 		mapGraph.setGamePhase("Place Armies");
 		mapGraph.setExchangeCount(1);
-		mapGraph.setRefreshFrame(false);	
+		mapGraph.setRefreshFrame(false);
 
 		PlayerView playerView = new PlayerView(mapGraph);
-		
+
 	}
 
-
-
 	// Function of StartUp Phase starts here
-	
-	
 
 	/**
 	 * Method to assign countries to the players. Random allocation of countries to
@@ -133,7 +142,7 @@ public class PlayerController{
 					countryIndexAssignment = new Random().nextInt(countrySet.size());
 					countrySet.get(countryIndexAssignment).setPlayer(mapGraph.getPlayers().get(i).getName());
 					mapGraph.getPlayers().get(i).additionOfCountry(countrySet.get(countryIndexAssignment));
-					
+
 					countrySet.remove(countryIndexAssignment);
 				} else if (countrySet.size() == 1) {
 					mapGraph.getPlayers().get(i).additionOfCountry(countrySet.get(0));
@@ -149,7 +158,8 @@ public class PlayerController{
 	/**
 	 * Method to assign the number of armies to the players which differs based on
 	 * the players count. Army allocation is done as per the conquest game rule.
-	 * @param mapGraph 
+	 * 
+	 * @param mapGraph - The GameMapGraph object
 	 * 
 	 */
 	public void allocationOfArmyToPlayers(GameMapGraph mapGraph) {
@@ -199,10 +209,9 @@ public class PlayerController{
 	 * This method assigns the number of armies to the player when certain
 	 * conditions are met.
 	 * 
-	 * @param player    - players whose armies are to be assigned
-	 * @param continent - continent which has the country
-	 * @return armiesAssignedPerPlayer returns the number of armies assigned to the
-	 *         player.
+	 * @param          player- players whose armies are to be assigned
+	 * @param mapGraph - GameMapGraph object
+	 * @return the reinforced armies
 	 */
 	public int reinforcementPhase(Player player, GameMapGraph mapGraph) {
 		int countriesPerPlayer = player.getMyCountries().size();
@@ -241,23 +250,30 @@ public class PlayerController{
 		return flag;
 	}
 
-	//Attack Phase
-	
+	// Attack Phase
+	/**
+	 * This method marks the starting of the attack phase when the player choses to
+	 * attack a country.
+	 * 
+	 * @param gameMapGraph - The GameMapGraph object
+	 * @param attacker     - The attacker country
+	 * @param defender     - The defender country
+	 */
 	public void attackPhase(GameMapGraph gameMapGraph, Country attacker, Country defender) {
 		boolean isAttackPossible = false;
 		boolean playerFound = false;
 		boolean isPlayerCountry = false;
-		if(attacker != null && defender != null) {
-			for(Player player : gameMapGraph.getPlayers()) {
-				for(Country country : player.getMyCountries()) {
-					if(country.getName().equalsIgnoreCase(attacker.getName())) {
+		if (attacker != null && defender != null) {
+			for (Player player : gameMapGraph.getPlayers()) {
+				for (Country country : player.getMyCountries()) {
+					if (country.getName().equalsIgnoreCase(attacker.getName())) {
 						playerFound = true;
 						break;
 					}
 				}
-				if(playerFound) {
-					for(Country country: player.getMyCountries()) {
-						if(country.getName().equalsIgnoreCase(defender.getName())) {
+				if (playerFound) {
+					for (Country country : player.getMyCountries()) {
+						if (country.getName().equalsIgnoreCase(defender.getName())) {
 							JOptionPane.showMessageDialog(null, "Cannot attack your own country!!");
 							isPlayerCountry = true;
 							break;
@@ -265,68 +281,75 @@ public class PlayerController{
 					}
 				}
 			}
-			
-			if(!isPlayerCountry) {
-				if(attacker.getAdjacentCountries().contains(defender.getName())) {
-					if(attacker.getNoOfArmies() > 1 && defender.getNoOfArmies() > 0) {
+
+			if (!isPlayerCountry) {
+				if (attacker.getAdjacentCountries().contains(defender.getName())) {
+					if (attacker.getNoOfArmies() > 1 && defender.getNoOfArmies() > 0) {
 						isAttackPossible = true;
+					} else {
+						JOptionPane.showMessageDialog(null,
+								"Insufficient armies in the attacker country/defender country");
 					}
-					else {
-						JOptionPane.showMessageDialog(null, "Insufficient armies in the attacker country/defender country");
-					}
+				} else {
+					JOptionPane.showMessageDialog(null, "Attacker and Defender Countries are not adjacent!");
 				}
-				else {
-					JOptionPane.showMessageDialog(null,"Attacker and Defender Countries are not adjacent!");
-				}	
 			}
 		}
-		
-		if(isAttackPossible) {
+
+		if (isAttackPossible) {
 			DiceView diceView = new DiceView(gameMapGraph, attacker, defender);
 		}
 	}
-	
+
+	/**
+	 * This method is called when the player choses to opt for all out attack mode.
+	 * 
+	 * @param gameMapGraph    - The GameMapGraph object
+	 * @param attackerCountry - The attacker country
+	 * @param defenderCountry - The defender country
+	 */
 	public void allOutAttack(GameMapGraph gameMapGraph, Country attackerCountry, Country defenderCountry) {
 		int attackerDiceCount = 0;
 		int defenderDiceCount = 0;
 		boolean playerFound = false;
 		boolean isPlayerCountry = false;
 		String message = "";
-		
-		for(Player player : gameMapGraph.getPlayers()) {
-			for(Country country : player.getMyCountries()) {
-				if(country.getName().equalsIgnoreCase(attackerCountry.getName())) {
+
+		for (Player player : gameMapGraph.getPlayers()) {
+			for (Country country : player.getMyCountries()) {
+				if (country.getName().equalsIgnoreCase(attackerCountry.getName())) {
 					playerFound = true;
 					break;
 				}
 			}
-			if(playerFound) {
-				for(Country country: player.getMyCountries()) {
-					if(country.getName().equalsIgnoreCase(defenderCountry.getName())) {
+			if (playerFound) {
+				for (Country country : player.getMyCountries()) {
+					if (country.getName().equalsIgnoreCase(defenderCountry.getName())) {
 						isPlayerCountry = true;
 						break;
 					}
 				}
 			}
 		}
-		
-		if(!isPlayerCountry) {
-			while(attackerCountry.getNoOfArmies() > 1 && defenderCountry.getNoOfArmies() > 0) {
-				attackerDiceCount = attackerCountry.getNoOfArmies() > 3 ? 3 :(attackerCountry.getNoOfArmies() > 2 ? 2 : 1);
+
+		if (!isPlayerCountry) {
+			while (attackerCountry.getNoOfArmies() > 1 && defenderCountry.getNoOfArmies() > 0) {
+				attackerDiceCount = attackerCountry.getNoOfArmies() > 3 ? 3
+						: (attackerCountry.getNoOfArmies() > 2 ? 2 : 1);
 				defenderDiceCount = defenderCountry.getNoOfArmies() >= 2 ? 2 : 1;
-				
+
 				DiceController diceController = new DiceController();
 				diceController.startDiceRoll(attackerDiceCount, defenderDiceCount, attackerCountry, defenderCountry);
 			}
-			
-			if(defenderCountry.getNoOfArmies() == 0) {
+
+			if (defenderCountry.getNoOfArmies() == 0) {
 				attackerCountry.setNoOfArmies(attackerCountry.getNoOfArmies() - 1);
 				defenderCountry.setNoOfArmies(defenderCountry.getNoOfArmies() + 1);
 				JOptionPane.showMessageDialog(null, "Defender has lost the country to attacker!");
 			}
 		}
 	}
-	
+
 	// Fortification Phase
 
 	/**
@@ -348,8 +371,8 @@ public class PlayerController{
 				toCountry.setNoOfArmies(toCountryArmy + armiesCount);
 				adjacentCountries = true;
 				doFortification = false;
-			//	System.out.println("\nArmies successfully moved!");
-			//	System.out.println("\nFortification phase ends!");
+				// System.out.println("\nArmies successfully moved!");
+				// System.out.println("\nFortification phase ends!");
 				break;
 			}
 		}
@@ -359,12 +382,12 @@ public class PlayerController{
 			doFortification = true;
 		}
 	}
-	
+
 	/**
 	 * This method is used to assign armies to the Countries. It checks the
 	 * available army and assigns the army to the requested country
-	 * @param mapGraph 
 	 * 
+	 * @param mapGraph - GameMapGraph object
 	 * @param country     - the country given to players
 	 * @param armiesCount - the count of the armies player has
 	 */
@@ -374,14 +397,15 @@ public class PlayerController{
 			if ((player.getArmyCount()) > 0 && player.getArmyCount() >= armiesCount) {
 				getPlayerForCountry(mapGraph, country).setArmyCount(player.getArmyCount() - armiesCount);
 				int i = 0;
-				for(Country playerCountry : getPlayerForCountry(mapGraph, country).getMyCountries()) {
-					if(playerCountry.getName().equalsIgnoreCase(country)) {
-						getPlayerForCountry(mapGraph, country).getMyCountries().get(i).setNoOfArmies(playerCountry.getNoOfArmies() + armiesCount);
+				for (Country playerCountry : getPlayerForCountry(mapGraph, country).getMyCountries()) {
+					if (playerCountry.getName().equalsIgnoreCase(country)) {
+						getPlayerForCountry(mapGraph, country).getMyCountries().get(i)
+								.setNoOfArmies(playerCountry.getNoOfArmies() + armiesCount);
 						break;
 					}
 					i++;
 				}
-				
+
 			} else {
 				JOptionPane.showMessageDialog(null, "Insufficient number of armies.");
 			}
@@ -389,58 +413,80 @@ public class PlayerController{
 			JOptionPane.showMessageDialog(null, "This country is not owned by you!");
 		}
 	}
-	
+
+	/**
+	 * This method gets the adjacent country object for the entered country
+	 * 
+	 * @param mapGraph           - The GameMapGraph object
+	 * @param attackerAdjCountry - the adjacent country of the attacker
+	 * @return Country object
+	 */
 	public Country getAdjacentCountry(GameMapGraph mapGraph, String attackerAdjCountry) {
-		for(Player player : mapGraph.getPlayers()) {
-			for(Country country : player.getMyCountries()) {
-				if(country.getName().equalsIgnoreCase(attackerAdjCountry)) {
+		for (Player player : mapGraph.getPlayers()) {
+			for (Country country : player.getMyCountries()) {
+				if (country.getName().equalsIgnoreCase(attackerAdjCountry)) {
 					return country;
 				}
 			}
 		}
 		return null;
 	}
-	
+
+	/**
+	 * This method returns the player who owns the given country
+	 * 
+	 * @param mapGraph    - The GameMapGraph object
+	 * @param countryName - The country whose owner is to searched
+	 * @return -the player object
+	 */
 	public Player getPlayerForCountry(GameMapGraph mapGraph, String countryName) {
-		for(Player player : mapGraph.getPlayers()) {
-			for(Country country : player.getMyCountries()) {
-				if(country.getName().equalsIgnoreCase(countryName)) {
+		for (Player player : mapGraph.getPlayers()) {
+			for (Country country : player.getMyCountries()) {
+				if (country.getName().equalsIgnoreCase(countryName)) {
 					return player;
 				}
 			}
 		}
 		return null;
 	}
-	
+
+	/**
+	 * This method returns the current player
+	 * 
+	 * @param mapGraph   - The GameMapGraph object
+	 * @param playerName - The name of the player
+	 * @return Player object
+	 */
 	public Player getCurrentPlayer(GameMapGraph mapGraph, String playerName) {
-		for(Player player : mapGraph.getPlayers()) {
-			if(player.getName().equalsIgnoreCase(playerName)) {
+		for (Player player : mapGraph.getPlayers()) {
+			if (player.getName().equalsIgnoreCase(playerName)) {
 				return player;
 			}
 		}
 		return null;
 	}
-	
+
+	/**
+	 * This method is to check the completion of placing an army
+	 * 
+	 * @param mapGraph - The GameMapGraph object
+	 * @return boolean values
+	 */
 	public boolean isPlaceArmiesComplete(GameMapGraph mapGraph) {
 		boolean complete = true;
-		for(Player player : mapGraph.getPlayers()) {
-			if(player.isEndPlaceArmies() || player.getArmyCount() == 0) {
+		for (Player player : mapGraph.getPlayers()) {
+			if (player.isEndPlaceArmies() || player.getArmyCount() == 0) {
 				complete &= true;
-			}
-			else {
+			} else {
 				complete &= false;
 			}
 		}
 		return complete;
 	}
-	
-	public void populatePlayerContinents(GameMapGraph mapGraph) {
-		//Pending: create new continent list in player object and populate it to be used to show player's continents in world domination
-	}
-	
-	
-	
-	
 
-	
+	public void populatePlayerContinents(GameMapGraph mapGraph) {
+		// Pending: create new continent list in player object and populate it to be
+		// used to show player's continents in world domination
+	}
+
 }
