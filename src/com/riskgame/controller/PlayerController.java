@@ -16,6 +16,10 @@ import com.riskgame.model.Player;
 import com.riskgame.view.DiceView;
 import com.riskgame.view.PlayerView;
 
+/**
+ * @author SGarg
+ *
+ */
 public class PlayerController{
 
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
