@@ -23,7 +23,7 @@ import com.riskgame.model.MapTag;
  * @author Shresthi Garg
  *
  */
-public class CreateAndEditMap {
+public class CreateMapController {
 
 	// create a new map
 	private GameMapGraph mapGraph = new GameMapGraph();
@@ -973,7 +973,7 @@ public class CreateAndEditMap {
 
 				mapGraph.setFilename(fileName);
 
-				ReadAndWriteMap save = new ReadAndWriteMap();
+				LoadMapController save = new LoadMapController();
 				save.saveMap(mapGraph, oldFileName);
 				return true;
 

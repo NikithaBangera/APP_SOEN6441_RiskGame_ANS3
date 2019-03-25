@@ -1,4 +1,4 @@
-package com.riskgame.driver;
+package com.riskgame.view;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -13,9 +13,9 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 
-import com.riskgame.controller.CreateAndEditMap;
+import com.riskgame.controller.CreateMapController;
 import com.riskgame.controller.PlayerController;
-import com.riskgame.controller.ReadAndWriteMap;
+import com.riskgame.controller.LoadMapController;
 import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.MapTag;
 
@@ -25,10 +25,9 @@ import com.riskgame.model.MapTag;
  * 
  * @author Shresthi
  * @author Shiva
- * @author Sumeetha
  *
  */
-public class RiskMain extends JFrame {
+public class RiskMainView extends JFrame {
 
 	/**
 	 * Buttons are created for creating a new map, for loading an existing map and
@@ -44,12 +43,12 @@ public class RiskMain extends JFrame {
 	/**
 	 * createandeditmap a CreateAndEditMap object
 	 */
-	public static CreateAndEditMap createandeditmap = new CreateAndEditMap();
+	public static CreateMapController createandeditmap = new CreateMapController();
 
 	/**
 	 * loadMap a ReadAndWriteMap object
 	 */
-	public static ReadAndWriteMap loadMap = new ReadAndWriteMap();
+	public static LoadMapController loadMap = new LoadMapController();
 
 	/**
 	 * RiskMain constructor contains the action to be performed on the click create
@@ -59,7 +58,7 @@ public class RiskMain extends JFrame {
 	 * class is called. Exit button exits the user from the game.
 	 * 
 	 */
-	public RiskMain() {
+	public RiskMainView() {
 		setLayout(new GridLayout(3, 3));
 		createNewMapButton = new JButton("Create a new Map");
 		createNewMapButton.setPreferredSize(new Dimension(60, 60));
@@ -125,7 +124,7 @@ public class RiskMain extends JFrame {
 									System.out.println(" \n Thank You !! ");
 								//System.exit(0);
 							} else {
-								System.out.println(ReadAndWriteMap.getError());
+								System.out.println(LoadMapController.getError());
 								System.out.println(
 										"\nPlease rectify all the above mentioned issues and upload the file again");
 								System.out.println("\n Do you want to upload the correct file again? :Yes/ No ");
@@ -181,7 +180,7 @@ public class RiskMain extends JFrame {
 	 * @throws Exception - ClassNotFoundException
 	 */
 	public static void setUp() throws Exception {
-		RiskMain layout = new RiskMain();
+		RiskMainView layout = new RiskMainView();
 		layout.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		layout.setVisible(true);
 		layout.pack();

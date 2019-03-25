@@ -99,7 +99,7 @@ public class PlayerView implements Observer {
 			frmRiskGame.getContentPane().setLayout(null);
 			
 			rootPanel = new JPanel();
-			rootPanel.setBounds(0, 0, 861, 467);
+			rootPanel.setBounds(0, 0, 861, 496);
 			frmRiskGame.getContentPane().add(rootPanel);
 			initialize(inputMapGraph);
 		} catch (Exception e) {
@@ -517,36 +517,37 @@ public class PlayerView implements Observer {
 		
 		//world domination panel
 		JPanel worldDomination = new JPanel();
-		worldDomination.setBounds(15, 228, 396, 237);
+		worldDomination.setBounds(15, 228, 495, 268);
 		rootPanel.add(worldDomination);
 		worldDomination.setLayout(null);
 		
 		JPanel panelMapOccupied = new JPanel();
-		panelMapOccupied.setBounds(0, 31, 195, 202);
+		panelMapOccupied.setBounds(0, 31, 265, 237);
 		
 		DefaultPieDataset dataset = new DefaultPieDataset();
 		PlayerDomination playerDomination = new PlayerDomination();
-		Iterator<Entry<String, Integer>> iterator = playerDomination.dominationPercentage(mapGraph).entrySet().iterator();
+		Iterator<Entry<String, Double>> iterator = playerDomination.dominationPercentage(mapGraph).entrySet().iterator();
 		while(iterator.hasNext()) {
-			Entry<String, Integer> nextItem = iterator.next();
+			Entry<String, Double> nextItem = iterator.next();
 			dataset.setValue(nextItem.getKey(), nextItem.getValue());
 		}
 		
-		JFreeChart chart=ChartFactory.createPieChart("% Map Occupied", dataset, true, true, true);
+		JFreeChart chart=ChartFactory.createPieChart("% Map Occupied", dataset, true, true, false);
 		PiePlot p=(PiePlot)chart.getPlot();
 		ChartPanel chartPanel = new ChartPanel(chart);
-		chartPanel.setBounds(0, 0, 195, 202);
+		chartPanel.setBounds(0, 0, 265, 232);
 		chartPanel.setPreferredSize(new Dimension(panelMapOccupied.getWidth(), panelMapOccupied.getHeight()));
 		
 		panelMapOccupied.removeAll();
 		panelMapOccupied.validate();
+		panelMapOccupied.repaint();
 		panelMapOccupied.setLayout(null);
-		panelMapOccupied.add(chartPanel);
 		chartPanel.setLayout(null);
+		panelMapOccupied.add(chartPanel);
 		worldDomination.add(panelMapOccupied);
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(196, 31, 200, 202);
+		panel.setBounds(269, 31, 211, 237);
 		worldDomination.add(panel);
 		
 		JLabel lblWorldDomination = new JLabel("World Domination");
@@ -559,23 +560,23 @@ public class PlayerView implements Observer {
 		
 		JPanel panelMapDetails = new JPanel();
 		panelMapDetails.setBorder(new LineBorder(Color.LIGHT_GRAY));
-		panelMapDetails.setBounds(426, 228, 420, 233);
+		panelMapDetails.setBounds(514, 228, 332, 268);
 		rootPanel.add(panelMapDetails);
 		panelMapDetails.setLayout(null);
 		
 		JLabel lblMapDetails = new JLabel("Map Details");
 		lblMapDetails.setFont(new Font("Calibri", Font.BOLD, 24));
 		lblMapDetails.setHorizontalAlignment(SwingConstants.CENTER);
-		lblMapDetails.setBounds(0, 0, 420, 30);
+		lblMapDetails.setBounds(0, 0, 332, 30);
 		panelMapDetails.add(lblMapDetails);
 		
 		JLabel lblPlayerCountryDetails = new JLabel(getPlayerCountryDetails());
-		lblPlayerCountryDetails.setBounds(0, 69, 420, 70);
+		lblPlayerCountryDetails.setBounds(0, 74, 328, 70);
 		panelMapDetails.add(lblPlayerCountryDetails);
 		lblPlayerCountryDetails.setBackground(Color.BLACK);
 		
 		JLabel lblPlayerAdjCountryDetails = new JLabel(getPlayerAdjCountryDetails());
-		lblPlayerAdjCountryDetails.setBounds(0, 147, 420, 70);
+		lblPlayerAdjCountryDetails.setBounds(0, 147, 328, 70);
 		panelMapDetails.add(lblPlayerAdjCountryDetails);
 		lblPlayerAdjCountryDetails.setBackground(Color.BLACK);
 	

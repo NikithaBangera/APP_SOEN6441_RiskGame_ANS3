@@ -29,7 +29,7 @@ import com.riskgame.model.MapTag;
  * @author Shresthi Garg
  *
  */
-public class ReadAndWriteMap {
+public class LoadMapController {
 
 	static String Delimiter = ",";
 	private GameMapGraph mapGraph;
@@ -51,7 +51,7 @@ public class ReadAndWriteMap {
 	}
 
 	public static void setError(String error) {
-		ReadAndWriteMap.error = error;
+		LoadMapController.error = error;
 	}
 
 	/**
