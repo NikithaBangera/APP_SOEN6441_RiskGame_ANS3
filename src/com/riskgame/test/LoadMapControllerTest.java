@@ -15,7 +15,7 @@ import com.riskgame.controller.LoadMapController;
  * @author Shresthi
  *
  */
-public class ReadAndWriteMapTest {
+public class LoadMapControllerTest {
 
 	/** Object for ReadAndWriteMap Class */
 	LoadMapController readAndWriteMap;
@@ -35,7 +35,7 @@ public class ReadAndWriteMapTest {
 	/**
 	 * ReadAndWriteMapTest Constructor for initial setup
 	 */
-	public ReadAndWriteMapTest() {
+	public LoadMapControllerTest() {
 
 		readAndWriteMap = new LoadMapController();
 		validMap = "resources\\maps\\Valid.map";

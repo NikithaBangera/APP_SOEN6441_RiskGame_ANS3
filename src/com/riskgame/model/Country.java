@@ -53,9 +53,12 @@ public class Country extends Observable {
 	 * Country Constructor
 	 */
 	public Country() {
-		PlayerView playerView = new PlayerView(); DiceView diceView = new DiceView();
-		CardView cardView = new CardView(); this.addObserver(playerView);
-		this.addObserver(diceView); this.addObserver(cardView);
+		PlayerView playerView = new PlayerView(); 
+		DiceView diceView = new DiceView();
+		CardView cardView = new CardView(); 
+		this.addObserver(playerView);
+		this.addObserver(diceView); 
+		this.addObserver(cardView);
 	}
 
 	/**
@@ -242,6 +245,8 @@ public class Country extends Observable {
 	 */
 	public void setCard(Card card) {
 		this.card = card;
+		setChanged();
+		notifyObservers();
 	}
 
 	/**
@@ -258,5 +263,7 @@ public class Country extends Observable {
 	 */
 	public void setDiceValues(List<Integer> diceValues) {
 		this.diceValues = diceValues;
+		setChanged();
+		notifyObservers();
 	}
 }

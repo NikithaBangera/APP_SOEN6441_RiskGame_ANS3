@@ -7,6 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import java.awt.Font;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Observable;
@@ -26,7 +27,7 @@ import javax.swing.JTextField;
  */
 public class CardView implements Observer {
 
-	private JFrame frame;
+	private JFrame frmCardView;
 	private JTextField infantryAssign;
 	private JTextField cavalryAssign;
 	private JTextField artileryAssign;
@@ -43,7 +44,7 @@ public class CardView implements Observer {
 					GameMapGraph mapGraph = new GameMapGraph();
 					Player currentPlayer = new Player();
 					CardView window = new CardView(mapGraph, currentPlayer);
-					window.frame.setVisible(true);
+					window.frmCardView.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -81,83 +82,84 @@ public class CardView implements Observer {
 	 */
 	private void initialize(GameMapGraph mapObj, Player player) {
 		String playerCardCount;
-		frame = new JFrame();
-		frame.getContentPane().setFont(new Font("Times New Roman", Font.PLAIN, 14));
-		frame.setBounds(100, 100, 495, 396);
-		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		frmCardView = new JFrame();
+		frmCardView.setTitle("Card View");
+		frmCardView.getContentPane().setFont(new Font("Times New Roman", Font.PLAIN, 14));
+		frmCardView.setBounds(100, 100, 495, 396);
+		frmCardView.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frmCardView.getContentPane().setLayout(null);
 
 		JLabel lblInfantry = new JLabel("Infantry");
 		lblInfantry.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		lblInfantry.setBounds(32, 72, 46, 29);
-		frame.getContentPane().add(lblInfantry);
+		frmCardView.getContentPane().add(lblInfantry);
 
 		JLabel lblCavalry = new JLabel("Cavalry");
 		lblCavalry.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		lblCavalry.setBounds(174, 70, 46, 33);
-		frame.getContentPane().add(lblCavalry);
+		frmCardView.getContentPane().add(lblCavalry);
 
 		JLabel lblArtillery = new JLabel("Artillery");
 		lblArtillery.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		lblArtillery.setBounds(314, 71, 54, 30);
-		frame.getContentPane().add(lblArtillery);
+		frmCardView.getContentPane().add(lblArtillery);
 
 		playerCardCount = player.getPlayersCardList().get(Card.INFANTRY) != null ? player.getPlayersCardList().get(Card.INFANTRY).toString() : "0";
 		JLabel InfantryLabel = new JLabel();
 		InfantryLabel.setText(playerCardCount);
 		InfantryLabel.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		InfantryLabel.setBounds(90, 72, 26, 29);
-		frame.getContentPane().add(InfantryLabel);
+		frmCardView.getContentPane().add(InfantryLabel);
 
 		playerCardCount = player.getPlayersCardList().get(Card.CAVALRY) != null ? player.getPlayersCardList().get(Card.CAVALRY).toString() : "0";
 		JLabel cavalryLabel = new JLabel();
 		cavalryLabel.setText(playerCardCount);
 		cavalryLabel.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		cavalryLabel.setBounds(232, 72, 26, 29);
-		frame.getContentPane().add(cavalryLabel);
+		frmCardView.getContentPane().add(cavalryLabel);
 
 		playerCardCount = player.getPlayersCardList().get(Card.ARTILLERY) != null ? player.getPlayersCardList().get(Card.ARTILLERY).toString() : "0";
 		JLabel artilleryLabel = new JLabel();
 		artilleryLabel.setText(playerCardCount);
 		artilleryLabel.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		artilleryLabel.setBounds(380, 72, 16, 25);
-		frame.getContentPane().add(artilleryLabel);
+		frmCardView.getContentPane().add(artilleryLabel);
 
 		JLabel lblAvailableCardFor = new JLabel("Available Card for Player");
 		lblAvailableCardFor.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		lblAvailableCardFor.setBounds(144, 16, 197, 40);
-		frame.getContentPane().add(lblAvailableCardFor);
+		frmCardView.getContentPane().add(lblAvailableCardFor);
 
 		JLabel lblSelectCardTo = new JLabel("Select Card to exchange");
 		lblSelectCardTo.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		lblSelectCardTo.setBounds(144, 145, 189, 29);
-		frame.getContentPane().add(lblSelectCardTo);
+		frmCardView.getContentPane().add(lblSelectCardTo);
 
 		JLabel lblInfrantryAssign = new JLabel("Infantry");
 		lblInfrantryAssign.setBounds(40, 235, 61, 16);
-		frame.getContentPane().add(lblInfrantryAssign);
+		frmCardView.getContentPane().add(lblInfrantryAssign);
 
 		infantryAssign = new JTextField();
 		infantryAssign.setBounds(99, 230, 71, 26);
-		frame.getContentPane().add(infantryAssign);
+		frmCardView.getContentPane().add(infantryAssign);
 		infantryAssign.setColumns(10);
 
 		JLabel lblCavalryAssign = new JLabel("Cavalry");
 		lblCavalryAssign.setBounds(182, 235, 61, 16);
-		frame.getContentPane().add(lblCavalryAssign);
+		frmCardView.getContentPane().add(lblCavalryAssign);
 
 		cavalryAssign = new JTextField();
 		cavalryAssign.setBounds(234, 230, 67, 26);
-		frame.getContentPane().add(cavalryAssign);
+		frmCardView.getContentPane().add(cavalryAssign);
 		cavalryAssign.setColumns(10);
 
 		JLabel lblArtileryAssign = new JLabel("Artilery");
 		lblArtileryAssign.setBounds(320, 235, 61, 16);
-		frame.getContentPane().add(lblArtileryAssign);
+		frmCardView.getContentPane().add(lblArtileryAssign);
 
 		artileryAssign = new JTextField();
 		artileryAssign.setBounds(371, 230, 79, 26);
-		frame.getContentPane().add(artileryAssign);
+		frmCardView.getContentPane().add(artileryAssign);
 		artileryAssign.setColumns(10);
 
 		JButton btnExchange = new JButton("Exchange");
@@ -194,29 +196,29 @@ public class CardView implements Observer {
 				if (message.contains("Cannot")) {
 					JLabel lblMessage = new JLabel("Error:" + message);
 					lblMessage.setBounds(50, 339, 61, 16);
-					frame.getContentPane().add(lblMessage);
+					frmCardView.getContentPane().add(lblMessage);
 				}
 
 			}
 		});
 		btnExchange.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		btnExchange.setBounds(85, 280, 115, 29);
-		frame.getContentPane().add(btnExchange);
+		frmCardView.getContentPane().add(btnExchange);
 
 		JButton btnExit = new JButton("Exit");
 		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (player.getPlayersCardList().isEmpty()) {
-					frame.setVisible(false);
+					frmCardView.setVisible(false);
 				} else {
-					int total = (player.getPlayersCardList().get(Card.ARTILLERY))
-							+ (player.getPlayersCardList().get(Card.CAVALRY))
-							+ (player.getPlayersCardList().get(Card.INFANTRY));
+					int total = (player.getPlayersCardList().get(Card.ARTILLERY) == null ? 0 :player.getPlayersCardList().get(Card.ARTILLERY))
+							+ (player.getPlayersCardList().get(Card.CAVALRY) == null ? 0 : player.getPlayersCardList().get(Card.CAVALRY))
+							+ (player.getPlayersCardList().get(Card.INFANTRY) == null ? 0 : player.getPlayersCardList().get(Card.INFANTRY));
 					if (total >= 5) {
 						JOptionPane.showMessageDialog(null, "Maximum card limit reached! Please Exchange the cards.");
 
 					} else {
-						frame.setVisible(false);
+						frmCardView.setVisible(false);
 					}
 
 				}
@@ -224,15 +226,26 @@ public class CardView implements Observer {
 		});
 		btnExit.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		btnExit.setBounds(270, 280, 115, 29);
-		frame.getContentPane().add(btnExit);
-		frame.setVisible(true);
+		frmCardView.getContentPane().add(btnExit);
+		frmCardView.setVisible(true);
 	}
 
+	/**
+	 * This method is to update the observers
+	 */
 	@Override
 	public void update(Observable o, Object arg) {
-		if (frame != null) {
-			frame.revalidate();
-			frame.repaint();
+		for(Window window : Window.getWindows()) {
+			if(window instanceof JFrame) {
+				if(((JFrame)window).getTitle().equalsIgnoreCase("Card View")) {
+					frmCardView = (JFrame)window;
+				}
+			}
+		}
+		
+		if(frmCardView != null) {
+			frmCardView.revalidate();
+			frmCardView.repaint();
 		}
 	}
 }

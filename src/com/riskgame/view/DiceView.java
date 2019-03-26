@@ -20,6 +20,7 @@ import com.riskgame.model.Player;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import java.awt.Font;
+import java.awt.Window;
 import java.awt.event.ActionListener;
 import java.util.Observable;
 import java.util.Observer;
@@ -411,8 +412,19 @@ public class DiceView implements Observer{
 		frmDiceView.setVisible(true);
 	}
 
+	/**
+	 * This method is to update the observers
+	 */
 	@Override
 	public void update(Observable o, Object arg) {
+		for(Window window : Window.getWindows()) {
+			if(window instanceof JFrame) {
+				if(((JFrame)window).getTitle().equalsIgnoreCase("Dice View")) {
+					frmDiceView = (JFrame)window;
+				}
+			}
+		}
+		
 		if(frmDiceView != null) {
 			frmDiceView.revalidate();
 			frmDiceView.repaint();
