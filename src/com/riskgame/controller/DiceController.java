@@ -110,6 +110,7 @@ public class DiceController {
 	 * @param attackerCountry - the attacker country
 	 * @param defenderCountry - the defender country
 	 * @param gameMapGraph    - the GameMapGraph object
+	 * @return boolean to suggest the move of army was successful
 	 */
 	public boolean moveArmies(int armiesToBeMoved, Country attackerCountry, Country defenderCountry,
 			GameMapGraph gameMapGraph) {
