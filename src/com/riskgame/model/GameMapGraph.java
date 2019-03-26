@@ -21,6 +21,8 @@ import com.riskgame.view.PlayerView;
  * @author Nikitha
  */
 public class GameMapGraph extends Observable {
+	
+	/** Maptag object */
 	private MapTag mapTag;
 
 	/** Count of the number of countries */
@@ -35,19 +37,27 @@ public class GameMapGraph extends Observable {
 	/** ArrayList of Country objects to store the country details */
 	private ArrayList<Country> countries;
 
+	/** Filename */
 	private String filename;
 
 	/** HashMap for set of countries */
 	private HashMap<String, Country> countrySet;
 
+	/** List of players */
 	private ArrayList<Player> players = new ArrayList<Player>();
 
+	/** Gamephase name */
 	private String gamePhase;
 
+	/** Exchange card count */
 	private int exchangeCount;
 
+	/** Refresh frame */
 	private boolean refreshFrame;
-
+	
+	/** Dice view message */
+	private String diceViewMessage;
+	
 	/**
 	 * GameMapGraph Constructor
 	 */
@@ -84,7 +94,6 @@ public class GameMapGraph extends Observable {
 		this.addObserver(playerView);
 		this.addObserver(diceView);
 		this.addObserver(cardView);
-
 	}
 
 	/**
@@ -301,11 +310,26 @@ public class GameMapGraph extends Observable {
 		this.refreshFrame = refreshFrame;
 	}
 
+	/**
+	 * Method to get the dice view message
+	 * @return diceViewMessage - return the message for the dice view
+	 */
+	public String getDiceViewMessage() {
+		return diceViewMessage;
+	}
+
+	/**
+	 * Method to set the message for the dice view
+	 * @param diceViewMessage - contains the dice view message
+	 */
+	public void setDiceViewMessage(String diceViewMessage) {
+		this.diceViewMessage = diceViewMessage;
+	}
+	
 	@Override
 	public String toString() {
 		return "GameMapGraph [mapTag=" + mapTag + ", countOfContinents=" + countOfContinents + ", continents="
 				+ continents + ", countOfCountries=" + countOfCountries + ", countries=" + countries + ", filename="
 				+ filename + ", countrySet=" + countrySet + "]";
 	}
-
 }

@@ -6,6 +6,7 @@ import com.riskgame.view.CardView;
 import com.riskgame.view.DiceView;
 import com.riskgame.view.PlayerView;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Country class is a model which gives information with respect to the Countries.
@@ -41,11 +42,20 @@ public class Country extends Observable {
 
 	/** Card of the player */
 	private Card card;
-
+	
+	/** List of Dice values */
+	private List<Integer> diceValues = new ArrayList<Integer>();
+ 	
 	/** List of country card */
 	private HashMap<String, String> countryCardsList = new HashMap<String, String>();
 
+	/**
+	 * Country Constructor
+	 */
 	public Country() {
+		PlayerView playerView = new PlayerView(); DiceView diceView = new DiceView();
+		CardView cardView = new CardView(); this.addObserver(playerView);
+		this.addObserver(diceView); this.addObserver(cardView);
 	}
 
 	/**
@@ -208,6 +218,14 @@ public class Country extends Observable {
 		notifyObservers();
 	}
 
+	/*
+	 * @Override public String toString() { return "Country [name=" + name +
+	 * ", partOfContinent=" + partOfContinent + ", xValue=" + xValue + ", yValue=" +
+	 * yValue + ", adjacentCountries=" + adjacentCountries + ", noOfArmies=" +
+	 * noOfArmies + ", continent=" + continent + ", player=" + player +
+	 * ", countryCardsList=" + countryCardsList + "]"; }
+	 */
+
 	/**
 	 * This method gets the card
 	 * 
@@ -226,20 +244,19 @@ public class Country extends Observable {
 		this.card = card;
 	}
 
-//	public HashMap<String, String> getCountryCardsList() {
-//		return countryCardsList;
-//	}
-//
-//	public void setCountryCardsList(HashMap<String, String> countryCardsList) {
-//		this.countryCardsList = countryCardsList;
-//		setChanged();
-//		notifyObservers();
-//	}
+	/**
+	 * This method gets the list of dice values
+	 * @return diceValues - return the list of dice values 
+	 */
+	public List<Integer> getDiceValues() {
+		return diceValues;
+	}
 
-	@Override
-	public String toString() {
-		return "Country [name=" + name + ", partOfContinent=" + partOfContinent + ", xValue=" + xValue + ", yValue="
-				+ yValue + ", adjacentCountries=" + adjacentCountries + ", noOfArmies=" + noOfArmies + ", continent="
-				+ continent + ", player=" + player + ", countryCardsList=" + countryCardsList + "]";
+	/**
+	 * This method sets the list of dice values
+	 * @param diceValues - list of dice values
+	 */
+	public void setDiceValues(List<Integer> diceValues) {
+		this.diceValues = diceValues;
 	}
 }

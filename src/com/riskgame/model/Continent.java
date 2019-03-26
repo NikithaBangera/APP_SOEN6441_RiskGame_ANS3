@@ -28,8 +28,16 @@ public class Continent extends Observable{
 	/** List of countries in the continent*/
 	ArrayList<Country> countriesInContinent = new ArrayList<Country>();
 
+	/**
+	 * Continent constructor
+	 */
 	public Continent() {
-		
+		PlayerView playerView = new PlayerView(); 
+		DiceView diceView = new DiceView();
+		CardView cardView = new CardView(); 
+		this.addObserver(playerView);
+		this.addObserver(diceView); 
+		this.addObserver(cardView);
 	}
 	
 	/**

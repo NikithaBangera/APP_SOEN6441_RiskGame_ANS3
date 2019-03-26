@@ -31,6 +31,9 @@ public class Player extends Observable {
 	 * Boolean to check the end place armies option
 	 */
 	private boolean endPlaceArmies;
+	
+	/** Variable to check whether the reinforcement is the first reinforcement */
+	private boolean firstReinforcement;
 
 	/** List of countries held by the Player */
 	private ArrayList<Country> myCountries = new ArrayList<Country>();
@@ -39,20 +42,23 @@ public class Player extends Observable {
 	 * List of players card
 	 */
 	private HashMap<String, Integer> playersCardList = new HashMap<String, Integer>();
+	
+	/**
+	 * Boolean variable to check if player wants to end attack phase
+	 */
+	private boolean completeAttack;
 
 	/**
 	 * Constructor to initialize the initial values
 	 */
 	public Player() {
 		this.endPlaceArmies = false;
-
 		PlayerView playerView = new PlayerView();
 		DiceView diceView = new DiceView();
 		CardView cardView = new CardView();
 		this.addObserver(playerView);
 		this.addObserver(diceView);
 		this.addObserver(cardView);
-
 	}
 
 	/**
@@ -125,10 +131,20 @@ public class Player extends Observable {
 		this.myCountries.add(country);
 	}
 
+	/**
+	 * Method to get the players card list
+	 * 
+	 * @return playersCardList - card list of players
+	 */
 	public HashMap<String, Integer> getPlayersCardList() {
 		return playersCardList;
 	}
 
+	/**
+	 * Method to set the players card list
+	 * 
+	 * @param playersCardList - card list of players
+	 */
 	public void setPlayersCardList(HashMap<String, Integer> playersCardList) {
 		this.playersCardList = playersCardList;
 		setChanged();
@@ -189,4 +205,39 @@ public class Player extends Observable {
 		notifyObservers();
 	}
 
+	/**
+	 * Method to check if the phase is the first reinforcement phase
+	 * 
+	 * @return firstReinforcement - reinforcement phase
+	 */
+	public boolean isFirstReinforcement() {
+		return firstReinforcement;
+	}
+
+	/**
+	 * Method to set the first Reinforcement phase
+	 * 
+	 * @param firstReinforcement - first Reinforcement phase
+	 */
+	public void setFirstReinforcement(boolean firstReinforcement) {
+		this.firstReinforcement = firstReinforcement;
+	}
+
+	/**
+	 * Method to check if complete attack is checked
+	 * 
+	 * @return completeAttack - complete attack phase
+	 */
+	public boolean isCompleteAttack() {
+		return completeAttack;
+	}
+
+	/**
+	 * Method to set completeAttach in attack phase
+	 * 
+	 * @param completeAttack - complete attack phase
+	 */
+	public void setCompleteAttack(boolean completeAttack) {
+		this.completeAttack = completeAttack;
+	}
 }

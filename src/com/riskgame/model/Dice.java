@@ -1,7 +1,6 @@
 package com.riskgame.model;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Observable;
 import java.util.Random;
@@ -18,16 +17,24 @@ import com.riskgame.view.PlayerView;
  */
 public class Dice extends Observable {
 
+	/** Attacker dice values list */
 	private List<Integer> attackerDiceValues;
+	
+	/** Defender dice value list */
 	private List<Integer> defenderDiceValues;
-	private List<String> diceResult;
-
+	
 	/**
 	 * The default constructor
 	 */
 	public Dice() {
 		attackerDiceValues = new ArrayList<Integer>();
 		defenderDiceValues = new ArrayList<Integer>();
+		PlayerView playerView = new PlayerView();
+		DiceView diceView = new DiceView();
+		CardView cardView = new CardView();
+		this.addObserver(playerView);
+		this.addObserver(diceView);
+		this.addObserver(cardView);
 	}
 
 	/**

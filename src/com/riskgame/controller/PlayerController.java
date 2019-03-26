@@ -39,10 +39,18 @@ public class PlayerController {
 	 */
 	public boolean doFortification = false;
 
+	/**
+	 * Method to get the count of players
+	 * @return countOfThePlayers - return count of players
+	 */
 	public int getCountOfthePlayers() {
 		return countOfthePlayers;
 	}
 
+	/**
+	 * Method to set the count of players
+	 * @param countOfthePlayers - set the count of players
+	 */
 	public void setCountOfthePlayers(int countOfthePlayers) {
 		this.countOfthePlayers = countOfthePlayers;
 	}
@@ -103,9 +111,10 @@ public class PlayerController {
 					System.out.println("Player name cannot be empty");
 				}
 			}
+			riskPlayer.setFirstReinforcement(true);
 			mapGraph.getPlayers().add(riskPlayer);
 		}
-
+		
 		allocationOfCountry(mapGraph);
 		allocationOfArmyToPlayers(mapGraph);
 		allocationOfArmyToCountriesInitially(mapGraph);
@@ -279,6 +288,7 @@ public class PlayerController {
 							break;
 						}
 					}
+					break;
 				}
 			}
 
@@ -331,21 +341,24 @@ public class PlayerController {
 				}
 			}
 		}
-
+		
 		if (!isPlayerCountry) {
+			DiceController diceController = new DiceController();
 			while (attackerCountry.getNoOfArmies() > 1 && defenderCountry.getNoOfArmies() > 0) {
 				attackerDiceCount = attackerCountry.getNoOfArmies() > 3 ? 3
 						: (attackerCountry.getNoOfArmies() > 2 ? 2 : 1);
 				defenderDiceCount = defenderCountry.getNoOfArmies() >= 2 ? 2 : 1;
 
-				DiceController diceController = new DiceController();
+				
 				diceController.startDiceRoll(attackerDiceCount, defenderDiceCount, attackerCountry, defenderCountry);
 			}
 
 			if (defenderCountry.getNoOfArmies() == 0) {
-				attackerCountry.setNoOfArmies(attackerCountry.getNoOfArmies() - 1);
-				defenderCountry.setNoOfArmies(defenderCountry.getNoOfArmies() + 1);
+				//attackerCountry.setNoOfArmies(attackerCountry.getNoOfArmies() - 1);
+				//defenderCountry.setNoOfArmies(defenderCountry.getNoOfArmies() + 1);
 				JOptionPane.showMessageDialog(null, "Defender has lost the country to attacker!");
+				diceController.moveArmies(1, attackerCountry, defenderCountry, gameMapGraph);
+				
 			}
 		}
 	}
@@ -380,37 +393,6 @@ public class PlayerController {
 		if (!adjacentCountries) {
 			JOptionPane.showMessageDialog(null, "Countries are not adjacanet!");
 			doFortification = true;
-		}
-	}
-
-	/**
-	 * This method is used to assign armies to the Countries. It checks the
-	 * available army and assigns the army to the requested country
-	 * 
-	 * @param mapGraph - GameMapGraph object
-	 * @param country     - the country given to players
-	 * @param armiesCount - the count of the armies player has
-	 */
-	public void armiesAssignedToCountries(GameMapGraph mapGraph, String country, int armiesCount) {
-		Player player = getPlayerForCountry(mapGraph, country);
-		if (getPlayerForCountry(mapGraph, country) != null) {
-			if ((player.getArmyCount()) > 0 && player.getArmyCount() >= armiesCount) {
-				getPlayerForCountry(mapGraph, country).setArmyCount(player.getArmyCount() - armiesCount);
-				int i = 0;
-				for (Country playerCountry : getPlayerForCountry(mapGraph, country).getMyCountries()) {
-					if (playerCountry.getName().equalsIgnoreCase(country)) {
-						getPlayerForCountry(mapGraph, country).getMyCountries().get(i)
-								.setNoOfArmies(playerCountry.getNoOfArmies() + armiesCount);
-						break;
-					}
-					i++;
-				}
-
-			} else {
-				JOptionPane.showMessageDialog(null, "Insufficient number of armies.");
-			}
-		} else {
-			JOptionPane.showMessageDialog(null, "This country is not owned by you!");
 		}
 	}
 
@@ -487,6 +469,39 @@ public class PlayerController {
 	public void populatePlayerContinents(GameMapGraph mapGraph) {
 		// Pending: create new continent list in player object and populate it to be
 		// used to show player's continents in world domination
+	}
+	
+	/**
+	 * This method is used to assign armies to the Countries. It checks the
+	 * available army and assigns the army to the requested country
+	 * 
+	 * @param mapGraph - GameMapGraph object
+	 * @param country     - the country given to players
+	 * @param armiesCount - the count of the armies player has
+	 */	
+	public void armiesAssignedToCountries(GameMapGraph mapGraph, String country, int armiesCount) {
+		Player player = getPlayerForCountry(mapGraph, country);
+		if (getPlayerForCountry(mapGraph, country) != null) {
+			if ((player.getArmyCount()) > 0 && player.getArmyCount() >= armiesCount) {
+				getPlayerForCountry(mapGraph, country).setArmyCount(player.getArmyCount() - armiesCount);
+				if(getPlayerForCountry(mapGraph, country).getArmyCount() == 0) {
+					getPlayerForCountry(mapGraph, country).setEndPlaceArmies(true);
+				}
+				int i = 0;
+				for(Country playerCountry : getPlayerForCountry(mapGraph, country).getMyCountries()) {
+					if(playerCountry.getName().equalsIgnoreCase(country)) {
+						getPlayerForCountry(mapGraph, country).getMyCountries().get(i).setNoOfArmies(playerCountry.getNoOfArmies() + armiesCount);
+						break;
+					}
+					i++;
+				}
+				
+			} else {
+				JOptionPane.showMessageDialog(null, "Insufficient number of armies.");
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "This country is not owned by you!");
+		}
 	}
 
 }
