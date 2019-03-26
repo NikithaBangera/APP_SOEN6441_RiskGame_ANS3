@@ -1,32 +1,34 @@
 package com.riskgame.view;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import javax.swing.*;
+
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 
 import com.riskgame.controller.CreateMapController;
 import com.riskgame.controller.PlayerController;
 import com.riskgame.controller.LoadMapController;
-//import com.riskgame.driver.RiskMain;
 import com.riskgame.model.GameMapGraph;
+import com.riskgame.model.MapTag;
 
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-
-import java.awt.Font;
-import java.awt.Color;
-import java.awt.EventQueue;
-import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.awt.event.ActionEvent;
-import javax.swing.SwingConstants;
-
+/**
+ * RiskMain class launches the Risk Game and provided options for the users to
+ * create a new map or load an existing map in-order to begin the game.
+ * 
+ * @author Shresthi
+ * @author Shiva
+ *
+ */
 public class RiskMainView extends JFrame {
-	
+
 	/**
 	 * Buttons are created for creating a new map, for loading an existing map and
 	 * also for exiting.
@@ -56,54 +58,17 @@ public class RiskMainView extends JFrame {
 	 * class is called. Exit button exits the user from the game.
 	 * 
 	 */
-
-	private JFrame frame;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					RiskMainView layout = new RiskMainView();
-					layout.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-					layout.frame.setVisible(true);
-					layout.frame.pack();
-					layout.frame.setLocation(800, 400);
-					layout.frame.setSize(320, 300);
-					layout.frame.setTitle("Risk Game");
-//					layout.frame.setVisible(true);
-//					layout.frame.setTitle("Risk Game");
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the application.
-	 */
 	public RiskMainView() {
-		initialize();
-	}
+		setLayout(new GridLayout(3, 3));
+		createNewMapButton = new JButton("Create a new Map");
+		createNewMapButton.setPreferredSize(new Dimension(60, 60));
+		add(createNewMapButton);
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		frame = new JFrame();
-		frame.getContentPane().setBackground(new Color(135, 206, 250));
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
-		
-		JButton createNewMapButton = new JButton("Create Map");
-		createNewMapButton.setForeground(Color.WHITE);
 		createNewMapButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
 				try {
 					setVisible(false);
 					isGoodToStartGame = createandeditmap.newMapCreation();
@@ -115,16 +80,14 @@ public class RiskMainView extends JFrame {
 				}
 			}
 		});
-		createNewMapButton.setBackground(Color.BLACK);
-		createNewMapButton.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 18));
-		createNewMapButton.setBounds(68, 25, 171, 38);
-		frame.getContentPane().add(createNewMapButton);
-		
-		JButton loadExistingMapButton = new JButton("Load/Edit Map");
-		loadExistingMapButton.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 18));
-		loadExistingMapButton.setForeground(Color.WHITE);
-		loadExistingMapButton.setBackground(Color.BLACK);
+
+		loadExistingMapButton = new JButton("Load Existing Map");
+		loadExistingMapButton.setPreferredSize(new Dimension(50, 50));
+		add(loadExistingMapButton);
+
 		loadExistingMapButton.addActionListener(new ActionListener() {
+
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				// Load map functionality
 				boolean exit = false;
@@ -152,11 +115,14 @@ public class RiskMainView extends JFrame {
 								fileName = fileName.substring(0, fileName.lastIndexOf("."));
 								loadMapGraph.setFilename(fileName);
 								isGoodToStartGame = createandeditmap.uploadMap(loadMapGraph);
-								if (isGoodToStartGame)
+								if (isGoodToStartGame) {
 									startGame();
+									exit = true;
+								}
+									
 								else
 									System.out.println(" \n Thank You !! ");
-								System.exit(0);
+								//System.exit(0);
 							} else {
 								System.out.println(LoadMapController.getError());
 								System.out.println(
@@ -189,42 +155,40 @@ public class RiskMainView extends JFrame {
 						}
 					}
 				}
-				System.exit(0);
+				//System.exit(0);
 			}
 		});
-		loadExistingMapButton.setBounds(68, 98, 171, 38);
-		frame.getContentPane().add(loadExistingMapButton);
-		
-		JButton exitMapButton = new JButton("Exit");
-		exitMapButton.setForeground(Color.WHITE);
+
+		exitMapButton = new JButton("Exit");
+		exitMapButton.setPreferredSize(new Dimension(50, 50));
+		add(exitMapButton);
+
 		exitMapButton.addActionListener(new ActionListener() {
+
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
-				
 			}
 		});
-		exitMapButton.setBackground(Color.BLACK);
-		exitMapButton.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 18));
-		exitMapButton.setBounds(68, 175, 171, 38);
-		frame.getContentPane().add(exitMapButton);
+
 	}
-	
+
 	/**
 	 * This method sets up a layout for the risk game by displaying the create a
 	 * map, load a map and exit buttons respectively using Java Swing framework.
 	 * 
 	 * @throws Exception - ClassNotFoundException
 	 */
-//	public static void setUp() throws Exception {
-//		MainView layout = new MainView();
-//		layout.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		layout.setVisible(true);
-//		layout.pack();
-//		layout.setLocation(800, 400);
-//		layout.setSize(300, 300);
-//		layout.setTitle("Risk Game");
-//
-//	}
+	public static void setUp() throws Exception {
+		RiskMainView layout = new RiskMainView();
+		layout.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		layout.setVisible(true);
+		layout.pack();
+		layout.setLocation(800, 400);
+		layout.setSize(300, 300);
+		layout.setTitle("Risk Game");
+
+	}
 
 	/**
 	 * This is the method where the gameplay begins after the creation of new map or
@@ -265,15 +229,7 @@ public class RiskMainView extends JFrame {
 	 * @param args main arguments
 	 * @throws Exception - NoSuchMethodException
 	 */
-//	public static void main(String[] args) throws Exception {
-//		setUp();
-//	}
-	
+	public static void main(String[] args) throws Exception {
+		setUp();
+	}
 }
-
-
-//package com.riskgame.view;
-//
-//public class MainView {
-//
-//}
