@@ -357,7 +357,7 @@ public class PlayerController {
 
 			if (defenderCountry.getNoOfArmies() == 0) {
 				JOptionPane.showMessageDialog(null, "Defender has lost the country to attacker!");
-				diceController.moveArmies(1, attackerCountry, defenderCountry, gameMapGraph);
+				moveArmies(1, attackerCountry, defenderCountry, gameMapGraph);
 				
 			}
 		}
@@ -496,5 +496,62 @@ public class PlayerController {
 			JOptionPane.showMessageDialog(null, "This country is not owned by you!");
 		}
 	}
+	
+	/**
+	 * This method is called when after a win by the attacker it moves armies to the
+	 * country it has won.
+	 * 
+	 * @param armiesToBeMoved - the number of armies that is wishes to be moved
+	 * @param attackerCountry - the attacker country
+	 * @param defenderCountry - the defender country
+	 * @param gameMapGraph    - the GameMapGraph object
+	 */
+	public boolean moveArmies(int armiesToBeMoved, Country attackerCountry, Country defenderCountry,
+			GameMapGraph gameMapGraph) {
+		boolean attackerFound = false;
+		boolean defenderFound = false;
+		boolean moveSuccessful = false;
+		if ((attackerCountry.getNoOfArmies() - armiesToBeMoved) > 1) {
+			attackerCountry.setNoOfArmies(attackerCountry.getNoOfArmies() - armiesToBeMoved);
+			defenderCountry.setNoOfArmies(defenderCountry.getNoOfArmies() + armiesToBeMoved);
+			
+			for(Player player : gameMapGraph.getPlayers()) {
+				int i=0;
+				for(Country country : player.getMyCountries()) {
+					if(country.getName().equalsIgnoreCase(defenderCountry.getName())) {
+						defenderFound = true;
+						break;
+					}
+					i++;
+				}
+				if (defenderFound) {
+					player.getMyCountries().remove(i);
+					break;
+				}
+			}
+			
+			for (Player player : gameMapGraph.getPlayers()) {
+				for (Country country : player.getMyCountries()) {
+					if (country.getName().equalsIgnoreCase(attackerCountry.getName())) {
+						attackerFound = true;
+						break;
+					}
+				}
+				if (attackerFound) {
+					player.getMyCountries().add(defenderCountry);
+					moveSuccessful = true;
+					break;
+				}
+			}
+			
+			
+
+		} else {
+			JOptionPane.showMessageDialog(null,
+					"Allowed number of armies to be moved: " + (attackerCountry.getNoOfArmies() - 1));
+		}
+		return moveSuccessful;
+	}
+
 
 }
