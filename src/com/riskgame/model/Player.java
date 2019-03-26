@@ -127,7 +127,6 @@ public class Player extends Observable {
 	 * @param country - The country that needs to be added.
 	 */
 	public void additionOfCountry(Country country) {
-
 		this.myCountries.add(country);
 	}
 
@@ -221,6 +220,8 @@ public class Player extends Observable {
 	 */
 	public void setFirstReinforcement(boolean firstReinforcement) {
 		this.firstReinforcement = firstReinforcement;
+		setChanged();
+		notifyObservers();
 	}
 
 	/**
@@ -239,5 +240,7 @@ public class Player extends Observable {
 	 */
 	public void setCompleteAttack(boolean completeAttack) {
 		this.completeAttack = completeAttack;
+		setChanged();
+		notifyObservers();
 	}
 }

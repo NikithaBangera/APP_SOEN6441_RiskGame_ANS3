@@ -14,7 +14,7 @@ import com.riskgame.model.Continent;
  * @author Shiva
  *
  */
-public class CreateAndEditMapTest {
+public class CreateMapControllerTest {
 	
 	/** Object for CreateAndEditMap Class */
 	private CreateMapController createAndEditMap; 
@@ -28,7 +28,7 @@ public class CreateAndEditMapTest {
 	/**
 	 * CreateAndEditMapTest Constructor for initial setup 
 	 */
-	public CreateAndEditMapTest() {
+	public CreateMapControllerTest() {
 		
 		createAndEditMap = new CreateMapController();
 		listofContinents = new ArrayList<Continent>();

@@ -49,6 +49,7 @@ import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.Player;
 import com.riskgame.model.PlayerDomination;
 import java.awt.Rectangle;
+import java.awt.Window;
 import java.awt.BorderLayout;
 import javax.swing.UIManager;
 
@@ -119,7 +120,7 @@ public class PlayerView implements Observer {
 			roundRobin = new RoundRobinController(inputMapGraph.getPlayers());
 			
 			frmRiskGame = new JFrame();
-			frmRiskGame.setTitle("RISK Game");
+			frmRiskGame.setTitle("Risk Game");
 			frmRiskGame.setBounds(100, 100, 883, 568);
 			frmRiskGame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frmRiskGame.getContentPane().setLayout(null);
@@ -734,9 +735,17 @@ public class PlayerView implements Observer {
 	 */
 	@Override
 	public void update(Observable o, Object arg) {
+		for(Window window : Window.getWindows()) {
+			if(window instanceof JFrame) {
+				if(((JFrame)window).getTitle().equalsIgnoreCase("Risk Game")) {
+					frmRiskGame = (JFrame)window;
+				}
+			}
+		}
+		
 		if(frmRiskGame != null) {
-			frmRiskGame.getContentPane().invalidate();
-			frmRiskGame.getContentPane().repaint();
+			frmRiskGame.revalidate();
+			frmRiskGame.repaint();
 		}
 	}
 
