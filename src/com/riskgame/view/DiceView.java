@@ -43,6 +43,8 @@ public class DiceView implements Observer{
 	private JTextField messageField;
 	int attackerDiceCount = 0;
 	int defenderDiceCount = 0;
+	int previousAttackerDiceCount = 0;
+	int previousDefenderDiceCount = 0;
 	private DiceController diceController;
 
 	/**
@@ -259,27 +261,33 @@ public class DiceView implements Observer{
 		btnRollDice.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String message = "";
-				attackerDiceCount = Integer.parseInt(attackerGroup.getSelection().getActionCommand());
-				defenderDiceCount = Integer.parseInt(defenderGroup.getSelection().getActionCommand());
-				
-				
-			//	DiceController diceController = new DiceController();
-				String diceRollResult = diceController.startDiceRoll(attackerDiceCount, defenderDiceCount, attackerCountry, defenderCountry);
-				int attackerLostCount = Integer.parseInt(diceRollResult.split(":")[0]);
-				int defenderLostCount = Integer.parseInt(diceRollResult.split(":")[1]);
-				
-				if(attackerLostCount > 0) {
-					message = "Attacker has lost "+attackerLostCount+" army(ies)";
+				if(attackerGroup.getSelection() != null 
+						&& defenderGroup.getSelection() != null) {
+					attackerDiceCount = Integer.parseInt(attackerGroup.getSelection().getActionCommand());
+					defenderDiceCount = Integer.parseInt(defenderGroup.getSelection().getActionCommand());
+					previousAttackerDiceCount = attackerDiceCount;
+					previousDefenderDiceCount = defenderDiceCount;
+					
+					String diceRollResult = diceController.startDiceRoll(attackerDiceCount, defenderDiceCount, attackerCountry, defenderCountry);
+					int attackerLostCount = Integer.parseInt(diceRollResult.split(":")[0]);
+					int defenderLostCount = Integer.parseInt(diceRollResult.split(":")[1]);
+					
+					if(attackerLostCount > 0) {
+						message = "Attacker has lost "+attackerLostCount+" army(ies)";
+					}
+					if(defenderLostCount > 0) {
+						message = message.length() > 0 ? (message+" ; "+"Defender has lost "+defenderLostCount+" army(ies)") : "Defender has lost "+defenderLostCount+" army(ies)";
+					}
+					
+					gameMapGraph.setDiceViewMessage(message);
+					diceRootPanel.removeAll();
+					diceRootPanel.revalidate();
+					diceRootPanel.repaint();
+					initialize(gameMapGraph, attackerCountry, defenderCountry);
 				}
-				if(defenderLostCount > 0) {
-					message = message.length() > 0 ? (message+" ; "+"Defender has lost "+defenderLostCount+" army(ies)") : "Defender has lost "+defenderLostCount+" army(ies)";
+				else {
+					JOptionPane.showMessageDialog(null, "Please select the Dice count for both players to Roll the dice");
 				}
-				
-				gameMapGraph.setDiceViewMessage(message);
-				diceRootPanel.removeAll();
-				diceRootPanel.revalidate();
-				diceRootPanel.repaint();
-				initialize(gameMapGraph, attackerCountry, defenderCountry);
 			}
 		});
 		btnRollDice.setFont(new Font("Arial", Font.PLAIN, 14));
@@ -337,6 +345,7 @@ public class DiceView implements Observer{
 		
 		if(defenderCountry.getNoOfArmies() == 0) {
 			btnMoveArmies.setEnabled(true);
+			btnEndTurn.setEnabled(false);
 		}
 		
 		btnMoveArmies.addActionListener(new ActionListener() {
@@ -349,9 +358,9 @@ public class DiceView implements Observer{
 				if(armiesToMove != null) {
 					Player attacker = diceController.getPlayerForCountry(gameMapGraph, attackerCountry.getName());
 					Player defender = diceController.getPlayerForCountry(gameMapGraph, defenderCountry.getName());
-					boolean moveComplete = diceController.moveArmies(Integer.parseInt(armiesToMove), attackerCountry, defenderCountry, gameMapGraph);
+					boolean moveComplete = diceController.moveArmies(Integer.parseInt(armiesToMove), attackerCountry, defenderCountry, gameMapGraph, previousAttackerDiceCount, previousDefenderDiceCount);
 					if(moveComplete) {
-						if(defender.getMyCountries().size() == 1) {
+						if(defender.getMyCountries().size() == 0) {
 							attacker.getPlayersCardList().putAll(defender.getPlayersCardList());
 							JOptionPane.showMessageDialog(null, "Player "+defender.getName()+" has lost the game!!");
 						}
