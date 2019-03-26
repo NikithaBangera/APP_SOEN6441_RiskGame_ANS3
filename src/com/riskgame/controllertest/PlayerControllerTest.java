@@ -29,7 +29,7 @@ public class PlayerControllerTest {
 	/** Object for StartUp Class */
 	PlayerController playerController;
 	
-	Player player, player1;
+	Player player;
 	
 //	/** Object for Country Class */
 //	Country country;
