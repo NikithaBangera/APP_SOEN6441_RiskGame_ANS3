@@ -335,10 +335,12 @@ public class PlayerController {
 			if (playerFound) {
 				for (Country country : player.getMyCountries()) {
 					if (country.getName().equalsIgnoreCase(defenderCountry.getName())) {
+						JOptionPane.showMessageDialog(null, "Cannot attack your own country!!");
 						isPlayerCountry = true;
 						break;
 					}
 				}
+				break;
 			}
 		}
 		
@@ -354,8 +356,6 @@ public class PlayerController {
 			}
 
 			if (defenderCountry.getNoOfArmies() == 0) {
-				//attackerCountry.setNoOfArmies(attackerCountry.getNoOfArmies() - 1);
-				//defenderCountry.setNoOfArmies(defenderCountry.getNoOfArmies() + 1);
 				JOptionPane.showMessageDialog(null, "Defender has lost the country to attacker!");
 				diceController.moveArmies(1, attackerCountry, defenderCountry, gameMapGraph);
 				
@@ -384,8 +384,6 @@ public class PlayerController {
 				toCountry.setNoOfArmies(toCountryArmy + armiesCount);
 				adjacentCountries = true;
 				doFortification = false;
-				// System.out.println("\nArmies successfully moved!");
-				// System.out.println("\nFortification phase ends!");
 				break;
 			}
 		}
@@ -466,11 +464,6 @@ public class PlayerController {
 		return complete;
 	}
 
-	public void populatePlayerContinents(GameMapGraph mapGraph) {
-		// Pending: create new continent list in player object and populate it to be
-		// used to show player's continents in world domination
-	}
-	
 	/**
 	 * This method is used to assign armies to the Countries. It checks the
 	 * available army and assigns the army to the requested country
