@@ -40,6 +40,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.general.DefaultPieDataset;
 
+import com.riskgame.controller.CardController;
 import com.riskgame.controller.PlayerController;
 import com.riskgame.controller.RoundRobinController;
 import com.riskgame.model.Card;
@@ -49,11 +50,13 @@ import com.riskgame.model.Player;
 import com.riskgame.model.PlayerDomination;
 import java.awt.Rectangle;
 import java.awt.BorderLayout;
+import javax.swing.UIManager;
 
 /**
  * This class aims to create the player's view
  * 
  * @author Nikitha
+ * @author Shiva
  *
  */
 public class PlayerView implements Observer {
@@ -210,17 +213,11 @@ public class PlayerView implements Observer {
 		textFieldArmies.setText(Integer.toString(player.getArmyCount()));
 		textFieldArmies.setEnabled(false);
 		
-		JPanel panelPlayerCountries = new JPanel();
-		panelPlayerCountries.setBounds(195, 16, 216, 196);
-		panelPlayerCountries.setBackground(Color.WHITE);
-		rootPanel.add(panelPlayerCountries);
-		
-		DefaultListModel playerCountries = new DefaultListModel();
+		DefaultListModel<String> playerCountries = new DefaultListModel<String>();
 		for(String playerCountry : player.getPlayerCountryNames()) {
 			playerCountries.addElement(playerCountry);
 		}
-		panelPlayerCountries.setLayout(null);
-		JList listPlayerCountryList = new JList(playerCountries);
+		JList<String> listPlayerCountryList = new JList<String>(playerCountries);
 		listPlayerCountryList.setBounds(0, 26, 211, 170);
 		listPlayerCountryList.setSelectionForeground(Color.LIGHT_GRAY);
 		listPlayerCountryList.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -229,18 +226,27 @@ public class PlayerView implements Observer {
 		listPlayerCountryList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		listPlayerCountryList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
-		panelPlayerCountries.add(listPlayerCountryList);
-		
 		JLabel lblSelectedCountries = new JLabel("Player Countries");
-		lblSelectedCountries.setBounds(0, 0, 216, 23);
+		lblSelectedCountries.setBounds(0, 0, 208, 23);
 		lblSelectedCountries.setHorizontalAlignment(SwingConstants.CENTER);
-		panelPlayerCountries.add(lblSelectedCountries);
+		
 		lblSelectedCountries.setFont(new Font("Calibri", Font.PLAIN, 14));
+		
+		JPanel panelPlayerCountries = new JPanel();
+		panelPlayerCountries.setBounds(206, 16, 208, 196);
+		rootPanel.add(panelPlayerCountries);
+		panelPlayerCountries.setLayout(null);
+		panelPlayerCountries.add(lblSelectedCountries);
+		
+		JScrollPane scrollPanePlayerCountries = new JScrollPane(listPlayerCountryList);
+		scrollPanePlayerCountries.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPanePlayerCountries.setBounds(0, 23, 208, 173);
+		panelPlayerCountries.add(scrollPanePlayerCountries);
 		
 		JPanel panelAdjacentCountries = new JPanel();
 		panelAdjacentCountries.setBounds(608, 16, 238, 196);
 		rootPanel.add(panelAdjacentCountries);
-		panelAdjacentCountries.setBackground(Color.WHITE);
+		panelAdjacentCountries.setBackground(UIManager.getColor("Button.background"));
 		panelAdjacentCountries.setLayout(null);
 		
 		JLabel lblAdjacentCountry = new JLabel("Adjacent Countries");
@@ -274,7 +280,6 @@ public class PlayerView implements Observer {
 				if(e.getValueIsAdjusting()) {
 					selectedCountry = listPlayerCountryList.getSelectedValue().toString();
 					selectedCountryObject = player.getSelectedCountry(selectedCountry);
-					//Pending: Should reduce the army count on Player and add an army to the country object.
 				}
 				setPlayerCountryDetails(selectedCountry+" has "+selectedCountryObject.getNoOfArmies()+" armies.");
 				setPlayerAdjCountryDetails("");
@@ -287,17 +292,16 @@ public class PlayerView implements Observer {
 	
 		
 		if(selectedCountryObject != null) {
-			DefaultListModel adjCountryList = new DefaultListModel(); 
+			DefaultListModel<String> adjCountryList = new DefaultListModel<String>(); 
 			for(String adjCountry: selectedCountryObject.getAdjacentCountries()) {
 				adjCountryList.addElement(adjCountry);
 			}
-			JList listAdjacentCountries = new JList(adjCountryList);
+			JList<String> listAdjacentCountries = new JList<String>(adjCountryList);
 			listAdjacentCountries.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 			listAdjacentCountries.setFont(new Font("Calibri", Font.PLAIN, 16));
 			listAdjacentCountries.setVisibleRowCount(20);
 			listAdjacentCountries.setBounds(0, 23, 238, 173);
 			listAdjacentCountries.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-			panelAdjacentCountries.add(listAdjacentCountries);
 			listAdjacentCountries.addListSelectionListener(new ListSelectionListener() {
 				
 				@Override
@@ -312,7 +316,13 @@ public class PlayerView implements Observer {
 					refreshFrame(mapGraph);
 				}
 			});
+			
+			JScrollPane scrollPanePlayerAdjacentCountries = new JScrollPane(listAdjacentCountries);
+			scrollPanePlayerAdjacentCountries.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+			scrollPanePlayerAdjacentCountries.setBounds(0, 25, 238, 171);
+			panelAdjacentCountries.add(scrollPanePlayerAdjacentCountries);
 		}
+		
 		
 		
 		JButton btnPlaceArmy = new JButton("Place Army");
@@ -466,46 +476,63 @@ public class PlayerView implements Observer {
 				Country selectedAdjCountryObject = playerController.getAdjacentCountry(mapGraph, getSelectedAdjacentCountry());
 				JFrame fortifyArmy = new JFrame();
 				String armiesCount=JOptionPane.showInputDialog(fortifyArmy,"Enter the number of armies you want to move:");
-				for(Player player : mapGraph.getPlayers()) {
-					for(Country country : player.getMyCountries()) {
-						if(country.getName().equalsIgnoreCase(selectedCountryObject.getName())) {
-							playerFound = true;
-							break;
+				if(armiesCount != null) { 
+					if(selectedCountryObject !=  null && selectedAdjCountryObject != null) {
+						if(Integer.parseInt(armiesCount) >= selectedCountryObject.getNoOfArmies()) {
+							JOptionPane.showMessageDialog(null, "Can move only "+(selectedCountryObject.getNoOfArmies()-1)+" armies.");
+							return;
 						}
 					}
-					if(playerFound) {
-						for(Country country: player.getMyCountries()) {
-							if(country.getName().equalsIgnoreCase(selectedAdjCountryObject.getName())) {
-								if(selectedCountryObject !=  null && selectedAdjCountryObject != null) {
-									playerController.moveArmies(selectedCountryObject, selectedAdjCountryObject, Integer.parseInt(armiesCount));
-								}
-								else {
-									JOptionPane.showMessageDialog(null,	"Please select the countries for army fortification");
-									break;
-								}
-								isAdjCountry = true;
-								isFortificationComplete = true;
-								mapGraph.setGamePhase("Reinforcement");
+					else {
+						JOptionPane.showMessageDialog(null,	"Please select the countries for army fortification");
+					}
+					
+					for(Player player : mapGraph.getPlayers()) {
+						for(Country country : player.getMyCountries()) {
+							if(country.getName().equalsIgnoreCase(selectedCountryObject.getName())) {
+								playerFound = true;
 								break;
 							}
 						}
+						if(playerFound) {
+							for(Country country: player.getMyCountries()) {
+								if(country.getName().equalsIgnoreCase(selectedAdjCountryObject.getName())) {
+									playerController.moveArmies(selectedCountryObject, selectedAdjCountryObject, Integer.parseInt(armiesCount));
+									isAdjCountry = true;
+									isFortificationComplete = true;
+									mapGraph.setGamePhase("Reinforcement");
+									break;
+								}
+							}
+							break;
+						}
+					}
+					
+					if(!isAdjCountry)
+					{
+						JOptionPane.showMessageDialog(null, lblPlayerName.getText()+" does not own this country");
+					}
+					((JButton)(e.getSource())).putClientProperty("isFortificationComplete", isFortificationComplete);
+					
+					if(isFortificationComplete) {
+						// allocateCard
+						CardController cardAction = new CardController();
+						cardAction.allocateCardToPlayer(player);
+			            mapGraph.setRefreshFrame(false);
+			            rootPanel.removeAll();
+			            rootPanel.revalidate();
+						rootPanel.repaint();
+						initialize(mapGraph);
 					}
 				}
-				if(!isAdjCountry)
-				{
-					JOptionPane.showMessageDialog(null, lblPlayerName.getText()+" does not own this country");
+				else {
+					fortifyArmy.dispose();
 				}
-				((JButton)(e.getSource())).putClientProperty("isFortificationComplete", isFortificationComplete);
 			}
+			
 		});
 		rootPanel.add(btnFortify);
-		if(isFortificationComplete) {
-            mapGraph.setRefreshFrame(false);
-            rootPanel.removeAll();
-            rootPanel.revalidate();
-			rootPanel.repaint();
-			initialize(mapGraph);
-		}
+		
 		
 		
 		JCheckBox chckbxCompleteAttack = new JCheckBox("Complete Attack");
@@ -631,7 +658,8 @@ public class PlayerView implements Observer {
 			playerBranch.add(continentsBranch);
 			playerBranch.add(countries);
 			for(String playerCountry : player.getPlayerCountryNames()) {
-				country = new DefaultMutableTreeNode(playerCountry);
+				Country countryForArmyCount = player.getSelectedCountry(playerCountry);
+				country = new DefaultMutableTreeNode(playerCountry+" : "+countryForArmyCount.getNoOfArmies());
 				countries.add(country);
 			}
 		}
@@ -653,7 +681,7 @@ public class PlayerView implements Observer {
         
     	JScrollPane scrollPane = new JScrollPane(playerTree);
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		panel.add(scrollPane);
 		
 		

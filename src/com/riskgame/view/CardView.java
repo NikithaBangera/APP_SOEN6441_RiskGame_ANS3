@@ -5,7 +5,6 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JCheckBox;
 import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -103,27 +102,21 @@ public class CardView implements Observer {
 		lblArtillery.setBounds(314, 71, 54, 30);
 		frame.getContentPane().add(lblArtillery);
 
-		playerCardCount = player.getPlayersCardList().get(Card.INFANTRY) != null
-				? player.getPlayersCardList().get(Card.INFANTRY).toString()
-				: "0";
+		playerCardCount = player.getPlayersCardList().get(Card.INFANTRY) != null ? player.getPlayersCardList().get(Card.INFANTRY).toString() : "0";
 		JLabel InfantryLabel = new JLabel();
 		InfantryLabel.setText(playerCardCount);
 		InfantryLabel.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		InfantryLabel.setBounds(90, 72, 26, 29);
 		frame.getContentPane().add(InfantryLabel);
 
-		playerCardCount = player.getPlayersCardList().get(Card.CAVALRY) != null
-				? player.getPlayersCardList().get(Card.CAVALRY).toString()
-				: "0";
+		playerCardCount = player.getPlayersCardList().get(Card.CAVALRY) != null ? player.getPlayersCardList().get(Card.CAVALRY).toString() : "0";
 		JLabel cavalryLabel = new JLabel();
 		cavalryLabel.setText(playerCardCount);
 		cavalryLabel.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		cavalryLabel.setBounds(232, 72, 26, 29);
 		frame.getContentPane().add(cavalryLabel);
 
-		playerCardCount = player.getPlayersCardList().get(Card.ARTILLERY) != null
-				? player.getPlayersCardList().get(Card.ARTILLERY).toString()
-				: "0";
+		playerCardCount = player.getPlayersCardList().get(Card.ARTILLERY) != null ? player.getPlayersCardList().get(Card.ARTILLERY).toString() : "0";
 		JLabel artilleryLabel = new JLabel();
 		artilleryLabel.setText(playerCardCount);
 		artilleryLabel.setFont(new Font("Times New Roman", Font.PLAIN, 14));
@@ -168,11 +161,11 @@ public class CardView implements Observer {
 		artileryAssign.setColumns(10);
 
 		JButton btnExchange = new JButton("Exchange");
-//		btnExchange.setEnabled(false);
 		if (!player.getPlayersCardList().isEmpty()) {
-			int total = (player.getPlayersCardList().get(Card.ARTILLERY))
-					+ (player.getPlayersCardList().get(Card.CAVALRY))
-					+ (player.getPlayersCardList().get(Card.INFANTRY));
+			
+			int total = (player.getPlayersCardList().get(Card.ARTILLERY) == null ? 0 :player.getPlayersCardList().get(Card.ARTILLERY))
+					+ (player.getPlayersCardList().get(Card.CAVALRY) == null ? 0 : player.getPlayersCardList().get(Card.CAVALRY))
+					+ (player.getPlayersCardList().get(Card.INFANTRY) == null ? 0 : player.getPlayersCardList().get(Card.INFANTRY));
 			if (total < 3) {
 				btnExchange.setEnabled(false);
 			} else {
@@ -184,7 +177,6 @@ public class CardView implements Observer {
 		btnExchange.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				CardController cardAction = new CardController();
-				// CardController cardAction = new CardController();
 				HashMap<String, Integer> cardsSelected = new HashMap<String, Integer>();
 
 				if (artileryAssign.getText().trim() != "") {

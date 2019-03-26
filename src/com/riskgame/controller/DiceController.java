@@ -111,10 +111,11 @@ public class DiceController {
 	 * @param defenderCountry - the defender country
 	 * @param gameMapGraph    - the GameMapGraph object
 	 */
-	public void moveArmies(int armiesToBeMoved, Country attackerCountry, Country defenderCountry,
+	public boolean moveArmies(int armiesToBeMoved, Country attackerCountry, Country defenderCountry,
 			GameMapGraph gameMapGraph) {
 		boolean attackerFound = false;
 		boolean defenderFound = false;
+		boolean moveSuccessful = false;
 		if ((attackerCountry.getNoOfArmies() - armiesToBeMoved) > 1) {
 			attackerCountry.setNoOfArmies(attackerCountry.getNoOfArmies() - armiesToBeMoved);
 			defenderCountry.setNoOfArmies(defenderCountry.getNoOfArmies() + armiesToBeMoved);
@@ -127,11 +128,7 @@ public class DiceController {
 				}
 				if (attackerFound) {
 					player.getMyCountries().add(defenderCountry);
-					// allocateCard
-					CardController cardAction = new CardController();
-					// Player currentPlayer = getPlayerForCountry(gameMapGraph,
-					// attackerCountry.getName());
-					cardAction.allocateCardToPlayer(player);
+					moveSuccessful = true;
 					break;
 				}
 			}
@@ -155,6 +152,7 @@ public class DiceController {
 			JOptionPane.showMessageDialog(null,
 					"Allowed number of armies to be moved: " + (attackerCountry.getNoOfArmies() - 1));
 		}
+		return moveSuccessful;
 	}
 
 	/**
