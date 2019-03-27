@@ -72,7 +72,8 @@ public class CardControllerTest {
 	@Test
 	public void exchangeCardsTest() {
 		String message = cardAction.exchangeCards(cardsSelected, player);
-		assertEquals("", message);
+		System.out.println(cardsSelected);
+		assertEquals("Successfully exchanged Cards with 5 armies.", message);
 	}
 	
 	/**
