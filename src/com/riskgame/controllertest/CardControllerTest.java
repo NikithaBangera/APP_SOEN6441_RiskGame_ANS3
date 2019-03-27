@@ -1,4 +1,4 @@
-package com.riskgame.test;
+package com.riskgame.controllertest;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
