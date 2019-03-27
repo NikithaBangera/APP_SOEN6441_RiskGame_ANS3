@@ -230,7 +230,6 @@ public class PlayerControllerTest {
 		assertEquals(2, toCountry1.getNoOfArmies());
 	}
 	
-	
 	/**
 	 * for testing whether the countries to
 	 * be in a fight are adjacent or not
@@ -252,18 +251,7 @@ public class PlayerControllerTest {
 		assertEquals(1, defendercountry_1.getNoOfArmies());
 		assertEquals(5, attackercountry_1.getNoOfArmies());
 	}
-//
-//	/**
-//	 * for testing both whether the countries are adjacent or not and the attacker has enough armies
-//	 */
-//	@Test 
-//	public void isAttackviceversa() {
-//		playerController.attackPhase(gameMapGraph_1, toCountry_1, attackercountry_1);
-//		assertEquals(1, toCountry_1.getNoOfArmies());
-//		assertEquals(5, attackercountry_1.getNoOfArmies());
-//	}
-	
-	
+
 	/**
 	 * for testing whether the countries are 
 	 * for the same player or not for attacking
@@ -275,25 +263,24 @@ public class PlayerControllerTest {
 		assertEquals(5, fromCountry_1.getNoOfArmies());
 	}
 	
-//	
-//	/**
-//	 * for testing whether the all out attack works
-//	 */ 
-//	
-//	@Test 
-//
-//	public void isAlloutAttackworks() {
-//		
-//		playerController.allOutAttack(gameMapGraph_1, attackercountry_1, defendercountry_1);
-//		Player result=playerController.getPlayerForCountry(gameMapGraph_1,defendercountry_1.getName());
-//		System.out.print(result.getName());
-//		if(result.getName().equalsIgnoreCase("defender"))
-//
-//			assertEquals(1,attackercountry_1.getNoOfArmies());
-//		
-//		else
-//			assertEquals("attacker",playerController.getPlayerForCountry(mapGraph, "USA").getName());
-//	}
+	/**
+	 * for testing whether the all out attack works properly 
+	 * meaning while in the state of all out attack
+	 * the attacker attacks until whether his armies has reached 1
+	 * or he has taken the attacked country
+	 */ 
+	@Test 
+	public void isAlloutAttackworks() {
+		
+		playerController.allOutAttack(gameMapGraph_1, attackercountry_1, defendercountry_1);
+		Player result=playerController.getPlayerForCountry(gameMapGraph_1,defendercountry_1.getName());
+		if(result.getName().equalsIgnoreCase("defender"))
+
+			assertEquals(1,attackercountry_1.getNoOfArmies());
+		
+		else
+			assertEquals(attacker,playerController.getPlayerForCountry(gameMapGraph_1, defendercountry_1.getName()));
+	}
 	
 	/**
 	 * for testing whether the Reinforcement phase 
