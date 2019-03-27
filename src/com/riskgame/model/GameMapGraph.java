@@ -290,6 +290,8 @@ public class GameMapGraph extends Observable {
 	 */
 	public void setExchangeCount(int exchangeCount) {
 		this.exchangeCount = exchangeCount;
+		setChanged();
+		notifyObservers();
 	}
 
 	/**
@@ -308,6 +310,8 @@ public class GameMapGraph extends Observable {
 	 */
 	public void setRefreshFrame(boolean refreshFrame) {
 		this.refreshFrame = refreshFrame;
+		setChanged();
+		notifyObservers();
 	}
 
 	/**
@@ -324,6 +328,8 @@ public class GameMapGraph extends Observable {
 	 */
 	public void setDiceViewMessage(String diceViewMessage) {
 		this.diceViewMessage = diceViewMessage;
+		setChanged();
+		notifyObservers();
 	}
 	
 	@Override

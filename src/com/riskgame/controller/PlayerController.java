@@ -6,10 +6,11 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import javax.swing.JOptionPane;
+
 import com.riskgame.model.Continent;
 import com.riskgame.model.Country;
-import com.riskgame.model.Dice;
 import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.Player;
 import com.riskgame.view.DiceView;
@@ -41,6 +42,7 @@ public class PlayerController {
 
 	/**
 	 * Method to get the count of players
+	 * 
 	 * @return countOfThePlayers - return count of players
 	 */
 	public int getCountOfthePlayers() {
@@ -49,6 +51,7 @@ public class PlayerController {
 
 	/**
 	 * Method to set the count of players
+	 * 
 	 * @param countOfthePlayers - set the count of players
 	 */
 	public void setCountOfthePlayers(int countOfthePlayers) {
@@ -105,6 +108,7 @@ public class PlayerController {
 			while (continue1) {
 				if (playername != null) {
 					riskPlayer.setName(playername);
+					riskPlayer.setConquerCountry(0);
 					continue1 = false;
 
 				} else {
@@ -114,7 +118,7 @@ public class PlayerController {
 			riskPlayer.setFirstReinforcement(true);
 			mapGraph.getPlayers().add(riskPlayer);
 		}
-		
+
 		allocationOfCountry(mapGraph);
 		allocationOfArmyToPlayers(mapGraph);
 		allocationOfArmyToCountriesInitially(mapGraph);
@@ -343,7 +347,7 @@ public class PlayerController {
 				break;
 			}
 		}
-		
+
 		if (!isPlayerCountry) {
 			DiceController diceController = new DiceController();
 			while (attackerCountry.getNoOfArmies() > 1 && defenderCountry.getNoOfArmies() > 0) {
@@ -351,14 +355,23 @@ public class PlayerController {
 						: (attackerCountry.getNoOfArmies() > 2 ? 2 : 1);
 				defenderDiceCount = defenderCountry.getNoOfArmies() >= 2 ? 2 : 1;
 
-				
 				diceController.startDiceRoll(attackerDiceCount, defenderDiceCount, attackerCountry, defenderCountry);
 			}
 
 			if (defenderCountry.getNoOfArmies() == 0) {
-				JOptionPane.showMessageDialog(null, "Defender has lost the country to attacker!");
-				diceController.moveArmies(1, attackerCountry, defenderCountry, gameMapGraph);
-				
+
+				Player attacker = diceController.getPlayerForCountry(gameMapGraph, attackerCountry.getName());
+				Player defender = diceController.getPlayerForCountry(gameMapGraph, defenderCountry.getName());
+				boolean moveComplete = moveArmies(1, attackerCountry, defenderCountry, gameMapGraph);
+				if (moveComplete) {
+					if (defender.getMyCountries().size() == 0) {
+						attacker.getPlayersCardList().putAll(defender.getPlayersCardList());
+						attacker.setConquerCountry(attacker.getConquerCountry() - 1);
+					}
+				}
+
+			} else if (attackerCountry.getNoOfArmies() == 1) {
+				JOptionPane.showMessageDialog(null, "Attacker cannot attack anymore");
 			}
 		}
 	}
@@ -386,6 +399,11 @@ public class PlayerController {
 				doFortification = false;
 				break;
 			}
+		}
+
+		if (!doFortification) {
+			JOptionPane.showMessageDialog(null,
+					"Armies moved from " + fromCountry.getName() + " to " + toCountry.getName() + " successfully!");
 		}
 
 		if (!adjacentCountries) {
@@ -468,33 +486,90 @@ public class PlayerController {
 	 * This method is used to assign armies to the Countries. It checks the
 	 * available army and assigns the army to the requested country
 	 * 
-	 * @param mapGraph - GameMapGraph object
+	 * @param mapGraph    - GameMapGraph object
 	 * @param country     - the country given to players
 	 * @param armiesCount - the count of the armies player has
-	 */	
+	 */
 	public void armiesAssignedToCountries(GameMapGraph mapGraph, String country, int armiesCount) {
 		Player player = getPlayerForCountry(mapGraph, country);
 		if (getPlayerForCountry(mapGraph, country) != null) {
 			if ((player.getArmyCount()) > 0 && player.getArmyCount() >= armiesCount) {
 				getPlayerForCountry(mapGraph, country).setArmyCount(player.getArmyCount() - armiesCount);
-				if(getPlayerForCountry(mapGraph, country).getArmyCount() == 0) {
+				if (getPlayerForCountry(mapGraph, country).getArmyCount() == 0) {
 					getPlayerForCountry(mapGraph, country).setEndPlaceArmies(true);
 				}
 				int i = 0;
-				for(Country playerCountry : getPlayerForCountry(mapGraph, country).getMyCountries()) {
-					if(playerCountry.getName().equalsIgnoreCase(country)) {
-						getPlayerForCountry(mapGraph, country).getMyCountries().get(i).setNoOfArmies(playerCountry.getNoOfArmies() + armiesCount);
+				for (Country playerCountry : getPlayerForCountry(mapGraph, country).getMyCountries()) {
+					if (playerCountry.getName().equalsIgnoreCase(country)) {
+						getPlayerForCountry(mapGraph, country).getMyCountries().get(i)
+								.setNoOfArmies(playerCountry.getNoOfArmies() + armiesCount);
 						break;
 					}
 					i++;
 				}
-				
+
 			} else {
 				JOptionPane.showMessageDialog(null, "Insufficient number of armies.");
 			}
 		} else {
 			JOptionPane.showMessageDialog(null, "This country is not owned by you!");
 		}
+	}
+
+	/**
+	 * This method is called when after a win by the attacker it moves armies to the
+	 * country it has won.
+	 * 
+	 * @param armiesToBeMoved - the number of armies that is wishes to be moved
+	 * @param attackerCountry - the attacker country
+	 * @param defenderCountry - the defender country
+	 * @param gameMapGraph    - the GameMapGraph object
+	 * @return moveSuccessful - moving of the army is done
+	 */
+	public boolean moveArmies(int armiesToBeMoved, Country attackerCountry, Country defenderCountry,
+			GameMapGraph gameMapGraph) {
+		boolean attackerFound = false;
+		boolean defenderFound = false;
+		boolean moveSuccessful = false;
+		if ((attackerCountry.getNoOfArmies() - armiesToBeMoved) > 1) {
+			attackerCountry.setNoOfArmies(attackerCountry.getNoOfArmies() - armiesToBeMoved);
+			defenderCountry.setNoOfArmies(defenderCountry.getNoOfArmies() + armiesToBeMoved);
+
+			for (Player player : gameMapGraph.getPlayers()) {
+				int i = 0;
+				for (Country country : player.getMyCountries()) {
+					if (country.getName().equalsIgnoreCase(defenderCountry.getName())) {
+						defenderFound = true;
+						break;
+					}
+					i++;
+				}
+				if (defenderFound) {
+					player.getMyCountries().remove(i);
+					break;
+				}
+			}
+
+			for (Player player : gameMapGraph.getPlayers()) {
+				for (Country country : player.getMyCountries()) {
+					if (country.getName().equalsIgnoreCase(attackerCountry.getName())) {
+						attackerFound = true;
+						break;
+					}
+				}
+				if (attackerFound) {
+					player.getMyCountries().add(defenderCountry);
+					player.setConquerCountry(player.getConquerCountry() + 1);
+					moveSuccessful = true;
+					break;
+				}
+			}
+
+		} else {
+			JOptionPane.showMessageDialog(null,
+					"Allowed number of armies to be moved: " + (attackerCountry.getNoOfArmies() - 1));
+		}
+		return moveSuccessful;
 	}
 
 }

@@ -14,25 +14,23 @@ import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.Player;
 
 /**
- * Test Class for StartUpPhase class
+ * Test Class for PlayerController class
  * 
- * @author Nikitha
- * @author Sumeetha
+ * @author Shiva
+ * @author Anusha
  *
  */
 public class PlayerControllerTest {
-	/** Object for RiskPlayer Class */
-	Player player1;
 	
-	Continent continent;
+	/** Object for Player Class */
+	Player player1,player,attacker,defender,toCountrier;
+	
+	/** Object for Continent Class */
+	Continent continent,continent2;
 	
 	/** Object for StartUp Class */
 	PlayerController playerController;
-	
-	Player player;
-	
-//	/** Object for Country Class */
-//	Country country;
+
 	
 	/** Object for GameMapGraph class */
 	GameMapGraph mapGraph;
@@ -43,17 +41,22 @@ public class PlayerControllerTest {
 	/** Objects for Country Class */
 	private Country country, country1, toCountry, fromCountry, toCountry1, attackercountry_1, defendercountry_1, toCountry_1, fromCountry_1;
 	
-	/** ArrayLists for storing adjacent countries list for the countries */
+	/** ArrayList for storing adjacent countries list for the countries */
     private ArrayList<String> adjacentCountries_1;
+    /** ArrayList for storing adjacent countries list for the countries */
 	private ArrayList<String> adjacentCountries1_1;
 	
 	/** HashMap for saving the country set */
 	private HashMap<String,Country>	countryset_1;
-
+	
+	/** ArrayList for setting countries of the players */
+	private ArrayList<Country> attackercountries,defendercountries,toCountrycountries ;
 	
 	/** Object of the GameMapGraph for creating the map graph */
 	private GameMapGraph gameMapGraph_1;
 	
+	/** ArrayList for saving the players */
+	private ArrayList<Player> players;
 	
 	/** ArrayList for storing adjacent countries list for the countries */
 	private ArrayList<String> adjacentCountries;
@@ -64,7 +67,24 @@ public class PlayerControllerTest {
    public PlayerControllerTest() {
 	   countrySet = new HashMap<String, Country>();
 	   mapGraph = new GameMapGraph();
+	   players=new ArrayList<Player>();
+	   attacker=new Player();
+	   defender=new Player();
+	   toCountrier=new Player();
+	   toCountrier.setName("toCountry");
 	   
+	   attackercountries=new ArrayList<Country>();
+	   defendercountries=new ArrayList<Country>();
+	   toCountrycountries=new ArrayList<Country>();
+	   continent=new Continent();
+	   continent.setName("Asia");
+	   continent.setControlValue(4);
+	   continent2=new Continent();
+	   continent2.setName("Europe");
+	   continent2.setControlValue(2);
+	   
+	   attacker.setName("attacker");
+	   defender.setName("defender");
        playerController = new PlayerController();
        playerController.setCountOfthePlayers(2);
 
@@ -107,7 +127,7 @@ public class PlayerControllerTest {
 		toCountry1.setNoOfArmies(2);
 		fromCountry.setAdjacentCountries(adjacentCountries);
 		
-       adjacentCountries_1 = new ArrayList<String>();
+		adjacentCountries_1 = new ArrayList<String>();
 		adjacentCountries1_1 = new ArrayList<String>();
 
 		gameMapGraph_1=new GameMapGraph();
@@ -116,33 +136,44 @@ public class PlayerControllerTest {
 		attackercountry_1 = new Country();
 		attackercountry_1.setName("Canada");
 		attackercountry_1.setPlayer("attacker");
+		attackercountry_1.setPartOfContinent(continent2);
 		attackercountry_1.setNoOfArmies(5);
+		players.add(attacker);
 		countryset_1.put("Canada", attackercountry_1);
-		gameMapGraph_1.setCountrySet(countryset_1);
+		
 		toCountry_1= new Country();
 		toCountry_1.setName("Russia");
+		toCountry_1.setPartOfContinent(continent);
 		toCountry_1.setPlayer("toCountry");
+		toCountrycountries.add(toCountry_1);
 		toCountry_1.setNoOfArmies(1);
-		gameMapGraph_1.getCountrySet().put("Russia", toCountry_1);
+		
 		
 		defendercountry_1 = new Country();
 		defendercountry_1.setName("USA");
+		defendercountry_1.setPartOfContinent(continent2);
 		defendercountry_1.setPlayer("defender");
 		defendercountry_1.setNoOfArmies(1);
-		gameMapGraph_1.getCountrySet().put("USA", defendercountry_1);
+		
 		
 		fromCountry_1 = new Country();
 		fromCountry_1.setName("Alaska");
+		fromCountry_1.setPartOfContinent(continent2);
 		fromCountry_1.setPlayer("toCountry");
 		fromCountry_1.setNoOfArmies(5);
 
-		gameMapGraph_1.getCountrySet().put("Alaska", fromCountry_1);
+		
 		
 		adjacentCountries_1.add("USA");
 		adjacentCountries1_1.add("Russia");
 		fromCountry_1.setAdjacentCountries(adjacentCountries1_1);
 		
 		adjacentCountries1_1.add("Canada");
+		gameMapGraph_1.setCountries(new ArrayList<Country>());
+		gameMapGraph_1.getCountries().add(toCountry_1);
+		gameMapGraph_1.getCountries().add(defendercountry_1);
+		gameMapGraph_1.getCountries().add(fromCountry_1);
+		
 		
 		attackercountry_1.setAdjacentCountries(adjacentCountries_1);
 		
@@ -150,7 +181,14 @@ public class PlayerControllerTest {
 		toCountry_1.getAdjacentCountries().add("Alaska");
 		
 		defendercountry_1.setAdjacentCountries(adjacentCountries1_1);
-
+		players.add(attacker);
+		players.add(defender);
+		attackercountries.add(attackercountry_1);
+		defendercountries.add(defendercountry_1);
+		attacker.setMyCountries(attackercountries);
+		defender.setMyCountries(defendercountries);
+		toCountrier.setMyCountries(toCountrycountries);
+		gameMapGraph_1.setPlayers(players);
 		
    }
 
@@ -192,109 +230,69 @@ public class PlayerControllerTest {
 		assertEquals(2, toCountry1.getNoOfArmies());
 	}
 	
-//	@Test
-//	public void isControlValueAssignedToPlayer() {
-//		assertEquals(continent.getControlValue(), playerController.armiesToBeAssigned(player, continent));
-//	}
-//	
-//	/**
-//	 * Test method for checking the army count added to the player's armies
-//	 * if the player does not the entire continent.
-//	 */
-//	@Test
-//	public void isControlValueNotAssignedToPlayer() {
-//		assertNotEquals(continent.getControlValue(), playerController.armiesToBeAssigned(player1, continent));
-//	}
-	
 	/**
-	 * for testing whether the countries are adjacent or not
+	 * for testing whether the countries to
+	 * be in a fight are adjacent or not
 	 */
-
 	@Test
-
 	public void isAttack() {
-
 		playerController.attackPhase(gameMapGraph_1,attackercountry_1,toCountry_1);
-
 		assertEquals(5, attackercountry_1.getNoOfArmies());
-
 		assertEquals(1, toCountry_1.getNoOfArmies());
-
 	}
 
 	/**
-	 * for testing whether the attacker country have enough armies or not
+	 * for testing whether the attacker country 
+	 * have enough armies for attacking or not
 	 */
-
 	@Test 
-
 	public void isAttackvalid() {
-
 		playerController.attackPhase(gameMapGraph_1, defendercountry_1, attackercountry_1);
-
 		assertEquals(1, defendercountry_1.getNoOfArmies());
-
 		assertEquals(5, attackercountry_1.getNoOfArmies());
-
 	}
 
 	/**
-	 * for testing both whether the countries are adjacent or not and the attacker has enough armies
+	 * for testing whether the countries are 
+	 * for the same player or not for attacking
 	 */
 	@Test 
-
-	public void isAttackviceversa() {
-
-		playerController.attackPhase(gameMapGraph_1, toCountry_1, attackercountry_1);
-
-		assertEquals(1, toCountry_1.getNoOfArmies());
-
-		assertEquals(5, attackercountry_1.getNoOfArmies());
-
-	}
-	
-	
-	/**
-	 * for testing whether the countries are for the same player or not
-	 */
-	@Test 
-
 	public void isAttackPossible() {
-
 		playerController.attackPhase(gameMapGraph_1, fromCountry_1, toCountry_1);
-
 		assertEquals(1, toCountry_1.getNoOfArmies());
-
 		assertEquals(5, fromCountry_1.getNoOfArmies());
-
 	}
 	
-	
 	/**
-	 * for testing whether the all out attack works
+	 * for testing whether the all out attack works properly 
+	 * meaning while in the state of all out attack
+	 * the attacker attacks until whether his armies has reached 1
+	 * or he has taken the attacked country
 	 */ 
-	
 	@Test 
-
 	public void isAlloutAttackworks() {
 		
 		playerController.allOutAttack(gameMapGraph_1, attackercountry_1, defendercountry_1);
-		
-		if(defendercountry_1.getNoOfArmies()==1)
+		Player result=playerController.getPlayerForCountry(gameMapGraph_1,defendercountry_1.getName());
+		if(result.getName().equalsIgnoreCase("defender"))
 
 			assertEquals(1,attackercountry_1.getNoOfArmies());
 		
 		else
-			assertEquals("attacker",defendercountry_1.getPlayer());
-
-		
-
+			assertEquals(attacker,playerController.getPlayerForCountry(gameMapGraph_1, defendercountry_1.getName()));
 	}
 	
-	
-//	@Test
-//	public void testattackPhase(){
-//		playerController.attackPhase(mapGraph, attacker, defender);
-//		
-//	}
+	/**
+	 * for testing whether the Reinforcement phase 
+	 * works when the continent is owned by one player 
+	 * and it assigns the control value correctly
+	 */
+	@Test 
+	public void isReinforcementworking() {
+		int result=playerController.reinforcementPhase(toCountrier, gameMapGraph_1);
+		assertEquals(4, result);
+
+
+	}
+
 }

@@ -1,7 +1,15 @@
 package com.riskgame.view;
 
 import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Observable;
+import java.util.Observer;
 
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -9,21 +17,11 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
-import org.junit.experimental.theories.FromDataPoints;
-
 import com.riskgame.controller.DiceController;
 import com.riskgame.controller.PlayerController;
 import com.riskgame.model.Country;
 import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.Player;
-
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import java.awt.Font;
-import java.awt.event.ActionListener;
-import java.util.Observable;
-import java.util.Observer;
-import java.awt.event.ActionEvent;
 
 /**
  * This class aims to show the dice view
@@ -43,6 +41,8 @@ public class DiceView implements Observer{
 	private JTextField messageField;
 	int attackerDiceCount = 0;
 	int defenderDiceCount = 0;
+	int previousAttackerDiceCount = 0;
+	int previousDefenderDiceCount = 0;
 	private DiceController diceController;
 
 	/**
@@ -90,6 +90,10 @@ public class DiceView implements Observer{
 		diceRootPanel.setLayout(null);
 		frmDiceView.getContentPane().add(diceRootPanel);
 		
+		attacker.getDiceValues().clear();
+		defender.getDiceValues().clear();
+		gameMapGraph.setDiceViewMessage("");
+		
 		initialize(gameMapGraph, attacker, defender);
 	}
 
@@ -126,14 +130,14 @@ public class DiceView implements Observer{
 		attackerDice3Radio.setBounds(150, 70, 47, 34);
 		attackerDice3Radio.setActionCommand("3");
 		
-		if(attackerCountry.getNoOfArmies() < 2) {
+		if(attackerCountry.getNoOfArmies() <= 2) {
 			diceRootPanel.add(attackerDice1Radio);
 		}
-		else if(attackerCountry.getNoOfArmies() < 3) {
+		else if(attackerCountry.getNoOfArmies() <= 3) {
 			diceRootPanel.add(attackerDice1Radio);
 			diceRootPanel.add(attackerDice2Radio);
 		}
-		else {
+		else if(attackerCountry.getNoOfArmies() > 3) {
 			diceRootPanel.add(attackerDice1Radio);
 			diceRootPanel.add(attackerDice2Radio);
 			diceRootPanel.add(attackerDice3Radio);
@@ -153,7 +157,7 @@ public class DiceView implements Observer{
 		if(defenderCountry.getNoOfArmies() < 2) {
 			diceRootPanel.add(defenderDice1Radio);
 		}
-		else {
+		else if(defenderCountry.getNoOfArmies() >= 2){
 			diceRootPanel.add(defenderDice1Radio);
 			diceRootPanel.add(defenderDice2Radio);
 		}
@@ -259,27 +263,33 @@ public class DiceView implements Observer{
 		btnRollDice.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String message = "";
-				attackerDiceCount = Integer.parseInt(attackerGroup.getSelection().getActionCommand());
-				defenderDiceCount = Integer.parseInt(defenderGroup.getSelection().getActionCommand());
-				
-				
-			//	DiceController diceController = new DiceController();
-				String diceRollResult = diceController.startDiceRoll(attackerDiceCount, defenderDiceCount, attackerCountry, defenderCountry);
-				int attackerLostCount = Integer.parseInt(diceRollResult.split(":")[0]);
-				int defenderLostCount = Integer.parseInt(diceRollResult.split(":")[1]);
-				
-				if(attackerLostCount > 0) {
-					message = "Attacker has lost "+attackerLostCount+" army(ies)";
+				if(attackerGroup.getSelection() != null 
+						&& defenderGroup.getSelection() != null) {
+					attackerDiceCount = Integer.parseInt(attackerGroup.getSelection().getActionCommand());
+					defenderDiceCount = Integer.parseInt(defenderGroup.getSelection().getActionCommand());
+					previousAttackerDiceCount = attackerDiceCount;
+					previousDefenderDiceCount = defenderDiceCount;
+					
+					String diceRollResult = diceController.startDiceRoll(attackerDiceCount, defenderDiceCount, attackerCountry, defenderCountry);
+					int attackerLostCount = Integer.parseInt(diceRollResult.split(":")[0]);
+					int defenderLostCount = Integer.parseInt(diceRollResult.split(":")[1]);
+					
+					if(attackerLostCount > 0) {
+						message = "Attacker has lost "+attackerLostCount+" army(ies)";
+					}
+					if(defenderLostCount > 0) {
+						message = message.length() > 0 ? (message+" ; "+"Defender has lost "+defenderLostCount+" army(ies)") : "Defender has lost "+defenderLostCount+" army(ies)";
+					}
+					
+					gameMapGraph.setDiceViewMessage(message);
+					diceRootPanel.removeAll();
+					diceRootPanel.revalidate();
+					diceRootPanel.repaint();
+					initialize(gameMapGraph, attackerCountry, defenderCountry);
 				}
-				if(defenderLostCount > 0) {
-					message = message.length() > 0 ? (message+" ; "+"Defender has lost "+defenderLostCount+" army(ies)") : "Defender has lost "+defenderLostCount+" army(ies)";
+				else {
+					JOptionPane.showMessageDialog(null, "Please select the Dice count for both players to Roll the dice");
 				}
-				
-				gameMapGraph.setDiceViewMessage(message);
-				diceRootPanel.removeAll();
-				diceRootPanel.revalidate();
-				diceRootPanel.repaint();
-				initialize(gameMapGraph, attackerCountry, defenderCountry);
 			}
 		});
 		btnRollDice.setFont(new Font("Arial", Font.PLAIN, 14));
@@ -337,6 +347,7 @@ public class DiceView implements Observer{
 		
 		if(defenderCountry.getNoOfArmies() == 0) {
 			btnMoveArmies.setEnabled(true);
+			btnEndTurn.setEnabled(false);
 		}
 		
 		btnMoveArmies.addActionListener(new ActionListener() {
@@ -349,10 +360,11 @@ public class DiceView implements Observer{
 				if(armiesToMove != null) {
 					Player attacker = diceController.getPlayerForCountry(gameMapGraph, attackerCountry.getName());
 					Player defender = diceController.getPlayerForCountry(gameMapGraph, defenderCountry.getName());
-					boolean moveComplete = diceController.moveArmies(Integer.parseInt(armiesToMove), attackerCountry, defenderCountry, gameMapGraph);
+					boolean moveComplete = diceController.moveArmies(Integer.parseInt(armiesToMove), attackerCountry, defenderCountry, gameMapGraph, previousAttackerDiceCount, previousDefenderDiceCount);
 					if(moveComplete) {
-						if(defender.getMyCountries().size() == 1) {
+						if(defender.getMyCountries().size() == 0) {
 							attacker.getPlayersCardList().putAll(defender.getPlayersCardList());
+							attacker.setConquerCountry(attacker.getConquerCountry()-1);
 							JOptionPane.showMessageDialog(null, "Player "+defender.getName()+" has lost the game!!");
 						}
 						JOptionPane.showMessageDialog(null, armiesToMove+" armies moved to "+defenderCountry.getName());
@@ -402,8 +414,19 @@ public class DiceView implements Observer{
 		frmDiceView.setVisible(true);
 	}
 
+	/**
+	 * This method is to update the observers
+	 */
 	@Override
 	public void update(Observable o, Object arg) {
+		for(Window window : Window.getWindows()) {
+			if(window instanceof JFrame) {
+				if(((JFrame)window).getTitle().equalsIgnoreCase("Dice View")) {
+					frmDiceView = (JFrame)window;
+				}
+			}
+		}
+		
 		if(frmDiceView != null) {
 			frmDiceView.revalidate();
 			frmDiceView.repaint();

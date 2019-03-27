@@ -12,9 +12,9 @@ import com.riskgame.view.DiceView;
 import com.riskgame.view.PlayerView;
 
 /**
- * This class is a model stores the value associated to each player. It stores player's
- * name of String type, total armyCount of player as Integer type, and the
- * ArrayList of type Country which the player owns.
+ * This class is a model stores the value associated to each player. It stores
+ * player's name of String type, total armyCount of player as Integer type, and
+ * the ArrayList of type Country which the player owns.
  * 
  * @author Shresthi Garg
  * @author Anusha
@@ -31,7 +31,7 @@ public class Player extends Observable {
 	 * Boolean to check the end place armies option
 	 */
 	private boolean endPlaceArmies;
-	
+
 	/** Variable to check whether the reinforcement is the first reinforcement */
 	private boolean firstReinforcement;
 
@@ -42,11 +42,20 @@ public class Player extends Observable {
 	 * List of players card
 	 */
 	private HashMap<String, Integer> playersCardList = new HashMap<String, Integer>();
-	
+
 	/**
 	 * Boolean variable to check if player wants to end attack phase
 	 */
 	private boolean completeAttack;
+
+	/**
+	 * value for the number of countries conquered by player
+	 */
+	private int conquerCountry;
+	/**
+	 * Boolean variable to check if the player has lost the game
+	 */
+	private boolean playerLostGame;
 
 	/**
 	 * Constructor to initialize the initial values
@@ -59,6 +68,24 @@ public class Player extends Observable {
 		this.addObserver(playerView);
 		this.addObserver(diceView);
 		this.addObserver(cardView);
+	}
+
+	/**
+	 * gets the conquer country count
+	 * 
+	 * @return count of conquered country
+	 */
+	public int getConquerCountry() {
+		return conquerCountry;
+	}
+
+	/**
+	 * sets the conquered country count
+	 * 
+	 * @param conquerCountry conquered country
+	 */
+	public void setConquerCountry(int conquerCountry) {
+		this.conquerCountry = conquerCountry;
 	}
 
 	/**
@@ -127,7 +154,6 @@ public class Player extends Observable {
 	 * @param country - The country that needs to be added.
 	 */
 	public void additionOfCountry(Country country) {
-
 		this.myCountries.add(country);
 	}
 
@@ -221,6 +247,8 @@ public class Player extends Observable {
 	 */
 	public void setFirstReinforcement(boolean firstReinforcement) {
 		this.firstReinforcement = firstReinforcement;
+		setChanged();
+		notifyObservers();
 	}
 
 	/**
@@ -239,5 +267,26 @@ public class Player extends Observable {
 	 */
 	public void setCompleteAttack(boolean completeAttack) {
 		this.completeAttack = completeAttack;
+		setChanged();
+		notifyObservers();
+	}
+
+	/**
+	 * Method to check if player has lost the game
+	 * 
+	 * @return playerLostGame - player lost the game
+	 */
+	public boolean isPlayerLostGame() {
+		return playerLostGame;
+	}
+
+	/**
+	 * Method to set the playerLostGame variable
+	 * @param playerLostGame - player lost the game
+	 */
+	public void setPlayerLostGame(boolean playerLostGame) {
+		this.playerLostGame = playerLostGame;
+		setChanged();
+		notifyObservers();
 	}
 }
