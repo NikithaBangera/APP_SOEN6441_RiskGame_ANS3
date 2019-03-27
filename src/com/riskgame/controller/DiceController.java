@@ -49,21 +49,21 @@ public class DiceController {
 		dice.getAttackerDiceValues().clear();
 		dice.getDefenderDiceValues().clear();
 		Random random = new Random();
-		
+
 		attackerDiceValue(attackerDiceCount, random);
 		defenderDiceValue(defenderDiceCount, random);
-		
+
 		Collections.sort(dice.getAttackerDiceValues(), Collections.reverseOrder());
 		Collections.sort(dice.getDefenderDiceValues(), Collections.reverseOrder());
-		
-		for(Integer diceValue : dice.getAttackerDiceValues()) {
+
+		for (Integer diceValue : dice.getAttackerDiceValues()) {
 			attackerCountry.getDiceValues().add(diceValue);
 		}
-		
-		for(Integer diceValue : dice.getDefenderDiceValues()) {
+
+		for (Integer diceValue : dice.getDefenderDiceValues()) {
 			defenderCountry.getDiceValues().add(diceValue);
 		}
-		
+
 		int iterationSize = attackerDiceCount < defenderDiceCount ? attackerDiceCount : defenderDiceCount;
 
 		for (int i = 0; i < iterationSize; i++) {
@@ -120,14 +120,14 @@ public class DiceController {
 		boolean defenderFound = false;
 		boolean moveSuccessful = false;
 		if ((attackerCountry.getNoOfArmies() - armiesToBeMoved) >= 1) {
-			if(armiesToBeMoved >= attackerDiceCount) {
+			if (armiesToBeMoved >= attackerDiceCount) {
 				attackerCountry.setNoOfArmies(attackerCountry.getNoOfArmies() - armiesToBeMoved);
 				defenderCountry.setNoOfArmies(defenderCountry.getNoOfArmies() + armiesToBeMoved);
-				
-				for(Player player : gameMapGraph.getPlayers()) {
-					int i=0;
-					for(Country country : player.getMyCountries()) {
-						if(country.getName().equalsIgnoreCase(defenderCountry.getName())) {
+
+				for (Player player : gameMapGraph.getPlayers()) {
+					int i = 0;
+					for (Country country : player.getMyCountries()) {
+						if (country.getName().equalsIgnoreCase(defenderCountry.getName())) {
 							defenderFound = true;
 							break;
 						}
@@ -138,7 +138,7 @@ public class DiceController {
 						break;
 					}
 				}
-				
+
 				for (Player player : gameMapGraph.getPlayers()) {
 					for (Country country : player.getMyCountries()) {
 						if (country.getName().equalsIgnoreCase(attackerCountry.getName())) {
@@ -148,14 +148,13 @@ public class DiceController {
 					}
 					if (attackerFound) {
 						player.getMyCountries().add(defenderCountry);
+						player.setConquerCountry(player.getConquerCountry() + 1);
 						moveSuccessful = true;
 						break;
 					}
 				}
-			}
-			else {
-				JOptionPane.showMessageDialog(null,
-						"Should move a minimum of "+attackerDiceCount+" armies");
+			} else {
+				JOptionPane.showMessageDialog(null, "Should move a minimum of " + attackerDiceCount + " armies");
 			}
 		} else {
 			JOptionPane.showMessageDialog(null,

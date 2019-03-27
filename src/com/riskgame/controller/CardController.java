@@ -21,7 +21,7 @@ public class CardController {
 
 	Country countryObj = new Country();
 	Card card = new Card();
-	private int exchange = 0;
+	private static int exchange = 1;
 
 	/**
 	 * This method assigns cards to the country in the game
@@ -97,19 +97,21 @@ public class CardController {
 	 * @return - String for the operation
 	 */
 	public String exchangeCards(HashMap<String, Integer> cardsSelected, Player player) {
-		exchange += 1;
-		int total = 0;
-		int aCount = cardsSelected.get(Card.ARTILLERY);
-		int iCount = cardsSelected.get(Card.INFANTRY);
-		int cCount = cardsSelected.get(Card.CAVALRY);
-		total = aCount + iCount + cCount;
+
+		int aCount = (cardsSelected.get(Card.ARTILLERY) == null ? 0 : cardsSelected.get(Card.ARTILLERY));
+		int iCount = (cardsSelected.get(Card.INFANTRY) == null ? 0 : cardsSelected.get(Card.INFANTRY));
+		int cCount = (cardsSelected.get(Card.CAVALRY) == null ? 0 : cardsSelected.get(Card.CAVALRY));
+		int total = aCount + iCount + cCount;
 
 		HashMap<String, Integer> playersCard = new HashMap<String, Integer>();
 		playersCard = player.getPlayersCardList();
 
-		int a = playersCard.get(Card.ARTILLERY);
-		int i = playersCard.get(Card.INFANTRY);
-		int c = playersCard.get(Card.CAVALRY);
+		int a = (player.getPlayersCardList().get(Card.ARTILLERY) == null ? 0
+				: player.getPlayersCardList().get(Card.ARTILLERY));
+		int i = (player.getPlayersCardList().get(Card.INFANTRY) == null ? 0
+				: player.getPlayersCardList().get(Card.INFANTRY));
+		int c = (player.getPlayersCardList().get(Card.CAVALRY) == null ? 0
+				: player.getPlayersCardList().get(Card.CAVALRY));
 		String operation = "";
 
 		if (total >= 3 && (a + i + c) >= 3) {
@@ -118,20 +120,27 @@ public class CardController {
 				playersCard.replace(Card.ARTILLERY, a, a - 1);
 				playersCard.replace(Card.CAVALRY, c, c - 1);
 				playersCard.replace(Card.INFANTRY, i, i - 1);
+				operation = "Successfully exchanged Cards with " + (5 * exchange)+" armies.";
 			} else if (aCount >= 3 && playersCard.get(Card.ARTILLERY) >= 3) {
 				player.setArmyCount(player.getArmyCount() + 5 * exchange);
 				playersCard.replace(Card.ARTILLERY, a, a - 3);
+				operation = "Successfully exchanged Cards with " + (5 * exchange)+" armies.";
 			} else if (cCount >= 3 && playersCard.get(Card.CAVALRY) >= 3) {
 				player.setArmyCount(player.getArmyCount() + 5 * exchange);
 				playersCard.replace(Card.CAVALRY, c, c - 3);
+				operation = "Successfully exchanged Cards with " + (5 * exchange)+" armies.";
 			} else if (iCount >= 3 && playersCard.get(Card.INFANTRY) >= 3) {
 				player.setArmyCount(player.getArmyCount() + 5 * exchange);
 				playersCard.replace(Card.INFANTRY, i, i - 3);
-
+				operation = "Successfully exchanged Cards with " + (5 * exchange)+" armies.";
+			} else {
+				operation = "Cannot perform exchange. Should select atleast 3 cards";
 			}
 		} else {
 			operation = "Cannot perform exchange. Should select atleast 3 cards";
 		}
+		if (operation.contains("Success"))
+			exchange += 1;
 		return operation;
 	}
 
