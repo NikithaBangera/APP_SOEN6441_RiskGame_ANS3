@@ -11,6 +11,7 @@ import com.riskgame.controller.DiceController;
 import com.riskgame.model.Country;
 import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.Player;
+
 /**
  * This class aims to test the Dice Controller method
  * @author Shiva Shamloo
