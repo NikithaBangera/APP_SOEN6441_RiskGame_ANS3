@@ -47,6 +47,11 @@ public class Player extends Observable {
 	 * Boolean variable to check if player wants to end attack phase
 	 */
 	private boolean completeAttack;
+	
+	/** 
+	 * Boolean variable to check if the player has lost the game
+	 */
+	private boolean playerLostGame;
 
 	/**
 	 * Constructor to initialize the initial values
@@ -240,6 +245,24 @@ public class Player extends Observable {
 	 */
 	public void setCompleteAttack(boolean completeAttack) {
 		this.completeAttack = completeAttack;
+		setChanged();
+		notifyObservers();
+	}
+
+	/**
+	 * Method to check if player has lost the game
+	 * @return playerLostGame - player lost the game
+	 */
+	public boolean isPlayerLostGame() {
+		return playerLostGame;
+	}
+
+	/**
+	 * Method to set the playerLostGame variable
+	 * @param playerLostGame 
+	 */
+	public void setPlayerLostGame(boolean playerLostGame) {
+		this.playerLostGame = playerLostGame;
 		setChanged();
 		notifyObservers();
 	}
