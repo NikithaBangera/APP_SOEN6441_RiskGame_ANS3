@@ -16,7 +16,7 @@ import com.riskgame.model.Player;
 /**
  * Test Class for PlayerController class
  * 
- * @author Shiva Shamloo
+ * @author Shiva
  * @author Anusha
  *
  */
