@@ -524,6 +524,7 @@ public class PlayerController {
 	 * @param attackerCountry - the attacker country
 	 * @param defenderCountry - the defender country
 	 * @param gameMapGraph    - the GameMapGraph object
+	 * @return boolean for move successful
 	 */
 	public boolean moveArmies(int armiesToBeMoved, Country attackerCountry, Country defenderCountry,
 			GameMapGraph gameMapGraph) {
