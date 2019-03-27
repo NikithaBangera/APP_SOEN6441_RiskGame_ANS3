@@ -14,22 +14,22 @@ import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.Player;
 
 /**
- * Test Class for StartUpPhase class
+ * Test Class for PlayerController class
  * 
- * @author Shiva
+ * @author Shiva Shamloo
  * @author Anusha
  *
  */
 public class PlayerControllerTest {
-	/** Object for RiskPlayer Class */
-	Player player1;
 	
+	/** Object for Player Class */
+	Player player1,player,attacker,defender,toCountrier;
+	
+	/** Object for Continent Class */
 	Continent continent,continent2;
 	
 	/** Object for StartUp Class */
 	PlayerController playerController;
-	
-	Player player,attacker,defender,toCountrier;
 
 	
 	/** Object for GameMapGraph class */
@@ -41,20 +41,23 @@ public class PlayerControllerTest {
 	/** Objects for Country Class */
 	private Country country, country1, toCountry, fromCountry, toCountry1, attackercountry_1, defendercountry_1, toCountry_1, fromCountry_1;
 	
-	/** ArrayLists for storing adjacent countries list for the countries */
+	/** ArrayList for storing adjacent countries list for the countries */
     private ArrayList<String> adjacentCountries_1;
+    /** ArrayList for storing adjacent countries list for the countries */
 	private ArrayList<String> adjacentCountries1_1;
 	
 	/** HashMap for saving the country set */
 	private HashMap<String,Country>	countryset_1;
 	
-	
+	/** ArrayList for setting countries of the players */
 	private ArrayList<Country> attackercountries,defendercountries,toCountrycountries ;
 	
 	/** Object of the GameMapGraph for creating the map graph */
 	private GameMapGraph gameMapGraph_1;
 	
+	/** ArrayList for saving the players */
 	private ArrayList<Player> players;
+	
 	/** ArrayList for storing adjacent countries list for the countries */
 	private ArrayList<String> adjacentCountries;
 
@@ -229,66 +232,47 @@ public class PlayerControllerTest {
 	
 	
 	/**
-	 * for testing whether the countries are adjacent or not
+	 * for testing whether the countries to
+	 * be in a fight are adjacent or not
 	 */
-
 	@Test
-
 	public void isAttack() {
 		playerController.attackPhase(gameMapGraph_1,attackercountry_1,toCountry_1);
-		
-
 		assertEquals(5, attackercountry_1.getNoOfArmies());
-
 		assertEquals(1, toCountry_1.getNoOfArmies());
-
 	}
 
 	/**
-	 * for testing whether the attacker country have enough armies or not
+	 * for testing whether the attacker country 
+	 * have enough armies for attacking or not
 	 */
-
 	@Test 
-
 	public void isAttackvalid() {
-
 		playerController.attackPhase(gameMapGraph_1, defendercountry_1, attackercountry_1);
-
 		assertEquals(1, defendercountry_1.getNoOfArmies());
-
 		assertEquals(5, attackercountry_1.getNoOfArmies());
-
 	}
-
-	/**
-	 * for testing both whether the countries are adjacent or not and the attacker has enough armies
-	 */
-	@Test 
-
-	public void isAttackviceversa() {
-
-		playerController.attackPhase(gameMapGraph_1, toCountry_1, attackercountry_1);
-
-		assertEquals(1, toCountry_1.getNoOfArmies());
-
-		assertEquals(5, attackercountry_1.getNoOfArmies());
-
-	}
+//
+//	/**
+//	 * for testing both whether the countries are adjacent or not and the attacker has enough armies
+//	 */
+//	@Test 
+//	public void isAttackviceversa() {
+//		playerController.attackPhase(gameMapGraph_1, toCountry_1, attackercountry_1);
+//		assertEquals(1, toCountry_1.getNoOfArmies());
+//		assertEquals(5, attackercountry_1.getNoOfArmies());
+//	}
 	
 	
 	/**
-	 * for testing whether the countries are for the same player or not
+	 * for testing whether the countries are 
+	 * for the same player or not for attacking
 	 */
 	@Test 
-
 	public void isAttackPossible() {
-
 		playerController.attackPhase(gameMapGraph_1, fromCountry_1, toCountry_1);
-
 		assertEquals(1, toCountry_1.getNoOfArmies());
-
 		assertEquals(5, fromCountry_1.getNoOfArmies());
-
 	}
 	
 //	
@@ -310,12 +294,15 @@ public class PlayerControllerTest {
 //		else
 //			assertEquals("attacker",playerController.getPlayerForCountry(mapGraph, "USA").getName());
 //	}
+	
+	/**
+	 * for testing whether the Reinforcement phase 
+	 * works when the continent is owned by one player 
+	 * and it assigns the control value correctly
+	 */
 	@Test 
-
 	public void isReinforcementworking() {
-
 		int result=playerController.reinforcementPhase(toCountrier, gameMapGraph_1);
-
 		assertEquals(4, result);
 
 
