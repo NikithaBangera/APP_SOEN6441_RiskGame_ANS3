@@ -401,6 +401,11 @@ public class PlayerController {
 			}
 		}
 
+		if (!doFortification) {
+			JOptionPane.showMessageDialog(null,
+					"Armies moved from " + fromCountry.getName() + " to " + toCountry.getName() + " successfully!");
+		}
+
 		if (!adjacentCountries) {
 			JOptionPane.showMessageDialog(null, "Countries are not adjacanet!");
 			doFortification = true;
@@ -553,7 +558,7 @@ public class PlayerController {
 				}
 				if (attackerFound) {
 					player.getMyCountries().add(defenderCountry);
-					player.setConquerCountry(player.getConquerCountry()+1);
+					player.setConquerCountry(player.getConquerCountry() + 1);
 					moveSuccessful = true;
 					break;
 				}
