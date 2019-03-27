@@ -364,7 +364,7 @@ public class DiceView implements Observer{
 					if(moveComplete) {
 						if(defender.getMyCountries().size() == 0) {
 							attacker.getPlayersCardList().putAll(defender.getPlayersCardList());
-							defender.setPlayerLostGame(true);
+							attacker.setConquerCountry(attacker.getConquerCountry()-1);
 							JOptionPane.showMessageDialog(null, "Player "+defender.getName()+" has lost the game!!");
 						}
 						JOptionPane.showMessageDialog(null, armiesToMove+" armies moved to "+defenderCountry.getName());

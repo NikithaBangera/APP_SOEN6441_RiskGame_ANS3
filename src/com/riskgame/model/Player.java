@@ -47,7 +47,7 @@ public class Player extends Observable {
 	 * Boolean variable to check if player wants to end attack phase
 	 */
 	private boolean completeAttack;
-	
+	private int conquerCountry;
 	/** 
 	 * Boolean variable to check if the player has lost the game
 	 */
@@ -65,6 +65,18 @@ public class Player extends Observable {
 		this.addObserver(diceView);
 		this.addObserver(cardView);
 	}
+
+	public int getConquerCountry() {
+		return conquerCountry;
+	}
+
+
+
+	public void setConquerCountry(int conquerCountry) {
+		this.conquerCountry = conquerCountry;
+	}
+
+
 
 	/**
 	 * Get the Player name.
