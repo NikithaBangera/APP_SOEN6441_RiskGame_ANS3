@@ -11,18 +11,29 @@ import com.riskgame.controller.DiceController;
 import com.riskgame.model.Country;
 import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.Player;
-
+/**
+ * This class aims to test the Dice Controller method
+ * @author Shiva Shamloo
+ *
+ */
 class DiceControllerTest {
 	
+	/** Object of the DiceController for testing it */
 	private DiceController dice;
 	
+	/** Object of the Player for the attacker and defender */
 	private Player attacker,defender;
 	
+	/** for saving the players and adding them to mapgraph*/
 	private ArrayList<Player> players;
 	
 	/** Object of the GameMapGraph for creating the map graph */
 	private GameMapGraph mapGraph;
 	
+	/** Object of the country for testing the dice control,
+	 * the countries adjacencies are as:
+	 * USA	Canada	Russia 
+	 */
 	private Country attackercountry,defendercountry, toCountry;
 	
 	/** HashMap for saving the country set */
@@ -84,45 +95,34 @@ class DiceControllerTest {
 		
 		
 	}
-
+	
+	/** 
+	 * for testing whether the dice works or not
+	 */
 	@Test 
-
 	public void isdiceworks() {
-
 		dice.moveArmies(2, attackercountry, defendercountry,mapGraph,2,5);
-
 		assertEquals(3, defendercountry.getNoOfArmies());
-
 		assertEquals(8, attackercountry.getNoOfArmies());
-
 	}
 	
-	
+	/** 
+	 * for testing whether the dice can get the player of the country or not 
+	 */
 	@Test 
-
-	public void isdiceValid() {
-
-		dice.moveArmies(2,toCountry,attackercountry,mapGraph,5,5);
-
-		assertEquals(1, toCountry.getNoOfArmies());
-
-		assertEquals(10, attackercountry.getNoOfArmies());
-
-	}
-	
-	@Test 
-
 	public void isdicegetsplayer() {
-		Player result=new Player();
-
+		Player result;
 		result=dice.getPlayerForCountry(mapGraph,"Canada");
-
 		assertEquals("attacker", result.getName());
-
-
 	}
 	
-	
-	
-
+	/** 
+	 * for testing is dice validating its moves or not 
+	 */
+	@Test 
+	public void isdiceValid() {
+		dice.moveArmies(2,toCountry,attackercountry,mapGraph,5,5);
+		assertEquals(1, toCountry.getNoOfArmies());
+		assertEquals(10, attackercountry.getNoOfArmies());
+	}
 }
