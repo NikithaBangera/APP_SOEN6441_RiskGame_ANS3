@@ -6,10 +6,11 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import javax.swing.JOptionPane;
+
 import com.riskgame.model.Continent;
 import com.riskgame.model.Country;
-import com.riskgame.model.Dice;
 import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.Player;
 import com.riskgame.view.DiceView;
@@ -351,14 +352,15 @@ public class PlayerController {
 						: (attackerCountry.getNoOfArmies() > 2 ? 2 : 1);
 				defenderDiceCount = defenderCountry.getNoOfArmies() >= 2 ? 2 : 1;
 
-				
 				diceController.startDiceRoll(attackerDiceCount, defenderDiceCount, attackerCountry, defenderCountry);
 			}
-
-			if (defenderCountry.getNoOfArmies() == 0) {
+			
+			if(defenderCountry.getNoOfArmies() == 0) {
 				JOptionPane.showMessageDialog(null, "Defender has lost the country to attacker!");
 				moveArmies(1, attackerCountry, defenderCountry, gameMapGraph);
-				
+			}
+			else if(attackerCountry.getNoOfArmies() == 1) {
+				JOptionPane.showMessageDialog(null, "Attacker cannot attack anymore");
 			}
 		}
 	}

@@ -117,7 +117,7 @@ public class DiceController {
 		boolean attackerFound = false;
 		boolean defenderFound = false;
 		boolean moveSuccessful = false;
-		if ((attackerCountry.getNoOfArmies() - armiesToBeMoved) > 1) {
+		if ((attackerCountry.getNoOfArmies() - armiesToBeMoved) >= 1) {
 			if(armiesToBeMoved >= attackerDiceCount) {
 				attackerCountry.setNoOfArmies(attackerCountry.getNoOfArmies() - armiesToBeMoved);
 				defenderCountry.setNoOfArmies(defenderCountry.getNoOfArmies() + armiesToBeMoved);

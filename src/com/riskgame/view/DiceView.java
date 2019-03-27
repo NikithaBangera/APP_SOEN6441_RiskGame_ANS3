@@ -1,7 +1,15 @@
 package com.riskgame.view;
 
 import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Observable;
+import java.util.Observer;
 
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -9,22 +17,11 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
-import org.junit.experimental.theories.FromDataPoints;
-
 import com.riskgame.controller.DiceController;
 import com.riskgame.controller.PlayerController;
 import com.riskgame.model.Country;
 import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.Player;
-
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import java.awt.Font;
-import java.awt.Window;
-import java.awt.event.ActionListener;
-import java.util.Observable;
-import java.util.Observer;
-import java.awt.event.ActionEvent;
 
 /**
  * This class aims to show the dice view
@@ -93,6 +90,10 @@ public class DiceView implements Observer{
 		diceRootPanel.setLayout(null);
 		frmDiceView.getContentPane().add(diceRootPanel);
 		
+		attacker.getDiceValues().clear();
+		defender.getDiceValues().clear();
+		gameMapGraph.setDiceViewMessage("");
+		
 		initialize(gameMapGraph, attacker, defender);
 	}
 
@@ -129,14 +130,14 @@ public class DiceView implements Observer{
 		attackerDice3Radio.setBounds(150, 70, 47, 34);
 		attackerDice3Radio.setActionCommand("3");
 		
-		if(attackerCountry.getNoOfArmies() < 2) {
+		if(attackerCountry.getNoOfArmies() <= 2) {
 			diceRootPanel.add(attackerDice1Radio);
 		}
-		else if(attackerCountry.getNoOfArmies() < 3) {
+		else if(attackerCountry.getNoOfArmies() <= 3) {
 			diceRootPanel.add(attackerDice1Radio);
 			diceRootPanel.add(attackerDice2Radio);
 		}
-		else {
+		else if(attackerCountry.getNoOfArmies() > 3) {
 			diceRootPanel.add(attackerDice1Radio);
 			diceRootPanel.add(attackerDice2Radio);
 			diceRootPanel.add(attackerDice3Radio);
@@ -156,7 +157,7 @@ public class DiceView implements Observer{
 		if(defenderCountry.getNoOfArmies() < 2) {
 			diceRootPanel.add(defenderDice1Radio);
 		}
-		else {
+		else if(defenderCountry.getNoOfArmies() >= 2){
 			diceRootPanel.add(defenderDice1Radio);
 			diceRootPanel.add(defenderDice2Radio);
 		}
@@ -363,6 +364,7 @@ public class DiceView implements Observer{
 					if(moveComplete) {
 						if(defender.getMyCountries().size() == 0) {
 							attacker.getPlayersCardList().putAll(defender.getPlayersCardList());
+							defender.setPlayerLostGame(true);
 							JOptionPane.showMessageDialog(null, "Player "+defender.getName()+" has lost the game!!");
 						}
 						JOptionPane.showMessageDialog(null, armiesToMove+" armies moved to "+defenderCountry.getName());
