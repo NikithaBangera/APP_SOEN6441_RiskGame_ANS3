@@ -282,8 +282,7 @@ public class Player extends Observable {
 
 	/**
 	 * Method to set the playerLostGame variable
-	 * 
-	 * @param playerLostGame - if player loses a game
+	 * @param playerLostGame - player lost the game
 	 */
 	public void setPlayerLostGame(boolean playerLostGame) {
 		this.playerLostGame = playerLostGame;
