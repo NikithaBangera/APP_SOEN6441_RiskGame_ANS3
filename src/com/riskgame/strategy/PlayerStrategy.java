@@ -18,7 +18,7 @@ public interface PlayerStrategy {
 	 * @param country
 	 * @param armiesCount
 	 */
-	public void placeArmies(GameMapGraph mapGraph, String country, int armiesCount);
+	public void placeArmies(GameMapGraph mapGraph, Player player);
 
 	/**
 	 * Reinforcement of armies to the player owned countries
@@ -26,7 +26,7 @@ public interface PlayerStrategy {
 	 * @param mapGraph
 	 * @return
 	 */
-	public int reinforcementPhase(Player player, GameMapGraph mapGraph);
+	public void reinforcementPhase(Player player, GameMapGraph mapGraph);
 	
 	/**
 	 * Attack phase where the attacker chooses the number of dice to roll(for human player implementation only)
@@ -35,7 +35,7 @@ public interface PlayerStrategy {
 	 * @param attacker
 	 * @param defender
 	 */
-	public void attackPhase(GameMapGraph gameMapGraph, Country attacker, Country defender);
+	public void attackPhase(GameMapGraph gameMapGraph, Player player, Country attacker, Country defender);
 	
 	/**
 	 * All out attack mode where the attack happens with the maximum number of dice 
@@ -45,7 +45,7 @@ public interface PlayerStrategy {
 	 * @param attackerCountry
 	 * @param defenderCountry
 	 */
-	public void allOutAttack(GameMapGraph gameMapGraph, Country attackerCountry, Country defenderCountry);
+	public void allOutAttack(GameMapGraph gameMapGraph, Player player, Country attackerCountry, Country defenderCountry);
 	
 	/**
 	 * Fortifying armies from one country to its adjacent country, both of which are owned by the player
@@ -53,7 +53,7 @@ public interface PlayerStrategy {
 	 * @param toCountry
 	 * @param armiesCount
 	 */
-	public void fortificationPhase(Country fromCountry, Country toCountry, int armiesCount);
+	public void fortificationPhase(GameMapGraph gameMapGraph, Player player, Country fromCountry, Country toCountry, int armiesCount);
 	
 	
 }

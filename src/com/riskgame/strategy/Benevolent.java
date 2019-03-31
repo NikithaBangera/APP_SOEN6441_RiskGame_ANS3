@@ -13,33 +13,33 @@ import com.riskgame.model.Player;
 public class Benevolent implements PlayerStrategy{
 
 	@Override
-	public void placeArmies(GameMapGraph mapGraph, String country, int armiesCount) {
+	public void placeArmies(GameMapGraph mapGraph, Player player) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public int reinforcementPhase(Player player, GameMapGraph mapGraph) {
+	public void reinforcementPhase(Player player, GameMapGraph mapGraph) {
 		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	@Override
-	public void attackPhase(GameMapGraph gameMapGraph, Country attacker, Country defender) {
+	public void attackPhase(GameMapGraph gameMapGraph, Player player, Country attacker, Country defender) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void allOutAttack(GameMapGraph gameMapGraph, Country attackerCountry, Country defenderCountry) {
+	public void allOutAttack(GameMapGraph gameMapGraph, Player player, Country attackerCountry,
+			Country defenderCountry) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void fortificationPhase(Country fromCountry, Country toCountry, int armiesCount) {
+	public void fortificationPhase(GameMapGraph gameMapGraph, Player player, Country fromCountry, Country toCountry,
+			int armiesCount) {
 		// TODO Auto-generated method stub
 		
 	}
-
 }
