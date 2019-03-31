@@ -13,13 +13,13 @@ import com.riskgame.model.Player;
 public class Benevolent implements PlayerStrategy{
 
 	@Override
-	public void placeArmies(GameMapGraph mapGraph, Player player) {
+	public void placeArmies(GameMapGraph mapGraph, Player player, Country country) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void reinforcementPhase(Player player, GameMapGraph mapGraph) {
+	public void reinforcementPhase(Player player, GameMapGraph mapGraph, Country country, int reinforceArmyCount) {
 		// TODO Auto-generated method stub
 	}
 

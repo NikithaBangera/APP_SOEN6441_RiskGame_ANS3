@@ -17,13 +17,13 @@ public class Aggressive implements PlayerStrategy{
 	PlayerController playerController;
 	
 	@Override
-	public void placeArmies(GameMapGraph mapGraph, Player player) {
+	public void placeArmies(GameMapGraph mapGraph, Player player, Country country) {
 		playerController = new PlayerController();
 		playerController.armiesAssignedToCountries(mapGraph, getStrongestCountry(mapGraph, player).getName(), 1);
 	}
 
 	@Override
-	public void reinforcementPhase(Player player, GameMapGraph mapGraph) {
+	public void reinforcementPhase(Player player, GameMapGraph mapGraph, Country country, int reinforceArmyCount) {
 		playerController = new PlayerController();
 		int reinforcementArmies = playerController.reinforcementPhase(player, mapGraph);
 		player.setArmyCount(player.getArmyCount() + reinforcementArmies);
@@ -38,7 +38,6 @@ public class Aggressive implements PlayerStrategy{
 	@Override
 	public void allOutAttack(GameMapGraph gameMapGraph, Player player, Country attackerCountry,
 			Country defenderCountry) {
-		// TODO Auto-generated method stub
 		
 	}
 
