@@ -364,9 +364,11 @@ public class PlayerController {
 				Player defender = diceController.getPlayerForCountry(gameMapGraph, defenderCountry.getName());
 				boolean moveComplete = moveArmies(1, attackerCountry, defenderCountry, gameMapGraph);
 				if (moveComplete) {
-					if (defender.getMyCountries().size() == 0) {
+					if(defender.getMyCountries().size() == 0) {
 						attacker.getPlayersCardList().putAll(defender.getPlayersCardList());
 						attacker.setConquerCountry(attacker.getConquerCountry() - 1);
+						defender.setPlayerLostGame(true);
+						JOptionPane.showMessageDialog(null, "Player "+defender.getName()+" has lost the game!!");
 					}
 				}
 
