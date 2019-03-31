@@ -604,7 +604,7 @@ public class PlayerView implements Observer {
 			rootPanel.add(btnEndTurn);
 
 			// world domination panel
-			
+
 			JPanel worldDomination = new JPanel();
 			worldDomination.setBounds(15, 228, 495, 268);
 			rootPanel.add(worldDomination);
@@ -782,7 +782,7 @@ public class PlayerView implements Observer {
 	}
 
 	/**
-	 * Method to set the selected country
+	 * Methdo to set the selected country
 	 * 
 	 * @param selectedCountry - the selected country
 	 */

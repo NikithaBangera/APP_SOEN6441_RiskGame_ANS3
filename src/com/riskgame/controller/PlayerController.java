@@ -367,6 +367,8 @@ public class PlayerController {
 					if (defender.getMyCountries().size() == 0) {
 						attacker.getPlayersCardList().putAll(defender.getPlayersCardList());
 						attacker.setConquerCountry(attacker.getConquerCountry() - 1);
+						defender.setPlayerLostGame(true);
+						JOptionPane.showMessageDialog(null, "Player "+defender.getName()+" has lost the game!!");
 					}
 				}
 
