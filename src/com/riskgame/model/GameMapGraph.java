@@ -2,7 +2,9 @@ package com.riskgame.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Observable;
+import java.util.TreeMap;
 
 import com.riskgame.view.CardView;
 import com.riskgame.view.DiceView;
@@ -57,6 +59,9 @@ public class GameMapGraph extends Observable {
 	
 	/** Dice view message */
 	private String diceViewMessage;
+	
+	/** Treemap for inputPlayerDetails*/
+	private Map<String, String> inputPlayerDetails = new TreeMap<String, String>();
 	
 	/**
 	 * GameMapGraph Constructor
@@ -337,5 +342,23 @@ public class GameMapGraph extends Observable {
 		return "GameMapGraph [mapTag=" + mapTag + ", countOfContinents=" + countOfContinents + ", continents="
 				+ continents + ", countOfCountries=" + countOfCountries + ", countries=" + countries + ", filename="
 				+ filename + ", countrySet=" + countrySet + "]";
+	}
+
+	/**
+	 * Method to get player details from StartGameView class.
+	 * 
+	 * @return
+	 */
+	public Map<String, String> getInputPlayerDetails() {
+		return inputPlayerDetails;
+	}
+
+	/**
+	 * Method to populate player details from the StartGameView.
+	 * 
+	 * @param inputPlayerDetails
+	 */
+	public void setInputPlayerDetails(Map<String, String> inputPlayerDetails) {
+		this.inputPlayerDetails = inputPlayerDetails;
 	}
 }

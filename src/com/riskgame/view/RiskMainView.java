@@ -6,18 +6,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import javax.swing.*;
+import java.io.ObjectInputStream;
 
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 
 import com.riskgame.controller.CreateMapController;
-import com.riskgame.controller.PlayerController;
 import com.riskgame.controller.LoadMapController;
+import com.riskgame.controller.PlayerController;
 import com.riskgame.model.GameMapGraph;
-import com.riskgame.model.MapTag;
 
 /**
  * RiskMain class launches the Risk Game and provided options for the users to
@@ -49,6 +53,8 @@ public class RiskMainView extends JFrame {
 	 * loadMap a ReadAndWriteMap object
 	 */
 	public static LoadMapController loadMap = new LoadMapController();
+	private JButton buttonResumeGame;
+	private JButton btnStartTournament;
 
 	/**
 	 * RiskMain constructor contains the action to be performed on the click create
@@ -59,10 +65,11 @@ public class RiskMainView extends JFrame {
 	 * 
 	 */
 	public RiskMainView() {
-		setLayout(new GridLayout(3, 3));
+		setTitle("Risk Game");
+		getContentPane().setLayout(new GridLayout(5, 3));
 		createNewMapButton = new JButton("Create a new Map");
 		createNewMapButton.setPreferredSize(new Dimension(60, 60));
-		add(createNewMapButton);
+		getContentPane().add(createNewMapButton);
 
 		createNewMapButton.addActionListener(new ActionListener() {
 
@@ -83,7 +90,7 @@ public class RiskMainView extends JFrame {
 
 		loadExistingMapButton = new JButton("Load Existing Map");
 		loadExistingMapButton.setPreferredSize(new Dimension(50, 50));
-		add(loadExistingMapButton);
+		getContentPane().add(loadExistingMapButton);
 
 		loadExistingMapButton.addActionListener(new ActionListener() {
 
@@ -116,7 +123,8 @@ public class RiskMainView extends JFrame {
 								loadMapGraph.setFilename(fileName);
 								isGoodToStartGame = createandeditmap.uploadMap(loadMapGraph);
 								if (isGoodToStartGame) {
-									startGame();
+									//startGame();
+									StartGameView startGame = new StartGameView(loadMapGraph);
 									exit = true;
 								}
 									
@@ -158,10 +166,51 @@ public class RiskMainView extends JFrame {
 				//System.exit(0);
 			}
 		});
-
-		exitMapButton = new JButton("Exit");
-		exitMapButton.setPreferredSize(new Dimension(50, 50));
-		add(exitMapButton);
+		
+		buttonResumeGame = new JButton("Resume Saved Game");
+		buttonResumeGame.setPreferredSize(new Dimension(50, 50));
+		buttonResumeGame.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+					jfc.setDialogTitle("Select an Map File");
+					jfc.setAcceptAllFileFilterUsed(false);
+					FileNameExtensionFilter filter = new FileNameExtensionFilter(".txt or .TXT", "txt", "TXT");
+					jfc.addChoosableFileFilter(filter);
+	
+					int returnValue = jfc.showOpenDialog(null);
+					if (returnValue == JFileChooser.APPROVE_OPTION) {
+	
+						String fileName = jfc.getSelectedFile().getPath();
+						setVisible(false);
+						
+						FileInputStream fi = new FileInputStream(new File(fileName));
+						ObjectInputStream oi = new ObjectInputStream(fi);
+						
+						GameMapGraph mapGraph = (GameMapGraph) oi.readObject();
+						PlayerView playerView = new PlayerView();
+						
+						
+						fi.close();
+						oi.close();
+					}
+				}
+				catch (Exception exception) {
+					exception.printStackTrace();
+				}
+			}
+		});
+		getContentPane().add(buttonResumeGame);
+		
+		btnStartTournament = new JButton("Start Tournament");
+		btnStartTournament.setPreferredSize(new Dimension(50, 50));
+		getContentPane().add(btnStartTournament);
+		
+				exitMapButton = new JButton("Exit");
+				exitMapButton.setPreferredSize(new Dimension(50, 50));
+				getContentPane().add(exitMapButton);
 
 		exitMapButton.addActionListener(new ActionListener() {
 

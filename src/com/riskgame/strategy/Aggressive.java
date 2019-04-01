@@ -1,5 +1,7 @@
 package com.riskgame.strategy;
 
+import java.util.List;
+
 import com.riskgame.controller.PlayerController;
 import com.riskgame.model.Country;
 import com.riskgame.model.GameMapGraph;
@@ -38,14 +40,35 @@ public class Aggressive implements PlayerStrategy{
 	@Override
 	public void allOutAttack(GameMapGraph gameMapGraph, Player player, Country attackerCountry,
 			Country defenderCountry) {
+		playerController = new PlayerController();
+		int numberOfArmies = 0;
+		attackerCountry = getStrongestCountry(gameMapGraph, player);
+		List<String> adjacentCountriesList = attackerCountry.getAdjacentCountries();
+		for(String adjCountry : adjacentCountriesList) {
+			Player adjPlayer = playerController.getPlayerForCountry(gameMapGraph, adjCountry);
+			Country adjPlayerCountry = adjPlayer.getSelectedCountry(adjCountry);
+			if(adjPlayerCountry.getNoOfArmies() <= numberOfArmies) {
+				numberOfArmies = adjPlayerCountry.getNoOfArmies();
+				defenderCountry = adjPlayerCountry;
+			}
+		}
+		playerController.allOutAttack(gameMapGraph, attackerCountry, defenderCountry);
 		
 	}
 
 	@Override
 	public void fortificationPhase(GameMapGraph gameMapGraph, Player player, Country fromCountry, Country toCountry,
 			int armiesCount) {
-		// TODO Auto-generated method stub
-		
+		int numberOfArmies = 0;
+		Country strongestCountry = getStrongestCountry(gameMapGraph, player);
+		Country weakestCountry = null;
+		for(Country country: player.getMyCountries()) {
+			if(country.getNoOfArmies() <= numberOfArmies && country.getNoOfArmies() > 1) {
+				numberOfArmies = country.getNoOfArmies();
+				weakestCountry = country;
+			}
+		}
+		playerController.moveArmies(weakestCountry, strongestCountry, weakestCountry.getNoOfArmies()-1);
 	}
 
 	public Country getStrongestCountry(GameMapGraph mapGraph, Player player) {
