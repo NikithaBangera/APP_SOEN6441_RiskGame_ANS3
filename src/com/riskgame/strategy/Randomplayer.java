@@ -1,5 +1,9 @@
 package com.riskgame.strategy;
 
+import java.util.ArrayList;
+import java.util.Random;
+
+import com.riskgame.controller.PlayerController;
 import com.riskgame.model.Country;
 import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.Player;
@@ -10,17 +14,25 @@ import com.riskgame.model.Player;
  * @author 
  *
  */
-public class Random implements PlayerStrategy{
+public class Randomplayer implements PlayerStrategy{
 
+	PlayerController playerController;
+	
 	@Override
 	public void placeArmies(GameMapGraph mapGraph, Player player, Country country) {
-		// TODO Auto-generated method stub
-		
+		playerController = new PlayerController();
+		playerController.armiesAssignedToCountries(mapGraph, getRandomCountry(mapGraph,player).getName(), 1);
 	}
 
 	@Override
 	public void reinforcementPhase(Player player, GameMapGraph mapGraph, Country country, int reinforceArmyCount) {
-		// TODO Auto-generated method stub
+		playerController = new PlayerController();
+		int reinforcement=new Random().nextInt(2);
+		if(reinforcement==1) {
+			int reinforcementArmies = playerController.reinforcementPhase(player, mapGraph);
+			player.setArmyCount(player.getArmyCount() + reinforcementArmies);
+			playerController.armiesAssignedToCountries(mapGraph, getRandomCountry(mapGraph, player).getName(), player.getArmyCount());
+		}
 	}
 
 	@Override
@@ -41,6 +53,13 @@ public class Random implements PlayerStrategy{
 			int armiesCount) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public Country getRandomCountry(GameMapGraph mapGraph, Player player) {
+		ArrayList<Country> countrySet = new ArrayList<>(player.getMyCountries());
+		int countryIndexAssignment = new Random().nextInt(countrySet.size());
+		Country randomCountry = countrySet.get(countryIndexAssignment);
+		return randomCountry;
 	}
 	
 }
