@@ -56,6 +56,11 @@ public class Player extends Observable {
 	 * Boolean variable to check if the player has lost the game
 	 */
 	private boolean playerLostGame;
+	
+	/** 
+	 * Type of player
+	 */
+	private String playerType;
 
 	/**
 	 * Constructor to initialize the initial values
@@ -288,5 +293,13 @@ public class Player extends Observable {
 		this.playerLostGame = playerLostGame;
 		setChanged();
 		notifyObservers();
+	}
+
+	public String getPlayerType() {
+		return playerType;
+	}
+
+	public void setPlayerType(String playerType) {
+		this.playerType = playerType;
 	}
 }

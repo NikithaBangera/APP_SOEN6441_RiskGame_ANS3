@@ -9,6 +9,11 @@ import java.awt.Font;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Observable;
@@ -143,7 +148,7 @@ public class PlayerView implements Observer {
 
 		boolean isFortificationComplete = false;
 
-		if (validateGameCompletion(mapGraph)) {
+		//if (validateGameCompletion(mapGraph)) {
 
 			if (roundRobin == null) {
 				roundRobin = new RoundRobinController(mapGraph.getPlayers());
@@ -371,7 +376,7 @@ public class PlayerView implements Observer {
 			rootPanel.add(btnPlaceArmy);
 
 			JButton btnReinforcement = new JButton("Reinforcement");
-			btnReinforcement.setBounds(426, 46, 165, 29);
+			btnReinforcement.setBounds(426, 44, 165, 29);
 			btnReinforcement.setFont(new Font("Calibri", Font.PLAIN, 16));
 			btnReinforcement.setEnabled(false);
 			if (mapGraph.getGamePhase().equalsIgnoreCase("Reinforcement")) {
@@ -403,7 +408,7 @@ public class PlayerView implements Observer {
 			rootPanel.add(btnReinforcement);
 
 			JButton btnAttack = new JButton("Attack");
-			btnAttack.setBounds(426, 76, 165, 29);
+			btnAttack.setBounds(426, 72, 165, 29);
 			btnAttack.setFont(new Font("Calibri", Font.PLAIN, 16));
 			rootPanel.add(btnAttack);
 			btnAttack.addActionListener(new ActionListener() {
@@ -427,7 +432,7 @@ public class PlayerView implements Observer {
 			});
 
 			JButton btnCompleteAttack = new JButton("All Out");
-			btnCompleteAttack.setBounds(426, 106, 165, 29);
+			btnCompleteAttack.setBounds(426, 100, 165, 29);
 			btnCompleteAttack.setFont(new Font("Calibri", Font.PLAIN, 16));
 			btnCompleteAttack.addActionListener(new ActionListener() {
 
@@ -465,7 +470,7 @@ public class PlayerView implements Observer {
 			}
 
 			JButton btnFortify = new JButton("Fortify");
-			btnFortify.setBounds(426, 136, 165, 29);
+			btnFortify.setBounds(426, 128, 165, 29);
 			btnFortify.setFont(new Font("Calibri", Font.PLAIN, 16));
 			btnFortify.putClientProperty("isFortificationComplete", isFortificationComplete);
 			btnFortify.setEnabled(false);
@@ -570,7 +575,7 @@ public class PlayerView implements Observer {
 			});
 
 			JButton btnEndTurn = new JButton("End Turn");
-			btnEndTurn.setBounds(426, 166, 165, 29);
+			btnEndTurn.setBounds(426, 156, 165, 29);
 			btnEndTurn.setFont(new Font("Calibri", Font.PLAIN, 16));
 			btnEndTurn.addActionListener(new ActionListener() {
 
@@ -716,17 +721,40 @@ public class PlayerView implements Observer {
 			lblPlayerAdjCountryDetails.setBounds(15, 147, 313, 70);
 			panelMapDetails.add(lblPlayerAdjCountryDetails);
 			lblPlayerAdjCountryDetails.setBackground(Color.BLACK);
+			
+			JButton btnSave = new JButton("Save Game");
+			btnSave.setFont(new Font("Calibri", Font.PLAIN, 16));
+			btnSave.setBounds(426, 184, 165, 29);
+			btnSave.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					try {
+						File saveFile = new File(System.getProperty("user.dir")+"/resources/SavedGames/"+(new Date()).getTime()+".txt");
+						FileOutputStream fileOutput;
+						fileOutput = new FileOutputStream(saveFile);
+						ObjectOutputStream save = new ObjectOutputStream(fileOutput);
+						save.writeObject(mapGraph);
+						save.close();
+						fileOutput.close();
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+					
+				}
+			});
+			rootPanel.add(btnSave);
 
 			frmRiskGame.setVisible(true);
-		} else {
-			for (Player player : mapGraph.getPlayers()) {
-				if (!player.isPlayerLostGame()) {
-					JOptionPane.showMessageDialog(null, player.getName() + " has won the game!!");
-					System.exit(0);
-				}
-			}
+//		} else {
+//			for (Player player : mapGraph.getPlayers()) {
+//				if (!player.isPlayerLostGame()) {
+//					JOptionPane.showMessageDialog(null, player.getName() + " has won the game!!");
+//					System.exit(0);
+//				}
+//			}
 
-		}
+//		}
 	}
 
 	private boolean validateGameCompletion(GameMapGraph mapGraph) {

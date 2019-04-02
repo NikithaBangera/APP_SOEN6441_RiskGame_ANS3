@@ -3,6 +3,8 @@ package com.riskgame.controller;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -66,58 +68,70 @@ public class PlayerController {
 	 * @throws Exception - IOException
 	 */
 	public void gamePlay(GameMapGraph mapGraph) throws Exception {
-		Player player = new Player();
-		// Startup Phase starts here
-		boolean proceed = false;
-		do {
-			System.out.println("Enter the number of players below");
-			String playerCount = br.readLine().trim();
-			Pattern numberPattern = Pattern.compile("[0-9]+");
-			Matcher match = numberPattern.matcher(playerCount);
-			while (!match.matches() || playerCount.isEmpty()) {
-				System.out.println("\nPlease enter the correct player count below:");
-
-				playerCount = br.readLine().trim();
-				match = numberPattern.matcher(playerCount);
-			}
-			countOfthePlayers = Integer.parseInt(playerCount);
-
-			if (countOfthePlayers > 1 && countOfthePlayers < 7) {
-				System.out.println("Great! Let's Play.");
-				proceed = false;
-			} else {
-				System.out.println("Sorry! The numbers of players can be between 2 and 6.");
-				proceed = true;
-			}
-		} while (proceed);
-
-		System.out.println("Enter the name of the players");
-		for (int count = 1; count <= countOfthePlayers; count++) {
+		countOfthePlayers = mapGraph.getInputPlayerDetails().size();
+		Iterator<Entry<String, String>> inputPlayerIt = mapGraph.getInputPlayerDetails().entrySet().iterator();
+		while(inputPlayerIt.hasNext()) {
+			Entry<String, String> inputPlayer = inputPlayerIt.next();
 			boolean continue1 = true;
 			Player riskPlayer = new Player();
-			String playername = br.readLine().trim();
-			Pattern namePattern = Pattern.compile("[a-zA-z]+");
-			Matcher match = namePattern.matcher(playername);
-			while (!match.matches() || playername.isEmpty()) {
-				System.out.println("\nPlease enter the correct player name below:");
-
-				playername = br.readLine().trim();
-				match = namePattern.matcher(playername);
-			}
-
-			while (continue1) {
-				if (playername != null) {
-					riskPlayer.setName(playername);
-					riskPlayer.setConquerCountry(0);
-					continue1 = false;
-
-				} else {
-					System.out.println("Player name cannot be empty");
-				}
-			}
+			riskPlayer.setName(inputPlayer.getValue().split(",")[0]);
+			riskPlayer.setPlayerType(inputPlayer.getValue().split(",")[1]);
+			riskPlayer.setConquerCountry(0);
 			riskPlayer.setFirstReinforcement(true);
 			mapGraph.getPlayers().add(riskPlayer);
 		}
+		// Startup Phase starts here
+//		boolean proceed = false;
+//		do {
+//			System.out.println("Enter the number of players below");
+//			String playerCount = br.readLine().trim();
+//			Pattern numberPattern = Pattern.compile("[0-9]+");
+//			Matcher match = numberPattern.matcher(playerCount);
+//			while (!match.matches() || playerCount.isEmpty()) {
+//				System.out.println("\nPlease enter the correct player count below:");
+//
+//				playerCount = br.readLine().trim();
+//				match = numberPattern.matcher(playerCount);
+//			}
+//			countOfthePlayers = Integer.parseInt(playerCount);
+//
+//			if (countOfthePlayers > 1 && countOfthePlayers < 7) {
+//				System.out.println("Great! Let's Play.");
+//				proceed = false;
+//			} else {
+//				System.out.println("Sorry! The numbers of players can be between 2 and 6.");
+//				proceed = true;
+//			}
+//		} while (proceed);
+
+//		System.out.println("Enter the name of the players");
+		
+//		for (int count = 1; count <= mapGraph.getInputPlayerDetails().size(); count++) {
+//			boolean continue1 = true;
+//			Player riskPlayer = new Player();
+//			String playername = br.readLine().trim();
+//			Pattern namePattern = Pattern.compile("[a-zA-z]+");
+//			Matcher match = namePattern.matcher(playername);
+//			while (!match.matches() || playername.isEmpty()) {
+//				System.out.println("\nPlease enter the correct player name below:");
+//
+//				playername = br.readLine().trim();
+//				match = namePattern.matcher(playername);
+//			}
+//
+//			while (continue1) {
+//				if (playername != null) {
+//					riskPlayer.setName(playername);
+//					riskPlayer.setConquerCountry(0);
+//					continue1 = false;
+//
+//				} else {
+//					System.out.println("Player name cannot be empty");
+//				}
+//			}
+//			riskPlayer.setFirstReinforcement(true);
+//			mapGraph.getPlayers().add(riskPlayer);
+//		}
 
 		allocationOfCountry(mapGraph);
 		allocationOfArmyToPlayers(mapGraph);
