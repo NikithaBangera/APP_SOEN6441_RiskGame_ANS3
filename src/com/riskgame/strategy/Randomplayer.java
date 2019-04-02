@@ -37,7 +37,9 @@ public class Randomplayer implements PlayerStrategy{
 
 	@Override
 	public void attackPhase(GameMapGraph gameMapGraph, Player player, Country attacker, Country defender) {
-		// TODO Auto-generated method stub
+		playerController = new PlayerController();
+		attacker = getRandomCountry(gameMapGraph,player);
+		
 		
 	}
 
@@ -51,7 +53,17 @@ public class Randomplayer implements PlayerStrategy{
 	@Override
 	public void fortificationPhase(GameMapGraph gameMapGraph, Player player, Country fromCountry, Country toCountry,
 			int armiesCount) {
-		// TODO Auto-generated method stub
+		int fortify=new Random().nextInt(2);
+		if(fortify==1) {
+			playerController=new PlayerController();
+			fromCountry=getRandomCountry(gameMapGraph,player);
+			int tocountrychoice=new Random().nextInt(fromCountry.getAdjacentCountries().size());
+			toCountry=gameMapGraph.getCountrySet().get(fromCountry.getAdjacentCountries().get(tocountrychoice));
+			if(player.getMyCountries().contains(toCountry)) {
+				armiesCount=new Random().nextInt(fromCountry.getNoOfArmies());
+				playerController.moveArmies(fromCountry, toCountry, armiesCount);
+			}
+		}
 		
 	}
 	
