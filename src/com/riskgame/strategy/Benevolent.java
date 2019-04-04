@@ -1,8 +1,6 @@
 package com.riskgame.strategy;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import com.riskgame.controller.PlayerController;
 import com.riskgame.model.Country;
 import com.riskgame.model.GameMapGraph;
@@ -74,5 +72,16 @@ public class Benevolent implements PlayerStrategy{
 		return weakestCountry;
 	}
 
-	
+	@Override
+	public void attackPhase(GameMapGraph gameMapGraph, Player player, Country attacker, Country defender) {
+		System.out.println("Benevolent player cannot attack.");
+		
+	}
+
+	@Override
+	public void allOutAttack(GameMapGraph gameMapGraph, Player player, Country attackerCountry,
+			Country defenderCountry) {
+		System.out.println("Benevolent player cannot attack.");
+		
+	}
 }
