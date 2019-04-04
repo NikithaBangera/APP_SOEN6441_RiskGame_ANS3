@@ -31,6 +31,8 @@ public class Country extends Observable {
 	/** Adjacent Country holder */
 	private ArrayList<String> adjacentCountries;
 	
+	private ArrayList<Country> adjacentCountries1;
+	
 	private ArrayList<String>adjacentCountriesforWeakestCountry;
 
 	/** Number of armies */
@@ -190,6 +192,10 @@ public class Country extends Observable {
 	 */
 	public ArrayList<String> getAdjacentCountries() {
 		return adjacentCountries;
+	}
+	
+	public ArrayList<Country> getAdjacentCountries1() {
+		return adjacentCountries1;
 	}
 
 	/**
