@@ -37,9 +37,9 @@ public class Benevolent implements PlayerStrategy{
 			int armiesCount) {
 		playerController = new PlayerController();
 		Country weakestCountry = getWeakestCountry(mapGraph, player);
-		ArrayList<String> adjacentCountriesListOfWeakestCountry = weakestCountry.getAdjacentCountries();
-		Country.setAdjacentCountriesforWeakestCountry(adjacentCountriesListOfWeakestCountry);
-		Country strongestCountryToFortify = getStrongestCountry(mapGraph, player);
+		ArrayList<Country> adjacentCountriesListOfWeakestCountry = weakestCountry.getAdjacentCountries1();
+		player.setAdjacentCountriesforWeakestCountry(adjacentCountriesListOfWeakestCountry);
+		Country strongestCountryToFortify = getStrongestCountryInAdjacentCountryList(mapGraph, player);
 		if (strongestCountryToFortify != null) {
 			int fortificationArmies = (strongestCountryToFortify.getNoOfArmies() - weakestCountry.getNoOfArmies()) / 2;
 			weakestCountry.setNoOfArmies(weakestCountry.getNoOfArmies() + fortificationArmies);
@@ -47,6 +47,18 @@ public class Benevolent implements PlayerStrategy{
 			
 		}
 			}
+	
+	public Country getStrongestCountryInAdjacentCountryList(GameMapGraph mapGraph, Player player) {
+		int numberOfArmies = 0;
+		Country strongestCountryToFortify = null;
+		for(Country country: player.getAdjacentCountriesforWeakestCountry()) {
+			if(country.getNoOfArmies() >= numberOfArmies) {
+				numberOfArmies = country.getNoOfArmies();
+				strongestCountryToFortify = country;
+			}
+		}
+		return strongestCountryToFortify;
+	}
 	
 	public Country getStrongestCountry(GameMapGraph mapGraph, Player player) {
 		int numberOfArmies = 0;
