@@ -41,9 +41,9 @@ public class Benevolent implements PlayerStrategy{
 		player.setAdjacentCountriesforWeakestCountry(adjacentCountriesListOfWeakestCountry);
 		Country strongestCountryToFortify = getStrongestCountryInAdjacentCountryList(mapGraph, player);
 		if (strongestCountryToFortify != null) {
-			int fortificationArmies = (strongestCountryToFortify.getNoOfArmies() - weakestCountry.getNoOfArmies()) / 2;
-			weakestCountry.setNoOfArmies(weakestCountry.getNoOfArmies() + fortificationArmies);
-			strongestCountryToFortify.setNoOfArmies(strongestCountryToFortify.getNoOfArmies() - fortificationArmies);
+			int fortificationArmiestoweakestCountry = (strongestCountryToFortify.getNoOfArmies() - weakestCountry.getNoOfArmies()) / 2;
+			weakestCountry.setNoOfArmies(weakestCountry.getNoOfArmies() + fortificationArmiestoweakestCountry);
+			strongestCountryToFortify.setNoOfArmies(strongestCountryToFortify.getNoOfArmies() - fortificationArmiestoweakestCountry);
 			
 		}
 			}
