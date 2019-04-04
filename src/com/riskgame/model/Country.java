@@ -30,6 +30,8 @@ public class Country extends Observable {
 
 	/** Adjacent Country holder */
 	private ArrayList<String> adjacentCountries;
+	
+	private ArrayList<String>adjacentCountriesforWeakestCountry;
 
 	/** Number of armies */
 	private int noOfArmies;
@@ -265,5 +267,16 @@ public class Country extends Observable {
 		this.diceValues = diceValues;
 		setChanged();
 		notifyObservers();
+	}
+	
+	/**
+	 * Set the adjacent countries.
+	 * 
+	 * @param adjacentCountries To set the list of adjacent countries
+	 * @return 
+	 */
+	public static ArrayList<String> setAdjacentCountriesforWeakestCountry(ArrayList<String> adjacentCountriesforWeakestCountry) {
+		return adjacentCountriesforWeakestCountry;
+		
 	}
 }
