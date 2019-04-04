@@ -19,7 +19,11 @@ public class Benevolent implements PlayerStrategy{
 	PlayerController playerController;
 
 	@Override
-	
+	public void placeArmies(GameMapGraph mapGraph, Player player, Country country) {
+		playerController = new PlayerController();
+		playerController.armiesAssignedToCountries(mapGraph, getWeakestCountry(mapGraph, player).getName(), 1);
+		
+	}
 
 	@Override
 	public void reinforcementPhase(Player player, GameMapGraph mapGraph, Country country, int reinforceArmyCount) {
