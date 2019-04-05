@@ -1,5 +1,6 @@
 package com.riskgame.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,7 +21,7 @@ import com.riskgame.view.PlayerView;
  * @author Anusha
  *
  */
-public class Player extends Observable {
+public class Player extends Observable implements Serializable {
 	/** Name of the Player */
 	private String name;
 

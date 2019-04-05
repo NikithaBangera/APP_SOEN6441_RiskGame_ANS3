@@ -732,11 +732,16 @@ public class PlayerView implements Observer {
 					try {
 						File saveFile = new File(System.getProperty("user.dir")+"/resources/SavedGames/"+(new Date()).getTime()+".txt");
 						FileOutputStream fileOutput;
-						fileOutput = new FileOutputStream(saveFile);
-						ObjectOutputStream save = new ObjectOutputStream(fileOutput);
-						save.writeObject(mapGraph);
-						save.close();
-						fileOutput.close();
+						if(saveFile.createNewFile()) {
+							fileOutput = new FileOutputStream(saveFile);
+							ObjectOutputStream save = new ObjectOutputStream(fileOutput);
+							save.writeObject(mapGraph);
+							save.close();
+							fileOutput.close();
+						}
+						else {
+							JOptionPane.showMessageDialog(null, "Unable to Save the game, Please Try later");
+						}
 					} catch (Exception e1) {
 						e1.printStackTrace();
 					}
