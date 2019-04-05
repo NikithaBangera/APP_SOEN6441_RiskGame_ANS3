@@ -65,6 +65,21 @@ public class Cheater implements PlayerStrategy{
 		
 	}
 
-	
+	@Override
+	public void fortificationPhase(GameMapGraph gameMapGraph, Player player, Country fromCountry, Country toCountry,
+			int armiesCount) {
+		//ArrayList<Country> cheaterCountries = player.getMyCountries();
+		for(Country country : player.getMyCountries()) {
+			//ArrayList<Country> cheaterAdjacentCountries = country.getAdjacentCountries1();
+			for(Country country1: country.getAdjacentCountries1()) {
+				if(country1 != country) {
+					int FortifyArmies= country.getNoOfArmies() * 2;
+					country.setNoOfArmies(FortifyArmies);				
+				}
+				
+			}
+		}
+		
+	}
 
 }
