@@ -148,7 +148,7 @@ public class PlayerView implements Observer {
 
 		boolean isFortificationComplete = false;
 
-		//if (validateGameCompletion(mapGraph)) {
+		if (validateGameCompletion(mapGraph)) {
 
 			if (roundRobin == null) {
 				roundRobin = new RoundRobinController(mapGraph.getPlayers());
@@ -751,15 +751,15 @@ public class PlayerView implements Observer {
 			rootPanel.add(btnSave);
 
 			frmRiskGame.setVisible(true);
-//		} else {
-//			for (Player player : mapGraph.getPlayers()) {
-//				if (!player.isPlayerLostGame()) {
-//					JOptionPane.showMessageDialog(null, player.getName() + " has won the game!!");
-//					System.exit(0);
-//				}
-//			}
+		} else {
+			for (Player player : mapGraph.getPlayers()) {
+				if (!player.isPlayerLostGame()) {
+					JOptionPane.showMessageDialog(null, player.getName() + " has won the game!!");
+					System.exit(0);
+				}
+			}
 
-//		}
+		}
 	}
 
 	private boolean validateGameCompletion(GameMapGraph mapGraph) {
