@@ -32,6 +32,9 @@ public class Player extends Observable implements Serializable {
 	 * Boolean to check the end place armies option
 	 */
 	private boolean endPlaceArmies;
+	
+	/** Adjacent Country holder */
+	private ArrayList<Country> adjacentCountries = new ArrayList<Country>();
 
 	/** Variable to check whether the reinforcement is the first reinforcement */
 	private boolean firstReinforcement;
@@ -302,5 +305,22 @@ public class Player extends Observable implements Serializable {
 
 	public void setPlayerType(String playerType) {
 		this.playerType = playerType;
+	}
+	
+	public ArrayList<Country> getAdjacentCountriesforWeakestCountry() {
+		return adjacentCountries;
+	}
+	
+	
+
+	/**
+	 * Set the adjacent countries.
+	 * 
+	 * @param adjacentCountries To set the list of adjacent countries
+	 */
+	public void setAdjacentCountriesforWeakestCountry(ArrayList<Country> adjacentCountries) {
+		this.adjacentCountries = adjacentCountries;
+		setChanged();
+		notifyObservers();
 	}
 }
