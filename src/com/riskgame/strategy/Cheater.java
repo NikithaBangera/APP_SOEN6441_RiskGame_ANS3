@@ -23,6 +23,7 @@ public class Cheater implements PlayerStrategy{
 	@Override
 	public void placeArmies(GameMapGraph mapGraph, Player player, Country country) {
 		// TODO Auto-generated method stub
+		//JOptionPane.showMessageDialog(null, "Army count of country " + country.getName() + " has been doubled to " + country.getNoOfArmies() + "\n");
 		
 	}
 	
@@ -42,8 +43,19 @@ public class Cheater implements PlayerStrategy{
 
 	@Override
 	public void attackPhase(GameMapGraph gameMapGraph, Player player, Country attacker, Country defender) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method 
+		ArrayList<Country> cheatersWinningCountries = new ArrayList<Country>();	
+		for(Country country : player.getMyCountries()) {
+			//ArrayList<Country> cheaterAdjacentCountries = country.getAdjacentCountries1();
+			for(Country country1: country.getAdjacentCountries1()) {
+				if(country1 != country) {
+					cheatersWinningCountries.add(country1);
+				}
+			}
+		}
+		ArrayList<Country> allCountriesOfCheater= player.getMyCountries();
+		allCountriesOfCheater.addAll(cheatersWinningCountries);
+		player.setMyCountries(allCountriesOfCheater);
 	}
 
 	@Override
@@ -53,11 +65,6 @@ public class Cheater implements PlayerStrategy{
 		
 	}
 
-	@Override
-	public void fortificationPhase(GameMapGraph gameMapGraph, Player player, Country fromCountry, Country toCountry,
-			int armiesCount) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 
 }
