@@ -1,21 +1,23 @@
 package com.riskgame.view;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
+import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.riskgame.controller.PlayerController;
 import com.riskgame.model.GameMapGraph;
-
-import javax.swing.JButton;
 
 public class StartGameView extends JFrame{
 	private JTextField textFieldPlayer1;
@@ -25,12 +27,15 @@ public class StartGameView extends JFrame{
 	private JTextField textFieldPlayer5;
 	private JTextField textFieldPlayer6;
 	private JPanel rootPanel;
+	private JPanel panelPlayerDetails;
 	private int numberOfPlayers = 0;
 	private Map<String, String> inputPlayerDetails = new HashMap<String, String>();
+	String[] numPlayers = {"Select One","2","3","4","5","6"};
+	String[] playerTypes = {"Select One","Human","Aggressive","Benevolent","Cheater","Random"};
 	
 	
 	public StartGameView(GameMapGraph mapGraph) {
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Start Game");
 		setBounds(100, 100, 676, 442);
 		getContentPane().setLayout(null);
@@ -39,116 +44,225 @@ public class StartGameView extends JFrame{
 		rootPanel.setBounds(0, 0, 658, 393);
 		getContentPane().add(rootPanel);
 		rootPanel.setLayout(null);
+		panelPlayerDetails = new JPanel();
+		panelPlayerDetails.setBounds(15, 94, 628, 283);
+		rootPanel.add(panelPlayerDetails);
+		panelPlayerDetails.setLayout(null);
 		
 		JLabel lblNumberOfPlayers = new JLabel("Number of Players :");
 		lblNumberOfPlayers.setFont(new Font("Calibri", Font.BOLD, 14));
 		lblNumberOfPlayers.setBounds(33, 28, 128, 27);
 		rootPanel.add(lblNumberOfPlayers);
 		
-		String[] numPlayers = {"Select One","2","3","4","5","6"};
-		JComboBox comboBox = new JComboBox(numPlayers);
-		comboBox.setBounds(153, 29, 94, 22);
-		comboBox.addActionListener(new ActionListener() {
+		JComboBox comboBoxNoOfPlayers = new JComboBox(numPlayers);
+		comboBoxNoOfPlayers.setBounds(159, 28, 94, 22);
+		rootPanel.add(comboBoxNoOfPlayers);
+		comboBoxNoOfPlayers.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JComboBox comboBox = (JComboBox) e.getSource();
-				numberOfPlayers = Integer.parseInt((String) comboBox.getSelectedItem());
-				rootPanel.removeAll();
-				rootPanel.revalidate();
-				rootPanel.repaint();
+				if(((String) comboBox.getSelectedItem()).equalsIgnoreCase("Select One")) {
+					numberOfPlayers = 0;
+				}
+				else {
+					numberOfPlayers = Integer.parseInt((String) comboBox.getSelectedItem());
+				}
+				panelPlayerDetails.removeAll();
+				panelPlayerDetails.revalidate();
+				panelPlayerDetails.repaint();
 				initialize(mapGraph);
 			}
 		});
-	//	initialize(mapGraph);
-		rootPanel.add(comboBox);
+	
+		//initialize(mapGraph);
 		setVisible(true);
 	}
 	
 	public void initialize(GameMapGraph mapGraph) {
 		
+		
 		mapGraph.getInputPlayerDetails().clear();
-		JLabel lblPlayerName = new JLabel("Player Name");
-		lblPlayerName.setFont(new Font("Calibri", Font.BOLD, 14));
-		lblPlayerName.setBounds(225, 122, 103, 16);
-		rootPanel.add(lblPlayerName);
 		
 		JLabel lblPlayerType = new JLabel("Player Type");
+		lblPlayerType.setBounds(373, 16, 68, 17);
 		lblPlayerType.setFont(new Font("Calibri", Font.BOLD, 14));
-		lblPlayerType.setBounds(391, 122, 68, 16);
-		rootPanel.add(lblPlayerType);
 		
-		textFieldPlayer1 = new JTextField();
-		textFieldPlayer1.setBounds(212, 154, 116, 22);
-		textFieldPlayer1.setColumns(10);
-		
-		textFieldPlayer2 = new JTextField();
-		textFieldPlayer2.setBounds(212, 189, 116, 22);
-		textFieldPlayer2.setColumns(10);
-		
-		textFieldPlayer3 = new JTextField();
-		textFieldPlayer3.setBounds(212, 224, 116, 22);
-		textFieldPlayer3.setColumns(10);
-		
-		textFieldPlayer4 = new JTextField();
-		textFieldPlayer4.setBounds(212, 259, 116, 22);
-		textFieldPlayer4.setColumns(10);
-		
-		textFieldPlayer5 = new JTextField();
-		textFieldPlayer5.setBounds(212, 297, 116, 22);
-		textFieldPlayer5.setColumns(10);
-		
-		textFieldPlayer6 = new JTextField();
-		textFieldPlayer6.setBounds(212, 332, 116, 22);
-		textFieldPlayer6.setColumns(10);
-		
-		String[] playerTypes = {"Select One","Human","Aggressive","Benevolent","Cheater","Random"};
-		
-		JComboBox comboBoxPlayer1 = new JComboBox(playerTypes);
-		comboBoxPlayer1.setBounds(355, 154, 128, 22);
-		
-		JComboBox comboBoxPlayer2 = new JComboBox(playerTypes);
-		comboBoxPlayer2.setBounds(355, 189, 128, 22);
-		
-		JComboBox comboBoxPlayer3 = new JComboBox(playerTypes);
-		comboBoxPlayer3.setBounds(355, 224, 128, 22);
-		
-		JComboBox comboBoxPlayer4 = new JComboBox(playerTypes);
-		comboBoxPlayer4.setBounds(355, 259, 128, 22);
-		
-		JComboBox comboBoxPlayer5 = new JComboBox(playerTypes);
-		comboBoxPlayer5.setBounds(355, 297, 128, 22);
-		
-		JComboBox comboBoxPlayer6 = new JComboBox(playerTypes);
-		comboBoxPlayer6.setBounds(355, 332, 128, 22);
+		JLabel lblPlayerName = new JLabel("Player Name");
+		lblPlayerName.setBounds(201, 16, 103, 16);
+		lblPlayerName.setFont(new Font("Calibri", Font.BOLD, 14));
 		
 		JLabel lblPlayer1 = new JLabel("Player 1");
+		lblPlayer1.setBounds(112, 42, 56, 16);
 		lblPlayer1.setFont(new Font("Calibri", Font.BOLD, 14));
-		lblPlayer1.setBounds(105, 157, 56, 16);
+		
+		textFieldPlayer1 = new JTextField();
+		textFieldPlayer1.setBounds(194, 42, 116, 22);
+		textFieldPlayer1.setColumns(10);
+		
+		JComboBox comboBoxPlayer1 = new JComboBox(playerTypes);
+		comboBoxPlayer1.setBounds(344, 42, 128, 22);
 		
 		JLabel lblPlayer2 = new JLabel("Player 2");
+		lblPlayer2.setBounds(112, 80, 56, 16);
 		lblPlayer2.setFont(new Font("Calibri", Font.BOLD, 14));
-		lblPlayer2.setBounds(105, 192, 56, 16);
+		
+		textFieldPlayer2 = new JTextField();
+		textFieldPlayer2.setBounds(194, 81, 116, 22);
+		textFieldPlayer2.setColumns(10);
+		
+		JComboBox comboBoxPlayer2 = new JComboBox(playerTypes);
+		comboBoxPlayer2.setBounds(344, 80, 128, 22);
 		
 		JLabel lblPlayer3 = new JLabel("Player 3");
+		lblPlayer3.setBounds(112, 118, 56, 16);
 		lblPlayer3.setFont(new Font("Calibri", Font.BOLD, 14));
-		lblPlayer3.setBounds(105, 227, 56, 16);
+		
+		textFieldPlayer3 = new JTextField();
+		textFieldPlayer3.setBounds(194, 118, 116, 22);
+		textFieldPlayer3.setColumns(10);
+		
+		JComboBox comboBoxPlayer3 = new JComboBox(playerTypes);
+		comboBoxPlayer3.setBounds(344, 118, 128, 22);
 		
 		JLabel lblPlayer4 = new JLabel("Player 4");
+		lblPlayer4.setBounds(112, 156, 56, 16);
 		lblPlayer4.setFont(new Font("Calibri", Font.BOLD, 14));
-		lblPlayer4.setBounds(105, 262, 56, 16);
+		
+		textFieldPlayer4 = new JTextField();
+		textFieldPlayer4.setBounds(194, 156, 116, 22);
+		textFieldPlayer4.setColumns(10);
+		
+		JComboBox comboBoxPlayer4 = new JComboBox(playerTypes);
+		comboBoxPlayer4.setBounds(344, 156, 128, 22);
 		
 		JLabel lblPlayer5 = new JLabel("Player 5");
+		lblPlayer5.setBounds(112, 194, 56, 16);
 		lblPlayer5.setFont(new Font("Calibri", Font.BOLD, 14));
-		lblPlayer5.setBounds(105, 300, 56, 16);
+		
+		textFieldPlayer5 = new JTextField();
+		textFieldPlayer5.setBounds(194, 194, 116, 22);
+		textFieldPlayer5.setColumns(10);
+		
+		JComboBox comboBoxPlayer5 = new JComboBox(playerTypes);
+		comboBoxPlayer5.setBounds(344, 194, 128, 22);
 		
 		JLabel lblPlayer6 = new JLabel("Player 6");
+		lblPlayer6.setBounds(112, 232, 56, 16);
 		lblPlayer6.setFont(new Font("Calibri", Font.BOLD, 14));
-		lblPlayer6.setBounds(105, 335, 56, 16);
+		
+		textFieldPlayer6 = new JTextField();
+		textFieldPlayer6.setBounds(194, 232, 116, 22);
+		textFieldPlayer6.setColumns(10);
+		
+		JComboBox comboBoxPlayer6 = new JComboBox(playerTypes);
+		comboBoxPlayer6.setBounds(344, 232, 128, 22);
+
+		switch (numberOfPlayers) {
+		case 2: panelPlayerDetails.add(lblPlayerType);
+				panelPlayerDetails.add(lblPlayerName);
+				panelPlayerDetails.add(textFieldPlayer1);
+				panelPlayerDetails.add(comboBoxPlayer1);
+				panelPlayerDetails.add(lblPlayer1);
+				panelPlayerDetails.add(textFieldPlayer2);
+				panelPlayerDetails.add(comboBoxPlayer2);
+				panelPlayerDetails.add(lblPlayer2);
+			break;
+			
+		case 3: panelPlayerDetails.add(lblPlayerType);
+				panelPlayerDetails.add(lblPlayerName);
+				panelPlayerDetails.add(textFieldPlayer1);
+				panelPlayerDetails.add(comboBoxPlayer1);
+				panelPlayerDetails.add(lblPlayer1);
+				panelPlayerDetails.add(textFieldPlayer2);
+				panelPlayerDetails.add(comboBoxPlayer2);
+				panelPlayerDetails.add(lblPlayer2);
+				panelPlayerDetails.add(textFieldPlayer3);
+				panelPlayerDetails.add(comboBoxPlayer3);
+				panelPlayerDetails.add(lblPlayer3);
+			break;	
+			
+		case 4: panelPlayerDetails.add(lblPlayerType);
+				panelPlayerDetails.add(lblPlayerName);
+				panelPlayerDetails.add(textFieldPlayer1);
+				panelPlayerDetails.add(comboBoxPlayer1);
+				panelPlayerDetails.add(lblPlayer1);
+				panelPlayerDetails.add(textFieldPlayer2);
+				panelPlayerDetails.add(comboBoxPlayer2);
+				panelPlayerDetails.add(lblPlayer2);
+				panelPlayerDetails.add(textFieldPlayer3);
+				panelPlayerDetails.add(comboBoxPlayer3);
+				panelPlayerDetails.add(lblPlayer3);
+				panelPlayerDetails.add(textFieldPlayer4);
+				panelPlayerDetails.add(comboBoxPlayer4);
+				panelPlayerDetails.add(lblPlayer4);
+			break;	
+			
+		case 5: panelPlayerDetails.add(lblPlayerType);
+				panelPlayerDetails.add(lblPlayerName);
+				panelPlayerDetails.add(textFieldPlayer1);
+				panelPlayerDetails.add(comboBoxPlayer1);
+				panelPlayerDetails.add(lblPlayer1);
+				panelPlayerDetails.add(textFieldPlayer2);
+				panelPlayerDetails.add(comboBoxPlayer2);
+				panelPlayerDetails.add(lblPlayer2);
+				panelPlayerDetails.add(textFieldPlayer3);
+				panelPlayerDetails.add(comboBoxPlayer3);
+				panelPlayerDetails.add(lblPlayer3);
+				panelPlayerDetails.add(textFieldPlayer4);
+				panelPlayerDetails.add(comboBoxPlayer4);
+				panelPlayerDetails.add(lblPlayer4);
+				panelPlayerDetails.add(textFieldPlayer5);
+				panelPlayerDetails.add(comboBoxPlayer5);
+				panelPlayerDetails.add(lblPlayer5);
+			break;
+			
+		case 6: panelPlayerDetails.add(lblPlayerType);
+				panelPlayerDetails.add(lblPlayerName);
+				panelPlayerDetails.add(textFieldPlayer1);
+				panelPlayerDetails.add(comboBoxPlayer1);
+				panelPlayerDetails.add(lblPlayer1);
+				panelPlayerDetails.add(textFieldPlayer2);
+				panelPlayerDetails.add(comboBoxPlayer2);
+				panelPlayerDetails.add(lblPlayer2);
+				panelPlayerDetails.add(textFieldPlayer3);
+				panelPlayerDetails.add(comboBoxPlayer3);
+				panelPlayerDetails.add(lblPlayer3);
+				panelPlayerDetails.add(textFieldPlayer4);
+				panelPlayerDetails.add(comboBoxPlayer4);
+				panelPlayerDetails.add(lblPlayer4);
+				panelPlayerDetails.add(textFieldPlayer5);
+				panelPlayerDetails.add(comboBoxPlayer5);
+				panelPlayerDetails.add(lblPlayer5);
+				panelPlayerDetails.add(textFieldPlayer6);
+				panelPlayerDetails.add(comboBoxPlayer6);
+				panelPlayerDetails.add(lblPlayer6);
+			break;
+		default:
+			break;
+		}
+		
 		
 		JButton btnStartGame = new JButton("Start Game");
+		btnStartGame.setBounds(498, 57, 115, 25);
+		panelPlayerDetails.add(btnStartGame);
 		btnStartGame.setFont(new Font("Calibri", Font.PLAIN, 14));
-		btnStartGame.setBounds(517, 29, 115, 25);
+		
+		JButton btnExitGame = new JButton("Exit");
+		btnExitGame.setBounds(498, 93, 115, 25);
+		panelPlayerDetails.add(btnExitGame);
+		btnExitGame.setFont(new Font("Calibri", Font.PLAIN, 14));
+		btnExitGame.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				int exit = JOptionPane.showConfirmDialog(rootPane, "Are you sure you want to Exit the game?", "Exit Game", JOptionPane.YES_NO_OPTION);
+				if(exit == JOptionPane.YES_OPTION) {
+					System.exit(0);
+				}
+			}
+		});
 		btnStartGame.addActionListener(new ActionListener() {
 			
 			@Override
@@ -188,94 +302,33 @@ public class StartGameView extends JFrame{
 					default:
 						break;
 					}
-					setVisible(false);
-					playerController.gamePlay(mapGraph);
+					if(!validatePlayerDetails(mapGraph)) {
+						setVisible(false);
+						playerController.gamePlay(mapGraph);
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "Please Enter the details for all Players");
+					}
+					
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
 			}
-		});
-		rootPanel.add(btnStartGame);
-		
-		JButton btnExitGame = new JButton("Exit");
-		btnExitGame.setFont(new Font("Calibri", Font.PLAIN, 14));
-		btnExitGame.setBounds(517, 66, 115, 25);
-		rootPanel.add(btnExitGame);
 
-		switch (numberOfPlayers) {
-		case 2: rootPanel.add(textFieldPlayer1);
-				rootPanel.add(comboBoxPlayer1);
-				rootPanel.add(lblPlayer1);
-				rootPanel.add(textFieldPlayer2);
-				rootPanel.add(comboBoxPlayer2);
-				rootPanel.add(lblPlayer2);
-			break;
-			
-		case 3: rootPanel.add(textFieldPlayer1);
-				rootPanel.add(comboBoxPlayer1);
-				rootPanel.add(lblPlayer1);
-				rootPanel.add(textFieldPlayer2);
-				rootPanel.add(comboBoxPlayer2);
-				rootPanel.add(lblPlayer2);
-				rootPanel.add(textFieldPlayer3);
-				rootPanel.add(comboBoxPlayer3);
-				rootPanel.add(lblPlayer3);
-			break;	
-			
-		case 4: rootPanel.add(textFieldPlayer1);
-				rootPanel.add(comboBoxPlayer1);
-				rootPanel.add(lblPlayer1);
-				rootPanel.add(textFieldPlayer2);
-				rootPanel.add(comboBoxPlayer2);
-				rootPanel.add(lblPlayer2);
-				rootPanel.add(textFieldPlayer3);
-				rootPanel.add(comboBoxPlayer3);
-				rootPanel.add(lblPlayer3);
-				rootPanel.add(textFieldPlayer4);
-				rootPanel.add(comboBoxPlayer4);
-				rootPanel.add(lblPlayer4);
-			break;	
-			
-		case 5: rootPanel.add(textFieldPlayer1);
-				rootPanel.add(comboBoxPlayer1);
-				rootPanel.add(lblPlayer1);
-				rootPanel.add(textFieldPlayer2);
-				rootPanel.add(comboBoxPlayer2);
-				rootPanel.add(lblPlayer2);
-				rootPanel.add(textFieldPlayer3);
-				rootPanel.add(comboBoxPlayer3);
-				rootPanel.add(lblPlayer3);
-				rootPanel.add(textFieldPlayer4);
-				rootPanel.add(comboBoxPlayer4);
-				rootPanel.add(lblPlayer4);
-				rootPanel.add(textFieldPlayer5);
-				rootPanel.add(comboBoxPlayer5);
-				rootPanel.add(lblPlayer5);
-			break;
-			
-		case 6: rootPanel.add(textFieldPlayer1);
-				rootPanel.add(comboBoxPlayer1);
-				rootPanel.add(lblPlayer1);
-				rootPanel.add(textFieldPlayer2);
-				rootPanel.add(comboBoxPlayer2);
-				rootPanel.add(lblPlayer2);
-				rootPanel.add(textFieldPlayer3);
-				rootPanel.add(comboBoxPlayer3);
-				rootPanel.add(lblPlayer3);
-				rootPanel.add(textFieldPlayer4);
-				rootPanel.add(comboBoxPlayer4);
-				rootPanel.add(lblPlayer4);
-				rootPanel.add(textFieldPlayer5);
-				rootPanel.add(comboBoxPlayer5);
-				rootPanel.add(lblPlayer5);
-				rootPanel.add(textFieldPlayer6);
-				rootPanel.add(comboBoxPlayer6);
-				rootPanel.add(lblPlayer6);
-			break;
-		default:
-			break;
-		}
-			
+		
+		});
+	}
 	
+	public boolean validatePlayerDetails(GameMapGraph mapGraph) {
+		boolean missingData = false;
+		Iterator<Entry<String, String>> playerDetailsIT = mapGraph.getInputPlayerDetails().entrySet().iterator();
+		while(playerDetailsIT.hasNext()) {
+			Entry<String, String> inputPlayer = playerDetailsIT.next();
+			if((inputPlayer.getValue().split(",")[0]).length() == 0 || (inputPlayer.getValue().split(",")[1]).equalsIgnoreCase("Select One")) {
+				missingData = true;
+				break;
+			}
+		}
+		return missingData;
 	}
 }

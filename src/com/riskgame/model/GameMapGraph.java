@@ -1,5 +1,6 @@
 package com.riskgame.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +23,7 @@ import com.riskgame.view.PlayerView;
  * @author Shresthi Garg
  * @author Nikitha
  */
-public class GameMapGraph extends Observable {
+public class GameMapGraph extends Observable implements Serializable {
 	
 	/** Maptag object */
 	private MapTag mapTag;
