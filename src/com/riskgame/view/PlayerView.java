@@ -148,7 +148,7 @@ public class PlayerView implements Observer {
 
 		boolean isFortificationComplete = false;
 
-		//if (validateGameCompletion(mapGraph)) {
+		if (validateGameCompletion(mapGraph)) {
 
 			if (roundRobin == null) {
 				roundRobin = new RoundRobinController(mapGraph.getPlayers());
@@ -732,11 +732,16 @@ public class PlayerView implements Observer {
 					try {
 						File saveFile = new File(System.getProperty("user.dir")+"/resources/SavedGames/"+(new Date()).getTime()+".txt");
 						FileOutputStream fileOutput;
-						fileOutput = new FileOutputStream(saveFile);
-						ObjectOutputStream save = new ObjectOutputStream(fileOutput);
-						save.writeObject(mapGraph);
-						save.close();
-						fileOutput.close();
+						if(saveFile.createNewFile()) {
+							fileOutput = new FileOutputStream(saveFile);
+							ObjectOutputStream save = new ObjectOutputStream(fileOutput);
+							save.writeObject(mapGraph);
+							save.close();
+							fileOutput.close();
+						}
+						else {
+							JOptionPane.showMessageDialog(null, "Unable to Save the game, Please Try later");
+						}
 					} catch (Exception e1) {
 						e1.printStackTrace();
 					}
@@ -746,15 +751,15 @@ public class PlayerView implements Observer {
 			rootPanel.add(btnSave);
 
 			frmRiskGame.setVisible(true);
-//		} else {
-//			for (Player player : mapGraph.getPlayers()) {
-//				if (!player.isPlayerLostGame()) {
-//					JOptionPane.showMessageDialog(null, player.getName() + " has won the game!!");
-//					System.exit(0);
-//				}
-//			}
+		} else {
+			for (Player player : mapGraph.getPlayers()) {
+				if (!player.isPlayerLostGame()) {
+					JOptionPane.showMessageDialog(null, player.getName() + " has won the game!!");
+					System.exit(0);
+				}
+			}
 
-//		}
+		}
 	}
 
 	private boolean validateGameCompletion(GameMapGraph mapGraph) {
