@@ -32,6 +32,8 @@ public class Player extends Observable {
 	 */
 	private boolean endPlaceArmies;
 	
+	public ArrayList<String> currentPlayerCountriesList = new ArrayList<String>();
+	
 	/** Adjacent Country holder */
 	private ArrayList<Country> adjacentCountries = new ArrayList<Country>();
 
@@ -145,6 +147,9 @@ public class Player extends Observable {
 		return myCountries;
 	}
 
+	public ArrayList<String> getMyCountries1() {
+		return currentPlayerCountriesList;
+	}
 	/**
 	 * Set the list of the countries to player.
 	 * 
