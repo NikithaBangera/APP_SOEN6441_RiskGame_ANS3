@@ -1,5 +1,6 @@
 package com.riskgame.model;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
@@ -9,7 +10,7 @@ import java.util.HashMap;
  * @author Nikitha
  *
  */
-public class PlayerDomination {
+public class PlayerDomination implements Serializable{
 	
 	/**
 	 * This method computes the domination view and returns the same to be displayed

@@ -1,5 +1,6 @@
 package com.riskgame.strategy;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.riskgame.controller.PlayerController;
@@ -11,7 +12,7 @@ import com.riskgame.model.Player;
  * Aggressive player reinforces the strongest country, attacks until the army count of the attacking country is one,
  * fortifies the strongest country.
  *
- * @author 
+ * @author Nikitha
  *
  */
 public class Aggressive implements PlayerStrategy{
@@ -21,15 +22,16 @@ public class Aggressive implements PlayerStrategy{
 	@Override
 	public void placeArmies(GameMapGraph mapGraph, Player player, Country country) {
 		playerController = new PlayerController();
-		playerController.armiesAssignedToCountries(mapGraph, getStrongestCountry(mapGraph, player).getName(), 1);
+		playerController.armiesAssignedToCountries(mapGraph, getStrongestCountryWithAdjCountry(mapGraph, player).getName(), 1);
 	}
 
 	@Override
 	public void reinforcementPhase(Player player, GameMapGraph mapGraph, Country country, int reinforceArmyCount) {
 		playerController = new PlayerController();
+		player.setFirstReinforcement(false);
 		int reinforcementArmies = playerController.reinforcementPhase(player, mapGraph);
 		player.setArmyCount(player.getArmyCount() + reinforcementArmies);
-		playerController.armiesAssignedToCountries(mapGraph, getStrongestCountry(mapGraph, player).getName(), player.getArmyCount());
+		playerController.armiesAssignedToCountries(mapGraph, getStrongestCountryWithAdjCountry(mapGraph, player).getName(), player.getArmyCount());
 	}
 
 	@Override
@@ -42,7 +44,7 @@ public class Aggressive implements PlayerStrategy{
 			Country defenderCountry) {
 		playerController = new PlayerController();
 		int numberOfArmies = 0;
-		attackerCountry = getStrongestCountry(gameMapGraph, player);
+		attackerCountry = getStrongestCountryWithAdjCountry(gameMapGraph, player);
 		List<String> adjacentCountriesList = attackerCountry.getAdjacentCountries();
 		for(String adjCountry : adjacentCountriesList) {
 			Player adjPlayer = playerController.getPlayerForCountry(gameMapGraph, adjCountry);
@@ -93,6 +95,33 @@ public class Aggressive implements PlayerStrategy{
 			}
 		}
 		return weakestCountry;
+	}
+	
+	public Country getStrongestCountryWithAdjCountry(GameMapGraph mapGraph, Player player) {
+		int numberOfArmies = 0;
+		Country strongestCountry = null;
+		playerController = new PlayerController();
+		List<Country> countriesWithAdjCountries = new ArrayList<Country>();
+		for(Country country : player.getMyCountries()) {
+			for(String adjCountry : country.getAdjacentCountries()) {
+				Player adjPlayer = playerController.getPlayerForCountry(mapGraph, adjCountry);
+				Country adjCountryObject = playerController.getAdjacentCountry(mapGraph, adjCountry);
+				if(!player.getName().equalsIgnoreCase(adjPlayer.getName())
+						&& country.getNoOfArmies() >= adjCountryObject.getNoOfArmies()) {
+					countriesWithAdjCountries.add(country);
+					break;
+				}
+			}
+		}
+		
+		for(Country country : countriesWithAdjCountries) {
+			if(country.getNoOfArmies() >= numberOfArmies) {
+				numberOfArmies = country.getNoOfArmies();
+				strongestCountry = country;
+			}
+		}
+		
+		return strongestCountry;
 	}
 	
 

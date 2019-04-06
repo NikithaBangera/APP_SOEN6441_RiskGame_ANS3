@@ -1,5 +1,6 @@
 package com.riskgame.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Observable;
 import com.riskgame.view.CardView;
@@ -12,7 +13,7 @@ import com.riskgame.view.PlayerView;
  * @author Shresthi
  *
  */
-public class Card extends Observable {
+public class Card extends Observable implements Serializable{
 	
 	/** The constant for infantry */
 	public final static String INFANTRY = "infantry";

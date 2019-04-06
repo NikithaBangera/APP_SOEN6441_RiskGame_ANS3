@@ -1,5 +1,7 @@
 package com.riskgame.model;
 
+import java.io.Serializable;
+
 /**
  * This class is a model stores all the Map tag data.It stores Author name, Image name,
  * Scroll, Warn and Wrap options for the Map.
@@ -8,7 +10,7 @@ package com.riskgame.model;
  * @author Shiva
  *
  */
-public class MapTag {
+public class MapTag implements Serializable{
 
 	/** Name of the author for the map. */
 	private String authorName;

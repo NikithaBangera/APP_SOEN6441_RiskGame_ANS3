@@ -22,7 +22,6 @@ public class Cheater implements PlayerStrategy{
 
 	@Override
 	public void placeArmies(GameMapGraph mapGraph, Player player, Country country) {
-		// TODO Auto-generated method stub
 		//JOptionPane.showMessageDialog(null, "Army count of country " + country.getName() + " has been doubled to " + country.getNoOfArmies() + "\n");
 		
 	}

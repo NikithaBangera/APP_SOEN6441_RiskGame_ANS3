@@ -1,5 +1,6 @@
 package com.riskgame.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -15,7 +16,7 @@ import com.riskgame.view.PlayerView;
  * @author Nikitha
  *
  */
-public class Dice extends Observable {
+public class Dice extends Observable implements Serializable{
 
 	/** Attacker dice values list */
 	private List<Integer> attackerDiceValues;
