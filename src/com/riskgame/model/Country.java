@@ -32,10 +32,6 @@ public class Country extends Observable implements Serializable{
 	/** Adjacent Country holder */
 	private ArrayList<String> adjacentCountries;
 	
-	private ArrayList<Country> adjacentCountries1;
-	
-	private ArrayList<String> adjacentCountriesforWeakestCountry;
-
 	/** Number of armies */
 	private int noOfArmies;
 
@@ -195,10 +191,6 @@ public class Country extends Observable implements Serializable{
 		return adjacentCountries;
 	}
 	
-	public ArrayList<Country> getAdjacentCountries1() {
-		return adjacentCountries1;
-	}
-
 	/**
 	 * Set the adjacent countries.
 	 * 
@@ -276,22 +268,5 @@ public class Country extends Observable implements Serializable{
 		notifyObservers();
 	}
 
-	/**
-	 * Get the adjacent country list for weakest country
-	 * @return
-	 */
-	public ArrayList<String> getAdjacentCountriesforWeakestCountry() {
-		return adjacentCountriesforWeakestCountry;
-	}
-
-	/**
-	 * Set the adjacent country for weakest country
-	 * @param adjacentCountriesforWeakestCountry - adjacent countries list for weakest country
-	 */
-	public void setAdjacentCountriesforWeakestCountry(ArrayList<String> adjacentCountriesforWeakestCountry) {
-		this.adjacentCountriesforWeakestCountry = adjacentCountriesforWeakestCountry;
-	}
 	
-	
-
 }

@@ -1,6 +1,8 @@
 package com.riskgame.strategy;
 
 import java.util.ArrayList;
+import java.util.Random;
+
 import com.riskgame.controller.PlayerController;
 import com.riskgame.model.Country;
 import com.riskgame.model.GameMapGraph;
@@ -19,15 +21,17 @@ public class Benevolent implements PlayerStrategy{
 	@Override
 	public void placeArmies(GameMapGraph mapGraph, Player player, Country country) {
 		playerController = new PlayerController();
-		playerController.armiesAssignedToCountries(mapGraph, getWeakestCountry(mapGraph, player).getName(), 1);
+		Random random = new Random();
+		int countryNumber = random.nextInt(player.getMyCountries().size()) + 1;
+		playerController.armiesAssignedToCountries(mapGraph, player.getMyCountries().get(countryNumber-1).getName(), 1);
 		
 	}
 
 	@Override
 	public void reinforcementPhase(Player player, GameMapGraph mapGraph, Country country, int reinforceArmyCount) {
 		playerController = new PlayerController();
+		player.setFirstReinforcement(false);
 		int reinforcementArmies = playerController.reinforcementPhase(player, mapGraph);
-		player.setArmyCount(player.getArmyCount() + reinforcementArmies);
 		playerController.armiesAssignedToCountries(mapGraph, getWeakestCountry(mapGraph, player).getName(), player.getArmyCount());
 	}
 
@@ -37,28 +41,14 @@ public class Benevolent implements PlayerStrategy{
 			int armiesCount) {
 		playerController = new PlayerController();
 		Country weakestCountry = getWeakestCountry(mapGraph, player);
-		ArrayList<Country> adjacentCountriesListOfWeakestCountry = weakestCountry.getAdjacentCountries1();
-		player.setAdjacentCountriesforWeakestCountry(adjacentCountriesListOfWeakestCountry);
-		Country strongestCountryToFortify = getStrongestCountryInAdjacentCountryList(mapGraph, player);
+		Country strongestCountryToFortify = getStrongestCountry(mapGraph, player);
 		if (strongestCountryToFortify != null) {
-			int fortificationArmiestoweakestCountry = (strongestCountryToFortify.getNoOfArmies() - weakestCountry.getNoOfArmies()) / 2;
-			weakestCountry.setNoOfArmies(weakestCountry.getNoOfArmies() + fortificationArmiestoweakestCountry);
-			strongestCountryToFortify.setNoOfArmies(strongestCountryToFortify.getNoOfArmies() - fortificationArmiestoweakestCountry);
+			int fortifyArmiesToWeakestCountry = (strongestCountryToFortify.getNoOfArmies() - weakestCountry.getNoOfArmies()) / 2;
+			weakestCountry.setNoOfArmies(weakestCountry.getNoOfArmies() + fortifyArmiesToWeakestCountry);
+			strongestCountryToFortify.setNoOfArmies(strongestCountryToFortify.getNoOfArmies() - fortifyArmiesToWeakestCountry);
 			
 		}
 			}
-	
-	public Country getStrongestCountryInAdjacentCountryList(GameMapGraph mapGraph, Player player) {
-		int numberOfArmies = 0;
-		Country strongestCountryToFortify = null;
-		for(Country country: player.getAdjacentCountriesforWeakestCountry()) {
-			if(country.getNoOfArmies() >= numberOfArmies) {
-				numberOfArmies = country.getNoOfArmies();
-				strongestCountryToFortify = country;
-			}
-		}
-		return strongestCountryToFortify;
-	}
 	
 	public Country getStrongestCountry(GameMapGraph mapGraph, Player player) {
 		int numberOfArmies = 0;
@@ -75,6 +65,7 @@ public class Benevolent implements PlayerStrategy{
 	public Country getWeakestCountry(GameMapGraph mapGraph, Player player) {
 		int numberOfArmies = 0;
 		Country weakestCountry = null;
+		numberOfArmies = player.getMyCountries().get(0).getNoOfArmies();
 		for(Country country: player.getMyCountries()) {
 			if(country.getNoOfArmies() <= numberOfArmies) {
 				numberOfArmies = country.getNoOfArmies();
@@ -86,14 +77,14 @@ public class Benevolent implements PlayerStrategy{
 
 	@Override
 	public void attackPhase(GameMapGraph gameMapGraph, Player player, Country attacker, Country defender) {
-		System.out.println("Benevolent player cannot attack.");
+		//System.out.println("Benevolent player cannot attack.");
 		
 	}
 
 	@Override
 	public void allOutAttack(GameMapGraph gameMapGraph, Player player, Country attackerCountry,
 			Country defenderCountry) {
-		System.out.println("Benevolent player cannot attack.");
+		//System.out.println("Benevolent player cannot attack.");
 		
 	}
 }

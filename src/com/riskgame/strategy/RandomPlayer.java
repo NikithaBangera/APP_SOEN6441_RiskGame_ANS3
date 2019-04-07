@@ -1,8 +1,6 @@
 package com.riskgame.strategy;
 
-import java.util.ArrayList;
 import java.util.Random;
-
 import com.riskgame.controller.PlayerController;
 import com.riskgame.model.Country;
 import com.riskgame.model.GameMapGraph;
@@ -14,7 +12,7 @@ import com.riskgame.model.Player;
  * @author Shiva
  *
  */
-public class Randomplayer implements PlayerStrategy{
+public class RandomPlayer implements PlayerStrategy{
 
 	PlayerController playerController;
 	
@@ -28,8 +26,9 @@ public class Randomplayer implements PlayerStrategy{
 	@Override
 	public void placeArmies(GameMapGraph mapGraph, Player player, Country country) {
 		playerController = new PlayerController();
-		country = getRandomCountry(mapGraph,player);
-		playerController.armiesAssignedToCountries(mapGraph, country.getName(), 1);
+		Random random = new Random();
+		int countryNumber = random.nextInt(player.getMyCountries().size()) + 1;
+		playerController.armiesAssignedToCountries(mapGraph, player.getMyCountries().get(countryNumber-1).getName(), 1);
 	}
 	
 	/**
@@ -47,14 +46,9 @@ public class Randomplayer implements PlayerStrategy{
 	@Override
 	public void reinforcementPhase(Player player, GameMapGraph mapGraph, Country country, int reinforceArmyCount) {
 		playerController = new PlayerController();
-		int reinforcement=new Random().nextInt(2);
-		if(reinforcement==1) {
-			int reinforcementArmies = playerController.reinforcementPhase(player, mapGraph);
-			player.setArmyCount(player.getArmyCount() + reinforcementArmies);
-			country = getRandomCountry(mapGraph, player);
-			reinforceArmyCount=new Random().nextInt(player.getArmyCount());
-			playerController.armiesAssignedToCountries(mapGraph, country.getName(), reinforceArmyCount);
-		}
+		reinforceArmyCount = playerController.reinforcementPhase(player, mapGraph);
+		country = getRandomCountry(mapGraph, player);
+		playerController.armiesAssignedToCountries(mapGraph, country.getName(), reinforceArmyCount);
 	}
 	
 	/**
@@ -69,12 +63,20 @@ public class Randomplayer implements PlayerStrategy{
 	@Override
 	public void attackPhase(GameMapGraph gameMapGraph, Player player, Country attacker, Country defender) {
 		playerController = new PlayerController();
+		Player adjPlayer = null;
 		attacker = getRandomCountry(gameMapGraph,player);
-		defender = getRandomAdjacentCountry(gameMapGraph,attacker);
-		int attacktimes=new Random().nextInt(attacker.getNoOfArmies());
-		while( (!player.getMyCountries().contains(defender)) && attacktimes !=0 && (!(attacker.getNoOfArmies() > 1 && defender.getNoOfArmies() > 0))) {
-			playerController.attackPhase(gameMapGraph, attacker, defender);
-			attacktimes--;
+		if(getRandomCountryWithAdjCountry(gameMapGraph, player, attacker)) {
+			do {
+				int randomAdjCountry = new Random().nextInt(attacker.getAdjacentCountries().size()) + 1;
+				defender = playerController.getAdjacentCountry(gameMapGraph, attacker.getAdjacentCountries().get(randomAdjCountry));
+				adjPlayer = playerController.getPlayerForCountry(gameMapGraph, defender.getName());
+				
+			}while(player.getName().equalsIgnoreCase(adjPlayer.getName()));
+		
+		}
+		
+		if(defender != null) {
+			playerController.allOutAttack(gameMapGraph, attacker, defender);
 		}
 	}
 	
@@ -88,15 +90,6 @@ public class Randomplayer implements PlayerStrategy{
 	@Override
 	public void allOutAttack(GameMapGraph gameMapGraph, Player player, Country attackerCountry,
 			Country defenderCountry) {
-		playerController = new PlayerController();
-		attackerCountry = getRandomCountry(gameMapGraph,player);
-		defenderCountry = getRandomAdjacentCountry(gameMapGraph,attackerCountry);
-		int attacktimes=attackerCountry.getNoOfArmies();
-		while( (!player.getMyCountries().contains(defenderCountry)) && attacktimes !=0 && (!(attackerCountry.getNoOfArmies() > 1 && defenderCountry.getNoOfArmies() > 0))) {
-			playerController.attackPhase(gameMapGraph, attackerCountry, defenderCountry);
-			attacktimes--;
-		}
-		
 	}
 
 	/**
@@ -111,12 +104,19 @@ public class Randomplayer implements PlayerStrategy{
 	public void fortificationPhase(GameMapGraph gameMapGraph, Player player, Country fromCountry, Country toCountry,
 			int armiesCount) {
 			playerController=new PlayerController();
+			boolean countryFound = false;
 			fromCountry=getRandomCountry(gameMapGraph,player);
-			toCountry=getRandomAdjacentCountry(gameMapGraph,fromCountry);
-			if(player.getMyCountries().contains(toCountry)) {
-				armiesCount=new Random().nextInt(fromCountry.getNoOfArmies());
-				playerController.moveArmies(fromCountry, toCountry, armiesCount);
-			}	
+			do {
+				toCountry = getRandomCountry(gameMapGraph, player);
+				if(!fromCountry.getName().equalsIgnoreCase(toCountry.getName())) {
+					countryFound = true;
+				}
+			}while(!countryFound);
+			
+			armiesCount=new Random().nextInt(fromCountry.getNoOfArmies()) + 1;
+			if(armiesCount > 1) {
+				playerController.moveArmies(fromCountry, toCountry, armiesCount - 1);
+			}
 	}
 	/**
 	 * this method gets a random country owned by the Random player
@@ -125,22 +125,27 @@ public class Randomplayer implements PlayerStrategy{
 	 * @return randomCountry
 	 */
 	public Country getRandomCountry(GameMapGraph mapGraph, Player player) {
-		ArrayList<Country> countrySet = new ArrayList<>(player.getMyCountries());
-		int countryIndexAssignment = new Random().nextInt(countrySet.size());
-		Country randomCountry = countrySet.get(countryIndexAssignment);
-		return randomCountry;
+		int countryIndexAssignment = new Random().nextInt(player.getMyCountries().size()) + 1;
+		return player.getMyCountries().get(countryIndexAssignment - 1);
 	}
 	
 	/**
-	 * this method gets a random adjacent country of a country
+	 * this method gets a random country of player with adjacent country belonging to a different player
 	 * @param mapGraph
 	 * @param country
 	 * @return randomAdjacentCountry
 	 */
-	public Country getRandomAdjacentCountry(GameMapGraph mapGraph, Country country) {
-		int choice=new Random().nextInt(country.getAdjacentCountries().size());
-		Country randomAdjacentCountry=mapGraph.getCountrySet().get(country.getAdjacentCountries().get(choice));
-		return randomAdjacentCountry;
+	public boolean getRandomCountryWithAdjCountry(GameMapGraph mapGraph, Player player, Country country) {
+		playerController = new PlayerController();
+		boolean hasValidAdjCountry = false;
+		for(String adjCountry : country.getAdjacentCountries()) {
+			Player adjPlayer = playerController.getPlayerForCountry(mapGraph, adjCountry);
+			if(!player.getName().equalsIgnoreCase(adjPlayer.getName())) {
+				hasValidAdjCountry = true;
+				break;
+			}
+		}
+		return hasValidAdjCountry;
 	}
 	
 }
