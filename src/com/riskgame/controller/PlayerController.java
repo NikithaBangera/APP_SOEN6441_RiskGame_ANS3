@@ -416,16 +416,18 @@ public class PlayerController {
 				break;
 			}
 		}
+		
+		if (!adjacentCountries) {
+			JOptionPane.showMessageDialog(null, "Countries are not adjacanet!");
+			doFortification = true;
+		}
 
 		if (!doFortification) {
 			JOptionPane.showMessageDialog(null,
 					"Armies moved from " + fromCountry.getName() + " to " + toCountry.getName() + " successfully!");
 		}
 
-		if (!adjacentCountries) {
-			JOptionPane.showMessageDialog(null, "Countries are not adjacanet!");
-			doFortification = true;
-		}
+		
 	}
 
 	/**
