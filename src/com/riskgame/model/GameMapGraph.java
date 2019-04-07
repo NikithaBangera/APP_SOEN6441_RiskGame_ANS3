@@ -65,6 +65,11 @@ public class GameMapGraph extends Observable implements Serializable {
 	private Map<String, String> inputPlayerDetails = new TreeMap<String, String>();
 	
 	/**
+	 * Number of turns per game
+	 */
+	private String gameTurns;
+	
+	/**
 	 * GameMapGraph Constructor
 	 */
 	public GameMapGraph() {
@@ -361,5 +366,21 @@ public class GameMapGraph extends Observable implements Serializable {
 	 */
 	public void setInputPlayerDetails(Map<String, String> inputPlayerDetails) {
 		this.inputPlayerDetails = inputPlayerDetails;
+	}
+
+	/**
+	 * Method to get the number of turns per game
+	 * @return gameTurns - number of turns
+	 */
+	public String getGameTurns() {
+		return gameTurns;
+	}
+
+	/**
+	 * Method to set the number of turns per game
+	 * @param gameTurns - number of turns
+	 */
+	public void setGameTurns(String gameTurns) {
+		this.gameTurns = gameTurns;
 	}
 }
