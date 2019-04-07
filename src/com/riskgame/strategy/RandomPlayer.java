@@ -47,6 +47,7 @@ public class RandomPlayer implements PlayerStrategy{
 	public void reinforcementPhase(Player player, GameMapGraph mapGraph, Country country, int reinforceArmyCount) {
 		playerController = new PlayerController();
 		reinforceArmyCount = playerController.reinforcementPhase(player, mapGraph);
+		player.setArmyCount(player.getArmyCount() + reinforceArmyCount);
 		country = getRandomCountry(mapGraph, player);
 		playerController.armiesAssignedToCountries(mapGraph, country.getName(), reinforceArmyCount);
 	}

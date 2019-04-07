@@ -20,6 +20,9 @@ public class Aggressive implements PlayerStrategy{
 
 	PlayerController playerController;
 	
+	/**
+	 * This method places armies on the countries owned by Aggressive player
+	 */
 	@Override
 	public void placeArmies(GameMapGraph mapGraph, Player player, Country country) {
 		playerController = new PlayerController();
@@ -28,14 +31,23 @@ public class Aggressive implements PlayerStrategy{
 		playerController.armiesAssignedToCountries(mapGraph, player.getMyCountries().get(countryNumber-1).getName(), 1);
 	}
 
+	/**
+	 * This method reinforces armies to the strongest country of the Aggressive player
+	 */
 	@Override
 	public void reinforcementPhase(Player player, GameMapGraph mapGraph, Country country, int reinforceArmyCount) {
 		playerController = new PlayerController();
 		player.setFirstReinforcement(false);
 		int reinforcementArmies = playerController.reinforcementPhase(player, mapGraph);
+		player.setArmyCount(player.getArmyCount() + reinforcementArmies);
 		playerController.armiesAssignedToCountries(mapGraph, getStrongestCountryWithAdjCountry(mapGraph, player).getName(), player.getArmyCount());
 	}
 
+	/**
+	 * This method calls the allOutAttack method of playerController class by passing the aggressive player's
+	 * strongest country as the attacking country and the adjacent country of the strongest country which 
+	 * belongs to other player as the defender country
+	 */
 	@Override
 	public void attackPhase(GameMapGraph gameMapGraph, Player player, Country attackerCountry, Country defenderCountry) {
 		playerController = new PlayerController();
@@ -59,26 +71,42 @@ public class Aggressive implements PlayerStrategy{
 	@Override
 	public void allOutAttack(GameMapGraph gameMapGraph, Player player, Country attackerCountry,
 			Country defenderCountry) {
-	
-		
 	}
 
+	/**
+	 * This method is used for fortifying armies in the strongest armies
+	 */
 	@Override
 	public void fortificationPhase(GameMapGraph gameMapGraph, Player player, Country fromCountry, Country toCountry,
 			int armiesCount) {
 		int numberOfArmies = 0;
-		Country strongestCountry = getStrongestCountry(gameMapGraph, player);
-		numberOfArmies = strongestCountry.getNoOfArmies();
-		Country weakestCountry = null;
-		for(Country country: player.getMyCountries()) {
-			if(country.getNoOfArmies() <= numberOfArmies && country.getNoOfArmies() > 1) {
-				numberOfArmies = country.getNoOfArmies();
-				weakestCountry = country;
+		Country strongestCountry = getStrongestCountryWithAdjCountry(gameMapGraph, player);
+		Country strongestPlayerCountry = getStrongestCountry(gameMapGraph, player);
+		if(strongestCountry.getName().equalsIgnoreCase(strongestPlayerCountry.getName())) {
+			numberOfArmies = strongestCountry.getNoOfArmies();
+			
+			for(Country country: player.getMyCountries()) {
+				if(country.getNoOfArmies() <= numberOfArmies && country.getNoOfArmies() > 1) {
+					numberOfArmies = country.getNoOfArmies();
+					fromCountry = country;
+					armiesCount = fromCountry.getNoOfArmies() - 1;
+				}
 			}
 		}
-		playerController.moveArmies(weakestCountry, strongestCountry, weakestCountry.getNoOfArmies()-1);
+		else {
+			numberOfArmies = strongestCountry.getNoOfArmies();
+			fromCountry = strongestPlayerCountry;
+			armiesCount = (fromCountry.getNoOfArmies() - 1)/ 2;
+		}
+		playerController.moveArmies(fromCountry, strongestCountry, armiesCount);
 	}
 
+	/**
+	 * Method to get the strongest country from the Aggressive player's countries list
+	 * @param mapGraph - GameMapGraph object
+	 * @param player - current player which is the aggressive player
+	 * @return strongestCountry - strongest country of aggressive player
+	 */
 	public Country getStrongestCountry(GameMapGraph mapGraph, Player player) {
 		int numberOfArmies = 0;
 		Country strongestCountry = null;
@@ -91,6 +119,12 @@ public class Aggressive implements PlayerStrategy{
 		return strongestCountry;
 	}
 
+	/**
+	 * Method to get the weakest country from the Aggressive player's countries list
+	 * @param mapGraph - GameMapGraph object
+	 * @param player - current player which is the aggressive player
+	 * @return weakestCountry - weakest country of aggressive player
+	 */
 	public Country getWeakestCountry(GameMapGraph mapGraph, Player player) {
 		int numberOfArmies = 0;
 		Country weakestCountry = null;
@@ -104,6 +138,12 @@ public class Aggressive implements PlayerStrategy{
 		return weakestCountry;
 	}
 	
+	/**
+	 * Method to get the strongest country 
+	 * @param mapGraph - GameMapGraph object
+	 * @param player - current player which is the aggressive player
+	 * @return strongestCountry - strongest country of aggressive player
+	 */
 	public Country getStrongestCountryWithAdjCountry(GameMapGraph mapGraph, Player player) {
 		int numberOfArmies = 0;
 		Country strongestCountry = null;
@@ -113,8 +153,7 @@ public class Aggressive implements PlayerStrategy{
 			for(String adjCountry : country.getAdjacentCountries()) {
 				Player adjPlayer = playerController.getPlayerForCountry(mapGraph, adjCountry);
 				Country adjCountryObject = playerController.getAdjacentCountry(mapGraph, adjCountry);
-				if(!player.getName().equalsIgnoreCase(adjPlayer.getName())
-						&& country.getNoOfArmies() >= adjCountryObject.getNoOfArmies()) {
+				if(!player.getName().equalsIgnoreCase(adjPlayer.getName())) {
 					countriesWithAdjCountries.add(country);
 					break;
 				}
@@ -126,6 +165,10 @@ public class Aggressive implements PlayerStrategy{
 				numberOfArmies = country.getNoOfArmies();
 				strongestCountry = country;
 			}
+		}
+		
+		if(strongestCountry == null) {
+			strongestCountry = getStrongestCountry(mapGraph, player);
 		}
 		
 		return strongestCountry;
