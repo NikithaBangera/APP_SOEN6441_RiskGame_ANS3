@@ -1,5 +1,6 @@
 package com.riskgame.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
@@ -14,7 +15,7 @@ import com.riskgame.view.PlayerView;
  * @author Shiva
  * @author Nikitha
  */
-public class Continent extends Observable{
+public class Continent extends Observable implements Serializable{
 	
 	/** Name of the continent. */
 	String continentName;

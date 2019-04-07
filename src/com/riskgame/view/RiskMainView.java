@@ -190,7 +190,7 @@ public class RiskMainView extends JFrame {
 						ObjectInputStream oi = new ObjectInputStream(fi);
 						
 						GameMapGraph mapGraph = (GameMapGraph) oi.readObject();
-						PlayerView playerView = new PlayerView();
+						PlayerView playerView = new PlayerView(mapGraph);
 						
 						
 						fi.close();

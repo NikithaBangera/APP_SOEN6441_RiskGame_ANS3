@@ -1,5 +1,6 @@
 package com.riskgame.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Observable;
 import com.riskgame.view.CardView;
@@ -14,7 +15,7 @@ import java.util.List;
  * @author Shresthi
  * @author Nikitha
  */
-public class Country extends Observable {
+public class Country extends Observable implements Serializable{
 
 	/** Name of country. */
 	private String name;
@@ -31,10 +32,6 @@ public class Country extends Observable {
 	/** Adjacent Country holder */
 	private ArrayList<String> adjacentCountries;
 	
-	private ArrayList<Country> adjacentCountries1;
-	
-	private ArrayList<String>adjacentCountriesforWeakestCountry;
-
 	/** Number of armies */
 	private int noOfArmies;
 
@@ -194,10 +191,6 @@ public class Country extends Observable {
 		return adjacentCountries;
 	}
 	
-	public ArrayList<Country> getAdjacentCountries1() {
-		return adjacentCountries1;
-	}
-
 	/**
 	 * Set the adjacent countries.
 	 * 
@@ -274,15 +267,6 @@ public class Country extends Observable {
 		setChanged();
 		notifyObservers();
 	}
+
 	
-	/**
-	 * Set the adjacent countries.
-	 * 
-	 * @param adjacentCountries To set the list of adjacent countries
-	 * @return 
-	 */
-	public static ArrayList<String> setAdjacentCountriesforWeakestCountry(ArrayList<String> adjacentCountriesforWeakestCountry) {
-		return adjacentCountriesforWeakestCountry;
-		
-	}
 }

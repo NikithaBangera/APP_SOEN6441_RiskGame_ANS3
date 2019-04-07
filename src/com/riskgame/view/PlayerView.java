@@ -10,7 +10,6 @@ import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.util.Date;
@@ -18,6 +17,7 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Random;
 
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
@@ -55,6 +55,12 @@ import com.riskgame.model.Country;
 import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.Player;
 import com.riskgame.model.PlayerDomination;
+import com.riskgame.strategy.Aggressive;
+import com.riskgame.strategy.Benevolent;
+import com.riskgame.strategy.Cheater;
+import com.riskgame.strategy.Human;
+import com.riskgame.strategy.PlayerStrategy;
+import com.riskgame.strategy.RandomPlayer;
 
 /**
  * This class aims to create the player's view
@@ -147,6 +153,7 @@ public class PlayerView implements Observer {
 	private void initialize(GameMapGraph mapGraph) {
 
 		boolean isFortificationComplete = false;
+		rootPanel.setEnabled(true);
 
 		if (validateGameCompletion(mapGraph)) {
 
@@ -154,6 +161,7 @@ public class PlayerView implements Observer {
 				roundRobin = new RoundRobinController(mapGraph.getPlayers());
 			}
 
+		
 			if (!mapGraph.isRefreshFrame()) {
 				nextPlayerNumber++;
 				selectedAdjacentCountry = "";
@@ -165,6 +173,9 @@ public class PlayerView implements Observer {
 				player.setFirstReinforcement(true);
 				player.setCompleteAttack(false);
 				conquerCount = player.getConquerCountry();
+				if(!player.getPlayerType().equalsIgnoreCase("Human")) {
+					invokePlayerStrategy(mapGraph, player);
+				}
 			}
 
 			if (playerController.isPlaceArmiesComplete(mapGraph)
@@ -751,6 +762,7 @@ public class PlayerView implements Observer {
 			rootPanel.add(btnSave);
 
 			frmRiskGame.setVisible(true);
+									
 		} else {
 			for (Player player : mapGraph.getPlayers()) {
 				if (!player.isPlayerLostGame()) {
@@ -761,6 +773,7 @@ public class PlayerView implements Observer {
 
 		}
 	}
+
 
 	private boolean validateGameCompletion(GameMapGraph mapGraph) {
 		int i = 0;
@@ -885,5 +898,102 @@ public class PlayerView implements Observer {
 	private void refreshFrame(GameMapGraph mapGraph) {
 		mapGraph.setRefreshFrame(true);
 		initialize(mapGraph);
+	}
+	
+	private boolean invokePlayerStrategy(GameMapGraph mapGraph, Player currentPlayer) {
+		boolean strategyComplete = false;
+		
+		PlayerStrategy playerStrategy = null;
+		
+		playerStrategy =  currentPlayer.getPlayerType().equalsIgnoreCase("Aggressive") ? new Aggressive()
+				 : (currentPlayer.getPlayerType().equalsIgnoreCase("Benevolent") ? new Benevolent()
+						 : (currentPlayer.getPlayerType().equalsIgnoreCase("Cheater") ? new Cheater()
+								 :(currentPlayer.getPlayerType().equalsIgnoreCase("Random") ? new RandomPlayer()
+										 : null)));
+		rootPanel.setEnabled(false);
+		switch (mapGraph.getGamePhase()) {
+		
+		case "Place Armies":
+			if (!currentPlayer.isEndPlaceArmies() && !isOnlyPlayerForPlaceArmies(mapGraph,currentPlayer)) {
+				playerStrategy.placeArmies(mapGraph, currentPlayer, null);
+			}
+			else if(isOnlyPlayerForPlaceArmies(mapGraph, currentPlayer)) {
+				while(player.getArmyCount() > 0) {
+					playerStrategy.placeArmies(mapGraph, currentPlayer, null);
+				}
+			}
+			
+			if(playerController.isPlaceArmiesComplete(mapGraph)) {
+				mapGraph.setGamePhase("Reinforcement");
+			}
+			if(nextPlayerNumber == totalNumberOfPlayers) {
+				nextPlayerNumber = 0;
+			}
+			break;
+			
+		case "Reinforcement":
+			if(player.getPlayerType().equalsIgnoreCase("Aggressive")) {
+				playerStrategy.reinforcementPhase(currentPlayer, mapGraph, null, 0);
+				playerStrategy.attackPhase(mapGraph, currentPlayer, null, null);
+				playerStrategy.fortificationPhase(mapGraph, currentPlayer, null, null, 0);
+			}
+			else if(player.getPlayerType().equalsIgnoreCase("Benevolent")) {
+				playerStrategy.reinforcementPhase(currentPlayer, mapGraph, null, 0);
+				playerStrategy.fortificationPhase(mapGraph, currentPlayer, null, null, 0);
+			}
+			else if(player.getPlayerType().equalsIgnoreCase("Random")) {
+				playerStrategy.reinforcementPhase(currentPlayer, mapGraph, null, 0);
+				int numberOfAttacks = new Random().nextInt(currentPlayer.getMyCountries().size()) + 1;
+				while(numberOfAttacks > 0) {
+					playerStrategy.attackPhase(mapGraph, currentPlayer, null, null);
+					numberOfAttacks--;
+				}
+				playerStrategy.fortificationPhase(mapGraph, currentPlayer, null, null, 0);
+			}
+			else if(player.getPlayerType().equalsIgnoreCase("Cheater")) {
+				playerStrategy.reinforcementPhase(currentPlayer, mapGraph, null, 0);
+				playerStrategy.attackPhase(mapGraph, currentPlayer, null, null);
+				playerStrategy.fortificationPhase(mapGraph, currentPlayer, null, null, 0);
+			}
+			else {
+				playerStrategy.reinforcementPhase(currentPlayer, mapGraph, null, 0);
+			}
+			break;
+			
+		case "Attack":
+			
+				playerStrategy.allOutAttack(mapGraph, currentPlayer, null, null);
+				
+			break;
+		
+		case "Fortification":
+			
+			playerStrategy.fortificationPhase(mapGraph, currentPlayer, null, null, 0);
+			
+			break;
+		default:
+			break;
+		}
+		mapGraph.setRefreshFrame(false);
+		rootPanel.removeAll();
+		rootPanel.revalidate();
+		rootPanel.repaint();
+		initialize(mapGraph);
+		return strategyComplete;
+		
+	}
+
+	private boolean isOnlyPlayerForPlaceArmies(GameMapGraph mapGraph, Player strategicPlayer) {
+		boolean isOnlyPlayer = true;
+		int playerCount = mapGraph.getPlayers().size();
+		for(Player gamePlayer : mapGraph.getPlayers()) {
+			if(!gamePlayer.isEndPlaceArmies() && !gamePlayer.getName().equalsIgnoreCase(strategicPlayer.getName())) {
+				playerCount--;
+			}
+		}
+		if(mapGraph.getPlayers().size() - playerCount > 0) {
+			isOnlyPlayer = false;
+		}
+		return isOnlyPlayer;
 	}
 }
