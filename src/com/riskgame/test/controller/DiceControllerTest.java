@@ -1,4 +1,4 @@
-package com.riskgame.controllertest;
+package com.riskgame.test.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
 
