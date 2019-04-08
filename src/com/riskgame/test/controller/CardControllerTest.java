@@ -1,4 +1,4 @@
-package com.riskgame.controllertest;
+package com.riskgame.test.controller;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -12,6 +12,7 @@ import com.riskgame.model.Player;
 
 /**
  * This class aims to test the Card Controller method
+ * 
  * @author Shresthi Garg
  *
  */
@@ -37,11 +38,12 @@ public class CardControllerTest {
 		player.setArmyCount(23);
 
 	}
-	
+
 	/**
 	 * This method is called before each test case
 	 */
-	@BeforeEach public void assignCard() {
+	@BeforeEach
+	public void assignCard() {
 		cardsSelected = new HashMap<String, Integer>();
 		cardsSelected.put(Card.ARTILLERY, 1);
 		cardsSelected.put(Card.CAVALRY, 1);
@@ -65,7 +67,7 @@ public class CardControllerTest {
 		int count = cardAction.addCardCount(Card.CAVALRY, player);
 		assertTrue(count != 2);
 	}
-	
+
 	/**
 	 * Tests the exchange Card method
 	 */
@@ -75,7 +77,7 @@ public class CardControllerTest {
 		System.out.println(cardsSelected);
 		assertEquals("Successfully exchanged Cards with 5 armies.", message);
 	}
-	
+
 	/**
 	 * Tests the exchange card invalid scenario
 	 */
@@ -85,7 +87,5 @@ public class CardControllerTest {
 		String message = cardAction.exchangeCards(cardsSelected, player);
 		assertTrue("Cannot perform exchange. Should select atleast 3 cards".equals(message));
 	}
-	
-	
 
 }
