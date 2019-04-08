@@ -3,6 +3,8 @@ package com.riskgame.controllertest;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
+
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.riskgame.controller.LoadMapController;
@@ -18,28 +20,33 @@ import com.riskgame.controller.LoadMapController;
 public class LoadMapControllerTest {
 
 	/** Object for ReadAndWriteMap Class */
-	LoadMapController readAndWriteMap;
+	private static LoadMapController readAndWriteMap;
 
 	/** String to hold the valid and invalid map files */
-	private String validMap, invalidMap;
+	private static String validMap, invalidMap, notConnectedMap, connectedMap;
 
 	/** String to hold the valid and invalid country data */
-	private String validCountryData, invalidCountryData;
+	private static String validCountryData, invalidCountryData;
 
 	/** String to hold the valid and invalid continent data */
-	private String validContinentData, invalidContinentData;
+	private static String validContinentData, invalidContinentData;
 
 	/** String to hold the valid and invalid meta data */
-	private String validMetaData, invalidMetaData;
+	private static String validMetaData, invalidMetaData;
 
 	/**
 	 * ReadAndWriteMapTest Constructor for initial setup
 	 */
-	public LoadMapControllerTest() {
-
+	
+	
+	@BeforeAll
+	public static void beforeAll() {
 		readAndWriteMap = new LoadMapController();
-		validMap = "resources\\maps\\Valid.map";
-		invalidMap = "resources\\maps\\Invalid.map";
+		invalidMap = "resources/maps/Invalid.map";
+		validMap = "resources/maps/Valid.map";
+		notConnectedMap = "resources/maps/notConnected.map";
+		connectedMap = "resources/maps/connected.map";
+		
 		validCountryData = "[Country] Libya,314,94,Northern Africa,Tunisia,Algeria,Egypt";
 		invalidCountryData = "[Country]\n,133,266,Northern Ireland,Ireland";
 		validContinentData = "[Continent]\nSouth America=2";
@@ -114,5 +121,23 @@ public class LoadMapControllerTest {
 	@Test
 	public void isInvalidMetaData() {
 		assertFalse(readAndWriteMap.validatemetadata(invalidMetaData));
+	}
+	
+	/**
+	 * Test method for checking the connectivity of a loaded map 
+	 * @throws IOException 
+	 */
+	@Test
+	public void isConnectedMap() throws IOException {
+		assertTrue(readAndWriteMap.uploadMap(connectedMap));
+	}
+	/**
+	 * Test method for checking the connectivity of a loaded map 
+	 * @throws IOException 
+	 */
+	
+	@Test
+	public void isNotConnectedMap() throws IOException {
+		assertFalse(readAndWriteMap.uploadMap(notConnectedMap));
 	}
 }
