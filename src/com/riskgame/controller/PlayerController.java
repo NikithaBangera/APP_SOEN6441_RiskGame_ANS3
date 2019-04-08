@@ -301,7 +301,9 @@ public class PlayerController {
 				if (playerFound) {
 					for (Country country : player.getMyCountries()) {
 						if (country.getName().equalsIgnoreCase(defender.getName())) {
-							JOptionPane.showMessageDialog(null, "Cannot attack your own country!!");
+							if(!gameMapGraph.getGameType().equalsIgnoreCase("Tournament")) {
+								JOptionPane.showMessageDialog(null, "Cannot attack your own country!!");
+							}
 							isPlayerCountry = true;
 							break;
 						}
@@ -315,11 +317,15 @@ public class PlayerController {
 					if (attacker.getNoOfArmies() > 1 && defender.getNoOfArmies() > 0) {
 						isAttackPossible = true;
 					} else {
-						JOptionPane.showMessageDialog(null,
+						if(!gameMapGraph.getGameType().equalsIgnoreCase("Tournament")) {
+							JOptionPane.showMessageDialog(null,
 								"Insufficient armies in the attacker country/defender country");
+						}
 					}
 				} else {
-					JOptionPane.showMessageDialog(null, "Attacker and Defender Countries are not adjacent!");
+					if(!gameMapGraph.getGameType().equalsIgnoreCase("Tournament")) {
+						JOptionPane.showMessageDialog(null, "Attacker and Defender Countries are not adjacent!");
+					}
 				}
 			}
 		}
@@ -354,7 +360,9 @@ public class PlayerController {
 			if (playerFound) {
 				for (Country country : player.getMyCountries()) {
 					if (country.getName().equalsIgnoreCase(defenderCountry.getName())) {
-						JOptionPane.showMessageDialog(null, "Cannot attack your own country!!");
+						if(!gameMapGraph.getGameType().equalsIgnoreCase("Tournament")) {
+							JOptionPane.showMessageDialog(null, "Cannot attack your own country!!");
+						}
 						isPlayerCountry = true;
 						break;
 					}
@@ -388,12 +396,16 @@ public class PlayerController {
 						attacker.getPlayersCardList().putAll(defender.getPlayersCardList());
 						attacker.setConquerCountry(attacker.getConquerCountry() - 1);
 						defender.setPlayerLostGame(true);
-						JOptionPane.showMessageDialog(null, "Player "+defender.getName()+" has lost the game!!");
+						if(!gameMapGraph.getGameType().equalsIgnoreCase("Tournament")) {
+							JOptionPane.showMessageDialog(null, "Player "+defender.getName()+" has lost the game!!");
+						}
 					}
 				}
 
 			} else if (attackerCountry.getNoOfArmies() == 1) {
-				JOptionPane.showMessageDialog(null, "Attacker cannot attack anymore");
+				if(!gameMapGraph.getGameType().equalsIgnoreCase("Tournament")) {
+					JOptionPane.showMessageDialog(null, "Attacker cannot attack anymore");
+				}
 			}
 		}
 	}
@@ -408,32 +420,36 @@ public class PlayerController {
 	 * @param toCountry   - The country to where player want to move army
 	 * @param armiesCount - Count of armies player wish to move
 	 */
-	public void moveArmies(Country fromCountry, Country toCountry, int armiesCount) {
+	public void moveArmies(GameMapGraph mapGraph, Country fromCountry, Country toCountry, int armiesCount) {
 
 		boolean adjacentCountries = false;
-		for (String country : fromCountry.getAdjacentCountries()) {
-			if (country.equalsIgnoreCase(toCountry.getName())) {
-				int fromCountryArmy = fromCountry.getNoOfArmies();
-				int toCountryArmy = toCountry.getNoOfArmies();
-				fromCountry.setNoOfArmies(fromCountryArmy - armiesCount);
-				toCountry.setNoOfArmies(toCountryArmy + armiesCount);
-				adjacentCountries = true;
-				doFortification = false;
-				break;
+		if(fromCountry.getNoOfArmies() > 1 && (fromCountry.getNoOfArmies()-armiesCount) >= 1) {
+			for (String country : fromCountry.getAdjacentCountries()) {
+				if (country.equalsIgnoreCase(toCountry.getName())) {
+					int fromCountryArmy = fromCountry.getNoOfArmies();
+					int toCountryArmy = toCountry.getNoOfArmies();
+					fromCountry.setNoOfArmies(fromCountryArmy - armiesCount);
+					toCountry.setNoOfArmies(toCountryArmy + armiesCount);
+					adjacentCountries = true;
+					doFortification = false;
+					break;
+				}
+			}
+			
+			if (!adjacentCountries) {
+				if(!mapGraph.getGameType().equalsIgnoreCase("Tournament")) {
+					JOptionPane.showMessageDialog(null, "Countries are not adjacanet!");
+				}
+				doFortification = true;
+			}
+	
+			if (!doFortification) {
+				if(!mapGraph.getGameType().equalsIgnoreCase("Tournament")) {
+					JOptionPane.showMessageDialog(null,
+						"Armies moved from " + fromCountry.getName() + " to " + toCountry.getName() + " successfully!");
+				}
 			}
 		}
-		
-		if (!adjacentCountries) {
-			JOptionPane.showMessageDialog(null, "Countries are not adjacanet!");
-			doFortification = true;
-		}
-
-		if (!doFortification) {
-			JOptionPane.showMessageDialog(null,
-					"Armies moved from " + fromCountry.getName() + " to " + toCountry.getName() + " successfully!");
-		}
-
-		
 	}
 
 	/**
@@ -533,10 +549,14 @@ public class PlayerController {
 				}
 
 			} else {
-				JOptionPane.showMessageDialog(null, "Insufficient number of armies.");
+				if(!mapGraph.getGameType().equalsIgnoreCase("Tournament")) {
+					JOptionPane.showMessageDialog(null, "Insufficient number of armies.");
+				}
 			}
 		} else {
-			JOptionPane.showMessageDialog(null, "This country is not owned by you!");
+			if(!mapGraph.getGameType().equalsIgnoreCase("Tournament")) {
+				JOptionPane.showMessageDialog(null, "This country is not owned by you!");
+			}
 		}
 	}
 
@@ -555,7 +575,7 @@ public class PlayerController {
 		boolean attackerFound = false;
 		boolean defenderFound = false;
 		boolean moveSuccessful = false;
-		if ((attackerCountry.getNoOfArmies() - armiesToBeMoved) > 1) {
+		if ((attackerCountry.getNoOfArmies() - armiesToBeMoved) >= 1) {
 			attackerCountry.setNoOfArmies(attackerCountry.getNoOfArmies() - armiesToBeMoved);
 			defenderCountry.setNoOfArmies(defenderCountry.getNoOfArmies() + armiesToBeMoved);
 
@@ -590,8 +610,10 @@ public class PlayerController {
 			}
 
 		} else {
-			JOptionPane.showMessageDialog(null,
+			if(!gameMapGraph.getGameType().equalsIgnoreCase("Tournament")) {
+				JOptionPane.showMessageDialog(null,
 					"Allowed number of armies to be moved: " + (attackerCountry.getNoOfArmies() - 1));
+			}
 		}
 		return moveSuccessful;
 	}

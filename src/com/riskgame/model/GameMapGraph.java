@@ -72,7 +72,7 @@ public class GameMapGraph extends Observable implements Serializable {
 	/**
 	 * Game Type - Tournament or normal
 	 */
-	private String gameType;
+	private String gameType = "";
 	
 	/**
 	 * Game Result of tournament

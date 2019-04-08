@@ -543,7 +543,7 @@ public class PlayerView implements Observer {
 							if (playerFound) {
 								for (Country country : player.getMyCountries()) {
 									if (country.getName().equalsIgnoreCase(selectedAdjCountryObject.getName())) {
-										playerController.moveArmies(selectedCountryObject, selectedAdjCountryObject,
+										playerController.moveArmies(mapGraph, selectedCountryObject, selectedAdjCountryObject,
 												Integer.parseInt(armiesCount));
 										isAdjCountry = true;
 										isFortificationComplete = true;

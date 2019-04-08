@@ -1,7 +1,12 @@
 package com.riskgame.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
@@ -34,7 +39,7 @@ public class TournamentController {
 	PlayerController playerController = new PlayerController();
 	
 	public void playTournament(TournamentMapGraph tournamentMapGraph) {
-		
+		playerController.setCountOfthePlayers(tournamentMapGraph.getNumberOfPlayers());
 		loadTournamentMaps(tournamentMapGraph);
 		populateTournamentMapGraphs(tournamentMapGraph);
 		
@@ -64,7 +69,10 @@ public class TournamentController {
 				
 				if(validateGameCompletion(gameMapGraph)) {
 					for(Player player : gameMapGraph.getPlayers()) {
-						invokePlayerStrategy(gameMapGraph, player);
+						if(!player.isPlayerLostGame()) {
+							System.out.println(gameTurns + "-" + player.getName());
+							invokePlayerStrategy(gameMapGraph, player);
+						}
 					}
 					gameTurns--;
 				}
@@ -120,9 +128,11 @@ public class TournamentController {
 						fileName = f.getName();
 						fileName = fileName.substring(0, fileName.lastIndexOf("."));
 						loadMapGraph.setFilename(fileName);
+						loadMapGraph.setGameType("Tournament");
 						isGoodToStartGame = createandeditmap.uploadMap(loadMapGraph);
 						if(isGoodToStartGame) {
 							initialTournamentMaps.put(i, loadMapGraph);
+							saveTournamentMaps(i, loadMapGraph);
 						}
 					}
 					
@@ -135,29 +145,56 @@ public class TournamentController {
 		}
 	}
 	
-	private void populateTournamentMapGraphs(TournamentMapGraph tournamentMapGraph) {
-		
-		for(int j=1;j<=tournamentMapGraph.getNumberOfGames();j++) {
-			for(int k=1;k<=tournamentMapGraph.getNumberOfMaps();k++) {
-				gameKey = "G"+j+"M"+k;
-				initialTournamentMaps.get(k).setGameTurns(tournamentMapGraph.getGameTurns());
-				countOfthePlayers = tournamentMapGraph.getInputPlayerDetails().size();
-				Iterator<Entry<String, String>> inputPlayerIt = tournamentMapGraph.getInputPlayerDetails().entrySet().iterator();
-				while(inputPlayerIt.hasNext()) {
-					Entry<String, String> inputPlayer = inputPlayerIt.next();
-					Player riskPlayer = new Player();
-					riskPlayer.setName(inputPlayer.getValue().split(",")[0]);
-					riskPlayer.setPlayerType(inputPlayer.getValue().split(",")[1]);
-					riskPlayer.setConquerCountry(0);
-					riskPlayer.setFirstReinforcement(true);
-					initialTournamentMaps.get(k).getPlayers().add(riskPlayer);
-					playerController.allocationOfCountry(initialTournamentMaps.get(k));
-					playerController.allocationOfArmyToPlayers(initialTournamentMaps.get(k));
-					playerController.allocationOfArmyToCountriesInitially(initialTournamentMaps.get(k));
-					
-				}
-				tournamentMapGraph.getTournamentMapGraphs().put(gameKey, initialTournamentMaps.get(k));
+	private void saveTournamentMaps(int i, GameMapGraph loadMapGraph) {
+		try {
+			File saveFile = new File(System.getProperty("user.dir")+"/resources/TournamentMaps/"+i+".txt");
+			FileOutputStream fileOutput;
+			if(saveFile.createNewFile()) {
+				fileOutput = new FileOutputStream(saveFile);
+				ObjectOutputStream save = new ObjectOutputStream(fileOutput);
+				save.writeObject(loadMapGraph);
+				save.close();
+				fileOutput.close();
 			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+
+	private void populateTournamentMapGraphs(TournamentMapGraph tournamentMapGraph) {
+		try {
+			for(int j=1;j<=tournamentMapGraph.getNumberOfGames();j++) {
+				for(int k=1;k<=tournamentMapGraph.getNumberOfMaps();k++) {
+					FileInputStream fi = new FileInputStream(new File(System.getProperty("user.dir")+"/resources/TournamentMaps/"+k+".txt"));
+					ObjectInputStream oi = new ObjectInputStream(fi);
+					GameMapGraph mapGraph = (GameMapGraph) oi.readObject();
+					oi.close();
+					gameKey = "G"+j+"M"+k;
+					mapGraph.setGameTurns(tournamentMapGraph.getGameTurns());
+					countOfthePlayers = tournamentMapGraph.getInputPlayerDetails().size();
+					Iterator<Entry<String, String>> inputPlayerIt = tournamentMapGraph.getInputPlayerDetails().entrySet().iterator();
+					while(inputPlayerIt.hasNext()) {
+						Entry<String, String> inputPlayer = inputPlayerIt.next();
+						Player riskPlayer = new Player();
+						riskPlayer.setName(inputPlayer.getValue().split(",")[0]);
+						riskPlayer.setPlayerType(inputPlayer.getValue().split(",")[1]);
+						riskPlayer.setConquerCountry(0);
+						riskPlayer.setFirstReinforcement(true);
+						mapGraph.getPlayers().add(riskPlayer);
+					}
+					playerController.allocationOfCountry(mapGraph);
+					playerController.allocationOfArmyToPlayers(mapGraph);
+					playerController.allocationOfArmyToCountriesInitially(mapGraph);
+					mapGraph.setGameType("Tournament");
+					tournamentMapGraph.getTournamentMapGraphs().put(gameKey, mapGraph);
+				}
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 	

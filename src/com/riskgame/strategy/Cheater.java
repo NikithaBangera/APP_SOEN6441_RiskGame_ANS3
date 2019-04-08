@@ -77,7 +77,9 @@ public class Cheater implements PlayerStrategy{
 			losingPlayer.getMyCountries().remove(i);
 			if(losingPlayer.getMyCountries().size() == 0) {
 				losingPlayer.setPlayerLostGame(true);
-				JOptionPane.showMessageDialog(null, "Player "+losingPlayer.getName()+" has lost the game!!");
+				if(!gameMapGraph.getGameType().equalsIgnoreCase("Tournament")) {
+					JOptionPane.showMessageDialog(null, "Player "+losingPlayer.getName()+" has lost the game!!");
+				}
 			}
 		}
 	}

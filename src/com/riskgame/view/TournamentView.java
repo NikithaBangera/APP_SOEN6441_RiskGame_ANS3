@@ -318,7 +318,7 @@ public class TournamentView extends JFrame{
 								tournamentController.playTournament(tournamentMapGraph);
 								btnStartGame.setEnabled(false);
 								textAreaTournamentResult.setText(tournamentMapGraph.getTournamentResult());
-								rootPanel.removeAll();
+								//rootPanel.removeAll();
 								rootPanel.revalidate();
 								rootPanel.repaint();
 								initialize(tournamentMapGraph);

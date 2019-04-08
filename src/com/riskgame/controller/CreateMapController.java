@@ -147,26 +147,32 @@ public class CreateMapController {
 		mapGraph = uploadedmapGraph;
 		System.out.println("\nUploaded Map Details\n");
 		printMap();
+		String option;
 		boolean exit = false;
 		while (!exit) {
-			System.out.println("\nChoose the below options to edit the uploaded map\n");
-			System.out.println("1. Enter Map tag data.");
-			System.out.println("2. Add the continents\n3. Delete a continent");
-			System.out.println("4. Add the countries\n5. Delete a country");
-			System.out.println("6. Add adjacency\n7. Delete Adjacency");
-			System.out.println("8. Show the map's contents\n9. Save the map and exit");
-			System.out.println("10. Exit without Saving the map");
-
-			System.out.println("\nPlease enter your choice below:");
-			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-			Pattern pattern = Pattern.compile("[0-9]+");
-			String option = br.readLine().trim();
-			Matcher match = pattern.matcher(option.trim());
-			while (!(match.matches())) {
-				System.out.println("Please enter a valid option(number) from the game menu!");
-
+			if(!mapGraph.getGameType().equalsIgnoreCase("Tournament")) {
+				System.out.println("\nChoose the below options to edit the uploaded map\n");
+				System.out.println("1. Enter Map tag data.");
+				System.out.println("2. Add the continents\n3. Delete a continent");
+				System.out.println("4. Add the countries\n5. Delete a country");
+				System.out.println("6. Add adjacency\n7. Delete Adjacency");
+				System.out.println("8. Show the map's contents\n9. Save the map and exit");
+				System.out.println("10. Exit without Saving the map");
+	
+				System.out.println("\nPlease enter your choice below:");
+				BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+				Pattern pattern = Pattern.compile("[0-9]+");
 				option = br.readLine().trim();
-				match = pattern.matcher(option.trim());
+				Matcher match = pattern.matcher(option.trim());
+				while (!(match.matches())) {
+					System.out.println("Please enter a valid option(number) from the game menu!");
+	
+					option = br.readLine().trim();
+					match = pattern.matcher(option.trim());
+				}
+			}
+			else {
+				option = "9";
 			}
 
 			switch (Integer.parseInt(option)) {
@@ -918,9 +924,12 @@ public class CreateMapController {
 		if (flag && countrydataFlag && continentFlag && adjacencyFlag /* && flag7 */ && mapTagFlag) {
 			if (connectedFlag) {
 				String oldFileName = new String();
+				String option = "no";
 				if (Thread.currentThread().getStackTrace()[2].getMethodName().equalsIgnoreCase("uploadMap")) {
-					System.out.println("\nDo you want to rename the file ? Yes or No ");
-					String option = br.readLine();
+					if(!mapGraph.getGameType().equalsIgnoreCase("Tournament")) {
+						System.out.println("\nDo you want to rename the file ? Yes or No ");
+						option = br.readLine();
+					}
 					if (option.equalsIgnoreCase("yes")) {
 						System.out.println("\nPlease enter the new file name to save map file:");
 						fileName = br.readLine();

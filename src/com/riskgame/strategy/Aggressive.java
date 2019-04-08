@@ -100,7 +100,7 @@ public class Aggressive implements PlayerStrategy{
 			armiesCount = (fromCountry.getNoOfArmies() - 1)/ 2;
 		}
 		if(fromCountry != null && strongestCountry != null) {
-			playerController.moveArmies(fromCountry, strongestCountry, armiesCount);
+			playerController.moveArmies(gameMapGraph, fromCountry, strongestCountry, armiesCount);
 		}
 	}
 

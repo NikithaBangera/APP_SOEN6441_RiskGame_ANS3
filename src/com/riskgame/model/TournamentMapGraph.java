@@ -37,7 +37,7 @@ public class TournamentMapGraph {
 	/**
 	 * Result of the tournament
 	 */
-	private String tournamentResult;
+	private String tournamentResult = "";
 	
 	/**
 	 * Method to get player details from StartGameView class.

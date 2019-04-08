@@ -1,6 +1,9 @@
 package com.riskgame.strategy;
 
 import java.util.Random;
+
+import javax.swing.JOptionPane;
+
 import com.riskgame.controller.PlayerController;
 import com.riskgame.model.Country;
 import com.riskgame.model.GameMapGraph;
@@ -107,16 +110,15 @@ public class RandomPlayer implements PlayerStrategy{
 			playerController=new PlayerController();
 			boolean countryFound = false;
 			fromCountry=getRandomCountry(gameMapGraph,player);
-			do {
-				toCountry = getRandomCountry(gameMapGraph, player);
-				if(!fromCountry.getName().equalsIgnoreCase(toCountry.getName())) {
+			toCountry = getRandomCountry(gameMapGraph, player);
+			if(!fromCountry.getName().equalsIgnoreCase(toCountry.getName())) {
 					countryFound = true;
+			}
+			if(countryFound) {
+				armiesCount=new Random().nextInt(fromCountry.getNoOfArmies()) + 1;
+				if(armiesCount > 1 && (fromCountry.getNoOfArmies() - armiesCount) >= 1) {
+					playerController.moveArmies(gameMapGraph, fromCountry, toCountry, armiesCount);
 				}
-			}while(!countryFound);
-			
-			armiesCount=new Random().nextInt(fromCountry.getNoOfArmies()) + 1;
-			if(armiesCount > 1 && (fromCountry.getNoOfArmies() - armiesCount) >= 1) {
-				playerController.moveArmies(fromCountry, toCountry, armiesCount);
 			}
 	}
 	/**
