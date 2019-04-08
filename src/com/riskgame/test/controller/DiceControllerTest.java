@@ -94,7 +94,7 @@ class DiceControllerTest {
 		attacker.setMyCountries(myCountry);
 		defender.setMyCountries(others);
 		
-		
+		mapGraph.setGameType("Test");
 	}
 	
 	/** 

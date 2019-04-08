@@ -957,15 +957,20 @@ public class PlayerView implements Observer {
 			
 		case "Reinforcement":
 			if(player.getPlayerType().equalsIgnoreCase("Aggressive")) {
+				JOptionPane.showMessageDialog(null, "Player "+player.getName()+"(Aggressive) has started playing");
 				playerStrategy.reinforcementPhase(currentPlayer, mapGraph, null, 0);
 				playerStrategy.attackPhase(mapGraph, currentPlayer, null, null);
 				playerStrategy.fortificationPhase(mapGraph, currentPlayer, null, null, 0);
+				JOptionPane.showMessageDialog(null, player.getName()+"(Aggressive) player's turn ended.");
 			}
 			else if(player.getPlayerType().equalsIgnoreCase("Benevolent")) {
+				JOptionPane.showMessageDialog(null, "Player "+player.getName()+"(Benevolent) has started playing");
 				playerStrategy.reinforcementPhase(currentPlayer, mapGraph, null, 0);
 				playerStrategy.fortificationPhase(mapGraph, currentPlayer, null, null, 0);
+				JOptionPane.showMessageDialog(null, player.getName()+"(Benevolent) player's turn ended.");
 			}
 			else if(player.getPlayerType().equalsIgnoreCase("Random")) {
+				JOptionPane.showMessageDialog(null, "Player "+player.getName()+"(Random) has started playing");
 				playerStrategy.reinforcementPhase(currentPlayer, mapGraph, null, 0);
 				int numberOfAttacks = new Random().nextInt(currentPlayer.getMyCountries().size()) + 1;
 				while(numberOfAttacks > 0) {
@@ -973,11 +978,14 @@ public class PlayerView implements Observer {
 					numberOfAttacks--;
 				}
 				playerStrategy.fortificationPhase(mapGraph, currentPlayer, null, null, 0);
+				JOptionPane.showMessageDialog(null, player.getName()+"(Random) player's turn ended.");
 			}
 			else if(player.getPlayerType().equalsIgnoreCase("Cheater")) {
+				JOptionPane.showMessageDialog(null, "Player "+player.getName()+"(Cheater) has started playing");
 				playerStrategy.reinforcementPhase(currentPlayer, mapGraph, null, 0);
 				playerStrategy.attackPhase(mapGraph, currentPlayer, null, null);
 				playerStrategy.fortificationPhase(mapGraph, currentPlayer, null, null, 0);
+				JOptionPane.showMessageDialog(null, player.getName()+"(Cheater) player's turn ended.");
 			}
 			else {
 				playerStrategy.reinforcementPhase(currentPlayer, mapGraph, null, 0);
