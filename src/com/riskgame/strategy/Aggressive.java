@@ -86,7 +86,8 @@ public class Aggressive implements PlayerStrategy{
 			numberOfArmies = strongestCountry.getNoOfArmies();
 			
 			for(Country country: player.getMyCountries()) {
-				if(country.getNoOfArmies() <= numberOfArmies && country.getNoOfArmies() > 1) {
+				if(country.getNoOfArmies() <= numberOfArmies && country.getNoOfArmies() > 1 
+						&& !country.getName().equalsIgnoreCase(strongestCountry.getName())) {
 					numberOfArmies = country.getNoOfArmies();
 					fromCountry = country;
 					armiesCount = fromCountry.getNoOfArmies() - 1;
@@ -98,7 +99,9 @@ public class Aggressive implements PlayerStrategy{
 			fromCountry = strongestPlayerCountry;
 			armiesCount = (fromCountry.getNoOfArmies() - 1)/ 2;
 		}
-		playerController.moveArmies(fromCountry, strongestCountry, armiesCount);
+		if(fromCountry != null && strongestCountry != null) {
+			playerController.moveArmies(fromCountry, strongestCountry, armiesCount);
+		}
 	}
 
 	/**

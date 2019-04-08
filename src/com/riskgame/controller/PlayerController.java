@@ -341,6 +341,7 @@ public class PlayerController {
 		int defenderDiceCount = 0;
 		boolean playerFound = false;
 		boolean isPlayerCountry = false;
+		boolean moveComplete = false;
 		String message = "";
 
 		for (Player player : gameMapGraph.getPlayers()) {
@@ -376,7 +377,12 @@ public class PlayerController {
 
 				Player attacker = diceController.getPlayerForCountry(gameMapGraph, attackerCountry.getName());
 				Player defender = diceController.getPlayerForCountry(gameMapGraph, defenderCountry.getName());
-				boolean moveComplete = moveArmies(1, attackerCountry, defenderCountry, gameMapGraph);
+				if(attacker.getPlayerType().equalsIgnoreCase("Aggressive")) {
+					moveComplete = moveArmies(attackerCountry.getNoOfArmies() / 2, attackerCountry, defenderCountry, gameMapGraph);
+				}
+				else {
+					moveComplete = moveArmies(1, attackerCountry, defenderCountry, gameMapGraph);
+				}
 				if (moveComplete) {
 					if(defender.getMyCountries().size() == 0) {
 						attacker.getPlayersCardList().putAll(defender.getPlayersCardList());

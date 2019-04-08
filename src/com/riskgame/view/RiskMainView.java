@@ -207,10 +207,17 @@ public class RiskMainView extends JFrame {
 		btnStartTournament = new JButton("Start Tournament");
 		btnStartTournament.setPreferredSize(new Dimension(50, 50));
 		getContentPane().add(btnStartTournament);
+		btnStartTournament.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TournamentView tournamentView = new TournamentView();
+			}
+		});
 		
-				exitMapButton = new JButton("Exit");
-				exitMapButton.setPreferredSize(new Dimension(50, 50));
-				getContentPane().add(exitMapButton);
+		exitMapButton = new JButton("Exit");
+		exitMapButton.setPreferredSize(new Dimension(50, 50));
+		getContentPane().add(exitMapButton);
 
 		exitMapButton.addActionListener(new ActionListener() {
 

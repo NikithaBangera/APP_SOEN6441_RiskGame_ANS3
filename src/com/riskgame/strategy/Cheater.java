@@ -45,13 +45,20 @@ public class Cheater implements PlayerStrategy{
 	@Override
 	public void attackPhase(GameMapGraph gameMapGraph, Player player, Country attacker, Country defender) {
 		ArrayList<Country> cheatersWinningCountries = new ArrayList<Country>();	
+		int armyCount = 0;
 		for(Country country : player.getMyCountries()) {
 			for(String adjCountry : country.getAdjacentCountries()) {
 				Country adjacentCountry = playerController.getAdjacentCountry(gameMapGraph, adjCountry);
 				Player adjacentPlayer = playerController.getPlayerForCountry(gameMapGraph, adjacentCountry.getName());
 				if(!(adjacentPlayer.getName().equalsIgnoreCase(player.getName())) && country.getNoOfArmies() > 1) {
-					adjacentCountry.setNoOfArmies(1);
-					country.setNoOfArmies(country.getNoOfArmies() - 1);
+					if(country.getNoOfArmies() > 2) {
+						armyCount = country.getNoOfArmies() / 2;
+					}
+					else {
+						armyCount = 1;
+					}
+					adjacentCountry.setNoOfArmies(armyCount);
+					country.setNoOfArmies(country.getNoOfArmies() - armyCount);
 					cheatersWinningCountries.add(adjacentCountry);
 				}
 			}
