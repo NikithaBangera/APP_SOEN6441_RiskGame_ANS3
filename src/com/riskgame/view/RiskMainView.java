@@ -80,7 +80,10 @@ public class RiskMainView extends JFrame {
 					setVisible(false);
 					isGoodToStartGame = createandeditmap.newMapCreation();
 					if (isGoodToStartGame) {
-						startGame();
+						//startGame();
+						GameMapGraph createMapGraph = new GameMapGraph();
+						createMapGraph = createandeditmap.getMapGraph();
+						StartGameView startGame = new StartGameView(createMapGraph);
 					}
 				} catch (Exception e1) {
 					e1.printStackTrace();

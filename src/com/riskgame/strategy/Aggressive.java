@@ -27,8 +27,8 @@ public class Aggressive implements PlayerStrategy{
 	public void placeArmies(GameMapGraph mapGraph, Player player, Country country) {
 		playerController = new PlayerController();
 		Random random = new Random();
-		int countryNumber = random.nextInt(player.getMyCountries().size()) + 1;
-		playerController.armiesAssignedToCountries(mapGraph, player.getMyCountries().get(countryNumber-1).getName(), 1);
+		int countryNumber = random.nextInt(player.getMyCountries().size());
+		playerController.armiesAssignedToCountries(mapGraph, player.getMyCountries().get(countryNumber).getName(), 1);
 	}
 
 	/**

@@ -173,8 +173,29 @@ public class PlayerView implements Observer {
 				player.setFirstReinforcement(true);
 				player.setCompleteAttack(false);
 				conquerCount = player.getConquerCountry();
-				if(!player.getPlayerType().equalsIgnoreCase("Human")) {
-					invokePlayerStrategy(mapGraph, player);
+				
+				while(!player.getPlayerType().equalsIgnoreCase("Human")) {
+					if(validateGameCompletion(mapGraph)) {
+						invokePlayerStrategy(mapGraph, player);
+						nextPlayerNumber++;
+						selectedAdjacentCountry = "";
+						selectedCountry = "";
+						player = roundRobin.nextTurn();
+						while (player.isPlayerLostGame()) {
+							player = roundRobin.nextTurn();
+						}
+						player.setFirstReinforcement(true);
+						player.setCompleteAttack(false);
+						conquerCount = player.getConquerCountry();
+					}
+					else {
+						for (Player player : mapGraph.getPlayers()) {
+							if (!player.isPlayerLostGame()) {
+								JOptionPane.showMessageDialog(null, player.getName() + " has won the game!!");
+								System.exit(0);
+							}
+						}
+					}
 				}
 			}
 
@@ -910,6 +931,11 @@ public class PlayerView implements Observer {
 						 : (currentPlayer.getPlayerType().equalsIgnoreCase("Cheater") ? new Cheater()
 								 :(currentPlayer.getPlayerType().equalsIgnoreCase("Random") ? new RandomPlayer()
 										 : null)));
+		
+		if(nextPlayerNumber == totalNumberOfPlayers) {
+			nextPlayerNumber = 0;
+		}
+		
 		rootPanel.setEnabled(false);
 		switch (mapGraph.getGamePhase()) {
 		
@@ -926,9 +952,7 @@ public class PlayerView implements Observer {
 			if(playerController.isPlaceArmiesComplete(mapGraph)) {
 				mapGraph.setGamePhase("Reinforcement");
 			}
-			if(nextPlayerNumber == totalNumberOfPlayers) {
-				nextPlayerNumber = 0;
-			}
+			
 			break;
 			
 		case "Reinforcement":
@@ -978,7 +1002,7 @@ public class PlayerView implements Observer {
 		rootPanel.removeAll();
 		rootPanel.revalidate();
 		rootPanel.repaint();
-		initialize(mapGraph);
+	//	initialize(mapGraph);
 		return strategyComplete;
 		
 	}

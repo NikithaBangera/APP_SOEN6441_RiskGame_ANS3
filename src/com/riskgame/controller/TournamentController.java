@@ -95,8 +95,10 @@ public class TournamentController {
 
 	private void loadTournamentMaps(TournamentMapGraph tournamentMapGraph) {
 		int i = 0;
-		while(tournamentMapGraph.getNumberOfMaps() > 0) {
+		int numberOfMaps = tournamentMapGraph.getNumberOfMaps();
+		while(numberOfMaps > 0) {
 			i++;
+			numberOfMaps--;
 			JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
 			jfc.setDialogTitle("Select an Map File");
 			jfc.setAcceptAllFileFilterUsed(false);
@@ -123,6 +125,7 @@ public class TournamentController {
 							initialTournamentMaps.put(i, loadMapGraph);
 						}
 					}
+					
 				}catch (IOException e1) {
 					e1.printStackTrace();
 				} catch (Exception e1) {
@@ -133,6 +136,7 @@ public class TournamentController {
 	}
 	
 	private void populateTournamentMapGraphs(TournamentMapGraph tournamentMapGraph) {
+		
 		for(int j=1;j<=tournamentMapGraph.getNumberOfGames();j++) {
 			for(int k=1;k<=tournamentMapGraph.getNumberOfMaps();k++) {
 				gameKey = "G"+j+"M"+k;
@@ -141,7 +145,6 @@ public class TournamentController {
 				Iterator<Entry<String, String>> inputPlayerIt = tournamentMapGraph.getInputPlayerDetails().entrySet().iterator();
 				while(inputPlayerIt.hasNext()) {
 					Entry<String, String> inputPlayer = inputPlayerIt.next();
-					boolean continue1 = true;
 					Player riskPlayer = new Player();
 					riskPlayer.setName(inputPlayer.getValue().split(",")[0]);
 					riskPlayer.setPlayerType(inputPlayer.getValue().split(",")[1]);

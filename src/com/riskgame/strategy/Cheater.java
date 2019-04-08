@@ -26,8 +26,8 @@ public class Cheater implements PlayerStrategy{
 	public void placeArmies(GameMapGraph mapGraph, Player player, Country country) {
 		playerController = new PlayerController();
 		Random random = new Random();
-		int countryNumber = random.nextInt(player.getMyCountries().size()) + 1;
-		playerController.armiesAssignedToCountries(mapGraph, player.getMyCountries().get(countryNumber-1).getName(), 1);
+		int countryNumber = random.nextInt(player.getMyCountries().size());
+		playerController.armiesAssignedToCountries(mapGraph, player.getMyCountries().get(countryNumber).getName(), 1);
 	}
 	
 	@Override
@@ -45,18 +45,18 @@ public class Cheater implements PlayerStrategy{
 	@Override
 	public void attackPhase(GameMapGraph gameMapGraph, Player player, Country attacker, Country defender) {
 		ArrayList<Country> cheatersWinningCountries = new ArrayList<Country>();	
-		int armyCount = 0;
+		int armyCount = 1;
 		for(Country country : player.getMyCountries()) {
 			for(String adjCountry : country.getAdjacentCountries()) {
 				Country adjacentCountry = playerController.getAdjacentCountry(gameMapGraph, adjCountry);
 				Player adjacentPlayer = playerController.getPlayerForCountry(gameMapGraph, adjacentCountry.getName());
 				if(!(adjacentPlayer.getName().equalsIgnoreCase(player.getName())) && country.getNoOfArmies() > 1) {
-					if(country.getNoOfArmies() > 2) {
-						armyCount = country.getNoOfArmies() / 2;
-					}
-					else {
-						armyCount = 1;
-					}
+//					if(country.getNoOfArmies() > 2) {
+//						armyCount = country.getNoOfArmies() / 2;
+//					}
+//					else {
+//						armyCount = 1;
+//					}
 					adjacentCountry.setNoOfArmies(armyCount);
 					country.setNoOfArmies(country.getNoOfArmies() - armyCount);
 					cheatersWinningCountries.add(adjacentCountry);
@@ -77,6 +77,7 @@ public class Cheater implements PlayerStrategy{
 			losingPlayer.getMyCountries().remove(i);
 			if(losingPlayer.getMyCountries().size() == 0) {
 				losingPlayer.setPlayerLostGame(true);
+				JOptionPane.showMessageDialog(null, "Player "+losingPlayer.getName()+" has lost the game!!");
 			}
 		}
 	}

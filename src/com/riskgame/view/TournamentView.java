@@ -31,13 +31,15 @@ public class TournamentView extends JFrame{
 	private JTextField textFieldPlayer2;
 	private JTextField textFieldPlayer3;
 	private JTextField textFieldPlayer4;
-	private JPanel rootPanel;
+	private JPanel rootPanel ;
 	private JPanel panelOptions;
 	private JPanel panelPlayerDetails;
 	private int numberOfPlayers = 0;
 	private JComboBox comboBoxMaps;
 	private JComboBox comboBoxPlayers;
 	private JComboBox comboBoxGames;
+	private JButton btnStartGame;
+	private JButton btnExit;
 	private Map<String, String> inputPlayerDetails = new HashMap<String, String>();
 	String[] numPlayers = {"Select One","2","3","4"};
 	String[] numMaps = {"Select One","1","2","3","4","5"};
@@ -49,16 +51,17 @@ public class TournamentView extends JFrame{
 		tournamentMapGraph = new TournamentMapGraph();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Tournament");
+		setBounds(100, 100, 800, 568);
 		getContentPane().setLayout(null);
 		
-		JPanel panel = new JPanel();
-		panel.setBounds(0, 0, 773, 524);
-		getContentPane().add(panel);
-		panel.setLayout(null);
+		rootPanel = new JPanel();
+		rootPanel.setBounds(0, 0, 773, 524);
+		getContentPane().add(rootPanel);
+		rootPanel.setLayout(null);
 		
 		panelOptions = new JPanel();
-		panelOptions.setBounds(12, 0, 749, 174);
-		panel.add(panelOptions);
+		panelOptions.setBounds(12, 0, 546, 174);
+		rootPanel.add(panelOptions);
 		panelOptions.setLayout(null);
 		
 		JLabel lblNumberOfMaps = new JLabel("Number of Maps:");
@@ -85,6 +88,23 @@ public class TournamentView extends JFrame{
 		comboBoxPlayers.setFont(new Font("Calibri", Font.PLAIN, 14));
 		comboBoxPlayers.setBounds(144, 53, 112, 22);
 		panelOptions.add(comboBoxPlayers);
+		comboBoxPlayers.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox comboBox = (JComboBox) e.getSource();
+				if(((String) comboBox.getSelectedItem()).equalsIgnoreCase("Select One")) {
+					numberOfPlayers = 0;
+				}
+				else {
+					numberOfPlayers = Integer.parseInt((String) comboBox.getSelectedItem());
+				}
+				panelPlayerDetails.removeAll();
+				panelPlayerDetails.revalidate();
+				panelPlayerDetails.repaint();
+				initialize(tournamentMapGraph);
+			}
+		});
 		
 		comboBoxGames = new JComboBox(numGames);
 		comboBoxGames.setFont(new Font("Calibri", Font.PLAIN, 14));
@@ -103,7 +123,20 @@ public class TournamentView extends JFrame{
 				
 		panelPlayerDetails = new JPanel();
 		panelPlayerDetails.setBounds(12, 175, 749, 349);
-		panel.add(panelPlayerDetails);
+		rootPanel.add(panelPlayerDetails);
+		
+		btnStartGame = new JButton("Play");
+		btnStartGame.setBounds(612, 47, 118, 25);
+		rootPanel.add(btnStartGame);
+		btnStartGame.setFont(new Font("Calibri", Font.BOLD, 14));
+		
+				
+				
+				btnExit = new JButton("Exit");
+				btnExit.setBounds(612, 96, 118, 25);
+				rootPanel.add(btnExit);
+				btnExit.setFont(new Font("Calibri", Font.BOLD, 14));
+				
 		initialize(tournamentMapGraph);
 		setVisible(true);
 	}
@@ -208,20 +241,7 @@ public class TournamentView extends JFrame{
 			break;
 		}
 		panelPlayerDetails.setLayout(null);
-		panelPlayerDetails.add(lblPlayerType);
-		panelPlayerDetails.add(lblPlayerName);
-		panelPlayerDetails.add(textFieldPlayer1);
-		panelPlayerDetails.add(comboBoxPlayer1);
-		panelPlayerDetails.add(lblPlayer1);
-		panelPlayerDetails.add(textFieldPlayer2);
-		panelPlayerDetails.add(comboBoxPlayer2);
-		panelPlayerDetails.add(lblPlayer2);
-		panelPlayerDetails.add(textFieldPlayer3);
-		panelPlayerDetails.add(comboBoxPlayer3);
-		panelPlayerDetails.add(lblPlayer3);
-		panelPlayerDetails.add(textFieldPlayer4);
-		panelPlayerDetails.add(comboBoxPlayer4);
-		panelPlayerDetails.add(lblPlayer4);
+		
 		
 		JPanel panelTournamentResult = new JPanel();
 		panelTournamentResult.setBounds(354, 0, 395, 349);
@@ -244,79 +264,6 @@ public class TournamentView extends JFrame{
 		lblPlayerDetails.setBounds(110, 13, 145, 16);
 		panelPlayerDetails.add(lblPlayerDetails);
 		
-		JButton btnStartGame = new JButton("Play");
-		btnStartGame.setFont(new Font("Calibri", Font.BOLD, 14));
-		btnStartGame.setBounds(619, 52, 118, 25);
-		panelOptions.add(btnStartGame);
-		btnStartGame.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try {
-					if(textFieldTurnsPerGame.getText() != null && textFieldTurnsPerGame.getText().length() > 0
-							&& textFieldTurnsPerGame.getText().matches("[0-9]+")) {
-						
-						if(!(comboBoxGames.getSelectedItem().toString().equalsIgnoreCase("Select One") || comboBoxMaps.getSelectedItem().toString().equalsIgnoreCase("Select One")
-								|| comboBoxPlayers.getSelectedItem().toString().equalsIgnoreCase("Select One"))){
-							
-							tournamentMapGraph.setNumberOfMaps(Integer.parseInt(comboBoxMaps.getSelectedItem().toString()));
-							tournamentMapGraph.setNumberOfGames(Integer.parseInt(comboBoxGames.getSelectedItem().toString()));
-							tournamentMapGraph.setNumberOfPlayers(Integer.parseInt(comboBoxPlayers.getSelectedItem().toString()));
-							tournamentMapGraph.setGameTurns(Integer.parseInt(textFieldTurnsPerGame.getText()));
-							PlayerController playerController = new PlayerController();
-							switch (numberOfPlayers) {
-							case 2: tournamentMapGraph.getInputPlayerDetails().put("1", textFieldPlayer1.getText()+","+comboBoxPlayer1.getSelectedItem());
-									tournamentMapGraph.getInputPlayerDetails().put("2", textFieldPlayer2.getText()+","+comboBoxPlayer2.getSelectedItem());
-								break;
-								
-							case 3: tournamentMapGraph.getInputPlayerDetails().put("1", textFieldPlayer1.getText()+","+comboBoxPlayer1.getSelectedItem());
-									tournamentMapGraph.getInputPlayerDetails().put("2", textFieldPlayer2.getText()+","+comboBoxPlayer2.getSelectedItem());
-									tournamentMapGraph.getInputPlayerDetails().put("3", textFieldPlayer3.getText()+","+comboBoxPlayer3.getSelectedItem());
-								break;	
-								
-							case 4: tournamentMapGraph.getInputPlayerDetails().put("1", textFieldPlayer1.getText()+","+comboBoxPlayer1.getSelectedItem());
-									tournamentMapGraph.getInputPlayerDetails().put("2", textFieldPlayer2.getText()+","+comboBoxPlayer2.getSelectedItem());
-									tournamentMapGraph.getInputPlayerDetails().put("3", textFieldPlayer3.getText()+","+comboBoxPlayer3.getSelectedItem());
-									tournamentMapGraph.getInputPlayerDetails().put("4", textFieldPlayer4.getText()+","+comboBoxPlayer4.getSelectedItem());
-								break;	
-								
-							default:
-								break;
-							}
-							
-							if(validateGameTurnsOptions(tournamentMapGraph)) {
-								if(!validatePlayerDetails(tournamentMapGraph)) {
-									TournamentController tournamentController = new TournamentController();
-									tournamentController.playTournament(tournamentMapGraph);
-								}
-								else {
-									JOptionPane.showMessageDialog(null, "Please Enter the details for all Players");
-								}
-							}
-							else {
-								JOptionPane.showMessageDialog(null, "Please enter the number of game turns between 10 and 50.");
-							}
-						}
-						else {
-							JOptionPane.showMessageDialog(null, "Please enter all tournament details.");
-						}
-					}
-					else {
-						JOptionPane.showMessageDialog(null, "Please enter a valid number of game turns.");
-					}
-					
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
-			}
-		});
-
-		
-		
-		JButton btnExit = new JButton("Exit");
-		btnExit.setFont(new Font("Calibri", Font.BOLD, 14));
-		btnExit.setBounds(619, 92, 118, 25);
-		panelOptions.add(btnExit);
 		btnExit.addActionListener(new ActionListener() {
 			
 			@Override
@@ -328,6 +275,76 @@ public class TournamentView extends JFrame{
 				}
 			}
 		});
+		
+		btnStartGame.addActionListener(new ActionListener() {
+	
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			try {
+				if(textFieldTurnsPerGame.getText() != null && textFieldTurnsPerGame.getText().length() > 0
+						&& textFieldTurnsPerGame.getText().matches("[0-9]+")) {
+					
+					if(!(comboBoxGames.getSelectedItem().toString().equalsIgnoreCase("Select One") || comboBoxMaps.getSelectedItem().toString().equalsIgnoreCase("Select One")
+							|| comboBoxPlayers.getSelectedItem().toString().equalsIgnoreCase("Select One"))){
+						
+						tournamentMapGraph.setNumberOfMaps(Integer.parseInt(comboBoxMaps.getSelectedItem().toString()));
+						tournamentMapGraph.setNumberOfGames(Integer.parseInt(comboBoxGames.getSelectedItem().toString()));
+						tournamentMapGraph.setNumberOfPlayers(Integer.parseInt(comboBoxPlayers.getSelectedItem().toString()));
+						tournamentMapGraph.setGameTurns(Integer.parseInt(textFieldTurnsPerGame.getText()));
+						PlayerController playerController = new PlayerController();
+						switch (numberOfPlayers) {
+						case 2: tournamentMapGraph.getInputPlayerDetails().put("1", textFieldPlayer1.getText()+","+comboBoxPlayer1.getSelectedItem());
+								tournamentMapGraph.getInputPlayerDetails().put("2", textFieldPlayer2.getText()+","+comboBoxPlayer2.getSelectedItem());
+							break;
+							
+						case 3: tournamentMapGraph.getInputPlayerDetails().put("1", textFieldPlayer1.getText()+","+comboBoxPlayer1.getSelectedItem());
+								tournamentMapGraph.getInputPlayerDetails().put("2", textFieldPlayer2.getText()+","+comboBoxPlayer2.getSelectedItem());
+								tournamentMapGraph.getInputPlayerDetails().put("3", textFieldPlayer3.getText()+","+comboBoxPlayer3.getSelectedItem());
+							break;	
+							
+						case 4: tournamentMapGraph.getInputPlayerDetails().put("1", textFieldPlayer1.getText()+","+comboBoxPlayer1.getSelectedItem());
+								tournamentMapGraph.getInputPlayerDetails().put("2", textFieldPlayer2.getText()+","+comboBoxPlayer2.getSelectedItem());
+								tournamentMapGraph.getInputPlayerDetails().put("3", textFieldPlayer3.getText()+","+comboBoxPlayer3.getSelectedItem());
+								tournamentMapGraph.getInputPlayerDetails().put("4", textFieldPlayer4.getText()+","+comboBoxPlayer4.getSelectedItem());
+							break;	
+							
+						default:
+							break;
+						}
+						
+						if(validateGameTurnsOptions(tournamentMapGraph)) {
+							if(!validatePlayerDetails(tournamentMapGraph)) {
+								TournamentController tournamentController = new TournamentController();
+								tournamentController.playTournament(tournamentMapGraph);
+								btnStartGame.setEnabled(false);
+								textAreaTournamentResult.setText(tournamentMapGraph.getTournamentResult());
+								rootPanel.removeAll();
+								rootPanel.revalidate();
+								rootPanel.repaint();
+								initialize(tournamentMapGraph);
+								
+							}
+							else {
+								JOptionPane.showMessageDialog(null, "Please Enter the details for all Players");
+							}
+						}
+						else {
+							JOptionPane.showMessageDialog(null, "Please enter the number of game turns between 10 and 50.");
+						}
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "Please enter all tournament details.");
+					}
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "Please enter a valid number of game turns.");
+				}
+				
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		}
+	});
 	}
 
 	public boolean validateGameTurnsOptions(TournamentMapGraph tournamentMapGraph) {
