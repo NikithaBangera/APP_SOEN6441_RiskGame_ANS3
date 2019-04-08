@@ -190,6 +190,9 @@ public class PlayerControllerTest {
 		toCountrier.setMyCountries(toCountrycountries);
 		gameMapGraph_1.setPlayers(players);
 		
+		mapGraph.setGameType("Test");
+		gameMapGraph_1.setGameType("Test");
+		
    }
 
    /**
