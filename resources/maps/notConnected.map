@@ -1,0 +1,16 @@
+[Map]
+Author=Sansa
+Image Name=san.bmp
+Warn=yes
+Scroll=vertical
+Wrap=yes
+
+[Continent]
+Asia=2
+Africa=4
+
+[Country]
+India,34,54,Asia,Bhutan
+Bhutan,6,7,Asia,India
+Egypt,8,9,Africa,Congo
+Congo,89,99,Africa,Egypt
