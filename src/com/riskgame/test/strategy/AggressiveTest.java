@@ -3,7 +3,11 @@ package com.riskgame.test.strategy;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
+<<<<<<< HEAD
  * This class aims to test the Cheater class
+=======
+ * This class aims to test the Aggressive class
+>>>>>>> 0b4153c30b2b87540c42b1993f55afbbaf79e3c4
  * 
  * @author Shiva
  *
