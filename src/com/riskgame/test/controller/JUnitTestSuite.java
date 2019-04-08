@@ -1,4 +1,4 @@
-package com.riskgame.controllertest;
+package com.riskgame.test.controller;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
