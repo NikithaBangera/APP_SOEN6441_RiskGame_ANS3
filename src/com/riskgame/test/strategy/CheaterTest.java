@@ -120,7 +120,7 @@ public class CheaterTest {
 	}
 
 	/**
-	 * This method test invalid fortification phase for cheater
+	 * This method test fortification phase for cheater
 	 */
 	@Test
 	public void fortificationPhaseTest() {
