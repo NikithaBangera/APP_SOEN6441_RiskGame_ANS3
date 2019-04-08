@@ -49,7 +49,7 @@ public class Benevolent implements PlayerStrategy{
 			strongestCountryToFortify.setNoOfArmies(strongestCountryToFortify.getNoOfArmies() - fortifyArmiesToWeakestCountry);
 			
 		}
-			}
+	}
 	
 	public Country getStrongestCountry(GameMapGraph mapGraph, Player player) {
 		int numberOfArmies = 0;
