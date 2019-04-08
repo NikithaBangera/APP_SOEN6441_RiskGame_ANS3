@@ -80,7 +80,10 @@ public class RiskMainView extends JFrame {
 					setVisible(false);
 					isGoodToStartGame = createandeditmap.newMapCreation();
 					if (isGoodToStartGame) {
-						startGame();
+						//startGame();
+						GameMapGraph createMapGraph = new GameMapGraph();
+						createMapGraph = createandeditmap.getMapGraph();
+						StartGameView startGame = new StartGameView(createMapGraph);
 					}
 				} catch (Exception e1) {
 					e1.printStackTrace();
@@ -207,10 +210,17 @@ public class RiskMainView extends JFrame {
 		btnStartTournament = new JButton("Start Tournament");
 		btnStartTournament.setPreferredSize(new Dimension(50, 50));
 		getContentPane().add(btnStartTournament);
+		btnStartTournament.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TournamentView tournamentView = new TournamentView();
+			}
+		});
 		
-				exitMapButton = new JButton("Exit");
-				exitMapButton.setPreferredSize(new Dimension(50, 50));
-				getContentPane().add(exitMapButton);
+		exitMapButton = new JButton("Exit");
+		exitMapButton.setPreferredSize(new Dimension(50, 50));
+		getContentPane().add(exitMapButton);
 
 		exitMapButton.addActionListener(new ActionListener() {
 

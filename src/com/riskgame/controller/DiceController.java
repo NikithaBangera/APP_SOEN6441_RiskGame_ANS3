@@ -154,11 +154,15 @@ public class DiceController {
 					}
 				}
 			} else {
-				JOptionPane.showMessageDialog(null, "Should move a minimum of " + attackerDiceCount + " armies");
+				if(!gameMapGraph.getGameType().equalsIgnoreCase("Tournament")) {
+					JOptionPane.showMessageDialog(null, "Should move a minimum of " + attackerDiceCount + " armies");
+				}
 			}
 		} else {
-			JOptionPane.showMessageDialog(null,
+			if(!gameMapGraph.getGameType().equalsIgnoreCase("Tournament")) {
+				JOptionPane.showMessageDialog(null,
 					"Allowed number of armies to be moved: " + (attackerCountry.getNoOfArmies() - 1));
+			}
 		}
 		return moveSuccessful;
 	}

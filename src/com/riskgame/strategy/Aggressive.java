@@ -27,8 +27,8 @@ public class Aggressive implements PlayerStrategy{
 	public void placeArmies(GameMapGraph mapGraph, Player player, Country country) {
 		playerController = new PlayerController();
 		Random random = new Random();
-		int countryNumber = random.nextInt(player.getMyCountries().size()) + 1;
-		playerController.armiesAssignedToCountries(mapGraph, player.getMyCountries().get(countryNumber-1).getName(), 1);
+		int countryNumber = random.nextInt(player.getMyCountries().size());
+		playerController.armiesAssignedToCountries(mapGraph, player.getMyCountries().get(countryNumber).getName(), 1);
 	}
 
 	/**
@@ -86,7 +86,8 @@ public class Aggressive implements PlayerStrategy{
 			numberOfArmies = strongestCountry.getNoOfArmies();
 			
 			for(Country country: player.getMyCountries()) {
-				if(country.getNoOfArmies() <= numberOfArmies && country.getNoOfArmies() > 1) {
+				if(country.getNoOfArmies() <= numberOfArmies && country.getNoOfArmies() > 1 
+						&& !country.getName().equalsIgnoreCase(strongestCountry.getName())) {
 					numberOfArmies = country.getNoOfArmies();
 					fromCountry = country;
 					armiesCount = fromCountry.getNoOfArmies() - 1;
@@ -98,7 +99,9 @@ public class Aggressive implements PlayerStrategy{
 			fromCountry = strongestPlayerCountry;
 			armiesCount = (fromCountry.getNoOfArmies() - 1)/ 2;
 		}
-		playerController.moveArmies(fromCountry, strongestCountry, armiesCount);
+		if(fromCountry != null && strongestCountry != null) {
+			playerController.moveArmies(gameMapGraph, fromCountry, strongestCountry, armiesCount);
+		}
 	}
 
 	/**
