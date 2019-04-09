@@ -61,7 +61,7 @@ public class Player extends Observable implements Serializable {
 	/** 
 	 * Type of player
 	 */
-	private String playerType;
+	private String playerType = "";
 
 	/**
 	 * Constructor to initialize the initial values

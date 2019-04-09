@@ -1,8 +1,16 @@
 package com.riskgame.controller;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Random;
@@ -330,7 +338,7 @@ public class PlayerController {
 			}
 		}
 
-		if (isAttackPossible) {
+		if (isAttackPossible && !(gameMapGraph.getGameType().equalsIgnoreCase("Tournament") || gameMapGraph.getGameType().equalsIgnoreCase("Test"))) {
 			DiceView diceView = new DiceView(gameMapGraph, attacker, defender);
 		}
 	}
@@ -616,6 +624,33 @@ public class PlayerController {
 			}
 		}
 		return moveSuccessful;
+	}
+	
+	public void saveGame(GameMapGraph mapGraph) {
+		try {
+			File saveFile = new File(System.getProperty("user.dir")+"/resources/SavedGames/SaveGame.txt");
+			FileOutputStream fileOutput;
+			if(saveFile.createNewFile()) {
+				fileOutput = new FileOutputStream(saveFile);
+				ObjectOutputStream save = new ObjectOutputStream(fileOutput);
+				save.writeObject(mapGraph);
+				save.close();
+				fileOutput.close();
+			}
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+	}
+	
+	public GameMapGraph loadGame(String fileName)
+			throws FileNotFoundException, IOException, ClassNotFoundException {
+		FileInputStream fi = new FileInputStream(new File(fileName));
+		ObjectInputStream oi = new ObjectInputStream(fi);
+		
+		GameMapGraph mapGraph = (GameMapGraph) oi.readObject();
+		fi.close();
+		oi.close();
+		return mapGraph;
 	}
 
 }

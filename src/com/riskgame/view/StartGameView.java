@@ -304,6 +304,10 @@ public class StartGameView extends JFrame{
 					}
 					if(!validatePlayerDetails(mapGraph)) {
 						setVisible(false);
+						if(automatedPlay(mapGraph)) {
+							mapGraph.setGameType("Tournament");
+							AutomatedPlayerView automatedPlayerView = new AutomatedPlayerView(mapGraph);
+						}
 						playerController.gamePlay(mapGraph);
 					}
 					else {
@@ -314,8 +318,6 @@ public class StartGameView extends JFrame{
 					e1.printStackTrace();
 				}
 			}
-
-		
 		});
 	}
 	
@@ -330,5 +332,20 @@ public class StartGameView extends JFrame{
 			}
 		}
 		return missingData;
+	}
+	
+	public boolean automatedPlay(GameMapGraph mapGraph) {
+		boolean automatedPlay = true;
+		int i = 0;
+		for(Map.Entry<String, String> inputPlayer : mapGraph.getInputPlayerDetails().entrySet()) {
+			if(inputPlayer.getValue().split(",")[1].equalsIgnoreCase("Human")) {
+				i++;
+				break;
+			}
+		}
+		if(i > 0) {
+			automatedPlay = false;
+		}
+		return automatedPlay;
 	}
 }
