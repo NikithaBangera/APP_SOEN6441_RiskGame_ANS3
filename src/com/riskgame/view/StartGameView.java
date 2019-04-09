@@ -18,6 +18,7 @@ import javax.swing.JTextField;
 
 import com.riskgame.controller.PlayerController;
 import com.riskgame.model.GameMapGraph;
+import javax.swing.DefaultComboBoxModel;
 
 public class StartGameView extends JFrame{
 	private JTextField textFieldPlayer1;
@@ -50,12 +51,14 @@ public class StartGameView extends JFrame{
 		panelPlayerDetails.setLayout(null);
 		
 		JLabel lblNumberOfPlayers = new JLabel("Number of Players :");
-		lblNumberOfPlayers.setFont(new Font("Calibri", Font.BOLD, 14));
+		lblNumberOfPlayers.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		lblNumberOfPlayers.setBounds(33, 28, 128, 27);
 		rootPanel.add(lblNumberOfPlayers);
 		
 		JComboBox comboBoxNoOfPlayers = new JComboBox(numPlayers);
-		comboBoxNoOfPlayers.setBounds(159, 28, 94, 22);
+		comboBoxNoOfPlayers.setModel(new DefaultComboBoxModel(new String[] {"Select One", "2", "3", "4", "5", "6"}));
+		comboBoxNoOfPlayers.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+		comboBoxNoOfPlayers.setBounds(171, 31, 128, 22);
 		rootPanel.add(comboBoxNoOfPlayers);
 		comboBoxNoOfPlayers.addActionListener(new ActionListener() {
 			
@@ -85,16 +88,16 @@ public class StartGameView extends JFrame{
 		mapGraph.getInputPlayerDetails().clear();
 		
 		JLabel lblPlayerType = new JLabel("Player Type");
-		lblPlayerType.setBounds(373, 16, 68, 17);
-		lblPlayerType.setFont(new Font("Calibri", Font.BOLD, 14));
+		lblPlayerType.setBounds(373, 16, 100, 17);
+		lblPlayerType.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		
 		JLabel lblPlayerName = new JLabel("Player Name");
-		lblPlayerName.setBounds(201, 16, 103, 16);
-		lblPlayerName.setFont(new Font("Calibri", Font.BOLD, 14));
+		lblPlayerName.setBounds(210, 16, 103, 16);
+		lblPlayerName.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		
 		JLabel lblPlayer1 = new JLabel("Player 1");
 		lblPlayer1.setBounds(112, 42, 56, 16);
-		lblPlayer1.setFont(new Font("Calibri", Font.BOLD, 14));
+		lblPlayer1.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		
 		textFieldPlayer1 = new JTextField();
 		textFieldPlayer1.setBounds(194, 42, 116, 22);
@@ -105,7 +108,7 @@ public class StartGameView extends JFrame{
 		
 		JLabel lblPlayer2 = new JLabel("Player 2");
 		lblPlayer2.setBounds(112, 80, 56, 16);
-		lblPlayer2.setFont(new Font("Calibri", Font.BOLD, 14));
+		lblPlayer2.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		
 		textFieldPlayer2 = new JTextField();
 		textFieldPlayer2.setBounds(194, 81, 116, 22);
@@ -116,7 +119,7 @@ public class StartGameView extends JFrame{
 		
 		JLabel lblPlayer3 = new JLabel("Player 3");
 		lblPlayer3.setBounds(112, 118, 56, 16);
-		lblPlayer3.setFont(new Font("Calibri", Font.BOLD, 14));
+		lblPlayer3.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		
 		textFieldPlayer3 = new JTextField();
 		textFieldPlayer3.setBounds(194, 118, 116, 22);
@@ -127,7 +130,7 @@ public class StartGameView extends JFrame{
 		
 		JLabel lblPlayer4 = new JLabel("Player 4");
 		lblPlayer4.setBounds(112, 156, 56, 16);
-		lblPlayer4.setFont(new Font("Calibri", Font.BOLD, 14));
+		lblPlayer4.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		
 		textFieldPlayer4 = new JTextField();
 		textFieldPlayer4.setBounds(194, 156, 116, 22);
@@ -138,7 +141,7 @@ public class StartGameView extends JFrame{
 		
 		JLabel lblPlayer5 = new JLabel("Player 5");
 		lblPlayer5.setBounds(112, 194, 56, 16);
-		lblPlayer5.setFont(new Font("Calibri", Font.BOLD, 14));
+		lblPlayer5.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		
 		textFieldPlayer5 = new JTextField();
 		textFieldPlayer5.setBounds(194, 194, 116, 22);
@@ -149,7 +152,7 @@ public class StartGameView extends JFrame{
 		
 		JLabel lblPlayer6 = new JLabel("Player 6");
 		lblPlayer6.setBounds(112, 232, 56, 16);
-		lblPlayer6.setFont(new Font("Calibri", Font.BOLD, 14));
+		lblPlayer6.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		
 		textFieldPlayer6 = new JTextField();
 		textFieldPlayer6.setBounds(194, 232, 116, 22);

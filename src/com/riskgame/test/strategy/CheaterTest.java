@@ -111,21 +111,12 @@ public class CheaterTest {
 	}
 	
 	/**
-	 * This method tests the reinforcement for cheater
+	 * This method tests the invalid reinforcement for cheater
 	 */
 	@Test
 	public void invalidReinforcementPhaseTest() {
 		cheater.reinforcementPhase(player1, mapGraph, country3, 12);
 		assertNotEquals(5, country3.getNoOfArmies());
-	}
-	
-	/**
-	 * This method tests the reinforcement for cheater
-	 */
-	@Test
-	public void inValidReinforcementPhaseTest() {
-		cheater.reinforcementPhase(player, mapGraph, country1, 12);
-		assertNotEquals(2, country1.getNoOfArmies());
 	}
 
 	/**

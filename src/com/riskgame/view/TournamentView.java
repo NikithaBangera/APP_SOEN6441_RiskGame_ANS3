@@ -70,27 +70,27 @@ public class TournamentView extends JFrame{
 		panelOptions.setLayout(null);
 		
 		JLabel lblNumberOfMaps = new JLabel("Number of Maps:");
-		lblNumberOfMaps.setFont(new Font("Calibri", Font.BOLD, 14));
+		lblNumberOfMaps.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		lblNumberOfMaps.setBounds(12, 13, 120, 26);
 		panelOptions.add(lblNumberOfMaps);
 		
 		JLabel lblNewLabel = new JLabel("Number of Players:");
-		lblNewLabel.setFont(new Font("Calibri", Font.BOLD, 14));
+		lblNewLabel.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		lblNewLabel.setBounds(12, 52, 120, 26);
 		panelOptions.add(lblNewLabel);
 		
 		JLabel lblNumberOfGames = new JLabel("Number of Games:");
-		lblNumberOfGames.setFont(new Font("Calibri", Font.BOLD, 14));
+		lblNumberOfGames.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		lblNumberOfGames.setBounds(12, 92, 120, 26);
 		panelOptions.add(lblNumberOfGames);
 		
 		comboBoxMaps = new JComboBox(numMaps);
-		comboBoxMaps.setFont(new Font("Calibri", Font.PLAIN, 14));
+		comboBoxMaps.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		comboBoxMaps.setBounds(145, 14, 112, 22);
 		panelOptions.add(comboBoxMaps);
 		
 		comboBoxPlayers = new JComboBox(numPlayers);
-		comboBoxPlayers.setFont(new Font("Calibri", Font.PLAIN, 14));
+		comboBoxPlayers.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		comboBoxPlayers.setBounds(144, 53, 112, 22);
 		panelOptions.add(comboBoxPlayers);
 		comboBoxPlayers.addActionListener(new ActionListener() {
@@ -112,16 +112,17 @@ public class TournamentView extends JFrame{
 		});
 		
 		comboBoxGames = new JComboBox(numGames);
-		comboBoxGames.setFont(new Font("Calibri", Font.PLAIN, 14));
+		comboBoxGames.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		comboBoxGames.setBounds(144, 93, 112, 22);
 		panelOptions.add(comboBoxGames);
 		
 		JLabel lblNumberOfTurns = new JLabel("Number of Turns:");
-		lblNumberOfTurns.setFont(new Font("Calibri", Font.BOLD, 14));
+		lblNumberOfTurns.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		lblNumberOfTurns.setBounds(301, 13, 120, 26);
 		panelOptions.add(lblNumberOfTurns);
 		
 		textFieldTurnsPerGame = new JTextField();
+		textFieldTurnsPerGame.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		textFieldTurnsPerGame.setBounds(417, 14, 116, 22);
 		panelOptions.add(textFieldTurnsPerGame);
 		textFieldTurnsPerGame.setColumns(10);
@@ -260,7 +261,7 @@ public class TournamentView extends JFrame{
 	//	panelTournamentResult.add(textAreaTournamentResult);
 		
 		JLabel lblResult = new JLabel("Result");
-		lblResult.setFont(new Font("Calibri", Font.BOLD, 20));
+		lblResult.setFont(new Font("Times New Roman", Font.BOLD, 18));
 		lblResult.setBounds(160, 3, 65, 26);
 		panelTournamentResult.add(lblResult);
 		
@@ -282,7 +283,7 @@ public class TournamentView extends JFrame{
 		panelTournamentResult.add(scrollPane);
 		
 		JLabel lblPlayerDetails = new JLabel("Player Details");
-		lblPlayerDetails.setFont(new Font("Calibri", Font.BOLD, 20));
+		lblPlayerDetails.setFont(new Font("Times New Roman", Font.BOLD, 18));
 		lblPlayerDetails.setBounds(110, 13, 145, 16);
 		panelPlayerDetails.add(lblPlayerDetails);
 		
