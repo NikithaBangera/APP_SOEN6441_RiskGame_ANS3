@@ -1,32 +1,25 @@
 package com.riskgame.test.strategy;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import static org.junit.Assert.assertNotEquals;
 /**
- * This class aims to test the benevolent class
+ * This class aims to test the RandomPlayer class
  * 
  * @author Shiva
  *
  */
 import java.util.ArrayList;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import com.riskgame.controller.PlayerController;
 import com.riskgame.model.Continent;
 import com.riskgame.model.Country;
 import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.Player;
-import com.riskgame.strategy.Benevolent;
-/**
- * This class aims to test the Benevolent class
- * 
- * @author Shiva
- *
- */
-public class BenevolentTest {
-	/** Object for Benevolent class */
-	private static Benevolent benevolent;
+import com.riskgame.strategy.RandomPlayer;
+
+public class RandomPlayerTest {
+	/** Object for Aggressive class */
+	private static RandomPlayer randomPlayer;
 	
 	/** Object for GameMapGraph class */
 	private static GameMapGraph mapGraph;
@@ -40,7 +33,7 @@ public class BenevolentTest {
 	 * This method is called to initialize test data before all data
 	 */
 	
-	public BenevolentTest() {
+	public RandomPlayerTest() {
 		getMyCountries = new ArrayList<Country>();
 		country = new Country();
 		country.setName("Canada");
@@ -102,7 +95,7 @@ public class BenevolentTest {
 		mapGraph.getCountries().add(country3);
 		
 		
-		benevolent=new Benevolent();
+		randomPlayer=new RandomPlayer();
 		
 		Continent continent=new Continent();
 		continent.setName("America");
@@ -127,36 +120,14 @@ public class BenevolentTest {
 		country3.setAdjacentCountries(new ArrayList<String>());
 		country3.getAdjacentCountries().add("egypt");
 		country3.getAdjacentCountries().add("united states");
+		mapGraph.setGameType("test");
 	}
-	
 	/**
-	 * This method tests the reinforcement for benevolent,
-	 * checks whether it reinforces its weakest country or not
+	 * This method checks the attack phase of the random player
 	 */
 	@Test
-	public void reinforcementPhaseTest() {
-		benevolent.reinforcementPhase(player, mapGraph, country1, 12);
-		assertEquals(4,country.getNoOfArmies());
-	}
-	
-	/**
-	 * This method tests the fortification for benevolent,
-	 * checks whether it fortifies its weakest country or not
-	 */
-	@Test
-	public void fortificationPhaseTest() {
-		benevolent.fortificationPhase(mapGraph, player, country, country1, 10);
-		assertEquals(3,country.getNoOfArmies());
-	}
-	
-	/**
-	 * This method tests the attack for benevolent,
-	 * checks whether it attacks its weakest country or not,
-	 * which it should not
-	 */
-	@Test
-	public void attackPhaseTest() {
-		benevolent.attackPhase(mapGraph, player, country, country3);
-		assertEquals(2,country.getNoOfArmies());
+	public void attackPahseTest() {
+		randomPlayer.attackPhase(mapGraph, player, country, country3);
+		assertNotEquals(country.getNoOfArmies(),0);
 	}
 }
