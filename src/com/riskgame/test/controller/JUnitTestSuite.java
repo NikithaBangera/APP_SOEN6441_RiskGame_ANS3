@@ -5,7 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({CreateMapControllerTest.class,LoadMapControllerTest.class,PlayerControllerTest.class,DiceControllerTest.class, CardControllerTest.class})
+@SuiteClasses({CreateMapControllerTest.class,LoadMapControllerTest.class,PlayerControllerTest.class,DiceControllerTest.class, CardControllerTest.class, TournamentControllerTest.class})
 
 /**
  * A TestSuite class for testing all the test cases

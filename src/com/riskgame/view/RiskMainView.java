@@ -194,8 +194,7 @@ public class RiskMainView extends JFrame {
 						
 						GameMapGraph mapGraph = (GameMapGraph) oi.readObject();
 						PlayerView playerView = new PlayerView(mapGraph);
-						
-						
+					
 						fi.close();
 						oi.close();
 					}

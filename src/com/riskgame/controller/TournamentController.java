@@ -51,26 +51,14 @@ public class TournamentController {
 			Entry<String, GameMapGraph> nextGame = tournamentIt.next();
 			GameMapGraph gameMapGraph = nextGame.getValue();
 			int gameTurns = gameMapGraph.getGameTurns();
-			while(!playerController.isPlaceArmiesComplete(gameMapGraph)) {
-				for(Player currentPlayer : gameMapGraph.getPlayers()) {
-					PlayerStrategy playerStrategy = null;
-					
-					playerStrategy =  currentPlayer.getPlayerType().equalsIgnoreCase("Aggressive") ? new Aggressive()
-							 : (currentPlayer.getPlayerType().equalsIgnoreCase("Benevolent") ? new Benevolent()
-									 : (currentPlayer.getPlayerType().equalsIgnoreCase("Cheater") ? new Cheater()
-											 :(currentPlayer.getPlayerType().equalsIgnoreCase("Random") ? new RandomPlayer()
-													 : null)));
-					
-					playerStrategy.placeArmies(gameMapGraph, currentPlayer, null);
-				}
-			}
+			
+			tournamentPlaceArmies(gameMapGraph);
 			
 			while(gameTurns > 0) {
 				
 				if(validateGameCompletion(gameMapGraph)) {
 					for(Player player : gameMapGraph.getPlayers()) {
 						if(!player.isPlayerLostGame()) {
-							System.out.println(gameTurns + "-" + player.getName());
 							invokePlayerStrategy(gameMapGraph, player);
 						}
 					}
@@ -93,13 +81,26 @@ public class TournamentController {
 				}
 				gameMapGraph.setGameResult(winner.getPlayerType());
 			}
-			
-			tournamentMapGraph.setTournamentResult(tournamentMapGraph.getTournamentResult().concat(nextGame.getKey()+" : "+gameMapGraph.getGameResult()+"\n"));
+			tournamentMapGraph.getTournamentResult().put(nextGame.getKey(), gameMapGraph.getGameResult());
 		}
-		
 	}
 
-	
+	public void tournamentPlaceArmies(GameMapGraph gameMapGraph) {
+		
+		while(!playerController.isPlaceArmiesComplete(gameMapGraph)) {
+			for(Player currentPlayer : gameMapGraph.getPlayers()) {
+				PlayerStrategy playerStrategy = null;
+				
+				playerStrategy =  currentPlayer.getPlayerType().equalsIgnoreCase("Aggressive") ? new Aggressive()
+						 : (currentPlayer.getPlayerType().equalsIgnoreCase("Benevolent") ? new Benevolent()
+								 : (currentPlayer.getPlayerType().equalsIgnoreCase("Cheater") ? new Cheater()
+										 :(currentPlayer.getPlayerType().equalsIgnoreCase("Random") ? new RandomPlayer()
+												 : null)));
+				
+				playerStrategy.placeArmies(gameMapGraph, currentPlayer, null);
+			}
+		}
+	}
 
 	private void loadTournamentMaps(TournamentMapGraph tournamentMapGraph) {
 		int i = 0;

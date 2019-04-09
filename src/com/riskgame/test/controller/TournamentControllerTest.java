@@ -1,28 +1,21 @@
 package com.riskgame.test.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.junit.jupiter.api.Test;
 
 import com.riskgame.controller.PlayerController;
+import com.riskgame.controller.TournamentController;
 import com.riskgame.model.Continent;
 import com.riskgame.model.Country;
 import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.Player;
 
-/**
- * Test Class for PlayerController class
- * 
- * @author Shiva
- * @author Anusha
- *
- */
-public class PlayerControllerTest {
+public class TournamentControllerTest {
 	
 	/** Object for Player Class */
 	Player player1,player,attacker,defender,toCountrier;
@@ -33,6 +26,8 @@ public class PlayerControllerTest {
 	/** Object for StartUp Class */
 	PlayerController playerController;
 
+	/** Object for Tournament startup Class */
+	TournamentController tournamentController;
 	
 	/** Object for GameMapGraph class */
 	GameMapGraph mapGraph;
@@ -62,11 +57,14 @@ public class PlayerControllerTest {
 	
 	/** ArrayList for storing adjacent countries list for the countries */
 	private ArrayList<String> adjacentCountries;
+	
+	
 
 	/**
 	 * StartupPhaseTest Constructor for initial setup 
 	 */
-   public PlayerControllerTest() {
+   public TournamentControllerTest() {
+	   tournamentController = new TournamentController();
 	   countrySet = new HashMap<String, Country>();
 	   mapGraph = new GameMapGraph();
 	   players=new ArrayList<Player>();
@@ -183,6 +181,12 @@ public class PlayerControllerTest {
 		toCountry_1.getAdjacentCountries().add("Alaska");
 		
 		defendercountry_1.setAdjacentCountries(adjacentCountries1_1);
+		attacker.setArmyCount(3);
+		defender.setArmyCount(3);
+		attacker.setPlayerType("Aggressive");
+		defender.setPlayerType("Benevolent");
+		attacker.setEndPlaceArmies(false);
+		defender.setEndPlaceArmies(false);
 		players.add(attacker);
 		players.add(defender);
 		attackercountries.add(attackercountry_1);
@@ -196,113 +200,13 @@ public class PlayerControllerTest {
 		gameMapGraph_1.setGameType("Test");
 		
    }
-
-   /**
-    * Test method to validate the allocation of armies to each player
-    * as per the number of players.
-    */
-   @Test
-   public void testAllocationArmy() {
-       playerController.allocationOfArmyToPlayers(mapGraph);
-       assertEquals(40, player1.getArmyCount());
-   }
-
-   /**
-    * Test case to validate the initial allocation of armies to each country
-    * owned by players. 
-    */
-   @Test
-   public void testallocationOfArmyToCountriesInitially() {
-       playerController.allocationOfArmyToCountriesInitially(mapGraph);
-       assertEquals(1, country.getNoOfArmies() );
-   }
    
    @Test
-	public void isFortificationComplete() {
-		playerController.moveArmies(mapGraph, fromCountry, toCountry, 2);
-		assertEquals(6, fromCountry.getNoOfArmies());
-		assertEquals(6, toCountry.getNoOfArmies());
-	}
-	
-	/**
-	 * Test method to validate the number of armies present in the fromCountry and the toCountry
-	 * after the player moves the armies between fromCountry and toCountry which are not adjacent.
-	 */
-	@Test 
-	public void isFortificationNotComplete() {
-		playerController.moveArmies(mapGraph,fromCountry, toCountry1, 2);
-		assertEquals(8, fromCountry.getNoOfArmies());
-		assertEquals(2, toCountry1.getNoOfArmies());
-	}
-	
-	/**
-	 * for testing whether the countries to
-	 * be in a fight are adjacent or not
-	 */
-	@Test
-	public void isAttack() {
-		playerController.attackPhase(gameMapGraph_1,attackercountry_1,toCountry_1);
-		assertEquals(5, attackercountry_1.getNoOfArmies());
-		assertEquals(1, toCountry_1.getNoOfArmies());
-	}
-
-	/**
-	 * for testing whether the attacker country 
-	 * have enough armies for attacking or not
-	 */
-	@Test 
-	public void isAttackvalid() {
-		playerController.attackPhase(gameMapGraph_1, defendercountry_1, attackercountry_1);
-		assertEquals(1, defendercountry_1.getNoOfArmies());
-		assertEquals(5, attackercountry_1.getNoOfArmies());
-	}
-
-	/**
-	 * for testing whether the countries are 
-	 * for the same player or not for attacking
-	 */
-	@Test 
-	public void isAttackPossible() {
-		playerController.attackPhase(gameMapGraph_1, fromCountry_1, toCountry_1);
-		assertEquals(1, toCountry_1.getNoOfArmies());
-		assertEquals(5, fromCountry_1.getNoOfArmies());
-	}
-	
-	/**
-	 * for testing whether the all out attack works properly 
-	 * meaning while in the state of all out attack
-	 * the attacker attacks until whether his armies has reached 1
-	 * or he has taken the attacked country
-	 */ 
-	@Test 
-	public void isAlloutAttackworks() {
-		
-		playerController.allOutAttack(gameMapGraph_1, attackercountry_1, defendercountry_1);
-		Player result=playerController.getPlayerForCountry(gameMapGraph_1,defendercountry_1.getName());
-		if(result.getName().equalsIgnoreCase("defender"))
-
-			assertEquals(1,attackercountry_1.getNoOfArmies());
-		
-		else
-			assertEquals(attacker,playerController.getPlayerForCountry(gameMapGraph_1, defendercountry_1.getName()));
-	}
-	
-	/**
-	 * for testing whether the Reinforcement phase 
-	 * works when the continent is owned by one player 
-	 * and it assigns the control value correctly
-	 */
-	@Test 
-	public void isReinforcementworking() {
-		int result=playerController.reinforcementPhase(toCountrier, gameMapGraph_1);
-		assertEquals(4, result);
-	}
-
-	@Test
-	public void testSaveGame() throws Exception {
-		playerController.saveGame(mapGraph);
-		GameMapGraph loadedGameMapGraph = playerController.loadGame(System.getProperty("user.dir")+"/resources/SavedGames/SaveGame.txt");
-		
-		assertEquals(mapGraph.getPlayers().size(), loadedGameMapGraph.getPlayers().size());
-	}
+   public void testTournamentPlaceArmies() {
+	   tournamentController.tournamentPlaceArmies(gameMapGraph_1);
+	   assertEquals(0, gameMapGraph_1.getPlayers().get(0).getArmyCount());
+	   assertEquals(0, gameMapGraph_1.getPlayers().get(1).getArmyCount());
+	   assertTrue(gameMapGraph_1.getPlayers().get(0).isEndPlaceArmies());
+	   assertTrue(gameMapGraph_1.getPlayers().get(1).isEndPlaceArmies());
+   }
 }
