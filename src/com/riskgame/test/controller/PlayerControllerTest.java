@@ -190,6 +190,9 @@ public class PlayerControllerTest {
 		toCountrier.setMyCountries(toCountrycountries);
 		gameMapGraph_1.setPlayers(players);
 		
+		mapGraph.setGameType("Test");
+		gameMapGraph_1.setGameType("Test");
+		
    }
 
    /**
@@ -214,7 +217,7 @@ public class PlayerControllerTest {
    
    @Test
 	public void isFortificationComplete() {
-		playerController.moveArmies(fromCountry, toCountry, 2);
+		playerController.moveArmies(mapGraph, fromCountry, toCountry, 2);
 		assertEquals(6, fromCountry.getNoOfArmies());
 		assertEquals(6, toCountry.getNoOfArmies());
 	}
@@ -225,7 +228,7 @@ public class PlayerControllerTest {
 	 */
 	@Test 
 	public void isFortificationNotComplete() {
-		playerController.moveArmies(fromCountry, toCountry1, 2);
+		playerController.moveArmies(mapGraph,fromCountry, toCountry1, 2);
 		assertEquals(8, fromCountry.getNoOfArmies());
 		assertEquals(2, toCountry1.getNoOfArmies());
 	}

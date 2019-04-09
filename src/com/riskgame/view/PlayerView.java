@@ -173,8 +173,29 @@ public class PlayerView implements Observer {
 				player.setFirstReinforcement(true);
 				player.setCompleteAttack(false);
 				conquerCount = player.getConquerCountry();
-				if(!player.getPlayerType().equalsIgnoreCase("Human")) {
-					invokePlayerStrategy(mapGraph, player);
+				
+				while(!player.getPlayerType().equalsIgnoreCase("Human")) {
+					if(validateGameCompletion(mapGraph)) {
+						invokePlayerStrategy(mapGraph, player);
+						nextPlayerNumber++;
+						selectedAdjacentCountry = "";
+						selectedCountry = "";
+						player = roundRobin.nextTurn();
+						while (player.isPlayerLostGame()) {
+							player = roundRobin.nextTurn();
+						}
+						player.setFirstReinforcement(true);
+						player.setCompleteAttack(false);
+						conquerCount = player.getConquerCountry();
+					}
+					else {
+						for (Player player : mapGraph.getPlayers()) {
+							if (!player.isPlayerLostGame()) {
+								JOptionPane.showMessageDialog(null, player.getName() + " has won the game!!");
+								System.exit(0);
+							}
+						}
+					}
 				}
 			}
 
@@ -522,7 +543,7 @@ public class PlayerView implements Observer {
 							if (playerFound) {
 								for (Country country : player.getMyCountries()) {
 									if (country.getName().equalsIgnoreCase(selectedAdjCountryObject.getName())) {
-										playerController.moveArmies(selectedCountryObject, selectedAdjCountryObject,
+										playerController.moveArmies(mapGraph, selectedCountryObject, selectedAdjCountryObject,
 												Integer.parseInt(armiesCount));
 										isAdjCountry = true;
 										isFortificationComplete = true;
@@ -910,6 +931,11 @@ public class PlayerView implements Observer {
 						 : (currentPlayer.getPlayerType().equalsIgnoreCase("Cheater") ? new Cheater()
 								 :(currentPlayer.getPlayerType().equalsIgnoreCase("Random") ? new RandomPlayer()
 										 : null)));
+		
+		if(nextPlayerNumber == totalNumberOfPlayers) {
+			nextPlayerNumber = 0;
+		}
+		
 		rootPanel.setEnabled(false);
 		switch (mapGraph.getGamePhase()) {
 		
@@ -926,22 +952,25 @@ public class PlayerView implements Observer {
 			if(playerController.isPlaceArmiesComplete(mapGraph)) {
 				mapGraph.setGamePhase("Reinforcement");
 			}
-			if(nextPlayerNumber == totalNumberOfPlayers) {
-				nextPlayerNumber = 0;
-			}
+			
 			break;
 			
 		case "Reinforcement":
 			if(player.getPlayerType().equalsIgnoreCase("Aggressive")) {
+				JOptionPane.showMessageDialog(null, "Player "+player.getName()+"(Aggressive) has started playing");
 				playerStrategy.reinforcementPhase(currentPlayer, mapGraph, null, 0);
 				playerStrategy.attackPhase(mapGraph, currentPlayer, null, null);
 				playerStrategy.fortificationPhase(mapGraph, currentPlayer, null, null, 0);
+				JOptionPane.showMessageDialog(null, player.getName()+"(Aggressive) player's turn ended.");
 			}
 			else if(player.getPlayerType().equalsIgnoreCase("Benevolent")) {
+				JOptionPane.showMessageDialog(null, "Player "+player.getName()+"(Benevolent) has started playing");
 				playerStrategy.reinforcementPhase(currentPlayer, mapGraph, null, 0);
 				playerStrategy.fortificationPhase(mapGraph, currentPlayer, null, null, 0);
+				JOptionPane.showMessageDialog(null, player.getName()+"(Benevolent) player's turn ended.");
 			}
 			else if(player.getPlayerType().equalsIgnoreCase("Random")) {
+				JOptionPane.showMessageDialog(null, "Player "+player.getName()+"(Random) has started playing");
 				playerStrategy.reinforcementPhase(currentPlayer, mapGraph, null, 0);
 				int numberOfAttacks = new Random().nextInt(currentPlayer.getMyCountries().size()) + 1;
 				while(numberOfAttacks > 0) {
@@ -949,11 +978,14 @@ public class PlayerView implements Observer {
 					numberOfAttacks--;
 				}
 				playerStrategy.fortificationPhase(mapGraph, currentPlayer, null, null, 0);
+				JOptionPane.showMessageDialog(null, player.getName()+"(Random) player's turn ended.");
 			}
 			else if(player.getPlayerType().equalsIgnoreCase("Cheater")) {
+				JOptionPane.showMessageDialog(null, "Player "+player.getName()+"(Cheater) has started playing");
 				playerStrategy.reinforcementPhase(currentPlayer, mapGraph, null, 0);
 				playerStrategy.attackPhase(mapGraph, currentPlayer, null, null);
 				playerStrategy.fortificationPhase(mapGraph, currentPlayer, null, null, 0);
+				JOptionPane.showMessageDialog(null, player.getName()+"(Cheater) player's turn ended.");
 			}
 			else {
 				playerStrategy.reinforcementPhase(currentPlayer, mapGraph, null, 0);
@@ -978,7 +1010,7 @@ public class PlayerView implements Observer {
 		rootPanel.removeAll();
 		rootPanel.revalidate();
 		rootPanel.repaint();
-		initialize(mapGraph);
+	//	initialize(mapGraph);
 		return strategyComplete;
 		
 	}

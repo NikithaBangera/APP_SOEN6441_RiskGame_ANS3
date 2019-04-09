@@ -67,7 +67,17 @@ public class GameMapGraph extends Observable implements Serializable {
 	/**
 	 * Number of turns per game
 	 */
-	private String gameTurns;
+	private int gameTurns;
+	
+	/**
+	 * Game Type - Tournament or normal
+	 */
+	private String gameType = "";
+	
+	/**
+	 * Game Result of tournament
+	 */
+	private String gameResult;
 	
 	/**
 	 * GameMapGraph Constructor
@@ -372,7 +382,7 @@ public class GameMapGraph extends Observable implements Serializable {
 	 * Method to get the number of turns per game
 	 * @return gameTurns - number of turns
 	 */
-	public String getGameTurns() {
+	public int getGameTurns() {
 		return gameTurns;
 	}
 
@@ -380,7 +390,39 @@ public class GameMapGraph extends Observable implements Serializable {
 	 * Method to set the number of turns per game
 	 * @param gameTurns - number of turns
 	 */
-	public void setGameTurns(String gameTurns) {
+	public void setGameTurns(int gameTurns) {
 		this.gameTurns = gameTurns;
+	}
+
+	/**
+	 * Method to get the game type
+	 * @return gameType - type of game
+	 */
+	public String getGameType() {
+		return gameType;
+	}
+
+	/**
+	 * Method to set the game type
+	 * @param gameType - type of game
+	 */
+	public void setGameType(String gameType) {
+		this.gameType = gameType;
+	}
+
+	/**
+	 * Method to get game result
+	 * @return gameResult - result of the game
+	 */
+	public String getGameResult() {
+		return gameResult;
+	}
+
+	/**
+	 * Method ot set the result of game
+	 * @param gameResult - result of game
+	 */
+	public void setGameResult(String gameResult) {
+		this.gameResult = gameResult;
 	}
 }

@@ -1,8 +1,13 @@
 package com.riskgame.test.strategy;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
- * This class aims to test the benevolent class
+<<<<<<< HEAD
+ * This class aims to test the Cheater class
+=======
+ * This class aims to test the Aggressive class
+>>>>>>> 0b4153c30b2b87540c42b1993f55afbbaf79e3c4
  * 
  * @author Shiva
  *
@@ -17,11 +22,11 @@ import com.riskgame.model.Continent;
 import com.riskgame.model.Country;
 import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.Player;
-import com.riskgame.strategy.Benevolent;
+import com.riskgame.strategy.Aggressive;
 
-public class BenevolentTest {
-	/** Object for Benevolent class */
-	private static Benevolent benevolent;
+public class AggressiveTest {
+	/** Object for Aggressive class */
+	private static Aggressive aggressive;
 	
 	/** Object for GameMapGraph class */
 	private static GameMapGraph mapGraph;
@@ -97,7 +102,7 @@ public class BenevolentTest {
 		mapGraph.getCountries().add(country3);
 		
 		
-		benevolent=new Benevolent();
+		aggressive=new Aggressive();
 		
 		Continent continent=new Continent();
 		continent.setName("America");
@@ -125,33 +130,32 @@ public class BenevolentTest {
 	}
 	
 	/**
-	 * This method tests the reinforcement for benevolent,
-	 * checks whether it reinforces its weakest country or not
+	 * This method tests the reinforcement for aggressive
+	 * checks whether it reinforces its strongest country or not
 	 */
 	@Test
 	public void reinforcementPhaseTest() {
-		benevolent.reinforcementPhase(player, mapGraph, country1, 12);
-		assertEquals(4,country.getNoOfArmies());
+		aggressive.reinforcementPhase(player, mapGraph, country1, 12);
+		assertEquals(6,country1.getNoOfArmies());
 	}
 	
 	/**
-	 * This method tests the fortification for benevolent,
-	 * checks whether it fortifies its weakest country or not
+	 * This method tests the attack for aggressive
+	 * checks whether it attack with its strongest country or not
+	 */
+	@Test
+	public void attackPahseTest() {
+		aggressive.attackPhase(mapGraph, player, country, country3);
+		assertNotEquals(country.getNoOfArmies(),4);
+	}
+	
+	/**
+	 * This method tests the fortification for aggressive
+	 * checks whether it fortifies its strongest country or not
 	 */
 	@Test
 	public void fortificationPhaseTest() {
-		benevolent.fortificationPhase(mapGraph, player, country, country1, 10);
-		assertEquals(3,country.getNoOfArmies());
-	}
-	
-	/**
-	 * This method tests the attack for benevolent,
-	 * checks whether it attacks its weakest country or not,
-	 * which it should not
-	 */
-	@Test
-	public void attackPhaseTest() {
-		benevolent.attackPhase(mapGraph, player, country, country3);
-		assertEquals(2,country.getNoOfArmies());
+		aggressive.fortificationPhase(mapGraph, player, country, country1, 2);
+		assertEquals(5,country1.getNoOfArmies());
 	}
 }

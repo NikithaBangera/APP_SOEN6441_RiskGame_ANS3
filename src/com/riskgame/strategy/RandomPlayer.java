@@ -1,6 +1,9 @@
 package com.riskgame.strategy;
 
 import java.util.Random;
+
+import javax.swing.JOptionPane;
+
 import com.riskgame.controller.PlayerController;
 import com.riskgame.model.Country;
 import com.riskgame.model.GameMapGraph;
@@ -27,8 +30,8 @@ public class RandomPlayer implements PlayerStrategy{
 	public void placeArmies(GameMapGraph mapGraph, Player player, Country country) {
 		playerController = new PlayerController();
 		Random random = new Random();
-		int countryNumber = random.nextInt(player.getMyCountries().size()) + 1;
-		playerController.armiesAssignedToCountries(mapGraph, player.getMyCountries().get(countryNumber-1).getName(), 1);
+		int countryNumber = random.nextInt(player.getMyCountries().size());
+		playerController.armiesAssignedToCountries(mapGraph, player.getMyCountries().get(countryNumber).getName(), 1);
 	}
 	
 	/**
@@ -68,7 +71,7 @@ public class RandomPlayer implements PlayerStrategy{
 		attacker = getRandomCountry(gameMapGraph,player);
 		if(getRandomCountryWithAdjCountry(gameMapGraph, player, attacker)) {
 			do {
-				int randomAdjCountry = new Random().nextInt(attacker.getAdjacentCountries().size()) + 1;
+				int randomAdjCountry = new Random().nextInt(attacker.getAdjacentCountries().size());
 				defender = playerController.getAdjacentCountry(gameMapGraph, attacker.getAdjacentCountries().get(randomAdjCountry));
 				adjPlayer = playerController.getPlayerForCountry(gameMapGraph, defender.getName());
 				
@@ -107,16 +110,15 @@ public class RandomPlayer implements PlayerStrategy{
 			playerController=new PlayerController();
 			boolean countryFound = false;
 			fromCountry=getRandomCountry(gameMapGraph,player);
-			do {
-				toCountry = getRandomCountry(gameMapGraph, player);
-				if(!fromCountry.getName().equalsIgnoreCase(toCountry.getName())) {
+			toCountry = getRandomCountry(gameMapGraph, player);
+			if(!fromCountry.getName().equalsIgnoreCase(toCountry.getName())) {
 					countryFound = true;
+			}
+			if(countryFound) {
+				armiesCount=new Random().nextInt(fromCountry.getNoOfArmies()) + 1;
+				if(armiesCount > 1 && (fromCountry.getNoOfArmies() - armiesCount) >= 1) {
+					playerController.moveArmies(gameMapGraph, fromCountry, toCountry, armiesCount);
 				}
-			}while(!countryFound);
-			
-			armiesCount=new Random().nextInt(fromCountry.getNoOfArmies()) + 1;
-			if(armiesCount > 1) {
-				playerController.moveArmies(fromCountry, toCountry, armiesCount - 1);
 			}
 	}
 	/**
@@ -126,8 +128,8 @@ public class RandomPlayer implements PlayerStrategy{
 	 * @return randomCountry
 	 */
 	public Country getRandomCountry(GameMapGraph mapGraph, Player player) {
-		int countryIndexAssignment = new Random().nextInt(player.getMyCountries().size()) + 1;
-		return player.getMyCountries().get(countryIndexAssignment - 1);
+		int countryIndexAssignment = new Random().nextInt(player.getMyCountries().size());
+		return player.getMyCountries().get(countryIndexAssignment);
 	}
 	
 	/**
