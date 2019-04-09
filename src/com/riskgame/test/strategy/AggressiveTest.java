@@ -39,8 +39,8 @@ public class AggressiveTest {
 	/**
 	 * This method is called to initialize test data before all data
 	 */
-	@BeforeAll
-	public static void beforeAll() {
+	
+	public AggressiveTest() {
 		getMyCountries = new ArrayList<Country>();
 		country = new Country();
 		country.setName("Canada");
@@ -127,6 +127,7 @@ public class AggressiveTest {
 		country3.setAdjacentCountries(new ArrayList<String>());
 		country3.getAdjacentCountries().add("egypt");
 		country3.getAdjacentCountries().add("united states");
+		mapGraph.setGameType("test");
 	}
 	
 	/**
