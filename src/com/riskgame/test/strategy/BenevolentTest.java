@@ -131,7 +131,7 @@ public class BenevolentTest {
 	@Test
 	public void reinforcementPhaseTest() {
 		benevolent.reinforcementPhase(player, mapGraph, country1, 12);
-		assertEquals(4,country.getNoOfArmies());
+		assertEquals(10,country.getNoOfArmies());
 	}
 	
 	/**

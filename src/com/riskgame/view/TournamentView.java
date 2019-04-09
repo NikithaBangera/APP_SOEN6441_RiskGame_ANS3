@@ -19,11 +19,15 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Vector;
 
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
+import javax.swing.JTable;
+import javax.swing.JScrollPane;
 
 public class TournamentView extends JFrame{
 	private JTextField textFieldTurnsPerGame;
@@ -46,6 +50,7 @@ public class TournamentView extends JFrame{
 	String[] numGames = {"Select One","1","2","3","4","5"};
 	String[] playerTypes = {"Select One","Aggressive","Benevolent","Cheater","Random"};
 	TournamentMapGraph tournamentMapGraph = null;
+	private JTable table;
 
 	public TournamentView() {
 		tournamentMapGraph = new TournamentMapGraph();
@@ -252,12 +257,29 @@ public class TournamentView extends JFrame{
 		textAreaTournamentResult.setEditable(false);
 		textAreaTournamentResult.setFont(new Font("Calibri", Font.PLAIN, 14));
 		textAreaTournamentResult.setBounds(12, 42, 371, 294);
-		panelTournamentResult.add(textAreaTournamentResult);
+	//	panelTournamentResult.add(textAreaTournamentResult);
 		
 		JLabel lblResult = new JLabel("Result");
 		lblResult.setFont(new Font("Calibri", Font.BOLD, 20));
 		lblResult.setBounds(160, 3, 65, 26);
 		panelTournamentResult.add(lblResult);
+		
+		
+		
+		DefaultTableModel dm = new DefaultTableModel(0,0);
+		String header[] = new String[] {"Game","Map","Winner"};
+		dm.setColumnIdentifiers(header);
+		
+		
+		table = new JTable();
+		table.setFont(new Font("Calibri", Font.PLAIN, 14));
+		//table.setBounds(12, 42, 371, 294);
+		table.setModel(dm);
+		//panelTournamentResult.add(table);
+		
+		JScrollPane scrollPane = new JScrollPane(table);
+		scrollPane.setBounds(12, 31, 383, 305);
+		panelTournamentResult.add(scrollPane);
 		
 		JLabel lblPlayerDetails = new JLabel("Player Details");
 		lblPlayerDetails.setFont(new Font("Calibri", Font.BOLD, 20));
@@ -269,10 +291,7 @@ public class TournamentView extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				int exit = JOptionPane.showConfirmDialog(rootPane, "Are you sure you want to Exit the game?", "Exit Game", JOptionPane.YES_NO_OPTION);
-				if(exit == JOptionPane.YES_OPTION) {
-					System.exit(0);
-				}
+				System.exit(0);
 			}
 		});
 		
@@ -317,7 +336,18 @@ public class TournamentView extends JFrame{
 								TournamentController tournamentController = new TournamentController();
 								tournamentController.playTournament(tournamentMapGraph);
 								btnStartGame.setEnabled(false);
-								textAreaTournamentResult.setText(tournamentMapGraph.getTournamentResult());
+								textAreaTournamentResult.setText("The winners are:\n"+tournamentMapGraph.getTournamentResult());
+								String game = "";
+								String map = "";
+								for(Map.Entry<String, String> tournamentResult : tournamentMapGraph.getTournamentResult().entrySet()) {
+									Vector<Object> data = new Vector<Object>();
+									game = "Game "+tournamentResult.getKey().charAt(1);
+									map = "Map "+tournamentResult.getKey().charAt(3);
+									data.add(game);
+									data.add(map);
+									data.add(tournamentResult.getValue());
+									dm.addRow(data);
+								}
 								//rootPanel.removeAll();
 								rootPanel.revalidate();
 								rootPanel.repaint();
@@ -325,7 +355,9 @@ public class TournamentView extends JFrame{
 								
 							}
 							else {
-								JOptionPane.showMessageDialog(null, "Please Enter the details for all Players");
+								if(!(tournamentMapGraph.getTournamentResult().size() > 0)) {
+									JOptionPane.showMessageDialog(null, "Please Enter the details for all Players");
+								}
 							}
 						}
 						else {
@@ -339,7 +371,7 @@ public class TournamentView extends JFrame{
 				else {
 					JOptionPane.showMessageDialog(null, "Please enter a valid number of game turns.");
 				}
-				
+
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}

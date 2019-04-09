@@ -191,7 +191,7 @@ public class PlayerView implements Observer {
 					else {
 						for (Player player : mapGraph.getPlayers()) {
 							if (!player.isPlayerLostGame()) {
-								JOptionPane.showMessageDialog(null, player.getName() + " has won the game!!");
+								JOptionPane.showMessageDialog(null, player.getName()+" ("+player.getPlayerType()+") has won the game!!");
 								System.exit(0);
 							}
 						}
@@ -787,7 +787,7 @@ public class PlayerView implements Observer {
 		} else {
 			for (Player player : mapGraph.getPlayers()) {
 				if (!player.isPlayerLostGame()) {
-					JOptionPane.showMessageDialog(null, player.getName() + " has won the game!!");
+					JOptionPane.showMessageDialog(null, player.getName()+" ("+player.getPlayerType()+") has won the game!!");
 					System.exit(0);
 				}
 			}
@@ -937,6 +937,9 @@ public class PlayerView implements Observer {
 		}
 		
 		rootPanel.setEnabled(false);
+		if(!(mapGraph.getGameType().equalsIgnoreCase("Tournament") || mapGraph.getGameType().equalsIgnoreCase("Test"))) {
+			JOptionPane.showMessageDialog(null, "Player "+player.getName()+"("+player.getPlayerType()+") has started playing");
+		}
 		switch (mapGraph.getGamePhase()) {
 		
 		case "Place Armies":
@@ -960,6 +963,7 @@ public class PlayerView implements Observer {
 				playerStrategy.reinforcementPhase(currentPlayer, mapGraph, null, 0);
 				playerStrategy.attackPhase(mapGraph, currentPlayer, null, null);
 				playerStrategy.fortificationPhase(mapGraph, currentPlayer, null, null, 0);
+				
 			}
 			else if(player.getPlayerType().equalsIgnoreCase("Benevolent")) {
 				playerStrategy.reinforcementPhase(currentPlayer, mapGraph, null, 0);
@@ -997,6 +1001,9 @@ public class PlayerView implements Observer {
 			break;
 		default:
 			break;
+		}
+		if(!(mapGraph.getGameType().equalsIgnoreCase("Tournament") || mapGraph.getGameType().equalsIgnoreCase("Test"))) {
+			JOptionPane.showMessageDialog(null, player.getName()+"("+player.getPlayerType()+") player's turn ended.");
 		}
 		mapGraph.setRefreshFrame(false);
 		rootPanel.removeAll();

@@ -1,8 +1,16 @@
 package com.riskgame.controller;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Random;
@@ -301,7 +309,7 @@ public class PlayerController {
 				if (playerFound) {
 					for (Country country : player.getMyCountries()) {
 						if (country.getName().equalsIgnoreCase(defender.getName())) {
-							if(!gameMapGraph.getGameType().equalsIgnoreCase("Tournament")) {
+							if(!(gameMapGraph.getGameType().equalsIgnoreCase("Tournament") || gameMapGraph.getGameType().equalsIgnoreCase("Test"))) {
 								JOptionPane.showMessageDialog(null, "Cannot attack your own country!!");
 							}
 							isPlayerCountry = true;
@@ -317,20 +325,20 @@ public class PlayerController {
 					if (attacker.getNoOfArmies() > 1 && defender.getNoOfArmies() > 0) {
 						isAttackPossible = true;
 					} else {
-						if(!gameMapGraph.getGameType().equalsIgnoreCase("Tournament")) {
+						if(!(gameMapGraph.getGameType().equalsIgnoreCase("Tournament") || gameMapGraph.getGameType().equalsIgnoreCase("Test"))) {
 							JOptionPane.showMessageDialog(null,
 								"Insufficient armies in the attacker country/defender country");
 						}
 					}
 				} else {
-					if(!gameMapGraph.getGameType().equalsIgnoreCase("Tournament")) {
+					if(!(gameMapGraph.getGameType().equalsIgnoreCase("Tournament") || gameMapGraph.getGameType().equalsIgnoreCase("Test"))) {
 						JOptionPane.showMessageDialog(null, "Attacker and Defender Countries are not adjacent!");
 					}
 				}
 			}
 		}
 
-		if (isAttackPossible) {
+		if (isAttackPossible && !(gameMapGraph.getGameType().equalsIgnoreCase("Tournament") || gameMapGraph.getGameType().equalsIgnoreCase("Test"))) {
 			DiceView diceView = new DiceView(gameMapGraph, attacker, defender);
 		}
 	}
@@ -360,7 +368,7 @@ public class PlayerController {
 			if (playerFound) {
 				for (Country country : player.getMyCountries()) {
 					if (country.getName().equalsIgnoreCase(defenderCountry.getName())) {
-						if(!gameMapGraph.getGameType().equalsIgnoreCase("Tournament")) {
+						if(!(gameMapGraph.getGameType().equalsIgnoreCase("Tournament") || gameMapGraph.getGameType().equalsIgnoreCase("Test"))) {
 							JOptionPane.showMessageDialog(null, "Cannot attack your own country!!");
 						}
 						isPlayerCountry = true;
@@ -396,14 +404,14 @@ public class PlayerController {
 						attacker.getPlayersCardList().putAll(defender.getPlayersCardList());
 						attacker.setConquerCountry(attacker.getConquerCountry() - 1);
 						defender.setPlayerLostGame(true);
-						if(!gameMapGraph.getGameType().equalsIgnoreCase("Tournament")) {
+						if(!(gameMapGraph.getGameType().equalsIgnoreCase("Tournament") || gameMapGraph.getGameType().equalsIgnoreCase("Test"))) {
 							JOptionPane.showMessageDialog(null, "Player "+defender.getName()+" has lost the game!!");
 						}
 					}
 				}
 
 			} else if (attackerCountry.getNoOfArmies() == 1) {
-				if(!gameMapGraph.getGameType().equalsIgnoreCase("Tournament")) {
+				if(!(gameMapGraph.getGameType().equalsIgnoreCase("Tournament") || gameMapGraph.getGameType().equalsIgnoreCase("Test"))) {
 					JOptionPane.showMessageDialog(null, "Attacker cannot attack anymore");
 				}
 			}
@@ -437,14 +445,14 @@ public class PlayerController {
 			}
 			
 			if (!adjacentCountries) {
-				if(!mapGraph.getGameType().equalsIgnoreCase("Tournament")) {
+				if(!(mapGraph.getGameType().equalsIgnoreCase("Tournament") || mapGraph.getGameType().equalsIgnoreCase("Test"))) {
 					JOptionPane.showMessageDialog(null, "Countries are not adjacanet!");
 				}
 				doFortification = true;
 			}
 	
 			if (!doFortification) {
-				if(!mapGraph.getGameType().equalsIgnoreCase("Tournament")) {
+				if(!(mapGraph.getGameType().equalsIgnoreCase("Tournament") || mapGraph.getGameType().equalsIgnoreCase("Test"))) {
 					JOptionPane.showMessageDialog(null,
 						"Armies moved from " + fromCountry.getName() + " to " + toCountry.getName() + " successfully!");
 				}
@@ -549,12 +557,12 @@ public class PlayerController {
 				}
 
 			} else {
-				if(!mapGraph.getGameType().equalsIgnoreCase("Tournament")) {
+				if(!(mapGraph.getGameType().equalsIgnoreCase("Tournament") || mapGraph.getGameType().equalsIgnoreCase("Test"))) {
 					JOptionPane.showMessageDialog(null, "Insufficient number of armies.");
 				}
 			}
 		} else {
-			if(!mapGraph.getGameType().equalsIgnoreCase("Tournament")) {
+			if(!(mapGraph.getGameType().equalsIgnoreCase("Tournament") || mapGraph.getGameType().equalsIgnoreCase("Test"))) {
 				JOptionPane.showMessageDialog(null, "This country is not owned by you!");
 			}
 		}
@@ -610,12 +618,39 @@ public class PlayerController {
 			}
 
 		} else {
-			if(!gameMapGraph.getGameType().equalsIgnoreCase("Tournament")) {
+			if(!(gameMapGraph.getGameType().equalsIgnoreCase("Tournament") || gameMapGraph.getGameType().equalsIgnoreCase("Test"))) {
 				JOptionPane.showMessageDialog(null,
 					"Allowed number of armies to be moved: " + (attackerCountry.getNoOfArmies() - 1));
 			}
 		}
 		return moveSuccessful;
+	}
+	
+	public void saveGame(GameMapGraph mapGraph) {
+		try {
+			File saveFile = new File(System.getProperty("user.dir")+"/resources/SavedGames/SaveGame.txt");
+			FileOutputStream fileOutput;
+			if(saveFile.createNewFile()) {
+				fileOutput = new FileOutputStream(saveFile);
+				ObjectOutputStream save = new ObjectOutputStream(fileOutput);
+				save.writeObject(mapGraph);
+				save.close();
+				fileOutput.close();
+			}
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+	}
+	
+	public GameMapGraph loadGame(String fileName)
+			throws FileNotFoundException, IOException, ClassNotFoundException {
+		FileInputStream fi = new FileInputStream(new File(fileName));
+		ObjectInputStream oi = new ObjectInputStream(fi);
+		
+		GameMapGraph mapGraph = (GameMapGraph) oi.readObject();
+		fi.close();
+		oi.close();
+		return mapGraph;
 	}
 
 }

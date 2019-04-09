@@ -37,7 +37,7 @@ public class TournamentMapGraph {
 	/**
 	 * Result of the tournament
 	 */
-	private String tournamentResult = "";
+	private Map<String, String> tournamentResult = new TreeMap<String, String>();
 	
 	/**
 	 * Method to get player details from StartGameView class.
@@ -141,7 +141,7 @@ public class TournamentMapGraph {
 	 * Method to get the tournament result
 	 * @return tournamentResult - result
 	 */
-	public String getTournamentResult() {
+	public Map<String, String> getTournamentResult() {
 		return tournamentResult;
 	}
 
@@ -149,7 +149,7 @@ public class TournamentMapGraph {
 	 * Method to set the tournament result
 	 * @param tournamentResult - result
 	 */
-	public void setTournamentResult(String tournamentResult) {
+	public void setTournamentResult(Map<String, String> tournamentResult) {
 		this.tournamentResult = tournamentResult;
 	}
 }
