@@ -149,14 +149,14 @@ public class TournamentView extends JFrame{
 		btnStartGame = new JButton("Play");
 		btnStartGame.setBounds(612, 47, 118, 25);
 		rootPanel.add(btnStartGame);
-		btnStartGame.setFont(new Font("Calibri", Font.BOLD, 14));
+		btnStartGame.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		
 				
 				
 				btnExit = new JButton("Exit");
 				btnExit.setBounds(612, 96, 118, 25);
 				rootPanel.add(btnExit);
-				btnExit.setFont(new Font("Calibri", Font.BOLD, 14));
+				btnExit.setFont(new Font("Times New Roman", Font.BOLD, 14));
 				
 		initialize(tournamentMapGraph);
 		setVisible(true);
@@ -171,56 +171,56 @@ public class TournamentView extends JFrame{
 		tournamentMapGraph.getInputPlayerDetails().clear();
 		
 		JLabel lblPlayerType = new JLabel("Player Type");
-		lblPlayerType.setBounds(242, 69, 68, 17);
-		lblPlayerType.setFont(new Font("Calibri", Font.BOLD, 14));
+		lblPlayerType.setBounds(238, 69, 103, 17);
+		lblPlayerType.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		
 		JLabel lblPlayerName = new JLabel("Player Name");
-		lblPlayerName.setBounds(118, 69, 73, 17);
-		lblPlayerName.setFont(new Font("Calibri", Font.BOLD, 14));
+		lblPlayerName.setBounds(100, 69, 103, 17);
+		lblPlayerName.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		
 		JLabel lblPlayer1 = new JLabel("Player 1");
-		lblPlayer1.setBounds(35, 113, 46, 17);
-		lblPlayer1.setFont(new Font("Calibri", Font.BOLD, 14));
+		lblPlayer1.setBounds(12, 113, 60, 17);
+		lblPlayer1.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		
 		textFieldPlayer1 = new JTextField();
 		textFieldPlayer1.setBounds(96, 109, 116, 22);
 		textFieldPlayer1.setColumns(10);
 		
 		JComboBox comboBoxPlayer1 = new JComboBox(playerTypes);
-		comboBoxPlayer1.setBounds(232, 109, 89, 22);
+		comboBoxPlayer1.setBounds(232, 109, 120, 22);
 		
 		JLabel lblPlayer2 = new JLabel("Player 2");
-		lblPlayer2.setBounds(35, 155, 46, 17);
-		lblPlayer2.setFont(new Font("Calibri", Font.BOLD, 14));
+		lblPlayer2.setBounds(12, 155, 60, 17);
+		lblPlayer2.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		
 		textFieldPlayer2 = new JTextField();
 		textFieldPlayer2.setBounds(96, 151, 116, 22);
 		textFieldPlayer2.setColumns(10);
 		
 		JComboBox comboBoxPlayer2 = new JComboBox(playerTypes);
-		comboBoxPlayer2.setBounds(232, 151, 89, 22);
+		comboBoxPlayer2.setBounds(232, 151, 120, 22);
 		
 		JLabel lblPlayer3 = new JLabel("Player 3");
-		lblPlayer3.setBounds(35, 197, 46, 17);
-		lblPlayer3.setFont(new Font("Calibri", Font.BOLD, 14));
+		lblPlayer3.setBounds(12, 197, 60, 17);
+		lblPlayer3.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		
 		textFieldPlayer3 = new JTextField();
 		textFieldPlayer3.setBounds(96, 193, 116, 22);
 		textFieldPlayer3.setColumns(10);
 		
 		JComboBox comboBoxPlayer3 = new JComboBox(playerTypes);
-		comboBoxPlayer3.setBounds(232, 193, 89, 22);
+		comboBoxPlayer3.setBounds(232, 193, 120, 22);
 		
 		JLabel lblPlayer4 = new JLabel("Player 4");
-		lblPlayer4.setBounds(35, 236, 46, 17);
-		lblPlayer4.setFont(new Font("Calibri", Font.BOLD, 14));
+		lblPlayer4.setBounds(12, 236, 60, 17);
+		lblPlayer4.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		
 		textFieldPlayer4 = new JTextField();
 		textFieldPlayer4.setBounds(96, 232, 116, 22);
 		textFieldPlayer4.setColumns(10);
 		
 		JComboBox comboBoxPlayer4 = new JComboBox(playerTypes);
-		comboBoxPlayer4.setBounds(232, 232, 89, 22);
+		comboBoxPlayer4.setBounds(232, 232, 120, 22);
 
 		switch (numberOfPlayers) {
 		case 2: panelPlayerDetails.add(lblPlayerType);
@@ -276,7 +276,7 @@ public class TournamentView extends JFrame{
 		
 		JTextArea textAreaTournamentResult = new JTextArea();
 		textAreaTournamentResult.setEditable(false);
-		textAreaTournamentResult.setFont(new Font("Calibri", Font.PLAIN, 14));
+		textAreaTournamentResult.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		textAreaTournamentResult.setBounds(12, 42, 371, 294);
 	//	panelTournamentResult.add(textAreaTournamentResult);
 		
@@ -291,9 +291,8 @@ public class TournamentView extends JFrame{
 		String header[] = new String[] {"Game","Map","Winner"};
 		dm.setColumnIdentifiers(header);
 		
-		
 		table = new JTable();
-		table.setFont(new Font("Calibri", Font.PLAIN, 14));
+		table.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		//table.setBounds(12, 42, 371, 294);
 		table.setModel(dm);
 		//panelTournamentResult.add(table);

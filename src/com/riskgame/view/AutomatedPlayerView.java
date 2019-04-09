@@ -58,7 +58,7 @@ public class AutomatedPlayerView extends JFrame{
 			gameStatus = mapGraph.getGameResult();
 		}
 		JLabel lblAutomatedGameIn = new JLabel(gameStatus);
-		lblAutomatedGameIn.setFont(new Font("Calibri", Font.BOLD, 28));
+		lblAutomatedGameIn.setFont(new Font("Dialog", Font.BOLD, 23));
 		lblAutomatedGameIn.setBounds(157, 86, 394, 36);
 		panel.add(lblAutomatedGameIn);
 		

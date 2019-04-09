@@ -200,7 +200,9 @@ public class TournamentControllerTest {
 		gameMapGraph_1.setGameType("Test");
 		
    }
-   
+   /**
+    * this method checks the placing armies of the tournament mode
+    */
    @Test
    public void testTournamentPlaceArmies() {
 	   tournamentController.tournamentPlaceArmies(gameMapGraph_1);
