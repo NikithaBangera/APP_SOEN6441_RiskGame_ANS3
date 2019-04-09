@@ -20,6 +20,14 @@ import com.riskgame.controller.PlayerController;
 import com.riskgame.model.GameMapGraph;
 import javax.swing.DefaultComboBoxModel;
 
+/**
+ * StartGame view class which displays the view to select the number of players 
+ * and also to give the names to players and choose the type of players
+ * 
+ * @author Nikitha
+ * @author Shresthi
+ *
+ */
 public class StartGameView extends JFrame{
 	private JTextField textFieldPlayer1;
 	private JTextField textFieldPlayer2;
@@ -34,7 +42,10 @@ public class StartGameView extends JFrame{
 	String[] numPlayers = {"Select One","2","3","4","5","6"};
 	String[] playerTypes = {"Select One","Human","Aggressive","Benevolent","Cheater","Random"};
 	
-	
+	/**
+	 * StartGameView constructor which displays the startgame view
+	 * @param mapGraph - object of GameMapGraph
+	 */
 	public StartGameView(GameMapGraph mapGraph) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Start Game");
@@ -82,6 +93,12 @@ public class StartGameView extends JFrame{
 		setVisible(true);
 	}
 	
+	/**
+	 * The method which contains all the buttons, labels, combo boxes
+	 * required  for the start game view
+	 *  
+	 * @param mapGraph - object of the GameMapGraph
+	 */
 	public void initialize(GameMapGraph mapGraph) {
 		
 		
@@ -324,6 +341,11 @@ public class StartGameView extends JFrame{
 		});
 	}
 	
+	/**
+	 * Method to validate the player details
+	 * @param mapGraph - object of the GameMapGraph
+	 * @return missingData - boolean variable
+	 */
 	public boolean validatePlayerDetails(GameMapGraph mapGraph) {
 		boolean missingData = false;
 		Iterator<Entry<String, String>> playerDetailsIT = mapGraph.getInputPlayerDetails().entrySet().iterator();
@@ -337,6 +359,12 @@ public class StartGameView extends JFrame{
 		return missingData;
 	}
 	
+	/**
+	 * Method to check if play needs to be authomated when human 
+	 * player is not chosen
+	 * @param mapGraph - object of GameMapGraph
+	 * @return automatedPlay - boolean variable
+	 */
 	public boolean automatedPlay(GameMapGraph mapGraph) {
 		boolean automatedPlay = true;
 		int i = 0;

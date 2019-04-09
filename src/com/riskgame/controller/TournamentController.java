@@ -27,17 +27,65 @@ import com.riskgame.strategy.Cheater;
 import com.riskgame.strategy.PlayerStrategy;
 import com.riskgame.strategy.RandomPlayer;
 
+/**
+ * Tournament class contains all the methods to start the tournament mode,
+ * load the maps for the games based the number of maps selected by the user,
+ * save the objects of the GameMapGraph into different games, start the
+ * automated tournament game and finally display the tournament result of the
+ * differnt games
+ * 
+ * @author Nikitha
+ * @author Anusha
+ *
+ */
 public class TournamentController {
 
+	/**
+	 * Object of LoadMapController class
+	 */
 	public LoadMapController loadMap = new LoadMapController();
+	
+	/**
+	 * Object of CreateMapController class
+	 */
 	public CreateMapController createandeditmap = new CreateMapController();
+	
+	/**
+	 * boolean variable to check if upload map is successful
+	 */
 	boolean uploadSuccessful = false;
+	
+	/**
+	 * boolean variable to check if good to start game
+	 */
 	public static boolean isGoodToStartGame = false;
+	
+	/**
+	 * Game key variable
+	 */
 	private String gameKey;
+	
+	/**
+	 * hashmap for keeping track of number of maps for different games
+	 */
 	private Map<Integer, GameMapGraph> initialTournamentMaps = new TreeMap<Integer, GameMapGraph>(); 
+	
+	/**
+	 * number of players count
+	 */
 	private int countOfthePlayers = 0;
+	
+	/**
+	 * object of PlayerController object
+	 */
 	PlayerController playerController = new PlayerController();
 	
+	/**
+	 * This method is used to start the tournament mode by invoking the place armies function
+	 * and also the different phase methods based on the different player strategies
+	 * 
+	 * @param tournamentMapGraph - an object containing the details of the tournament game
+	 */
 	public void playTournament(TournamentMapGraph tournamentMapGraph) {
 		playerController.setCountOfthePlayers(tournamentMapGraph.getNumberOfPlayers());
 		loadTournamentMaps(tournamentMapGraph);
@@ -85,6 +133,12 @@ public class TournamentController {
 		}
 	}
 
+	/**
+	 * Method which calls the placeArmies function of the players based
+	 * on the player strategies
+	 * 
+	 * @param gameMapGraph - object of GameMapGraph class
+	 */
 	public void tournamentPlaceArmies(GameMapGraph gameMapGraph) {
 		
 		while(!playerController.isPlaceArmiesComplete(gameMapGraph)) {
@@ -102,6 +156,11 @@ public class TournamentController {
 		}
 	}
 
+	/**
+	 * Method to the load the maps chosen by the user for different games
+	 * 
+	 * @param tournamentMapGraph - an object containing the details of the tournament game
+	 */
 	private void loadTournamentMaps(TournamentMapGraph tournamentMapGraph) {
 		int i = 0;
 		int numberOfMaps = tournamentMapGraph.getNumberOfMaps();
@@ -146,6 +205,11 @@ public class TournamentController {
 		}
 	}
 	
+	/**
+	 * Saving the tournament map objects for different games
+	 * @param i - number of games
+	 * @param loadMapGraph - object of the GameMapGraph
+	 */
 	private void saveTournamentMaps(int i, GameMapGraph loadMapGraph) {
 		try {
 			File saveFile = new File(System.getProperty("user.dir")+"/resources/TournamentMaps/"+i+".txt");
@@ -163,8 +227,11 @@ public class TournamentController {
 		}
 	}
 
-
-
+	/**
+	 * Method to populate the maps for diferent games into the tournamentMapGraph
+	 * object which contains all the details of the tournament
+	 * @param tournamentMapGraph - object of the TournamentMapGraph
+	 */
 	private void populateTournamentMapGraphs(TournamentMapGraph tournamentMapGraph) {
 		try {
 			for(int j=1;j<=tournamentMapGraph.getNumberOfGames();j++) {
@@ -199,6 +266,13 @@ public class TournamentController {
 		}
 	}
 	
+	/**
+	 * This method the methods of the different players based on the 
+	 * type of the player during that player's turn
+	 * @param mapGraph - object of the GameMapGraph
+	 * @param currentPlayer - current player playing the game
+	 * @return strategyComplete - status of the strategy completion
+	 */
 	private boolean invokePlayerStrategy(GameMapGraph mapGraph, Player currentPlayer) {
 		boolean strategyComplete = false;
 		
@@ -244,6 +318,11 @@ public class TournamentController {
 		return strategyComplete;
 	}
 	
+	/**
+	 * Method to check whether the game is complete
+	 * @param mapGraph - object of the GameMapGraph
+	 * @return true - return true or false
+	 */
 	private boolean validateGameCompletion(GameMapGraph mapGraph) {
 		int i = 0;
 		for (Player player : mapGraph.getPlayers()) {
@@ -256,5 +335,4 @@ public class TournamentController {
 		}
 		return false;
 	}
-
 }

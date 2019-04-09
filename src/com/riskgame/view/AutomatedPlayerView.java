@@ -9,10 +9,23 @@ import com.riskgame.model.GameMapGraph;
 import javax.swing.JLabel;
 import java.awt.Font;
 
+/**
+ * Automated player view class is invoked when in the
+ * single game mode only strategy players are chosen
+ * @author Nikitha
+ * @author Shiva
+ *
+ */
 public class AutomatedPlayerView extends JFrame{
 	
 	JPanel panel;
 	
+	/**
+	 * Method to invoke the automated player view for the
+	 * game to be automatically played
+	 * @param mapGraph - object of GameMapGraph
+	 * @throws Exception - exception to be caught
+	 */
 	public AutomatedPlayerView(GameMapGraph mapGraph) throws Exception {
 		setTitle("Risk Game");
 		getContentPane().setLayout(null);
@@ -26,6 +39,11 @@ public class AutomatedPlayerView extends JFrame{
 		initialize(mapGraph);
 	}
 
+	/**
+	 * Method which contains details of the view
+	 * @param mapGraph - object of GameMapGraph
+	 * @throws Exception - exception to be caught
+	 */
 	private void initialize(GameMapGraph mapGraph) throws Exception {
 
 		JLabel lblNoHuman = new JLabel("No Human player selected");

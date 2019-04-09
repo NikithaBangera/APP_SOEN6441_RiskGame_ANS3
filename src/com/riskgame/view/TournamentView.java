@@ -29,6 +29,17 @@ import javax.swing.JTextArea;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 
+/**
+ * The Tournament View class is invoked for displaying the tournament view
+ * which takes all the details the information required for the tournament
+ * mode to begin
+ * 
+ * @author Nikitha
+ * @author Shresthi
+ * @author Shiva
+ * @author Anusha
+ *
+ */
 public class TournamentView extends JFrame{
 	private JTextField textFieldTurnsPerGame;
 	private JTextField textFieldPlayer1;
@@ -52,6 +63,10 @@ public class TournamentView extends JFrame{
 	TournamentMapGraph tournamentMapGraph = null;
 	private JTable table;
 
+	/**
+	 * The TournamentView constructor contains all the panels, labels,
+	 * combo-boxes and text fields to fetch all the tournament details from the user
+	 */
 	public TournamentView() {
 		tournamentMapGraph = new TournamentMapGraph();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -147,6 +162,11 @@ public class TournamentView extends JFrame{
 		setVisible(true);
 	}
 	
+	/**
+	 * This method begin the tournament mode after getting all the 
+	 * required information from the user
+	 * @param tournamentMapGraph
+	 */
 	public void initialize(TournamentMapGraph tournamentMapGraph) {
 		tournamentMapGraph.getInputPlayerDetails().clear();
 		
@@ -380,6 +400,11 @@ public class TournamentView extends JFrame{
 	});
 	}
 
+	/**
+	 * Method to validate the number of game turns of the tournament
+	 * @param tournamentMapGraph - object of tournament map graph
+	 * @return isValid - boolean variable to check the validity
+	 */
 	public boolean validateGameTurnsOptions(TournamentMapGraph tournamentMapGraph) {
 		boolean isValid = false;
 		if(tournamentMapGraph.getGameTurns() >= 10 && tournamentMapGraph.getGameTurns() <= 50) {
@@ -388,6 +413,11 @@ public class TournamentView extends JFrame{
 		return isValid;
 	}
 	
+	/**
+	 * Method to validate the player details of the tournament
+	 * @param tournamentMapGraph - object of tournament map graph
+	 * @return missingData - boolean variable to check the validity
+	 */
 	public boolean validatePlayerDetails(TournamentMapGraph tournamentMapGraph) {
 		boolean missingData = false;
 		Iterator<Entry<String, String>> playerDetailsIT = tournamentMapGraph.getInputPlayerDetails().entrySet().iterator();

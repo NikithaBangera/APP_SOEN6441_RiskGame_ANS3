@@ -88,58 +88,6 @@ public class PlayerController {
 			riskPlayer.setFirstReinforcement(true);
 			mapGraph.getPlayers().add(riskPlayer);
 		}
-		// Startup Phase starts here
-//		boolean proceed = false;
-//		do {
-//			System.out.println("Enter the number of players below");
-//			String playerCount = br.readLine().trim();
-//			Pattern numberPattern = Pattern.compile("[0-9]+");
-//			Matcher match = numberPattern.matcher(playerCount);
-//			while (!match.matches() || playerCount.isEmpty()) {
-//				System.out.println("\nPlease enter the correct player count below:");
-//
-//				playerCount = br.readLine().trim();
-//				match = numberPattern.matcher(playerCount);
-//			}
-//			countOfthePlayers = Integer.parseInt(playerCount);
-//
-//			if (countOfthePlayers > 1 && countOfthePlayers < 7) {
-//				System.out.println("Great! Let's Play.");
-//				proceed = false;
-//			} else {
-//				System.out.println("Sorry! The numbers of players can be between 2 and 6.");
-//				proceed = true;
-//			}
-//		} while (proceed);
-
-//		System.out.println("Enter the name of the players");
-		
-//		for (int count = 1; count <= mapGraph.getInputPlayerDetails().size(); count++) {
-//			boolean continue1 = true;
-//			Player riskPlayer = new Player();
-//			String playername = br.readLine().trim();
-//			Pattern namePattern = Pattern.compile("[a-zA-z]+");
-//			Matcher match = namePattern.matcher(playername);
-//			while (!match.matches() || playername.isEmpty()) {
-//				System.out.println("\nPlease enter the correct player name below:");
-//
-//				playername = br.readLine().trim();
-//				match = namePattern.matcher(playername);
-//			}
-//
-//			while (continue1) {
-//				if (playername != null) {
-//					riskPlayer.setName(playername);
-//					riskPlayer.setConquerCountry(0);
-//					continue1 = false;
-//
-//				} else {
-//					System.out.println("Player name cannot be empty");
-//				}
-//			}
-//			riskPlayer.setFirstReinforcement(true);
-//			mapGraph.getPlayers().add(riskPlayer);
-//		}
 
 		allocationOfCountry(mapGraph);
 		allocationOfArmyToPlayers(mapGraph);
@@ -147,10 +95,6 @@ public class PlayerController {
 
 		CardController cardController = new CardController();
 		cardController.assignCardsToCountry(mapGraph);
-
-		// allocationOfRemainingArmyToCountries(mapGraph);
-
-		// Place Army Phase starts here
 
 		mapGraph.setGamePhase("Place Armies");
 		mapGraph.setExchangeCount(1);
@@ -626,6 +570,10 @@ public class PlayerController {
 		return moveSuccessful;
 	}
 	
+	/**
+	 * Method to save the game's object into a text file
+	 * @param mapGraph - object containing all the game details
+	 */
 	public void saveGame(GameMapGraph mapGraph) {
 		try {
 			File saveFile = new File(System.getProperty("user.dir")+"/resources/SavedGames/SaveGame.txt");
@@ -642,6 +590,14 @@ public class PlayerController {
 		}
 	}
 	
+	/**
+	 * Method to load/resume the saved game
+	 * @param fileName
+	 * @return mapgraph - object containing all the game details
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	public GameMapGraph loadGame(String fileName)
 			throws FileNotFoundException, IOException, ClassNotFoundException {
 		FileInputStream fi = new FileInputStream(new File(fileName));
