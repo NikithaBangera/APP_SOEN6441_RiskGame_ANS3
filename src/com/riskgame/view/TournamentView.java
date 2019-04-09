@@ -167,7 +167,7 @@ public class TournamentView extends JFrame{
 		textFieldPlayer1.setColumns(10);
 		
 		JComboBox comboBoxPlayer1 = new JComboBox(playerTypes);
-		comboBoxPlayer1.setBounds(232, 109, 103, 22);
+		comboBoxPlayer1.setBounds(232, 109, 120, 22);
 		
 		JLabel lblPlayer2 = new JLabel("Player 2");
 		lblPlayer2.setBounds(12, 155, 60, 17);
@@ -178,7 +178,7 @@ public class TournamentView extends JFrame{
 		textFieldPlayer2.setColumns(10);
 		
 		JComboBox comboBoxPlayer2 = new JComboBox(playerTypes);
-		comboBoxPlayer2.setBounds(232, 151, 103, 22);
+		comboBoxPlayer2.setBounds(232, 151, 120, 22);
 		
 		JLabel lblPlayer3 = new JLabel("Player 3");
 		lblPlayer3.setBounds(12, 197, 60, 17);
@@ -189,7 +189,7 @@ public class TournamentView extends JFrame{
 		textFieldPlayer3.setColumns(10);
 		
 		JComboBox comboBoxPlayer3 = new JComboBox(playerTypes);
-		comboBoxPlayer3.setBounds(232, 193, 103, 22);
+		comboBoxPlayer3.setBounds(232, 193, 120, 22);
 		
 		JLabel lblPlayer4 = new JLabel("Player 4");
 		lblPlayer4.setBounds(12, 236, 60, 17);
@@ -200,7 +200,7 @@ public class TournamentView extends JFrame{
 		textFieldPlayer4.setColumns(10);
 		
 		JComboBox comboBoxPlayer4 = new JComboBox(playerTypes);
-		comboBoxPlayer4.setBounds(232, 232, 103, 22);
+		comboBoxPlayer4.setBounds(232, 232, 120, 22);
 
 		switch (numberOfPlayers) {
 		case 2: panelPlayerDetails.add(lblPlayerType);
@@ -270,7 +270,6 @@ public class TournamentView extends JFrame{
 		DefaultTableModel dm = new DefaultTableModel(0,0);
 		String header[] = new String[] {"Game","Map","Winner"};
 		dm.setColumnIdentifiers(header);
-		
 		
 		table = new JTable();
 		table.setFont(new Font("Times New Roman", Font.PLAIN, 14));
