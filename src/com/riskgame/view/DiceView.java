@@ -106,27 +106,27 @@ public class DiceView implements Observer{
 	 */
 	private void initialize(GameMapGraph gameMapGraph, Country attackerCountry, Country defenderCountry) {
 		JLabel lblAttacker = new JLabel("Attacker");
-		lblAttacker.setFont(new Font("Calibri", Font.BOLD, 17));
-		lblAttacker.setBounds(74, 8, 66, 20);
+		lblAttacker.setFont(new Font("Times New Roman", Font.BOLD, 18));
+		lblAttacker.setBounds(74, 8, 321, 20);
 		diceRootPanel.add(lblAttacker);
 		
 		JLabel lblDefender = new JLabel("Defender");
-		lblDefender.setFont(new Font("Calibri", Font.BOLD, 17));
-		lblDefender.setBounds(281, 8, 71, 20);
+		lblDefender.setFont(new Font("Times New Roman", Font.BOLD, 18));
+		lblDefender.setBounds(281, 8, 114, 20);
 		diceRootPanel.add(lblDefender);
 		
 		JRadioButton attackerDice1Radio = new JRadioButton("1");
-		attackerDice1Radio.setFont(new Font("Arial", Font.PLAIN, 17));
+		attackerDice1Radio.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		attackerDice1Radio.setActionCommand("1");
 		attackerDice1Radio.setBounds(44, 73, 56, 29);
 		
 		JRadioButton attackerDice2Radio = new JRadioButton("2");
-		attackerDice2Radio.setFont(new Font("Arial", Font.PLAIN, 17));
+		attackerDice2Radio.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		attackerDice2Radio.setBounds(98, 73, 47, 29);
 		attackerDice2Radio.setActionCommand("2");
 		
 		JRadioButton attackerDice3Radio = new JRadioButton("3");
-		attackerDice3Radio.setFont(new Font("Arial", Font.PLAIN, 17));
+		attackerDice3Radio.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		attackerDice3Radio.setBounds(150, 70, 47, 34);
 		attackerDice3Radio.setActionCommand("3");
 		
@@ -144,13 +144,13 @@ public class DiceView implements Observer{
 		}
 		
 		JRadioButton defenderDice1Radio = new JRadioButton("1");
-		defenderDice1Radio.setFont(new Font("Arial", Font.PLAIN, 17));
+		defenderDice1Radio.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		defenderDice1Radio.setBounds(262, 73, 47, 29);
 		defenderDice1Radio.setActionCommand("1");
 		
 		
 		JRadioButton defenderDice2Radio = new JRadioButton("2");
-		defenderDice2Radio.setFont(new Font("Arial", Font.PLAIN, 17));
+		defenderDice2Radio.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		defenderDice2Radio.setBounds(320, 73, 47, 29);
 		defenderDice2Radio.setActionCommand("2");
 		
@@ -173,39 +173,39 @@ public class DiceView implements Observer{
 	    defenderGroup.add(defenderDice2Radio);
 		
 		JLabel lblDice = new JLabel("Dice1");
-		lblDice.setFont(new Font("Arial", Font.PLAIN, 17));
+		lblDice.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		lblDice.setBounds(15, 135, 47, 20);
 		
 		JLabel lblDice_1 = new JLabel("Dice2");
-		lblDice_1.setFont(new Font("Arial", Font.PLAIN, 17));
+		lblDice_1.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		lblDice_1.setBounds(15, 174, 47, 20);
 		
 		JLabel lblDice_2 = new JLabel("Dice3");
-		lblDice_2.setFont(new Font("Arial", Font.PLAIN, 17));
+		lblDice_2.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		lblDice_2.setBounds(15, 210, 47, 20);
 		
 		textField = new JTextField();
-		textField.setFont(new Font("Arial", Font.PLAIN, 17));
+		textField.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		textField.setBounds(68, 132, 146, 26);
 		textField.setColumns(10);
 		
 		textField_1 = new JTextField();
-		textField_1.setFont(new Font("Arial", Font.PLAIN, 17));
+		textField_1.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		textField_1.setBounds(68, 171, 146, 26);
 		textField_1.setColumns(10);
 		
 		textField_2 = new JTextField();
-		textField_2.setFont(new Font("Arial", Font.PLAIN, 17));
+		textField_2.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		textField_2.setBounds(68, 210, 146, 26);
 		textField_2.setColumns(10);
 		
 		textField_3 = new JTextField();
-		textField_3.setFont(new Font("Arial", Font.PLAIN, 17));
+		textField_3.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		textField_3.setBounds(260, 132, 146, 26);
 		textField_3.setColumns(10);
 		
 		textField_4 = new JTextField();
-		textField_4.setFont(new Font("Arial", Font.PLAIN, 17));
+		textField_4.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		textField_4.setBounds(260, 171, 146, 26);
 		textField_4.setColumns(10);
 		
@@ -254,7 +254,7 @@ public class DiceView implements Observer{
 		
 		messageField = new JTextField();
 		messageField.setEnabled(false);
-		messageField.setFont(new Font("Arial", Font.PLAIN, 17));
+		messageField.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 		messageField.setBounds(102, 333, 439, 26);
 		messageField.setColumns(10);
 		
@@ -292,14 +292,14 @@ public class DiceView implements Observer{
 				}
 			}
 		});
-		btnRollDice.setFont(new Font("Arial", Font.PLAIN, 14));
+		btnRollDice.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		btnRollDice.setBounds(429, 41, 112, 25);
 		diceRootPanel.add(btnRollDice);
 		messageField.setText(gameMapGraph.getDiceViewMessage());
 		diceRootPanel.add(messageField);
 		
 		JButton btnContinue = new JButton("Continue");
-		btnContinue.setFont(new Font("Arial", Font.PLAIN, 14));
+		btnContinue.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		btnContinue.setBounds(429, 71, 112, 25);
 		btnContinue.setEnabled(false);
 		
@@ -328,7 +328,7 @@ public class DiceView implements Observer{
 		diceRootPanel.add(btnContinue);
 		
 		JButton btnEndTurn = new JButton("End Turn");
-		btnEndTurn.setFont(new Font("Arial", Font.PLAIN, 14));
+		btnEndTurn.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		btnEndTurn.setBounds(429, 101, 112, 25);
 		btnEndTurn.addActionListener(new ActionListener() {
 			
@@ -341,7 +341,7 @@ public class DiceView implements Observer{
 		
 		
 		JButton btnMoveArmies = new JButton("MoveArmies");
-		btnMoveArmies.setFont(new Font("Arial", Font.PLAIN, 14));
+		btnMoveArmies.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		btnMoveArmies.setBounds(429, 131, 112, 25);
 		btnMoveArmies.setEnabled(false);
 		
@@ -384,24 +384,27 @@ public class DiceView implements Observer{
 		diceRootPanel.add(btnMoveArmies);
 		
 		JLabel lblAttackerCountry = new JLabel(attackerCountry.getName());
-		lblAttackerCountry.setFont(new Font("Calibri", Font.PLAIN, 14));
-		lblAttackerCountry.setBounds(34, 41, 89, 16);
+		lblAttackerCountry.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+		lblAttackerCountry.setBounds(53, 40, 89, 16);
 		diceRootPanel.add(lblAttackerCountry);
 		
 		JLabel lblAttackerArmies = new JLabel(Integer.toString(attackerCountry.getNoOfArmies()));
-		lblAttackerArmies.setBounds(154, 41, 19, 16);
+		lblAttackerArmies.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+		lblAttackerArmies.setBounds(137, 40, 19, 16);
 		diceRootPanel.add(lblAttackerArmies);
 		
 		JLabel lblDefenderCountry = new JLabel(defenderCountry.getName());
-		lblDefenderCountry.setBounds(238, 41, 65, 16);
+		lblDefenderCountry.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+		lblDefenderCountry.setBounds(267, 40, 65, 16);
 		diceRootPanel.add(lblDefenderCountry);
 		
 		JLabel lblDefenderArmies = new JLabel(Integer.toString(defenderCountry.getNoOfArmies()));
-		lblDefenderArmies.setBounds(350, 41, 31, 16);
+		lblDefenderArmies.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+		lblDefenderArmies.setBounds(344, 40, 31, 16);
 		diceRootPanel.add(lblDefenderArmies);
 		
 		JLabel lblResult = new JLabel("Result:");
-		lblResult.setFont(new Font("Arial", Font.BOLD, 17));
+		lblResult.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		lblResult.setBounds(34, 336, 56, 20);
 		diceRootPanel.add(lblResult);
 		
