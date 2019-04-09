@@ -34,8 +34,8 @@ public class BenevolentTest {
 	/**
 	 * This method is called to initialize test data before all data
 	 */
-	@BeforeAll
-	public static void beforeAll() {
+	
+	public BenevolentTest() {
 		getMyCountries = new ArrayList<Country>();
 		country = new Country();
 		country.setName("Canada");
@@ -131,7 +131,7 @@ public class BenevolentTest {
 	@Test
 	public void reinforcementPhaseTest() {
 		benevolent.reinforcementPhase(player, mapGraph, country1, 12);
-		assertEquals(10,country.getNoOfArmies());
+		assertEquals(4,country.getNoOfArmies());
 	}
 	
 	/**
