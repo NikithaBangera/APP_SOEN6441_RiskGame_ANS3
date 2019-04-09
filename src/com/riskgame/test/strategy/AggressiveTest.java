@@ -23,7 +23,12 @@ import com.riskgame.model.Country;
 import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.Player;
 import com.riskgame.strategy.Aggressive;
-
+/**
+ * This class aims to test the Aggressive class
+ * 
+ * @author Shiva
+ *
+ */
 public class AggressiveTest {
 	/** Object for Aggressive class */
 	private static Aggressive aggressive;
