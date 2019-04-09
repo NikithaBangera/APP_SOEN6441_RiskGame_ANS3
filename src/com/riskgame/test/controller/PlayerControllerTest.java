@@ -217,6 +217,9 @@ public class PlayerControllerTest {
        assertEquals(1, country.getNoOfArmies() );
    }
    
+   /**
+    * Test method to check whether the fortification is working fine or not
+    */
    @Test
 	public void isFortificationComplete() {
 		playerController.moveArmies(mapGraph, fromCountry, toCountry, 2);
@@ -298,6 +301,10 @@ public class PlayerControllerTest {
 		assertEquals(4, result);
 	}
 
+	/**
+	 * this method checks the saving and loading a game
+	 * @throws Exception
+	 */
 	@Test
 	public void testSaveGame() throws Exception {
 		playerController.saveGame(mapGraph);

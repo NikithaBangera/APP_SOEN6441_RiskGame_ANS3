@@ -795,7 +795,11 @@ public class PlayerView implements Observer {
 		}
 	}
 
-
+	/**
+	 * Method to chcek if game is complete
+	 * @param mapGraph - object of GameMapGraph
+	 * @return true or false - return true or false based on validation
+	 */
 	private boolean validateGameCompletion(GameMapGraph mapGraph) {
 		int i = 0;
 		for (Player player : mapGraph.getPlayers()) {
@@ -921,6 +925,13 @@ public class PlayerView implements Observer {
 		initialize(mapGraph);
 	}
 	
+	/**
+	 * This method the methods of the different players based on the 
+	 * type of the player during that player's turn
+	 * @param mapGraph - object of the GameMapGraph
+	 * @param currentPlayer - current player playing the game
+	 * @return strategyComplete - status of the strategy completion
+	 */
 	private boolean invokePlayerStrategy(GameMapGraph mapGraph, Player currentPlayer) {
 		boolean strategyComplete = false;
 		

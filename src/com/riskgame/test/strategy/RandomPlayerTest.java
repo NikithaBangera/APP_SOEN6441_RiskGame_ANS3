@@ -126,7 +126,7 @@ public class RandomPlayerTest {
 	 * This method checks the attack phase of the random player
 	 */
 	@Test
-	public void attackPahseTest() {
+	public void attackPhaseTest() {
 		randomPlayer.attackPhase(mapGraph, player, country, country3);
 		assertNotEquals(country.getNoOfArmies(),0);
 	}
