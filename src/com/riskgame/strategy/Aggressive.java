@@ -90,7 +90,7 @@ public class Aggressive implements PlayerStrategy{
 						&& !country.getName().equalsIgnoreCase(strongestCountry.getName())) {
 					numberOfArmies = country.getNoOfArmies();
 					fromCountry = country;
-					armiesCount = fromCountry.getNoOfArmies() - 1;
+					armiesCount = fromCountry.getNoOfArmies() - (fromCountry.getNoOfArmies() - 1);
 				}
 			}
 		}

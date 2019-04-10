@@ -45,7 +45,10 @@ public class Cheater implements PlayerStrategy{
 		ArrayList<Country> countryList = player.getMyCountries();
 		for(int i=0; i < countryList.size();i++) {
 			Country currentCountry = countryList.get(i);
-			int reinforcementArmies= currentCountry.getNoOfArmies() * 2;
+			int reinforcementArmies = currentCountry.getNoOfArmies();
+			if(currentCountry.getNoOfArmies() < 100) {
+				reinforcementArmies = currentCountry.getNoOfArmies() * 2;
+			}
 			currentCountry.setNoOfArmies(reinforcementArmies);
 			System.out.println(currentCountry.getName()+" reinforced with "+reinforcementArmies);
 		}
@@ -115,7 +118,9 @@ public class Cheater implements PlayerStrategy{
 			for(String adjCountry : country.getAdjacentCountries()) {
 				Player adjPlayer = playerController.getPlayerForCountry(gameMapGraph, adjCountry);
 				if(!player.getName().equalsIgnoreCase(adjPlayer.getName())) {
-					country.setNoOfArmies(country.getNoOfArmies() * 2);
+					if(country.getNoOfArmies() < 100) {
+						country.setNoOfArmies(country.getNoOfArmies() * 2);
+					}
 					break;
 				}
 			}
