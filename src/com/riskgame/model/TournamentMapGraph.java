@@ -42,7 +42,7 @@ public class TournamentMapGraph {
 	/**
 	 * Method to get player details from StartGameView class.
 	 * 
-	 * @return
+	 * @return inputPlayerDetails
 	 */
 	public Map<String, String> getInputPlayerDetails() {
 		return inputPlayerDetails;
@@ -51,7 +51,7 @@ public class TournamentMapGraph {
 	/**
 	 * Method to populate player details from the StartGameView.
 	 * 
-	 * @param inputPlayerDetails
+	 * @param inputPlayerDetails - the details of the player
 	 */
 	public void setInputPlayerDetails(Map<String, String> inputPlayerDetails) {
 		this.inputPlayerDetails = inputPlayerDetails;

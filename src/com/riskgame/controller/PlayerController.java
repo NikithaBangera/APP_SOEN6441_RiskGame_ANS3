@@ -401,6 +401,7 @@ public class PlayerController {
 	 * @param fromCountry - The country from where player want to move army
 	 * @param toCountry   - The country to where player want to move army
 	 * @param armiesCount - Count of armies player wish to move
+	 * @param mapGraph - The object of the GameMapGraph
 	 */
 	public void moveArmies(GameMapGraph mapGraph, Country fromCountry, Country toCountry, int armiesCount) {
 
@@ -635,11 +636,11 @@ public class PlayerController {
 	
 	/**
 	 * Method to load/resume the saved game
-	 * @param fileName
-	 * @return mapgraph - object containing all the game details
-	 * @throws FileNotFoundException
-	 * @throws IOException
-	 * @throws ClassNotFoundException
+	 * @param fileName - name of the file of the saved map
+	 * @return mapGraph - object containing all the game details
+	 * @throws FileNotFoundException - when there is no saved game as the user wants
+	 * @throws IOException - when the user does not find select any saved game
+	 * @throws ClassNotFoundException - for reading the file object
 	 */
 	public GameMapGraph loadGame(String fileName)
 			throws FileNotFoundException, IOException, ClassNotFoundException {
