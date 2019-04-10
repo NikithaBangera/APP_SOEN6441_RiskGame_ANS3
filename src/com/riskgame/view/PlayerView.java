@@ -126,6 +126,7 @@ public class PlayerView implements Observer {
 	public PlayerView(GameMapGraph inputMapGraph) {
 		try {
 			playerController = new PlayerController();
+			ConsoleView consoleView = new ConsoleView();
 			nextPlayerNumber = 0;
 			totalNumberOfPlayers = inputMapGraph.getPlayers().size();
 			roundRobin = new RoundRobinController(inputMapGraph.getPlayers());
@@ -949,7 +950,7 @@ public class PlayerView implements Observer {
 		
 		rootPanel.setEnabled(false);
 		if(!(mapGraph.getGameType().equalsIgnoreCase("Tournament") || mapGraph.getGameType().equalsIgnoreCase("Test"))) {
-			JOptionPane.showMessageDialog(null, "Player "+player.getName()+"("+player.getPlayerType()+") has started playing");
+			System.out.println("Player "+player.getName()+"("+player.getPlayerType()+") has started playing");
 		}
 		switch (mapGraph.getGamePhase()) {
 		
@@ -1014,7 +1015,7 @@ public class PlayerView implements Observer {
 			break;
 		}
 		if(!(mapGraph.getGameType().equalsIgnoreCase("Tournament") || mapGraph.getGameType().equalsIgnoreCase("Test"))) {
-			JOptionPane.showMessageDialog(null, player.getName()+"("+player.getPlayerType()+") player's turn ended.");
+			System.out.println(player.getName()+"("+player.getPlayerType()+") player's turn ended.");
 		}
 		mapGraph.setRefreshFrame(false);
 		rootPanel.removeAll();
@@ -1025,6 +1026,12 @@ public class PlayerView implements Observer {
 		
 	}
 
+	/**
+	 * method to check if there only one player remaining for place armies
+	 * @param mapGraph - gamemapgraph object
+	 * @param strategicPlayer - current player
+	 * @return isOnlyPlayer - boolean variable
+	 */
 	private boolean isOnlyPlayerForPlaceArmies(GameMapGraph mapGraph, Player strategicPlayer) {
 		boolean isOnlyPlayer = true;
 		int playerCount = mapGraph.getPlayers().size();

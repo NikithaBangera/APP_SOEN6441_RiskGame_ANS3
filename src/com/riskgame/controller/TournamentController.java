@@ -26,6 +26,7 @@ import com.riskgame.strategy.Benevolent;
 import com.riskgame.strategy.Cheater;
 import com.riskgame.strategy.PlayerStrategy;
 import com.riskgame.strategy.RandomPlayer;
+import com.riskgame.view.ConsoleView;
 
 /**
  * Tournament class contains all the methods to start the tournament mode,
@@ -90,6 +91,8 @@ public class TournamentController {
 		playerController.setCountOfthePlayers(tournamentMapGraph.getNumberOfPlayers());
 		loadTournamentMaps(tournamentMapGraph);
 		populateTournamentMapGraphs(tournamentMapGraph);
+		
+		ConsoleView consoleView = new ConsoleView();
 		
 		Iterator<Entry<String, GameMapGraph>> tournamentIt = tournamentMapGraph.getTournamentMapGraphs().entrySet().iterator();
 		int gameNumber = 0;
@@ -284,6 +287,7 @@ public class TournamentController {
 								 :(currentPlayer.getPlayerType().equalsIgnoreCase("Random") ? new RandomPlayer()
 										 : null)));
 
+		System.out.println("Player "+currentPlayer.getName()+"("+currentPlayer.getPlayerType()+") has started playing");
 		switch (currentPlayer.getPlayerType()) {
 		
 		case "Aggressive":
@@ -315,6 +319,7 @@ public class TournamentController {
 		default:
 			break;
 		}
+		System.out.println(currentPlayer.getName()+"("+currentPlayer.getPlayerType()+") player's turn ended.");
 		return strategyComplete;
 	}
 	
