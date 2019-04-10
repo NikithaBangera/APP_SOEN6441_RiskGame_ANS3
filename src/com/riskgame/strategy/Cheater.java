@@ -89,6 +89,7 @@ public class Cheater implements PlayerStrategy{
 			}
 		}
 	}
+	
 	/**
 	 * this method is combined with the attack phase for the cheater player
 	 */

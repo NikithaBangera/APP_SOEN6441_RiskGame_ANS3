@@ -11,7 +11,7 @@ import com.riskgame.model.Player;
 /**
  * Benevolent player reinforces its weakest countries, does not attack,
  * fortifies by moving armies to weaker countries
- * @author 
+ * @author Anusha
  *
  */
 public class Benevolent implements PlayerStrategy{
@@ -29,6 +29,7 @@ public class Benevolent implements PlayerStrategy{
 		playerController.armiesAssignedToCountries(mapGraph, player.getMyCountries().get(countryNumber).getName(), 1);
 		
 	}
+	
 	/**
 	 * This method reinforces armies to the weakest country of the Benevolent player
 	 */

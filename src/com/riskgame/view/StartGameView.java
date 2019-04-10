@@ -265,12 +265,16 @@ public class StartGameView extends JFrame{
 		
 		JButton btnStartGame = new JButton("Start Game");
 		btnStartGame.setBounds(498, 57, 115, 25);
-		panelPlayerDetails.add(btnStartGame);
+		if(numberOfPlayers > 0) {
+			panelPlayerDetails.add(btnStartGame);
+		}
 		btnStartGame.setFont(new Font("Calibri", Font.PLAIN, 14));
 		
 		JButton btnExitGame = new JButton("Exit");
 		btnExitGame.setBounds(498, 93, 115, 25);
-		panelPlayerDetails.add(btnExitGame);
+		if(numberOfPlayers > 0) {
+			panelPlayerDetails.add(btnExitGame);
+		}
 		btnExitGame.setFont(new Font("Calibri", Font.PLAIN, 14));
 		btnExitGame.addActionListener(new ActionListener() {
 			
@@ -283,6 +287,7 @@ public class StartGameView extends JFrame{
 				}
 			}
 		});
+		
 		btnStartGame.addActionListener(new ActionListener() {
 			
 			@Override
@@ -374,7 +379,7 @@ public class StartGameView extends JFrame{
 				break;
 			}
 		}
-		if(i > 0) {
+		if(i > 0 || mapGraph.getInputPlayerDetails().size() == 0) {
 			automatedPlay = false;
 		}
 		return automatedPlay;
