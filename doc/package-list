@@ -1,4 +1,6 @@
 com.riskgame.controller
-com.riskgame.controllertest
 com.riskgame.model
+com.riskgame.strategy
+com.riskgame.test.controller
+com.riskgame.test.strategy
 com.riskgame.view
