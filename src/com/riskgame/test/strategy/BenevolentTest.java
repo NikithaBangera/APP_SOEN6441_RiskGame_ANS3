@@ -18,7 +18,12 @@ import com.riskgame.model.Country;
 import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.Player;
 import com.riskgame.strategy.Benevolent;
-
+/**
+ * This class aims to test the Benevolent class
+ * 
+ * @author Shiva
+ *
+ */
 public class BenevolentTest {
 	/** Object for Benevolent class */
 	private static Benevolent benevolent;
@@ -34,8 +39,8 @@ public class BenevolentTest {
 	/**
 	 * This method is called to initialize test data before all data
 	 */
-	@BeforeAll
-	public static void beforeAll() {
+	
+	public BenevolentTest() {
 		getMyCountries = new ArrayList<Country>();
 		country = new Country();
 		country.setName("Canada");

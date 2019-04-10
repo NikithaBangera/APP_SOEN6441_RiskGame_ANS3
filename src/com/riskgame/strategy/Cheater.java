@@ -15,13 +15,17 @@ import com.riskgame.model.Player;
  * Cheater player whose reinforcement method doubles the army count on all its countries,
  * attack method automatically conquers all the neighbors of all its countries, doubles the 
  * number of armies on its countries that have neighbors that belong to other players.
- * @author 
+ * @author Shresthi
+ * @author Anusha
  *
  */
 public class Cheater implements PlayerStrategy{
 	
 	PlayerController playerController;
-
+	
+	/**
+	 * this method is used to place armies in the countries owned by the cheater player
+	 */
 	@Override
 	public void placeArmies(GameMapGraph mapGraph, Player player, Country country) {
 		playerController = new PlayerController();
@@ -30,6 +34,10 @@ public class Cheater implements PlayerStrategy{
 		playerController.armiesAssignedToCountries(mapGraph, player.getMyCountries().get(countryNumber).getName(), 1);
 	}
 	
+	/**
+	 * this method is used for the reinforcement of the cheater player's countries,
+	 * it doubles the armies on each country
+	 */
 	@Override
 	public void reinforcementPhase(Player player, GameMapGraph mapGraph, Country country, int reinforceArmyCount) {
 		playerController = new PlayerController();
@@ -39,9 +47,14 @@ public class Cheater implements PlayerStrategy{
 			Country currentCountry = countryList.get(i);
 			int reinforcementArmies= currentCountry.getNoOfArmies() * 2;
 			currentCountry.setNoOfArmies(reinforcementArmies);
+			System.out.println(currentCountry.getName()+" reinforced with "+reinforcementArmies);
 		}
 	}
 
+	/**
+	 * this method is for the attack of the cheater player.
+	 * it attacks its neighbor countries and wins them.
+	 */
 	@Override
 	public void attackPhase(GameMapGraph gameMapGraph, Player player, Country attacker, Country defender) {
 		ArrayList<Country> cheatersWinningCountries = new ArrayList<Country>();	
@@ -51,12 +64,6 @@ public class Cheater implements PlayerStrategy{
 				Country adjacentCountry = playerController.getAdjacentCountry(gameMapGraph, adjCountry);
 				Player adjacentPlayer = playerController.getPlayerForCountry(gameMapGraph, adjacentCountry.getName());
 				if(!(adjacentPlayer.getName().equalsIgnoreCase(player.getName())) && country.getNoOfArmies() > 1) {
-//					if(country.getNoOfArmies() > 2) {
-//						armyCount = country.getNoOfArmies() / 2;
-//					}
-//					else {
-//						armyCount = 1;
-//					}
 					adjacentCountry.setNoOfArmies(armyCount);
 					country.setNoOfArmies(country.getNoOfArmies() - armyCount);
 					cheatersWinningCountries.add(adjacentCountry);
@@ -66,6 +73,7 @@ public class Cheater implements PlayerStrategy{
 		
 		for(Country country: cheatersWinningCountries) {
 			player.getMyCountries().add(country);
+			System.out.println(player.getName()+" (Cheater) has conquered "+country.getName());
 			Player losingPlayer = playerController.getPlayerForCountry(gameMapGraph, country.getName());
 			int i = 0;
 			for(Country playerCountry : losingPlayer.getMyCountries()) {
@@ -80,16 +88,25 @@ public class Cheater implements PlayerStrategy{
 				if(!gameMapGraph.getGameType().equalsIgnoreCase("Tournament")) {
 					JOptionPane.showMessageDialog(null, "Player "+losingPlayer.getName()+" has lost the game!!");
 				}
+				System.out.println("Player "+losingPlayer.getName()+" has lost the game!!");
 			}
 		}
 	}
-
+	
+	/**
+	 * this method is combined with the attack phase for the cheater player
+	 */
 	@Override
 	public void allOutAttack(GameMapGraph gameMapGraph, Player player, Country attackerCountry,
 			Country defenderCountry) {
 		
 	}
 
+	/**
+	 * this method is used for fortifying
+	 * the countries of the cheater player that are neighbors 
+	 * to countries owned by other players
+	 */
 	@Override
 	public void fortificationPhase(GameMapGraph gameMapGraph, Player player, Country fromCountry, Country toCountry,
 			int armiesCount) {
@@ -103,5 +120,6 @@ public class Cheater implements PlayerStrategy{
 				}
 			}
 		}
+		System.out.println("Cheater fortification complete");
 	}
 }

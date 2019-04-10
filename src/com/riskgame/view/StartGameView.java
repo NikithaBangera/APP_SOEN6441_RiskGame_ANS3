@@ -18,7 +18,16 @@ import javax.swing.JTextField;
 
 import com.riskgame.controller.PlayerController;
 import com.riskgame.model.GameMapGraph;
+import javax.swing.DefaultComboBoxModel;
 
+/**
+ * StartGame view class which displays the view to select the number of players 
+ * and also to give the names to players and choose the type of players
+ * 
+ * @author Nikitha
+ * @author Shresthi
+ *
+ */
 public class StartGameView extends JFrame{
 	private JTextField textFieldPlayer1;
 	private JTextField textFieldPlayer2;
@@ -33,7 +42,10 @@ public class StartGameView extends JFrame{
 	String[] numPlayers = {"Select One","2","3","4","5","6"};
 	String[] playerTypes = {"Select One","Human","Aggressive","Benevolent","Cheater","Random"};
 	
-	
+	/**
+	 * StartGameView constructor which displays the startgame view
+	 * @param mapGraph - object of GameMapGraph
+	 */
 	public StartGameView(GameMapGraph mapGraph) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Start Game");
@@ -50,12 +62,14 @@ public class StartGameView extends JFrame{
 		panelPlayerDetails.setLayout(null);
 		
 		JLabel lblNumberOfPlayers = new JLabel("Number of Players :");
-		lblNumberOfPlayers.setFont(new Font("Calibri", Font.BOLD, 14));
+		lblNumberOfPlayers.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		lblNumberOfPlayers.setBounds(33, 28, 128, 27);
 		rootPanel.add(lblNumberOfPlayers);
 		
 		JComboBox comboBoxNoOfPlayers = new JComboBox(numPlayers);
-		comboBoxNoOfPlayers.setBounds(159, 28, 94, 22);
+		comboBoxNoOfPlayers.setModel(new DefaultComboBoxModel(new String[] {"Select One", "2", "3", "4", "5", "6"}));
+		comboBoxNoOfPlayers.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+		comboBoxNoOfPlayers.setBounds(171, 31, 128, 22);
 		rootPanel.add(comboBoxNoOfPlayers);
 		comboBoxNoOfPlayers.addActionListener(new ActionListener() {
 			
@@ -79,22 +93,28 @@ public class StartGameView extends JFrame{
 		setVisible(true);
 	}
 	
+	/**
+	 * The method which contains all the buttons, labels, combo boxes
+	 * required  for the start game view
+	 *  
+	 * @param mapGraph - object of the GameMapGraph
+	 */
 	public void initialize(GameMapGraph mapGraph) {
 		
 		
 		mapGraph.getInputPlayerDetails().clear();
 		
 		JLabel lblPlayerType = new JLabel("Player Type");
-		lblPlayerType.setBounds(373, 16, 68, 17);
-		lblPlayerType.setFont(new Font("Calibri", Font.BOLD, 14));
+		lblPlayerType.setBounds(373, 16, 100, 17);
+		lblPlayerType.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		
 		JLabel lblPlayerName = new JLabel("Player Name");
-		lblPlayerName.setBounds(201, 16, 103, 16);
-		lblPlayerName.setFont(new Font("Calibri", Font.BOLD, 14));
+		lblPlayerName.setBounds(210, 16, 103, 16);
+		lblPlayerName.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		
 		JLabel lblPlayer1 = new JLabel("Player 1");
 		lblPlayer1.setBounds(112, 42, 56, 16);
-		lblPlayer1.setFont(new Font("Calibri", Font.BOLD, 14));
+		lblPlayer1.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		
 		textFieldPlayer1 = new JTextField();
 		textFieldPlayer1.setBounds(194, 42, 116, 22);
@@ -105,7 +125,7 @@ public class StartGameView extends JFrame{
 		
 		JLabel lblPlayer2 = new JLabel("Player 2");
 		lblPlayer2.setBounds(112, 80, 56, 16);
-		lblPlayer2.setFont(new Font("Calibri", Font.BOLD, 14));
+		lblPlayer2.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		
 		textFieldPlayer2 = new JTextField();
 		textFieldPlayer2.setBounds(194, 81, 116, 22);
@@ -116,7 +136,7 @@ public class StartGameView extends JFrame{
 		
 		JLabel lblPlayer3 = new JLabel("Player 3");
 		lblPlayer3.setBounds(112, 118, 56, 16);
-		lblPlayer3.setFont(new Font("Calibri", Font.BOLD, 14));
+		lblPlayer3.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		
 		textFieldPlayer3 = new JTextField();
 		textFieldPlayer3.setBounds(194, 118, 116, 22);
@@ -127,7 +147,7 @@ public class StartGameView extends JFrame{
 		
 		JLabel lblPlayer4 = new JLabel("Player 4");
 		lblPlayer4.setBounds(112, 156, 56, 16);
-		lblPlayer4.setFont(new Font("Calibri", Font.BOLD, 14));
+		lblPlayer4.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		
 		textFieldPlayer4 = new JTextField();
 		textFieldPlayer4.setBounds(194, 156, 116, 22);
@@ -138,7 +158,7 @@ public class StartGameView extends JFrame{
 		
 		JLabel lblPlayer5 = new JLabel("Player 5");
 		lblPlayer5.setBounds(112, 194, 56, 16);
-		lblPlayer5.setFont(new Font("Calibri", Font.BOLD, 14));
+		lblPlayer5.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		
 		textFieldPlayer5 = new JTextField();
 		textFieldPlayer5.setBounds(194, 194, 116, 22);
@@ -149,7 +169,7 @@ public class StartGameView extends JFrame{
 		
 		JLabel lblPlayer6 = new JLabel("Player 6");
 		lblPlayer6.setBounds(112, 232, 56, 16);
-		lblPlayer6.setFont(new Font("Calibri", Font.BOLD, 14));
+		lblPlayer6.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		
 		textFieldPlayer6 = new JTextField();
 		textFieldPlayer6.setBounds(194, 232, 116, 22);
@@ -245,12 +265,16 @@ public class StartGameView extends JFrame{
 		
 		JButton btnStartGame = new JButton("Start Game");
 		btnStartGame.setBounds(498, 57, 115, 25);
-		panelPlayerDetails.add(btnStartGame);
+		if(numberOfPlayers > 0) {
+			panelPlayerDetails.add(btnStartGame);
+		}
 		btnStartGame.setFont(new Font("Calibri", Font.PLAIN, 14));
 		
 		JButton btnExitGame = new JButton("Exit");
 		btnExitGame.setBounds(498, 93, 115, 25);
-		panelPlayerDetails.add(btnExitGame);
+		if(numberOfPlayers > 0) {
+			panelPlayerDetails.add(btnExitGame);
+		}
 		btnExitGame.setFont(new Font("Calibri", Font.PLAIN, 14));
 		btnExitGame.addActionListener(new ActionListener() {
 			
@@ -263,6 +287,7 @@ public class StartGameView extends JFrame{
 				}
 			}
 		});
+		
 		btnStartGame.addActionListener(new ActionListener() {
 			
 			@Override
@@ -304,6 +329,10 @@ public class StartGameView extends JFrame{
 					}
 					if(!validatePlayerDetails(mapGraph)) {
 						setVisible(false);
+						if(automatedPlay(mapGraph)) {
+							mapGraph.setGameType("Tournament");
+							AutomatedPlayerView automatedPlayerView = new AutomatedPlayerView(mapGraph);
+						}
 						playerController.gamePlay(mapGraph);
 					}
 					else {
@@ -314,11 +343,14 @@ public class StartGameView extends JFrame{
 					e1.printStackTrace();
 				}
 			}
-
-		
 		});
 	}
 	
+	/**
+	 * Method to validate the player details
+	 * @param mapGraph - object of the GameMapGraph
+	 * @return missingData - boolean variable
+	 */
 	public boolean validatePlayerDetails(GameMapGraph mapGraph) {
 		boolean missingData = false;
 		Iterator<Entry<String, String>> playerDetailsIT = mapGraph.getInputPlayerDetails().entrySet().iterator();
@@ -330,5 +362,26 @@ public class StartGameView extends JFrame{
 			}
 		}
 		return missingData;
+	}
+	
+	/**
+	 * Method to check if play needs to be authomated when human 
+	 * player is not chosen
+	 * @param mapGraph - object of GameMapGraph
+	 * @return automatedPlay - boolean variable
+	 */
+	public boolean automatedPlay(GameMapGraph mapGraph) {
+		boolean automatedPlay = true;
+		int i = 0;
+		for(Map.Entry<String, String> inputPlayer : mapGraph.getInputPlayerDetails().entrySet()) {
+			if(inputPlayer.getValue().split(",")[1].equalsIgnoreCase("Human")) {
+				i++;
+				break;
+			}
+		}
+		if(i > 0 || mapGraph.getInputPlayerDetails().size() == 0) {
+			automatedPlay = false;
+		}
+		return automatedPlay;
 	}
 }

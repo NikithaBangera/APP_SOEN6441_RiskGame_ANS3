@@ -1,8 +1,16 @@
 package com.riskgame.controller;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Random;
@@ -80,58 +88,6 @@ public class PlayerController {
 			riskPlayer.setFirstReinforcement(true);
 			mapGraph.getPlayers().add(riskPlayer);
 		}
-		// Startup Phase starts here
-//		boolean proceed = false;
-//		do {
-//			System.out.println("Enter the number of players below");
-//			String playerCount = br.readLine().trim();
-//			Pattern numberPattern = Pattern.compile("[0-9]+");
-//			Matcher match = numberPattern.matcher(playerCount);
-//			while (!match.matches() || playerCount.isEmpty()) {
-//				System.out.println("\nPlease enter the correct player count below:");
-//
-//				playerCount = br.readLine().trim();
-//				match = numberPattern.matcher(playerCount);
-//			}
-//			countOfthePlayers = Integer.parseInt(playerCount);
-//
-//			if (countOfthePlayers > 1 && countOfthePlayers < 7) {
-//				System.out.println("Great! Let's Play.");
-//				proceed = false;
-//			} else {
-//				System.out.println("Sorry! The numbers of players can be between 2 and 6.");
-//				proceed = true;
-//			}
-//		} while (proceed);
-
-//		System.out.println("Enter the name of the players");
-		
-//		for (int count = 1; count <= mapGraph.getInputPlayerDetails().size(); count++) {
-//			boolean continue1 = true;
-//			Player riskPlayer = new Player();
-//			String playername = br.readLine().trim();
-//			Pattern namePattern = Pattern.compile("[a-zA-z]+");
-//			Matcher match = namePattern.matcher(playername);
-//			while (!match.matches() || playername.isEmpty()) {
-//				System.out.println("\nPlease enter the correct player name below:");
-//
-//				playername = br.readLine().trim();
-//				match = namePattern.matcher(playername);
-//			}
-//
-//			while (continue1) {
-//				if (playername != null) {
-//					riskPlayer.setName(playername);
-//					riskPlayer.setConquerCountry(0);
-//					continue1 = false;
-//
-//				} else {
-//					System.out.println("Player name cannot be empty");
-//				}
-//			}
-//			riskPlayer.setFirstReinforcement(true);
-//			mapGraph.getPlayers().add(riskPlayer);
-//		}
 
 		allocationOfCountry(mapGraph);
 		allocationOfArmyToPlayers(mapGraph);
@@ -139,10 +95,6 @@ public class PlayerController {
 
 		CardController cardController = new CardController();
 		cardController.assignCardsToCountry(mapGraph);
-
-		// allocationOfRemainingArmyToCountries(mapGraph);
-
-		// Place Army Phase starts here
 
 		mapGraph.setGamePhase("Place Armies");
 		mapGraph.setExchangeCount(1);
@@ -302,8 +254,11 @@ public class PlayerController {
 					for (Country country : player.getMyCountries()) {
 						if (country.getName().equalsIgnoreCase(defender.getName())) {
 							if(!(gameMapGraph.getGameType().equalsIgnoreCase("Tournament") || gameMapGraph.getGameType().equalsIgnoreCase("Test"))) {
-								JOptionPane.showMessageDialog(null, "Cannot attack your own country!!");
+								if(getPlayerForCountry(gameMapGraph, country.getName()).getPlayerType().equalsIgnoreCase("Human")) {
+									JOptionPane.showMessageDialog(null, "Cannot attack your own country!!");
+								}
 							}
+							System.out.println("Cannot attack your own country!!");
 							isPlayerCountry = true;
 							break;
 						}
@@ -318,19 +273,24 @@ public class PlayerController {
 						isAttackPossible = true;
 					} else {
 						if(!(gameMapGraph.getGameType().equalsIgnoreCase("Tournament") || gameMapGraph.getGameType().equalsIgnoreCase("Test"))) {
-							JOptionPane.showMessageDialog(null,
-								"Insufficient armies in the attacker country/defender country");
+							if(getPlayerForCountry(gameMapGraph, attacker.getName()).getPlayerType().equalsIgnoreCase("Human")) {
+								JOptionPane.showMessageDialog(null,"Insufficient armies in the attacker country/defender country");
+							}
 						}
+						System.out.println("Insufficient armies in the attacker country/defender country");
 					}
 				} else {
 					if(!(gameMapGraph.getGameType().equalsIgnoreCase("Tournament") || gameMapGraph.getGameType().equalsIgnoreCase("Test"))) {
-						JOptionPane.showMessageDialog(null, "Attacker and Defender Countries are not adjacent!");
+						if(getPlayerForCountry(gameMapGraph, attacker.getName()).getPlayerType().equalsIgnoreCase("Human")) {
+							JOptionPane.showMessageDialog(null, "Attacker and Defender Countries are not adjacent!");
+						}
 					}
+					System.out.println("Attacker and Defender Countries are not adjacent!");
 				}
 			}
 		}
 
-		if (isAttackPossible) {
+		if (isAttackPossible && !(gameMapGraph.getGameType().equalsIgnoreCase("Tournament") || gameMapGraph.getGameType().equalsIgnoreCase("Test"))) {
 			DiceView diceView = new DiceView(gameMapGraph, attacker, defender);
 		}
 	}
@@ -361,8 +321,11 @@ public class PlayerController {
 				for (Country country : player.getMyCountries()) {
 					if (country.getName().equalsIgnoreCase(defenderCountry.getName())) {
 						if(!(gameMapGraph.getGameType().equalsIgnoreCase("Tournament") || gameMapGraph.getGameType().equalsIgnoreCase("Test"))) {
-							JOptionPane.showMessageDialog(null, "Cannot attack your own country!!");
+							if(player.getPlayerType().equalsIgnoreCase("Human")) {
+								JOptionPane.showMessageDialog(null, "Cannot attack your own country!!");
+							}
 						}
+						System.out.println("Cannot attack your own country!!");
 						isPlayerCountry = true;
 						break;
 					}
@@ -388,6 +351,19 @@ public class PlayerController {
 				if(attacker.getPlayerType().equalsIgnoreCase("Aggressive")) {
 					moveComplete = moveArmies(attackerCountry.getNoOfArmies() / 2, attackerCountry, defenderCountry, gameMapGraph);
 				}
+				else if(attacker.getPlayerType().equalsIgnoreCase("Random")) {
+					if(attackerCountry.getNoOfArmies() > 2 ) {
+						int random = new Random().nextInt(attackerCountry.getNoOfArmies()) + 1;
+						
+						if(random == attackerCountry.getNoOfArmies()) {
+							random--;
+						}
+						moveComplete = moveArmies(random, attackerCountry, defenderCountry, gameMapGraph);
+					}
+					else {
+						moveComplete = moveArmies(1, attackerCountry, defenderCountry, gameMapGraph);
+					}
+				}
 				else {
 					moveComplete = moveArmies(1, attackerCountry, defenderCountry, gameMapGraph);
 				}
@@ -397,15 +373,21 @@ public class PlayerController {
 						attacker.setConquerCountry(attacker.getConquerCountry() - 1);
 						defender.setPlayerLostGame(true);
 						if(!(gameMapGraph.getGameType().equalsIgnoreCase("Tournament") || gameMapGraph.getGameType().equalsIgnoreCase("Test"))) {
-							JOptionPane.showMessageDialog(null, "Player "+defender.getName()+" has lost the game!!");
+							if(attacker.getPlayerType().equalsIgnoreCase("Human")) {
+								JOptionPane.showMessageDialog(null, "Player "+defender.getName()+" has lost the game!!");
+							}
 						}
+						System.out.println("Player "+defender.getName()+" has lost the game!!");
 					}
 				}
 
 			} else if (attackerCountry.getNoOfArmies() == 1) {
 				if(!(gameMapGraph.getGameType().equalsIgnoreCase("Tournament") || gameMapGraph.getGameType().equalsIgnoreCase("Test"))) {
-					JOptionPane.showMessageDialog(null, "Attacker cannot attack anymore");
+					if(getPlayerForCountry(gameMapGraph, attackerCountry.getName()).getPlayerType().equalsIgnoreCase("Human")) {
+						JOptionPane.showMessageDialog(null, "Attacker cannot attack anymore");
+					}
 				}
+				System.out.println("Attacker cannt attack anymore");
 			}
 		}
 	}
@@ -419,6 +401,7 @@ public class PlayerController {
 	 * @param fromCountry - The country from where player want to move army
 	 * @param toCountry   - The country to where player want to move army
 	 * @param armiesCount - Count of armies player wish to move
+	 * @param mapGraph - The object of the GameMapGraph
 	 */
 	public void moveArmies(GameMapGraph mapGraph, Country fromCountry, Country toCountry, int armiesCount) {
 
@@ -438,16 +421,21 @@ public class PlayerController {
 			
 			if (!adjacentCountries) {
 				if(!(mapGraph.getGameType().equalsIgnoreCase("Tournament") || mapGraph.getGameType().equalsIgnoreCase("Test"))) {
-					JOptionPane.showMessageDialog(null, "Countries are not adjacanet!");
+					if(getPlayerForCountry(mapGraph, fromCountry.getName()).getPlayerType().equalsIgnoreCase("Human")) {
+						JOptionPane.showMessageDialog(null, "Countries are not adjacent!");
+					}
 				}
+				System.out.println("Countries are not adjacent!");
 				doFortification = true;
 			}
 	
 			if (!doFortification) {
 				if(!(mapGraph.getGameType().equalsIgnoreCase("Tournament") || mapGraph.getGameType().equalsIgnoreCase("Test"))) {
-					JOptionPane.showMessageDialog(null,
-						"Armies moved from " + fromCountry.getName() + " to " + toCountry.getName() + " successfully!");
+					if(getPlayerForCountry(mapGraph, fromCountry.getName()).getPlayerType().equalsIgnoreCase("Human")) {
+						JOptionPane.showMessageDialog(null,"Armies moved from " + fromCountry.getName() + " to " + toCountry.getName() + " successfully!");
+					}
 				}
+				System.out.println("Armies moved from " + fromCountry.getName() + " to " + toCountry.getName() + " successfully!");
 			}
 		}
 	}
@@ -550,13 +538,19 @@ public class PlayerController {
 
 			} else {
 				if(!(mapGraph.getGameType().equalsIgnoreCase("Tournament") || mapGraph.getGameType().equalsIgnoreCase("Test"))) {
-					JOptionPane.showMessageDialog(null, "Insufficient number of armies.");
+					if(getPlayerForCountry(mapGraph, country).getPlayerType().equalsIgnoreCase("Human")) {
+						JOptionPane.showMessageDialog(null, "Insufficient number of armies.");
+					}
 				}
+				System.out.println("Insufficient number of armies.");
 			}
 		} else {
 			if(!(mapGraph.getGameType().equalsIgnoreCase("Tournament") || mapGraph.getGameType().equalsIgnoreCase("Test"))) {
-				JOptionPane.showMessageDialog(null, "This country is not owned by you!");
+				if(getPlayerForCountry(mapGraph, country).getPlayerType().equalsIgnoreCase("Human")) {
+					JOptionPane.showMessageDialog(null, "This country is not owned by you!");
+				}
 			}
+			System.out.println("This country is not owned by you!");
 		}
 	}
 
@@ -611,11 +605,52 @@ public class PlayerController {
 
 		} else {
 			if(!(gameMapGraph.getGameType().equalsIgnoreCase("Tournament") || gameMapGraph.getGameType().equalsIgnoreCase("Test"))) {
-				JOptionPane.showMessageDialog(null,
-					"Allowed number of armies to be moved: " + (attackerCountry.getNoOfArmies() - 1));
+				if(getPlayerForCountry(gameMapGraph, attackerCountry.getName()).getPlayerType().equalsIgnoreCase("Human")) {
+					JOptionPane.showMessageDialog(null,	"Allowed number of armies to be moved: " + (attackerCountry.getNoOfArmies() - 1));
+				}
 			}
+			System.out.println("Allowed number of armies to be moved: " + (attackerCountry.getNoOfArmies() - 1));
 		}
 		return moveSuccessful;
+	}
+	
+	/**
+	 * Method to save the game's object into a text file
+	 * @param mapGraph - object containing all the game details
+	 */
+	public void saveGame(GameMapGraph mapGraph) {
+		try {
+			File saveFile = new File(System.getProperty("user.dir")+"/resources/SavedGames/SaveGame.txt");
+			FileOutputStream fileOutput;
+			if(saveFile.createNewFile()) {
+				fileOutput = new FileOutputStream(saveFile);
+				ObjectOutputStream save = new ObjectOutputStream(fileOutput);
+				save.writeObject(mapGraph);
+				save.close();
+				fileOutput.close();
+			}
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Method to load/resume the saved game
+	 * @param fileName - name of the file of the saved map
+	 * @return mapGraph - object containing all the game details
+	 * @throws FileNotFoundException - when there is no saved game as the user wants
+	 * @throws IOException - when the user does not find select any saved game
+	 * @throws ClassNotFoundException - for reading the file object
+	 */
+	public GameMapGraph loadGame(String fileName)
+			throws FileNotFoundException, IOException, ClassNotFoundException {
+		FileInputStream fi = new FileInputStream(new File(fileName));
+		ObjectInputStream oi = new ObjectInputStream(fi);
+		
+		GameMapGraph mapGraph = (GameMapGraph) oi.readObject();
+		fi.close();
+		oi.close();
+		return mapGraph;
 	}
 
 }

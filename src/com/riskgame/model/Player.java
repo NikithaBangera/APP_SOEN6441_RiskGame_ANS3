@@ -61,7 +61,12 @@ public class Player extends Observable implements Serializable {
 	/** 
 	 * Type of player
 	 */
-	private String playerType;
+	private String playerType = "";
+	
+	/**
+	 * Boolean variable to save end turn button click
+	 */
+	private boolean endTurn;
 
 	/**
 	 * Constructor to initialize the initial values
@@ -296,11 +301,35 @@ public class Player extends Observable implements Serializable {
 		notifyObservers();
 	}
 
+	/**
+	 * Method to get player type
+	 * @return playerType - type of player
+	 */
 	public String getPlayerType() {
 		return playerType;
 	}
 
+	/**
+	 * Method to set the player type
+	 * @param playerType - type of player
+	 */
 	public void setPlayerType(String playerType) {
 		this.playerType = playerType;
+	}
+
+	/**
+	 * Method to check if turn ended
+	 * @return endTurn - variable to check end turn
+	 */
+	public boolean isEndTurn() {
+		return endTurn;
+	}
+
+	/**
+	 * Method to set endTurn variable
+	 * @param endTurn -  variable to check end turn
+	 */
+	public void setEndTurn(boolean endTurn) {
+		this.endTurn = endTurn;
 	}
 }

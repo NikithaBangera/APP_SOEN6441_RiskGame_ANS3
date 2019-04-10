@@ -1,5 +1,7 @@
 package com.riskgame.strategy;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import javax.swing.JOptionPane;
@@ -68,8 +70,16 @@ public class RandomPlayer implements PlayerStrategy{
 	public void attackPhase(GameMapGraph gameMapGraph, Player player, Country attacker, Country defender) {
 		playerController = new PlayerController();
 		Player adjPlayer = null;
-		attacker = getRandomCountry(gameMapGraph,player);
-		if(getRandomCountryWithAdjCountry(gameMapGraph, player, attacker)) {
+		List<Country> countriesWithAdjCountries = new ArrayList<Country>();
+		countriesWithAdjCountries.addAll(getRandomCountryWithAdjCountry(gameMapGraph, player));
+		if(countriesWithAdjCountries.size() > 1) {
+			int random = new Random().nextInt(countriesWithAdjCountries.size());
+			attacker = countriesWithAdjCountries.get(random);
+		}
+		else if(countriesWithAdjCountries.size() > 0) {
+			attacker = countriesWithAdjCountries.get(0);
+		}
+		if(attacker != null) {
 			do {
 				int randomAdjCountry = new Random().nextInt(attacker.getAdjacentCountries().size());
 				defender = playerController.getAdjacentCountry(gameMapGraph, attacker.getAdjacentCountries().get(randomAdjCountry));
@@ -121,10 +131,11 @@ public class RandomPlayer implements PlayerStrategy{
 				}
 			}
 	}
+	
 	/**
 	 * this method gets a random country owned by the Random player
-	 * @param mapGraph
-	 * @param player
+	 * @param mapGraph - The object of the GameMapGraph
+	 * @param player - The object of the player
 	 * @return randomCountry
 	 */
 	public Country getRandomCountry(GameMapGraph mapGraph, Player player) {
@@ -134,21 +145,22 @@ public class RandomPlayer implements PlayerStrategy{
 	
 	/**
 	 * this method gets a random country of player with adjacent country belonging to a different player
-	 * @param mapGraph
-	 * @param country
+	 * @param mapGraph - The object of the GameMapGraph
+	 * @param player - The player of the country
 	 * @return randomAdjacentCountry
 	 */
-	public boolean getRandomCountryWithAdjCountry(GameMapGraph mapGraph, Player player, Country country) {
+	public List<Country> getRandomCountryWithAdjCountry(GameMapGraph mapGraph, Player player) {
 		playerController = new PlayerController();
-		boolean hasValidAdjCountry = false;
-		for(String adjCountry : country.getAdjacentCountries()) {
-			Player adjPlayer = playerController.getPlayerForCountry(mapGraph, adjCountry);
-			if(!player.getName().equalsIgnoreCase(adjPlayer.getName())) {
-				hasValidAdjCountry = true;
-				break;
+		List<Country> countriesWithAdjCountries = new ArrayList<Country>();
+		for(Country country : player.getMyCountries()) {
+			for(String adjCountry : country.getAdjacentCountries()) {
+				Player adjPlayer = playerController.getPlayerForCountry(mapGraph, adjCountry);
+				if(!player.getName().equalsIgnoreCase(adjPlayer.getName())) {
+					countriesWithAdjCountries.add(country);
+				}
 			}
 		}
-		return hasValidAdjCountry;
+		return countriesWithAdjCountries;
 	}
 	
 }

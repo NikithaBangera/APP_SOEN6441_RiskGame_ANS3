@@ -2,6 +2,8 @@ package com.riskgame.test.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -215,6 +217,9 @@ public class PlayerControllerTest {
        assertEquals(1, country.getNoOfArmies() );
    }
    
+   /**
+    * Test method to check whether the fortification is working fine or not
+    */
    @Test
 	public void isFortificationComplete() {
 		playerController.moveArmies(mapGraph, fromCountry, toCountry, 2);
@@ -294,8 +299,17 @@ public class PlayerControllerTest {
 	public void isReinforcementworking() {
 		int result=playerController.reinforcementPhase(toCountrier, gameMapGraph_1);
 		assertEquals(4, result);
-
-
 	}
 
+	/**
+	 * this method checks the saving and loading a game
+	 * @throws Exception - when it cannot load the map
+	 */
+	@Test
+	public void testSaveGame() throws Exception {
+		playerController.saveGame(mapGraph);
+		GameMapGraph loadedGameMapGraph = playerController.loadGame(System.getProperty("user.dir")+"/resources/SavedGames/SaveGame.txt");
+		
+		assertEquals(mapGraph.getPlayers().size(), loadedGameMapGraph.getPlayers().size());
+	}
 }

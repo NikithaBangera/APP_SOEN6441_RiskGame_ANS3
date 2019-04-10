@@ -19,12 +19,27 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Vector;
 
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
+import javax.swing.JTable;
+import javax.swing.JScrollPane;
 
+/**
+ * The Tournament View class is invoked for displaying the tournament view
+ * which takes all the details the information required for the tournament
+ * mode to begin
+ * 
+ * @author Nikitha
+ * @author Shresthi
+ * @author Shiva
+ * @author Anusha
+ *
+ */
 public class TournamentView extends JFrame{
 	private JTextField textFieldTurnsPerGame;
 	private JTextField textFieldPlayer1;
@@ -46,7 +61,12 @@ public class TournamentView extends JFrame{
 	String[] numGames = {"Select One","1","2","3","4","5"};
 	String[] playerTypes = {"Select One","Aggressive","Benevolent","Cheater","Random"};
 	TournamentMapGraph tournamentMapGraph = null;
+	private JTable table;
 
+	/**
+	 * The TournamentView constructor contains all the panels, labels,
+	 * combo-boxes and text fields to fetch all the tournament details from the user
+	 */
 	public TournamentView() {
 		tournamentMapGraph = new TournamentMapGraph();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -65,27 +85,27 @@ public class TournamentView extends JFrame{
 		panelOptions.setLayout(null);
 		
 		JLabel lblNumberOfMaps = new JLabel("Number of Maps:");
-		lblNumberOfMaps.setFont(new Font("Calibri", Font.BOLD, 14));
+		lblNumberOfMaps.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		lblNumberOfMaps.setBounds(12, 13, 120, 26);
 		panelOptions.add(lblNumberOfMaps);
 		
 		JLabel lblNewLabel = new JLabel("Number of Players:");
-		lblNewLabel.setFont(new Font("Calibri", Font.BOLD, 14));
+		lblNewLabel.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		lblNewLabel.setBounds(12, 52, 120, 26);
 		panelOptions.add(lblNewLabel);
 		
 		JLabel lblNumberOfGames = new JLabel("Number of Games:");
-		lblNumberOfGames.setFont(new Font("Calibri", Font.BOLD, 14));
+		lblNumberOfGames.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		lblNumberOfGames.setBounds(12, 92, 120, 26);
 		panelOptions.add(lblNumberOfGames);
 		
 		comboBoxMaps = new JComboBox(numMaps);
-		comboBoxMaps.setFont(new Font("Calibri", Font.PLAIN, 14));
+		comboBoxMaps.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		comboBoxMaps.setBounds(145, 14, 112, 22);
 		panelOptions.add(comboBoxMaps);
 		
 		comboBoxPlayers = new JComboBox(numPlayers);
-		comboBoxPlayers.setFont(new Font("Calibri", Font.PLAIN, 14));
+		comboBoxPlayers.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		comboBoxPlayers.setBounds(144, 53, 112, 22);
 		panelOptions.add(comboBoxPlayers);
 		comboBoxPlayers.addActionListener(new ActionListener() {
@@ -95,6 +115,7 @@ public class TournamentView extends JFrame{
 				JComboBox comboBox = (JComboBox) e.getSource();
 				if(((String) comboBox.getSelectedItem()).equalsIgnoreCase("Select One")) {
 					numberOfPlayers = 0;
+					
 				}
 				else {
 					numberOfPlayers = Integer.parseInt((String) comboBox.getSelectedItem());
@@ -102,21 +123,24 @@ public class TournamentView extends JFrame{
 				panelPlayerDetails.removeAll();
 				panelPlayerDetails.revalidate();
 				panelPlayerDetails.repaint();
+				rootPanel.remove(btnStartGame);
+				rootPanel.remove(btnExit);
 				initialize(tournamentMapGraph);
 			}
 		});
 		
 		comboBoxGames = new JComboBox(numGames);
-		comboBoxGames.setFont(new Font("Calibri", Font.PLAIN, 14));
+		comboBoxGames.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		comboBoxGames.setBounds(144, 93, 112, 22);
 		panelOptions.add(comboBoxGames);
 		
 		JLabel lblNumberOfTurns = new JLabel("Number of Turns:");
-		lblNumberOfTurns.setFont(new Font("Calibri", Font.BOLD, 14));
+		lblNumberOfTurns.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		lblNumberOfTurns.setBounds(301, 13, 120, 26);
 		panelOptions.add(lblNumberOfTurns);
 		
 		textFieldTurnsPerGame = new JTextField();
+		textFieldTurnsPerGame.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		textFieldTurnsPerGame.setBounds(417, 14, 116, 22);
 		panelOptions.add(textFieldTurnsPerGame);
 		textFieldTurnsPerGame.setColumns(10);
@@ -125,76 +149,79 @@ public class TournamentView extends JFrame{
 		panelPlayerDetails.setBounds(12, 175, 749, 349);
 		rootPanel.add(panelPlayerDetails);
 		
-		btnStartGame = new JButton("Play");
-		btnStartGame.setBounds(612, 47, 118, 25);
-		rootPanel.add(btnStartGame);
-		btnStartGame.setFont(new Font("Calibri", Font.BOLD, 14));
-		
-				
-				
-				btnExit = new JButton("Exit");
-				btnExit.setBounds(612, 96, 118, 25);
-				rootPanel.add(btnExit);
-				btnExit.setFont(new Font("Calibri", Font.BOLD, 14));
-				
 		initialize(tournamentMapGraph);
 		setVisible(true);
 	}
 	
+	/**
+	 * This method begin the tournament mode after getting all the 
+	 * required information from the user
+	 * @param tournamentMapGraph - The Object of TournamentMapGraph for the tournament mode
+	 */
 	public void initialize(TournamentMapGraph tournamentMapGraph) {
 		tournamentMapGraph.getInputPlayerDetails().clear();
 		
+		btnStartGame = new JButton("Play");
+		btnStartGame.setBounds(612, 47, 118, 25);
+		rootPanel.add(btnStartGame);
+		btnStartGame.setFont(new Font("Times New Roman", Font.BOLD, 14));
+				
+		btnExit = new JButton("Exit");
+		btnExit.setBounds(612, 96, 118, 25);
+		rootPanel.add(btnExit);
+		btnExit.setFont(new Font("Times New Roman", Font.BOLD, 14));
+		
 		JLabel lblPlayerType = new JLabel("Player Type");
-		lblPlayerType.setBounds(242, 69, 68, 17);
-		lblPlayerType.setFont(new Font("Calibri", Font.BOLD, 14));
+		lblPlayerType.setBounds(238, 69, 103, 17);
+		lblPlayerType.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		
 		JLabel lblPlayerName = new JLabel("Player Name");
-		lblPlayerName.setBounds(118, 69, 73, 17);
-		lblPlayerName.setFont(new Font("Calibri", Font.BOLD, 14));
+		lblPlayerName.setBounds(100, 69, 103, 17);
+		lblPlayerName.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		
 		JLabel lblPlayer1 = new JLabel("Player 1");
-		lblPlayer1.setBounds(35, 113, 46, 17);
-		lblPlayer1.setFont(new Font("Calibri", Font.BOLD, 14));
+		lblPlayer1.setBounds(12, 113, 60, 17);
+		lblPlayer1.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		
 		textFieldPlayer1 = new JTextField();
 		textFieldPlayer1.setBounds(96, 109, 116, 22);
 		textFieldPlayer1.setColumns(10);
 		
 		JComboBox comboBoxPlayer1 = new JComboBox(playerTypes);
-		comboBoxPlayer1.setBounds(232, 109, 89, 22);
+		comboBoxPlayer1.setBounds(232, 109, 120, 22);
 		
 		JLabel lblPlayer2 = new JLabel("Player 2");
-		lblPlayer2.setBounds(35, 155, 46, 17);
-		lblPlayer2.setFont(new Font("Calibri", Font.BOLD, 14));
+		lblPlayer2.setBounds(12, 155, 60, 17);
+		lblPlayer2.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		
 		textFieldPlayer2 = new JTextField();
 		textFieldPlayer2.setBounds(96, 151, 116, 22);
 		textFieldPlayer2.setColumns(10);
 		
 		JComboBox comboBoxPlayer2 = new JComboBox(playerTypes);
-		comboBoxPlayer2.setBounds(232, 151, 89, 22);
+		comboBoxPlayer2.setBounds(232, 151, 120, 22);
 		
 		JLabel lblPlayer3 = new JLabel("Player 3");
-		lblPlayer3.setBounds(35, 197, 46, 17);
-		lblPlayer3.setFont(new Font("Calibri", Font.BOLD, 14));
+		lblPlayer3.setBounds(12, 197, 60, 17);
+		lblPlayer3.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		
 		textFieldPlayer3 = new JTextField();
 		textFieldPlayer3.setBounds(96, 193, 116, 22);
 		textFieldPlayer3.setColumns(10);
 		
 		JComboBox comboBoxPlayer3 = new JComboBox(playerTypes);
-		comboBoxPlayer3.setBounds(232, 193, 89, 22);
+		comboBoxPlayer3.setBounds(232, 193, 120, 22);
 		
 		JLabel lblPlayer4 = new JLabel("Player 4");
-		lblPlayer4.setBounds(35, 236, 46, 17);
-		lblPlayer4.setFont(new Font("Calibri", Font.BOLD, 14));
+		lblPlayer4.setBounds(12, 236, 60, 17);
+		lblPlayer4.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		
 		textFieldPlayer4 = new JTextField();
 		textFieldPlayer4.setBounds(96, 232, 116, 22);
 		textFieldPlayer4.setColumns(10);
 		
 		JComboBox comboBoxPlayer4 = new JComboBox(playerTypes);
-		comboBoxPlayer4.setBounds(232, 232, 89, 22);
+		comboBoxPlayer4.setBounds(232, 232, 120, 22);
 
 		switch (numberOfPlayers) {
 		case 2: panelPlayerDetails.add(lblPlayerType);
@@ -250,17 +277,34 @@ public class TournamentView extends JFrame{
 		
 		JTextArea textAreaTournamentResult = new JTextArea();
 		textAreaTournamentResult.setEditable(false);
-		textAreaTournamentResult.setFont(new Font("Calibri", Font.PLAIN, 14));
+		textAreaTournamentResult.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		textAreaTournamentResult.setBounds(12, 42, 371, 294);
-		panelTournamentResult.add(textAreaTournamentResult);
+	//	panelTournamentResult.add(textAreaTournamentResult);
 		
 		JLabel lblResult = new JLabel("Result");
-		lblResult.setFont(new Font("Calibri", Font.BOLD, 20));
+		lblResult.setFont(new Font("Times New Roman", Font.BOLD, 18));
 		lblResult.setBounds(160, 3, 65, 26);
 		panelTournamentResult.add(lblResult);
 		
+		
+		
+		DefaultTableModel dm = new DefaultTableModel(0,0);
+		String header[] = new String[] {"Game","Map","Winner"};
+		dm.setColumnIdentifiers(header);
+		
+		table = new JTable();
+		table.setEnabled(false);
+		table.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+		//table.setBounds(12, 42, 371, 294);
+		table.setModel(dm);
+		//panelTournamentResult.add(table);
+		
+		JScrollPane scrollPane = new JScrollPane(table);
+		scrollPane.setBounds(12, 31, 383, 305);
+		panelTournamentResult.add(scrollPane);
+		
 		JLabel lblPlayerDetails = new JLabel("Player Details");
-		lblPlayerDetails.setFont(new Font("Calibri", Font.BOLD, 20));
+		lblPlayerDetails.setFont(new Font("Times New Roman", Font.BOLD, 18));
 		lblPlayerDetails.setBounds(110, 13, 145, 16);
 		panelPlayerDetails.add(lblPlayerDetails);
 		
@@ -269,10 +313,7 @@ public class TournamentView extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				int exit = JOptionPane.showConfirmDialog(rootPane, "Are you sure you want to Exit the game?", "Exit Game", JOptionPane.YES_NO_OPTION);
-				if(exit == JOptionPane.YES_OPTION) {
-					System.exit(0);
-				}
+				System.exit(0);
 			}
 		});
 		
@@ -317,7 +358,18 @@ public class TournamentView extends JFrame{
 								TournamentController tournamentController = new TournamentController();
 								tournamentController.playTournament(tournamentMapGraph);
 								btnStartGame.setEnabled(false);
-								textAreaTournamentResult.setText(tournamentMapGraph.getTournamentResult());
+								textAreaTournamentResult.setText("The winners are:\n"+tournamentMapGraph.getTournamentResult());
+								String game = "";
+								String map = "";
+								for(Map.Entry<String, String> tournamentResult : tournamentMapGraph.getTournamentResult().entrySet()) {
+									Vector<Object> data = new Vector<Object>();
+									game = "Game "+tournamentResult.getKey().charAt(1);
+									map = "Map "+tournamentResult.getKey().charAt(3);
+									data.add(game);
+									data.add(map);
+									data.add(tournamentResult.getValue());
+									dm.addRow(data);
+								}
 								//rootPanel.removeAll();
 								rootPanel.revalidate();
 								rootPanel.repaint();
@@ -325,7 +377,9 @@ public class TournamentView extends JFrame{
 								
 							}
 							else {
-								JOptionPane.showMessageDialog(null, "Please Enter the details for all Players");
+								if(!(tournamentMapGraph.getTournamentResult().size() > 0)) {
+									JOptionPane.showMessageDialog(null, "Please Enter the details for all Players");
+								}
 							}
 						}
 						else {
@@ -339,7 +393,7 @@ public class TournamentView extends JFrame{
 				else {
 					JOptionPane.showMessageDialog(null, "Please enter a valid number of game turns.");
 				}
-				
+
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
@@ -347,6 +401,11 @@ public class TournamentView extends JFrame{
 	});
 	}
 
+	/**
+	 * Method to validate the number of game turns of the tournament
+	 * @param tournamentMapGraph - object of tournament map graph
+	 * @return isValid - boolean variable to check the validity
+	 */
 	public boolean validateGameTurnsOptions(TournamentMapGraph tournamentMapGraph) {
 		boolean isValid = false;
 		if(tournamentMapGraph.getGameTurns() >= 10 && tournamentMapGraph.getGameTurns() <= 50) {
@@ -355,6 +414,11 @@ public class TournamentView extends JFrame{
 		return isValid;
 	}
 	
+	/**
+	 * Method to validate the player details of the tournament
+	 * @param tournamentMapGraph - object of tournament map graph
+	 * @return missingData - boolean variable to check the validity
+	 */
 	public boolean validatePlayerDetails(TournamentMapGraph tournamentMapGraph) {
 		boolean missingData = false;
 		Iterator<Entry<String, String>> playerDetailsIT = tournamentMapGraph.getInputPlayerDetails().entrySet().iterator();

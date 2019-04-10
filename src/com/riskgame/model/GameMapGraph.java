@@ -59,7 +59,7 @@ public class GameMapGraph extends Observable implements Serializable {
 	private boolean refreshFrame;
 	
 	/** Dice view message */
-	private String diceViewMessage;
+	private String diceViewMessage = "";
 	
 	/** Treemap for inputPlayerDetails*/
 	private Map<String, String> inputPlayerDetails = new TreeMap<String, String>();
@@ -77,7 +77,7 @@ public class GameMapGraph extends Observable implements Serializable {
 	/**
 	 * Game Result of tournament
 	 */
-	private String gameResult;
+	private String gameResult = "";
 	
 	/**
 	 * GameMapGraph Constructor
@@ -363,7 +363,7 @@ public class GameMapGraph extends Observable implements Serializable {
 	/**
 	 * Method to get player details from StartGameView class.
 	 * 
-	 * @return
+	 * @return inputPlayerDetails
 	 */
 	public Map<String, String> getInputPlayerDetails() {
 		return inputPlayerDetails;
@@ -372,7 +372,7 @@ public class GameMapGraph extends Observable implements Serializable {
 	/**
 	 * Method to populate player details from the StartGameView.
 	 * 
-	 * @param inputPlayerDetails
+	 * @param inputPlayerDetails - The details of the player
 	 */
 	public void setInputPlayerDetails(Map<String, String> inputPlayerDetails) {
 		this.inputPlayerDetails = inputPlayerDetails;

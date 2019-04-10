@@ -10,6 +10,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
+import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -177,8 +178,8 @@ public class RiskMainView extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
-					jfc.setDialogTitle("Select an Map File");
+					JFileChooser jfc = new JFileChooser(System.getProperty("user.dir")+"/resources/SavedGames/");
+					jfc.setDialogTitle("Select a Game File");
 					jfc.setAcceptAllFileFilterUsed(false);
 					FileNameExtensionFilter filter = new FileNameExtensionFilter(".txt or .TXT", "txt", "TXT");
 					jfc.addChoosableFileFilter(filter);
@@ -193,9 +194,9 @@ public class RiskMainView extends JFrame {
 						ObjectInputStream oi = new ObjectInputStream(fi);
 						
 						GameMapGraph mapGraph = (GameMapGraph) oi.readObject();
+						mapGraph.setRefreshFrame(false);
 						PlayerView playerView = new PlayerView(mapGraph);
-						
-						
+					
 						fi.close();
 						oi.close();
 					}

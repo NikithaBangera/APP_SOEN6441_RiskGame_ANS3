@@ -23,7 +23,12 @@ import com.riskgame.model.Country;
 import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.Player;
 import com.riskgame.strategy.Aggressive;
-
+/**
+ * This class aims to test the Aggressive class
+ * 
+ * @author Shiva
+ *
+ */
 public class AggressiveTest {
 	/** Object for Aggressive class */
 	private static Aggressive aggressive;
@@ -39,8 +44,8 @@ public class AggressiveTest {
 	/**
 	 * This method is called to initialize test data before all data
 	 */
-	@BeforeAll
-	public static void beforeAll() {
+	
+	public AggressiveTest() {
 		getMyCountries = new ArrayList<Country>();
 		country = new Country();
 		country.setName("Canada");
@@ -127,6 +132,7 @@ public class AggressiveTest {
 		country3.setAdjacentCountries(new ArrayList<String>());
 		country3.getAdjacentCountries().add("egypt");
 		country3.getAdjacentCountries().add("united states");
+		mapGraph.setGameType("test");
 	}
 	
 	/**
