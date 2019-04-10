@@ -115,6 +115,7 @@ public class TournamentView extends JFrame{
 				JComboBox comboBox = (JComboBox) e.getSource();
 				if(((String) comboBox.getSelectedItem()).equalsIgnoreCase("Select One")) {
 					numberOfPlayers = 0;
+					
 				}
 				else {
 					numberOfPlayers = Integer.parseInt((String) comboBox.getSelectedItem());
@@ -122,6 +123,8 @@ public class TournamentView extends JFrame{
 				panelPlayerDetails.removeAll();
 				panelPlayerDetails.revalidate();
 				panelPlayerDetails.repaint();
+				rootPanel.remove(btnStartGame);
+				rootPanel.remove(btnExit);
 				initialize(tournamentMapGraph);
 			}
 		});
@@ -146,18 +149,6 @@ public class TournamentView extends JFrame{
 		panelPlayerDetails.setBounds(12, 175, 749, 349);
 		rootPanel.add(panelPlayerDetails);
 		
-		btnStartGame = new JButton("Play");
-		btnStartGame.setBounds(612, 47, 118, 25);
-		rootPanel.add(btnStartGame);
-		btnStartGame.setFont(new Font("Times New Roman", Font.BOLD, 14));
-		
-				
-				
-				btnExit = new JButton("Exit");
-				btnExit.setBounds(612, 96, 118, 25);
-				rootPanel.add(btnExit);
-				btnExit.setFont(new Font("Times New Roman", Font.BOLD, 14));
-				
 		initialize(tournamentMapGraph);
 		setVisible(true);
 	}
@@ -169,6 +160,16 @@ public class TournamentView extends JFrame{
 	 */
 	public void initialize(TournamentMapGraph tournamentMapGraph) {
 		tournamentMapGraph.getInputPlayerDetails().clear();
+		
+		btnStartGame = new JButton("Play");
+		btnStartGame.setBounds(612, 47, 118, 25);
+		rootPanel.add(btnStartGame);
+		btnStartGame.setFont(new Font("Times New Roman", Font.BOLD, 14));
+				
+		btnExit = new JButton("Exit");
+		btnExit.setBounds(612, 96, 118, 25);
+		rootPanel.add(btnExit);
+		btnExit.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		
 		JLabel lblPlayerType = new JLabel("Player Type");
 		lblPlayerType.setBounds(238, 69, 103, 17);
@@ -292,6 +293,7 @@ public class TournamentView extends JFrame{
 		dm.setColumnIdentifiers(header);
 		
 		table = new JTable();
+		table.setEnabled(false);
 		table.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		//table.setBounds(12, 42, 371, 294);
 		table.setModel(dm);

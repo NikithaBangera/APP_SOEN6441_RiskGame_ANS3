@@ -5,8 +5,8 @@ import com.riskgame.model.GameMapGraph;
 import com.riskgame.model.Player;
 
 /**
- * Implementation of this class will just the playerController methods
- * @author 
+ * Implementation of this class is based on the normal human player
+ * @author Nikitha
  *
  */
 public class Human implements PlayerStrategy{

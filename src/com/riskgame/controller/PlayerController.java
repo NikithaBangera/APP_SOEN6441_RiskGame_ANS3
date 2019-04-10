@@ -340,6 +340,19 @@ public class PlayerController {
 				if(attacker.getPlayerType().equalsIgnoreCase("Aggressive")) {
 					moveComplete = moveArmies(attackerCountry.getNoOfArmies() / 2, attackerCountry, defenderCountry, gameMapGraph);
 				}
+				else if(attacker.getPlayerType().equalsIgnoreCase("Random")) {
+					if(attackerCountry.getNoOfArmies() > 2 ) {
+						int random = new Random().nextInt(attackerCountry.getNoOfArmies()) + 1;
+						
+						if(random == attackerCountry.getNoOfArmies()) {
+							random--;
+						}
+						moveComplete = moveArmies(random, attackerCountry, defenderCountry, gameMapGraph);
+					}
+					else {
+						moveComplete = moveArmies(1, attackerCountry, defenderCountry, gameMapGraph);
+					}
+				}
 				else {
 					moveComplete = moveArmies(1, attackerCountry, defenderCountry, gameMapGraph);
 				}
@@ -390,7 +403,7 @@ public class PlayerController {
 			
 			if (!adjacentCountries) {
 				if(!(mapGraph.getGameType().equalsIgnoreCase("Tournament") || mapGraph.getGameType().equalsIgnoreCase("Test"))) {
-					JOptionPane.showMessageDialog(null, "Countries are not adjacanet!");
+					JOptionPane.showMessageDialog(null, "Countries are not adjacent!");
 				}
 				doFortification = true;
 			}

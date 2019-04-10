@@ -59,7 +59,7 @@ public class GameMapGraph extends Observable implements Serializable {
 	private boolean refreshFrame;
 	
 	/** Dice view message */
-	private String diceViewMessage;
+	private String diceViewMessage = "";
 	
 	/** Treemap for inputPlayerDetails*/
 	private Map<String, String> inputPlayerDetails = new TreeMap<String, String>();
@@ -77,7 +77,7 @@ public class GameMapGraph extends Observable implements Serializable {
 	/**
 	 * Game Result of tournament
 	 */
-	private String gameResult;
+	private String gameResult = "";
 	
 	/**
 	 * GameMapGraph Constructor
