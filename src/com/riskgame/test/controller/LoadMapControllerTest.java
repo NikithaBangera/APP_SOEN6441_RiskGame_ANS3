@@ -125,7 +125,7 @@ public class LoadMapControllerTest {
 	
 	/**
 	 * Test method for checking the connectivity of a loaded map 
-	 * @throws IOException 
+	 * @throws IOException - the input output exception
 	 */
 	@Test
 	public void isConnectedMap() throws IOException {
@@ -133,7 +133,7 @@ public class LoadMapControllerTest {
 	}
 	/**
 	 * Test method for checking the connectivity of a loaded map 
-	 * @throws IOException 
+	 * @throws IOException - the input output exception
 	 */
 	
 	@Test

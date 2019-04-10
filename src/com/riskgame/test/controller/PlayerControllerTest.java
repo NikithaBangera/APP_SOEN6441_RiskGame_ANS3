@@ -303,7 +303,7 @@ public class PlayerControllerTest {
 
 	/**
 	 * this method checks the saving and loading a game
-	 * @throws Exception
+	 * @throws Exception - when it cannot load the map
 	 */
 	@Test
 	public void testSaveGame() throws Exception {

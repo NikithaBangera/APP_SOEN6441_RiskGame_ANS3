@@ -156,7 +156,7 @@ public class TournamentView extends JFrame{
 	/**
 	 * This method begin the tournament mode after getting all the 
 	 * required information from the user
-	 * @param tournamentMapGraph
+	 * @param tournamentMapGraph - The Object of TournamentMapGraph for the tournament mode
 	 */
 	public void initialize(TournamentMapGraph tournamentMapGraph) {
 		tournamentMapGraph.getInputPlayerDetails().clear();
