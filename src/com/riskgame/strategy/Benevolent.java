@@ -61,8 +61,8 @@ public class Benevolent implements PlayerStrategy{
 	
 	/**
 	 * this method gets the strongest country owned by the benevolent player
-	 * @param mapGraph
-	 * @param player
+	 * @param mapGraph - The object of the GameMapGraph
+	 * @param player - The object of the player
 	 * @return strongest country
 	 */
 	public Country getStrongestCountry(GameMapGraph mapGraph, Player player) {
@@ -79,8 +79,8 @@ public class Benevolent implements PlayerStrategy{
 	
 	/**
 	 * this method gets the weakest country owned by the benevolent player
-	 * @param mapGraph
-	 * @param player
+	 * @param mapGraph - The object of the GameMapGraph
+	 * @param player - The object of the player
 	 * @return weakest country
 	 */
 	public Country getWeakestCountry(GameMapGraph mapGraph, Player player) {

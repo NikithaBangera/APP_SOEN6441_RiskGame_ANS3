@@ -134,8 +134,8 @@ public class RandomPlayer implements PlayerStrategy{
 	
 	/**
 	 * this method gets a random country owned by the Random player
-	 * @param mapGraph
-	 * @param player
+	 * @param mapGraph - The object of the GameMapGraph
+	 * @param player - The object of the player
 	 * @return randomCountry
 	 */
 	public Country getRandomCountry(GameMapGraph mapGraph, Player player) {
@@ -145,8 +145,8 @@ public class RandomPlayer implements PlayerStrategy{
 	
 	/**
 	 * this method gets a random country of player with adjacent country belonging to a different player
-	 * @param mapGraph
-	 * @param country
+	 * @param mapGraph - The object of the GameMapGraph
+	 * @param country - The object of the country
 	 * @return randomAdjacentCountry
 	 */
 	public List<Country> getRandomCountryWithAdjCountry(GameMapGraph mapGraph, Player player) {
