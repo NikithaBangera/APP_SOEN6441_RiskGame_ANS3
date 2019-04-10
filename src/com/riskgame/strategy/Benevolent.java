@@ -27,7 +27,6 @@ public class Benevolent implements PlayerStrategy{
 		Random random = new Random();
 		int countryNumber = random.nextInt(player.getMyCountries().size());
 		playerController.armiesAssignedToCountries(mapGraph, player.getMyCountries().get(countryNumber).getName(), 1);
-		
 	}
 	
 	/**
@@ -40,6 +39,7 @@ public class Benevolent implements PlayerStrategy{
 		int reinforcementArmies = playerController.reinforcementPhase(player, mapGraph);
 		player.setArmyCount(player.getArmyCount() + reinforcementArmies);
 		playerController.armiesAssignedToCountries(mapGraph, getWeakestCountry(mapGraph, player).getName(), player.getArmyCount());
+		System.out.println(getWeakestCountry(mapGraph, player).getName()+" reinforced with "+reinforcementArmies);
 	}
 
 	/**
@@ -55,8 +55,8 @@ public class Benevolent implements PlayerStrategy{
 			int fortifyArmiesToWeakestCountry = (strongestCountryToFortify.getNoOfArmies() - weakestCountry.getNoOfArmies()) / 2;
 			weakestCountry.setNoOfArmies(weakestCountry.getNoOfArmies() + fortifyArmiesToWeakestCountry);
 			strongestCountryToFortify.setNoOfArmies(strongestCountryToFortify.getNoOfArmies() - fortifyArmiesToWeakestCountry);
-			
 		}
+		System.out.println("Benevolent fortification complete");
 	}
 	
 	/**

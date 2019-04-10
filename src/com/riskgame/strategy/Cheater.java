@@ -47,6 +47,7 @@ public class Cheater implements PlayerStrategy{
 			Country currentCountry = countryList.get(i);
 			int reinforcementArmies= currentCountry.getNoOfArmies() * 2;
 			currentCountry.setNoOfArmies(reinforcementArmies);
+			System.out.println(currentCountry.getName()+" reinforced with "+reinforcementArmies);
 		}
 	}
 
@@ -72,6 +73,7 @@ public class Cheater implements PlayerStrategy{
 		
 		for(Country country: cheatersWinningCountries) {
 			player.getMyCountries().add(country);
+			System.out.println(player.getName()+" (Cheater) has conquered "+country.getName());
 			Player losingPlayer = playerController.getPlayerForCountry(gameMapGraph, country.getName());
 			int i = 0;
 			for(Country playerCountry : losingPlayer.getMyCountries()) {
@@ -86,6 +88,7 @@ public class Cheater implements PlayerStrategy{
 				if(!gameMapGraph.getGameType().equalsIgnoreCase("Tournament")) {
 					JOptionPane.showMessageDialog(null, "Player "+losingPlayer.getName()+" has lost the game!!");
 				}
+				System.out.println("Player "+losingPlayer.getName()+" has lost the game!!");
 			}
 		}
 	}
@@ -117,5 +120,6 @@ public class Cheater implements PlayerStrategy{
 				}
 			}
 		}
+		System.out.println("Cheater fortification complete");
 	}
 }
